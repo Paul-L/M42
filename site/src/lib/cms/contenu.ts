@@ -140,6 +140,12 @@ async function chargerCms(): Promise<Contenus> {
           x: T[],
         ) => (parent ? x.filter((r) => r[parent] === l.id) : []);
         const { forme, champs } = plan(collection, collection === 'pages' ? l.slug : undefined);
+        // Garde-fou : Directus encore à l'ancien format (champs JSON) → aucun champ rempli.
+        // Mieux vaut arrêter le build que publier une page vide.
+        if (champs.length > 2 && champs.every((c) => l[c.nom] === null || l[c.nom] === undefined))
+          throw new Error(
+            `[contenu] ${collection}/${l.slug} : aucun champ rempli. Directus est-il à l'ancien format ? Lancer « npm run cms:migrer » (DEPLOIEMENT.md).`,
+          );
         return {
           slug: l.slug,
           contenu: depuisEnregistrement(

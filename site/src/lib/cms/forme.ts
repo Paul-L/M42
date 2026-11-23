@@ -209,7 +209,8 @@ function decoderValeur(v: unknown, f: Forme): unknown {
 
 function decoderLigne(ligne: unknown, item: Forme): unknown {
   const l = (estObjet(ligne) ? ligne : {}) as Record<string, unknown>;
-  if (item.k !== 'objet') return l.valeur;
+  // Liste de textes : ligne { valeur } (ou texte brut, ancien format).
+  if (item.k !== 'objet') return estObjet(ligne) ? l.valeur : ligne;
   const o = reconstruire(item, (chemin) => l[chemin.join('__')]) as Record<string, unknown>;
   // Remet les clés dans l'ordre de la ligne (celui de l'élément d'origine).
   const ordre = [...new Set(Object.keys(l).map((k) => k.split('__')[0] ?? k))];

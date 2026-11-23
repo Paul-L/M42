@@ -105,6 +105,24 @@ Même procédure que l'étape 4, avec :
 
 L'aperçu de Directus montre la préproduction, qui est à jour après chaque déploiement. Pour un aperçu instantané (brouillons compris), utiliser `npm run apercu` en local (voir README).
 
+## 6 bis. Mettre à jour un Directus déjà en ligne (nouveau modèle de champs, apparence)
+
+À faire une fois sur le Directus de production créé avant le passage aux champs « à plat » (commit `350f228`). La migration **garde** le contenu modifié dans Directus (elle ne repart pas de `src/data`). Faire d'abord une sauvegarde de la base (§ 7).
+
+Depuis `site/` :
+
+```sh
+export CMS_URL=https://cms.m42.guide ADMIN_EMAIL=… ADMIN_PASSWORD=…
+npm run cms:schema                    # ajoute les nouveaux champs (les anciens restent)
+npm run cms:migrer                    # convertit chaque élément, contenu actuel gardé
+npm run cms:migrer -- --verifier      # doit répondre « 0 élément(s) différent(s) »
+npm run cms:schema -- --nettoyer      # retire les anciens champs JSON
+npm run cms:flows                     # flows à jour
+SITE_APERCU=https://preprod.m42.guide npm run cms:apparence   # logo, couleurs, menus, aperçu
+```
+
+Puis redéployer le site dans Coolify. Garde-fou : tant que Directus est à l'ancien format, le build du site s'arrête avec le message « Directus est-il à l'ancien format ? » au lieu de publier des pages vides.
+
 ## 7. Sauvegardes
 
 - Le service `sauvegarde` fait chaque nuit à 3 h (`HEURE_SAUVEGARDE`) un export de la base (`base_<date>.dump`) et une archive des fichiers envoyés (`fichiers_<date>.tar.gz`), gardés 14 jours (`RETENTION_JOURS`) dans le volume `sauvegardes`.
