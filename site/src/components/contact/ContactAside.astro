@@ -1,18 +1,13 @@
 ---
 /** Colonne « Coordonnées et étapes » de la page Contact (maquette Contact.dc.html). */
-import { nextSteps } from '../../data/contact';
-
-const people = [
-  { name: 'Clara Peron', email: 'clara@m42.guide' },
-  { name: 'Paul Loustaunau', email: 'paul@m42.guide' },
-];
+import { aside, nextSteps } from '../../data/contact';
 ---
 
-<aside aria-label="Coordonnées et étapes" class="aside">
+<aside aria-label={aside.label} class="aside">
   <div class="block">
-    <h2 class="label">Nous écrire directement</h2>
+    <h2 class="label">{aside.contactTitle}</h2>
     <ul class="contacts">
-      {people.map((p) => (
+      {aside.people.map((p) => (
         <li class="person">
           <span class="name">{p.name}</span>
           <a href={`mailto:${p.email}`} class="mail">
@@ -50,17 +45,14 @@ const people = [
         >
           <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path>
         </svg>
-        [À COMPLÉTER : téléphone]
+        <Fragment set:html={aside.phone} />
       </li>
     </ul>
-    <p class="where">
-      Basés dans le Sud-Ouest. Nous intervenons partout en France, en présentiel ou à distance.
-      Interventions en français.
-    </p>
+    <p class="where" set:html={aside.where} />
   </div>
 
   <div class="block">
-    <h2 class="label">Ce qui se passe ensuite</h2>
+    <h2 class="label">{aside.stepsTitle}</h2>
     <ol class="steps">
       {nextSteps.map((step, i) => (
         <li class="step">

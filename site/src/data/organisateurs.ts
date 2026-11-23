@@ -5,6 +5,11 @@
 // Paul : formulation prudente tant que l'accord écrit de l'employeur n'est pas obtenu [À VALIDER].
 // VARIANTE après accord : « Paul Loustaunau développe des logiciels depuis 17 ans. Aujourd'hui Lead IA dans un grand
 // groupe de logiciels, il conçoit et déploie l'IA et des agents autonomes au quotidien. » (jamais le nom de l'employeur)
+//
+// Exports de contenu : données sérialisables en JSON. `wordCount` est une fonction utilitaire, à part.
+// Champs marqués « HTML » : rendus avec `set:html` (texte brut sans balise, rendu à l'identique).
+
+import { routes } from './routes';
 
 export interface CopyText {
   /** Complément des libellés accessibles (« Copier … », « Copié : … »). */
@@ -57,6 +62,145 @@ export function wordCount(texte: string): string {
   const n = texte.split(/\s+/).filter((m) => /[0-9A-Za-zÀ-ÿ]/.test(m)).length;
   return '≈ ' + n + ' mots';
 }
+
+export const seo = {
+  title: 'Espace organisateurs : bios, photos, fiche technique | M42',
+  description:
+    "Vous organisez une conférence sur l'IA ? Tout pour l'annoncer et la préparer : biographies de 50 et 150 mots, photos HD, logo, descriptifs, texte d'annonce et fiche technique.",
+};
+
+/** En-tête de page (le sur-titre est dans le H1) et vidéo. */
+export const hero = {
+  crumb: 'Espace organisateurs',
+  /** HTML. */
+  eyebrow: 'Kit organisateur',
+  title: 'Espace organisateurs',
+  /** HTML. */
+  intro:
+    'Vous organisez une intervention : annonce à publier, fiche technique pour la salle, textes de présentation, photos et logos sont ici, au même endroit. Les textes se copient en un clic ; les photos et les logos se téléchargent en haute définition.',
+  /** HTML. */
+  note: "[À PRODUIRE : kit complet en PDF. Le bouton « Télécharger le kit organisateur » n'apparaît qu'une fois le fichier en ligne.]",
+  video: {
+    /** Emplacement sur deux lignes (\n). */
+    placeholder:
+      "[Vidéo 60–90 s à tourner]\nExtrait de conférence sous-titré en français, image d'aperçu puis lecture au clic",
+    /** HTML. */
+    caption:
+      'Showreel M42, 60 à 90 secondes. Lien à partager : [À COMPLÉTER : URL de la vidéo]. Transcription sous la vidéo [À PRODUIRE].',
+  },
+};
+
+/** Bloc à copier : clé du texte dans `copyTexts` et titre affiché. */
+export interface CopyBlockRef {
+  key: CopyKey;
+  title: string;
+}
+
+/** Biographies à copier (Clara avant Paul). */
+export const biosSection: {
+  eyebrow: string;
+  /** HTML. */
+  title: string;
+  lead: string;
+  duo: CopyBlockRef;
+  people: { name: string; blocks: CopyBlockRef[] }[];
+  /** HTML. */
+  note: string;
+} = {
+  eyebrow: 'Biographies',
+  title: 'Présenter les intervenants',
+  lead: "Prêtes à coller dans un programme, un communiqué ou une page d'inscription. Merci de garder l'ordre : Clara Peron, puis Paul Loustaunau.",
+  duo: { key: 'duo', title: 'Le duo M42' },
+  people: [
+    {
+      name: 'Clara Peron',
+      blocks: [
+        { key: 'claraCourte', title: 'Biographie courte' },
+        { key: 'claraLongue', title: 'Biographie longue' },
+      ],
+    },
+    {
+      name: 'Paul Loustaunau',
+      blocks: [
+        { key: 'paulCourte', title: 'Biographie courte' },
+        { key: 'paulLongue', title: 'Biographie longue' },
+      ],
+    },
+  ],
+  note: 'Les mentions entre crochets sont à finaliser avant la mise en ligne.',
+};
+
+/** Photos HD : en-tête et crédit. */
+export const photosSection = {
+  eyebrow: 'Photos',
+  /** HTML. */
+  title: 'Photos haute définition',
+  lead: "Libres d'usage pour annoncer une intervention de M42, avec le crédit photo. Merci de ne pas les retoucher.",
+  /** HTML. */
+  credit:
+    'Crédit obligatoire : © [À COMPLÉTER : nom du photographe]. Toutes les photos suivent le même étalonnage ; aucune image générée par IA.',
+};
+
+/** Fiche technique : en-tête. */
+export const techSheetSection = {
+  eyebrow: 'Fiche technique',
+  /** HTML. */
+  title: "Ce qu'il faut prévoir sur place",
+  /** HTML. */
+  lead: "Une configuration simple, que la plupart des salles ont déjà. Nous vérifions chaque point avec vous lors de l'échange de préparation.",
+  /** HTML. */
+  note: '[À PRODUIRE : fiche technique en PDF, version HTML ci-contre identique.]',
+};
+
+/** Texte d'annonce prêt à publier. */
+export const annonceSection: {
+  eyebrow: string;
+  /** HTML. */
+  title: string;
+  lead: string;
+  blocks: CopyBlockRef[];
+  /** HTML. */
+  conferencesLabel: string;
+  conferences: { label: string; href: string }[];
+} = {
+  eyebrow: 'Annonce',
+  title: "Texte d'annonce prêt à publier",
+  lead: 'Copiez, puis remplacez les éléments entre crochets. Version longue pour un programme ou un bulletin municipal, version courte pour les réseaux sociaux.',
+  blocks: [
+    { key: 'annonceLongue', title: 'Version longue' },
+    { key: 'annonceCourte', title: 'Version courte' },
+  ],
+  conferencesLabel: 'Les descriptifs détaillés sont sur la page de chaque conférence :',
+  conferences: [
+    { label: "L'IA au quotidien", href: routes['Conf-ia-au-quotidien.dc.html'] },
+    { label: 'Arnaques et IA', href: routes['Conf-arnaques-ia.dc.html'] },
+    { label: 'Vrai ou faux ?', href: routes['Conf-desinformation-ia.dc.html'] },
+    { label: 'Parents, ados et IA', href: routes['Conf-parents-ados-ia.dc.html'] },
+  ],
+};
+
+/** Logos : en-tête. */
+export const logosSection = {
+  eyebrow: 'Logos',
+  /** HTML. */
+  title: 'Logos à télécharger',
+  lead: 'Version claire, version sombre et symbole seul. Choisissez celle qui contraste le mieux avec votre support.',
+};
+
+/** Contact presse (bandeau final). Clara avant Paul. */
+export const presse = {
+  eyebrow: 'Contact presse',
+  title: 'Une interview, un format de photo, une précision ?',
+  lead: 'Journalistes et organisateurs : écrivez-nous, nous répondons sous 48 h. Nous pouvons aussi relire votre annonce avant publication.',
+  ctaLabel: 'Parler de votre événement',
+  ctaHref: routes['Contact.dc.html'],
+  contacts: [
+    { name: 'Clara Peron', email: 'clara@m42.guide' },
+    { name: 'Paul Loustaunau', email: 'paul@m42.guide' },
+  ],
+  /** Lignes suivantes, marqueurs conservés. */
+  lines: ['[À COMPLÉTER : téléphone]', '[À DÉCIDER : interlocuteur presse unique]'],
+};
 
 /** Sommaire « Sur cette page » (en-tête de page). */
 export const onThisPage: { id: string; label: string }[] = [
@@ -144,6 +288,8 @@ export interface LogoFile {
 
 export const logos: {
   title: string;
+  /** Nom accessible de l'image du logo. */
+  alt: string;
   /** Complément du nom accessible des liens (« SVG, logo complet, fond clair »). */
   srLabel: string;
   tone: 'light' | 'dark' | 'symbol';
@@ -153,6 +299,7 @@ export const logos: {
 }[] = [
   {
     title: 'Logo complet, fond clair',
+    alt: 'Logo M42 Guide sur fond clair',
     srLabel: 'logo complet, fond clair',
     tone: 'light',
     files: [
@@ -162,6 +309,7 @@ export const logos: {
   },
   {
     title: 'Logo complet, fond sombre',
+    alt: 'Logo M42 Guide sur fond sombre',
     srLabel: 'logo complet, fond sombre',
     tone: 'dark',
     files: [
@@ -171,6 +319,7 @@ export const logos: {
   },
   {
     title: 'Symbole seul',
+    alt: 'Symbole M42 seul',
     srLabel: 'symbole seul',
     tone: 'symbol',
     files: [

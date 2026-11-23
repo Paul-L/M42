@@ -8,12 +8,15 @@
 import Eyebrow from '../Eyebrow.astro';
 import Placeholder from '../Placeholder.astro';
 import type { Intervenant } from '../../data/intervenants';
+import { duo } from '../../data/a-propos';
 
 interface Props {
   person: Intervenant;
+  /** Libellés du tableau. Par défaut : `duo.labels` (src/data/a-propos.ts). */
+  labels?: { surScene: string; contact: string; linkedin: string };
 }
 
-const { person } = Astro.props;
+const { person, labels = duo.labels } = Astro.props;
 const titleId = `titre-${person.slug.split('-')[0]}`;
 ---
 
@@ -39,17 +42,17 @@ const titleId = `titre-${person.slug.split('-')[0]}`;
       ))}
       <dl class="facts">
         <div class="fact">
-          <dt>Sur scène</dt>
+          <dt>{labels.surScene}</dt>
           <dd>{person.surScene}</dd>
         </div>
         <div class="fact">
-          <dt>Contact</dt>
+          <dt>{labels.contact}</dt>
           <dd>
             <a href={`mailto:${person.email}`}>{person.email}</a>
           </dd>
         </div>
         <div class="fact">
-          <dt>LinkedIn</dt>
+          <dt>{labels.linkedin}</dt>
           <dd>
             {person.linkedin.url ? (
               <a href={person.linkedin.url} rel="me">

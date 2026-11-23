@@ -16,11 +16,22 @@ import CtaBand from '../../components/CtaBand.astro';
 import SplitHead from '../../components/organisateurs/SplitHead.astro';
 import CopyBlock from '../../components/organisateurs/CopyBlock.astro';
 import { routes } from '../../data/routes';
-import { onThisPage, photos, techSheet, logos, logoRules } from '../../data/organisateurs';
-
-const title = 'Espace organisateurs : bios, photos, fiche technique | M42';
-const description =
-  "Vous organisez une conférence sur l'IA ? Tout pour l'annoncer et la préparer : biographies de 50 et 150 mots, photos HD, logo, descriptifs, texte d'annonce et fiche technique.";
+import { slotText } from '../../lib/slot-text';
+import {
+  annonceSection,
+  biosSection,
+  hero,
+  logoRules,
+  logos,
+  logosSection,
+  onThisPage,
+  photos,
+  photosSection,
+  presse,
+  seo,
+  techSheet,
+  techSheetSection,
+} from '../../data/organisateurs';
 
 const url = 'https://m42.guide/organisateurs/';
 const jsonLd = {
@@ -30,8 +41,8 @@ const jsonLd = {
       '@type': 'WebPage',
       '@id': `${url}#page`,
       url,
-      name: title,
-      description,
+      name: seo.title,
+      description: seo.description,
       isPartOf: { '@id': 'https://m42.guide/#site' },
       about: { '@id': 'https://m42.guide/#organisation' },
       breadcrumb: { '@id': `${url}#ariane` },
@@ -42,21 +53,14 @@ const jsonLd = {
       '@id': `${url}#ariane`,
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Accueil', item: 'https://m42.guide/' },
-        { '@type': 'ListItem', position: 2, name: 'Espace organisateurs' },
+        { '@type': 'ListItem', position: 2, name: hero.crumb },
       ],
     },
   ],
 };
-
-const conferenceLinks = [
-  { label: "L'IA au quotidien", href: routes['Conf-ia-au-quotidien.dc.html'] },
-  { label: 'Arnaques et IA', href: routes['Conf-arnaques-ia.dc.html'] },
-  { label: 'Vrai ou faux ?', href: routes['Conf-desinformation-ia.dc.html'] },
-  { label: 'Parents, ados et IA', href: routes['Conf-parents-ados-ia.dc.html'] },
-];
 ---
 
-<BaseLayout title={title} description={description} footerCurrent jsonLd={jsonLd}>
+<BaseLayout title={seo.title} description={seo.description} footerCurrent jsonLd={jsonLd}>
   <!-- Statut de copie, annoncé aux lecteurs d'écran (îlot de CopyBlock) -->
   <p role="status" aria-live="polite" class="sr-only" data-copy-status></p>
 
@@ -64,24 +68,17 @@ const conferenceLinks = [
   <section aria-labelledby="titre-orga">
     <Container class="page-head">
       <Breadcrumb
-        items={[
-          { label: 'Accueil', href: routes['Main.dc.html'] },
-          { label: 'Espace organisateurs' },
-        ]}
+        items={[{ label: 'Accueil', href: routes['Main.dc.html'] }, { label: hero.crumb }]}
       />
       <div class="hero">
         <div class="hero-text">
           <h1 id="titre-orga" class="h1">
             <Eyebrow as="span" rule={false}>
-              Kit organisateur
+              <Fragment set:html={slotText(hero.eyebrow, 12)} />
             </Eyebrow>
-            <span class="h1-main">Espace organisateurs</span>
+            <span class="h1-main">{hero.title}</span>
           </h1>
-          <p class="intro">
-            Vous organisez une intervention : annonce à publier, fiche technique pour la salle,
-            textes de présentation, photos et logos sont ici, au même endroit. Les textes se copient
-            en un clic ; les photos et les logos se téléchargent en haute définition.
-          </p>
+          <p class="intro" set:html={hero.intro} />
           <nav aria-label="Sur cette page" class="toc">
             <ul>
               {onThisPage.map((item) => (
@@ -96,23 +93,11 @@ const conferenceLinks = [
               ))}
             </ul>
           </nav>
-          <p class="note">
-            [À PRODUIRE : kit complet en PDF. Le bouton « Télécharger le kit organisateur »
-            n'apparaît qu'une fois le fichier en ligne.]
-          </p>
+          <p class="note" set:html={hero.note} />
         </div>
         <figure class="hero-video">
-          <Placeholder
-            ratio="16/9"
-            class="ph-multiline"
-            label={
-              "[Vidéo 60–90 s à tourner]\nExtrait de conférence sous-titré en français, image d'aperçu puis lecture au clic"
-            }
-          />
-          <figcaption>
-            Showreel M42, 60 à 90 secondes. Lien à partager : [À COMPLÉTER : URL de la vidéo].
-            Transcription sous la vidéo [À PRODUIRE].
-          </figcaption>
+          <Placeholder ratio="16/9" class="ph-multiline" label={hero.video.placeholder} />
+          <figcaption set:html={hero.video.caption} />
         </figure>
       </div>
     </Container>
@@ -120,42 +105,37 @@ const conferenceLinks = [
 
   <!-- Biographies à copier (Clara avant Paul) -->
   <Section id="biographies" labelledby="titre-bios" tone="sunk">
-    <SplitHead
-      id="titre-bios"
-      eyebrow="Biographies"
-      lead="Prêtes à coller dans un programme, un communiqué ou une page d'inscription. Merci de garder l'ordre : Clara Peron, puis Paul Loustaunau."
-    >
-      Présenter les intervenants
+    <SplitHead id="titre-bios" eyebrow={biosSection.eyebrow} lead={biosSection.lead}>
+      <Fragment set:html={slotText(biosSection.title, 4)} />
     </SplitHead>
 
-    <CopyBlock textKey="duo" title="Le duo M42" level="h3" size="duo" wide class="duo m42-reveal" />
+    <CopyBlock
+      textKey={biosSection.duo.key}
+      title={biosSection.duo.title}
+      level="h3"
+      size="duo"
+      wide
+      class="duo m42-reveal"
+    />
 
+    {/* Paul : formulation prudente tant que l'accord écrit n'est pas obtenu (variante dans src/data/organisateurs.ts). */}
     <div class="bios">
-      <div class="person m42-reveal">
-        <h3 class="person-name">Clara Peron</h3>
-        <CopyBlock textKey="claraCourte" title="Biographie courte" level="h4" />
-        <CopyBlock textKey="claraLongue" title="Biographie longue" level="h4" />
-      </div>
-      {/* Paul : formulation prudente tant que l'accord écrit n'est pas obtenu (variante dans src/data/organisateurs.ts). */}
-      <div class="person m42-reveal">
-        <h3 class="person-name">Paul Loustaunau</h3>
-        <CopyBlock textKey="paulCourte" title="Biographie courte" level="h4" />
-        <CopyBlock textKey="paulLongue" title="Biographie longue" level="h4" />
-      </div>
+      {biosSection.people.map((person) => (
+        <div class="person m42-reveal">
+          <h3 class="person-name">{person.name}</h3>
+          {person.blocks.map((block) => (
+            <CopyBlock textKey={block.key} title={block.title} level="h4" />
+          ))}
+        </div>
+      ))}
     </div>
-    <p class="note m42-reveal">
-      Les mentions entre crochets sont à finaliser avant la mise en ligne.
-    </p>
+    <p class="note m42-reveal" set:html={biosSection.note} />
   </Section>
 
   <!-- Photos HD -->
   <Section id="photos" labelledby="titre-photos">
-    <SplitHead
-      id="titre-photos"
-      eyebrow="Photos"
-      lead="Libres d'usage pour annoncer une intervention de M42, avec le crédit photo. Merci de ne pas les retoucher."
-    >
-      Photos haute définition
+    <SplitHead id="titre-photos" eyebrow={photosSection.eyebrow} lead={photosSection.lead}>
+      <Fragment set:html={slotText(photosSection.title, 4)} />
     </SplitHead>
     <div class="photos">
       {photos.map((photo) => (
@@ -168,25 +148,17 @@ const conferenceLinks = [
         </figure>
       ))}
     </div>
-    <p class="credit m42-reveal">
-      Crédit obligatoire : © [À COMPLÉTER : nom du photographe]. Toutes les photos suivent le même
-      étalonnage ; aucune image générée par IA.
-    </p>
+    <p class="credit m42-reveal" set:html={photosSection.credit} />
   </Section>
 
   <!-- Fiche technique -->
   <Section id="fiche-technique" labelledby="titre-fiche" tone="sunk">
-    <Eyebrow class="m42-reveal">Fiche technique</Eyebrow>
+    <Eyebrow class="m42-reveal">{techSheetSection.eyebrow}</Eyebrow>
     <div class="sheet">
       <div class="sheet-intro m42-reveal">
-        <h2 id="titre-fiche" class="h2">
-          Ce qu'il faut prévoir sur place
-        </h2>
-        <p class="sheet-lead">
-          Une configuration simple, que la plupart des salles ont déjà. Nous vérifions chaque point
-          avec vous lors de l'échange de préparation.
-        </p>
-        <p class="note">[À PRODUIRE : fiche technique en PDF, version HTML ci-contre identique.]</p>
+        <h2 id="titre-fiche" class="h2" set:html={techSheetSection.title} />
+        <p class="sheet-lead" set:html={techSheetSection.lead} />
+        <p class="note" set:html={techSheetSection.note} />
       </div>
       <dl class="sheet-list m42-reveal">
         {techSheet.map((row) => (
@@ -201,32 +173,23 @@ const conferenceLinks = [
 
   <!-- Texte d'annonce prêt à publier -->
   <Section id="annonce" labelledby="titre-annonce">
-    <SplitHead
-      id="titre-annonce"
-      eyebrow="Annonce"
-      lead="Copiez, puis remplacez les éléments entre crochets. Version longue pour un programme ou un bulletin municipal, version courte pour les réseaux sociaux."
-    >
-      Texte d'annonce prêt à publier
+    <SplitHead id="titre-annonce" eyebrow={annonceSection.eyebrow} lead={annonceSection.lead}>
+      <Fragment set:html={slotText(annonceSection.title, 4)} />
     </SplitHead>
     <div class="annonces">
-      <CopyBlock
-        textKey="annonceLongue"
-        title="Version longue"
-        level="h3"
-        size="annonce"
-        class="m42-reveal"
-      />
-      <CopyBlock
-        textKey="annonceCourte"
-        title="Version courte"
-        level="h3"
-        size="annonce"
-        class="m42-reveal"
-      />
+      {annonceSection.blocks.map((block) => (
+        <CopyBlock
+          textKey={block.key}
+          title={block.title}
+          level="h3"
+          size="annonce"
+          class="m42-reveal"
+        />
+      ))}
     </div>
     <div class="conf-links m42-reveal">
-      <span>Les descriptifs détaillés sont sur la page de chaque conférence :</span>
-      {conferenceLinks.map((link) => (
+      <span set:html={annonceSection.conferencesLabel} />
+      {annonceSection.conferences.map((link) => (
         <a href={link.href}>{link.label}</a>
       ))}
     </div>
@@ -235,12 +198,8 @@ const conferenceLinks = [
   <!-- Logos -->
   <section id="logos" aria-labelledby="titre-logos" class="logos-section">
     <Container>
-      <SplitHead
-        id="titre-logos"
-        eyebrow="Logos"
-        lead="Version claire, version sombre et symbole seul. Choisissez celle qui contraste le mieux avec votre support."
-      >
-        Logos à télécharger
+      <SplitHead id="titre-logos" eyebrow={logosSection.eyebrow} lead={logosSection.lead}>
+        <Fragment set:html={slotText(logosSection.title, 6)} />
       </SplitHead>
       <div class="logos">
         {logos.map((logo) => (
@@ -252,7 +211,7 @@ const conferenceLinks = [
                   height="96"
                   viewBox="0 0 100 100"
                   role="img"
-                  aria-label="Symbole M42 seul"
+                  aria-label={logo.alt}
                   focusable="false"
                 >
                   <circle cx="50" cy="50" r="46" fill="none" stroke="#0E0F12" stroke-width="3" />
@@ -270,15 +229,7 @@ const conferenceLinks = [
                   />
                 </svg>
               ) : (
-                <span
-                  role="img"
-                  aria-label={
-                    logo.tone === 'light'
-                      ? 'Logo M42 Guide sur fond clair'
-                      : 'Logo M42 Guide sur fond sombre'
-                  }
-                  class="logo-full"
-                >
+                <span role="img" aria-label={logo.alt} class="logo-full">
                   <svg
                     width="48"
                     height="48"
@@ -362,20 +313,25 @@ const conferenceLinks = [
   <div id="contact-presse" class="presse">
     <CtaBand
       id="titre-presse"
-      eyebrow="Contact presse"
-      title="Une interview, un format de photo, une précision ?"
-      lead="Journalistes et organisateurs : écrivez-nous, nous répondons sous 48 h. Nous pouvons aussi relire votre annonce avant publication."
-      ctaLabel="Parler de votre événement"
-      ctaHref={routes['Contact.dc.html']}
+      eyebrow={presse.eyebrow}
+      title={presse.title}
+      lead={presse.lead}
+      ctaLabel={presse.ctaLabel}
+      ctaHref={presse.ctaHref}
     >
       <p slot="contact" class="presse-contact">
-        Clara Peron : <a href="mailto:clara@m42.guide">clara@m42.guide</a>
-        <br />
-        Paul Loustaunau : <a href="mailto:paul@m42.guide">paul@m42.guide</a>
-        <br />
-        [À COMPLÉTER : téléphone]
-        <br />
-        [À DÉCIDER : interlocuteur presse unique]
+        {presse.contacts.map((c) => (
+          <>
+            {c.name} : <a href={`mailto:${c.email}`}>{c.email}</a>
+            <br />
+          </>
+        ))}
+        {presse.lines.map((line, i) => (
+          <>
+            {i > 0 && <br />}
+            {line}
+          </>
+        ))}
       </p>
     </CtaBand>
   </div>
