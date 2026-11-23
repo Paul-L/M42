@@ -13,29 +13,36 @@
  * En mode à plat (sans JavaScript, mouvement réduit, « Afficher toutes les étapes »), tout est
  * visible, surlignages à 32 % sans anneau, comme dans la maquette.
  * Exemple fictif construit pour la démonstration.
+ *
+ * Props :
+ * - visuel : textes du visuel en HTML simple (VisuelPublicationVirale, `demonstration.visuel` de
+ *   la conférence). Le dessin (SVG) et ses repères numérotés restent ici.
  */
+import type { VisuelPublicationVirale } from '../../../data/conferences/types';
+
+interface Props {
+  visuel: VisuelPublicationVirale;
+}
+
+const { visuel } = Astro.props;
 ---
 
 <div class="post">
   <div class="head">
     <span class="avatar" aria-hidden="true"></span>
     <div class="who">
-      <span class="name">Info_Littoral_24</span>
-      <span class="age hl hl-a fade">Compte créé il y a 3 jours</span>
+      <span class="name" set:html={visuel.compte} />
+      <span class="age hl hl-a fade" set:html={visuel.anciennete} />
     </div>
-    <span class="when">il y a 2 h</span>
+    <span class="when" set:html={visuel.date} />
   </div>
   <p class="msg">
-    <span class="hl hl-e strong fade">INCROYABLE</span> : une baleine géante échouée ce matin sur la
-    grande plage. <span class="hl hl-e fade">Partagez avant que ce soit supprimé !</span>
+    <span class="hl hl-e strong fade" set:html={visuel.message.accroche} />{' '}
+    <Fragment set:html={visuel.message.texte} />{' '}
+    <span class="hl hl-e fade" set:html={visuel.message.appel} />
   </p>
   <div class="pic">
-    <svg
-      viewBox="0 0 320 190"
-      class="svg"
-      role="img"
-      aria-label="Illustration : une baleine échouée sur une plage, deux promeneurs, un panneau. Les repères numérotés signalent les incohérences."
-    >
+    <svg viewBox="0 0 320 190" class="svg" role="img" aria-label={visuel.image.description}>
       <rect x="0" y="0" width="320" height="104" class="f-line"></rect>
       <circle cx="262" cy="32" r="13" class="f-raised"></circle>
       <rect x="0" y="100" width="320" height="34" class="f-strong"></rect>
@@ -87,35 +94,26 @@
     </div>
   </div>
   <ol class="legend fade">
-    <li>
-      <strong>1</strong> Ombres dans deux directions
-    </li>
-    <li>
-      <strong>2</strong> Panneau au texte illisible
-    </li>
-    <li>
-      <strong>3</strong> Vagues identiques, répétées
-    </li>
+    {visuel.indices.map((indice, i) => (
+      <li>
+        <strong>{i + 1}</strong> <Fragment set:html={indice} />
+      </li>
+    ))}
   </ol>
   <div class="checks">
-    <div class="check check-1 fade">
-      <span>Recherche d'image inversée</span>
-      <span class="ko">Aucune photo antérieure</span>
-    </div>
-    <div class="check check-2 fade">
-      <span>Presse locale, mairie, préfecture</span>
-      <span class="ko">Aucune mention</span>
-    </div>
+    {visuel.verifications.map((v, i) => (
+      <div class:list={['check', `check-${i + 1}`, 'fade']}>
+        <span set:html={v.label} />
+        <span class="ko" set:html={v.resultat} />
+      </div>
+    ))}
     <div class="share-row">
-      <span>12 400 partages</span>
-      <span class="share fade">Partager</span>
+      <span set:html={visuel.partages} />
+      <span class="share fade" set:html={visuel.partager} />
     </div>
   </div>
 </div>
-<p class="caption">
-  Exemple fictif construit pour la démonstration. [À REMPLACER par un cas réel documenté, neutre et
-  sourcé]
-</p>
+<p class="caption" set:html={visuel.legende} />
 
 <style>
   .fade {

@@ -10,30 +10,47 @@
  * - étape 5 (« Le bon réflexe ») : téléphone à 35 % d'opacité, tampon « Arnaque » qui apparaît
  *   (échelle 1,4 → 1).
  * Exemple reconstitué : numéro et adresse fictifs.
+ *
+ * Props :
+ * - visuel : textes du visuel en HTML simple (VisuelFauxSms, `demonstration.visuel` de la
+ *   conférence).
  */
+import type { VisuelFauxSms } from '../../../data/conferences/types';
+
+interface Props {
+  visuel: VisuelFauxSms;
+}
+
+const { visuel } = Astro.props;
 ---
 
 <div class="phone fade">
   <div class="screen">
     <div class="head">
       <div class="avatar"></div>
-      <div class="number hl hl-1 fade">+33 7 56 •• •• 12</div>
-      <div class="meta">SMS · aujourd'hui 18:42</div>
+      <div class="number hl hl-1 fade" set:html={visuel.numero} />
+      <div class="meta" set:html={visuel.meta} />
     </div>
     <div class="body">
       <div class="bubble">
-        <span class="hl hl-2 fade">Dernier avis : votre colis est bloqué.</span> Réglez{' '}
-        <span class="hl hl-3 fade">1,99 € de frais</span>{' '}
-        <span class="hl hl-2 fade">avant ce soir</span> pour éviter son retour :{' '}
-        <span class="hl hl-4 link fade">colis-suivi.exemple-frais.com/fr</span>
+        {visuel.message.map((seg) =>
+          typeof seg === 'string' ? (
+            <Fragment set:html={seg} />
+          ) : (
+            <span
+              class:list={['hl', `hl-${seg.indice}`, { link: seg.lien }, 'fade']}
+              set:html={seg.texte}
+            />
+          ),
+        )}
       </div>
     </div>
   </div>
 </div>
 <div class="stamp fade" aria-hidden="true">
-  <div class="stamp-box">Arnaque</div>
+  <div class="stamp-box" set:html={visuel.tampon} />
 </div>
-<p class="caption">Exemple reconstitué : numéro et adresse fictifs.</p>
+<p class="caption" set:html={visuel.legende} />
 
 <style>
   .fade {

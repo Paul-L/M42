@@ -91,7 +91,7 @@ import { evenements } from '../data/publics/evenements';
 import { associations } from '../data/publics/associations';
 import { education } from '../data/publics/education';
 import { arnaquesIa } from '../data/conferences/arnaques-ia';
-import { desinformationIa, exemplesVraiOuIa } from '../data/conferences/desinformation-ia';
+import { desinformationIa } from '../data/conferences/desinformation-ia';
 import { catalogue } from '../data/conferences/catalogue';
 import { cartes, catalogueSection, formatsDetailles } from '../data/conferences-index';
 import * as seminaire from '../data/satellites/seminaire-entreprise';
@@ -122,6 +122,7 @@ const intervenant = intervenants[0];
 const signature = catalogue.find((c) => c.signature);
 const carteSignature = cartes.find((c) => c.signature);
 const carteStandard = cartes.find((c) => !c.signature);
+const visuelSms = arnaquesIa.demonstration.visuel;
 const premiereConference = entreprises.conferences.items[0];
 const demoRichText = [
   '[Texte de démonstration avec un marqueur en ligne] ',
@@ -726,7 +727,7 @@ const demoRichText = [
     k={arnaquesIa.demonstration.k}
     visualSize="phone"
   >
-    <FauxSms slot="visual" />
+    {visuelSms?.type === 'faux-sms' && <FauxSms slot="visual" visuel={visuelSms} />}
   </ScrollStory>
 
   <Container class="k-band-label">
@@ -772,7 +773,7 @@ const demoRichText = [
     chapo={desinformationIa.tempsFort.chapo}
     note={desinformationIa.tempsFort.note}
   >
-    <VraiOuIaGame exemples={exemplesVraiOuIa} />
+    {desinformationIa.jeu && <VraiOuIaGame exemples={desinformationIa.jeu} />}
   </TempsFort>
 
   <Container class="k-band-label">

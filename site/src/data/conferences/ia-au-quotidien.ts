@@ -1,7 +1,8 @@
 // Contenus de la conférence I « L'IA au quotidien », conférence signature
 // (kit/maquette/Conf-ia-au-quotidien.dc.html). Forme : voir ./types.ts (collection Directus
-// `conferences`, phase 3), avec les champs facultatifs propres à cette page (tempsFortEtapes,
-// methodes, keynote).
+// `conferences`, phase 3), avec les champs facultatifs propres à cette page (mentionSignature,
+// demonstration.visuel, tempsFortEtapes, methodes, keynote). Toute la conférence tient dans
+// l'objet exporté (sérialisable en JSON).
 //
 // Notes de production de la maquette (commentaire SEO) :
 // - Conférence signature : seule étoile d'or des pages Conférences.
@@ -11,30 +12,9 @@
 //   (prépublication, 54 participants dont 18 à la dernière séance, « un signal, pas une preuve »).
 
 import { routes } from '../routes';
-import type {
-  Conference,
-  EtapeTempsFort,
-  MethodePro,
-  MomentKeynote,
-  SectionKeynote,
-  SectionMethodesPros,
-} from './types';
+import type { Conference } from './types';
 
-// Types des sections propres à cette page, désormais définis dans ./types.ts (champs facultatifs
-// du type Conference) ; ré-exportés ici sous leurs noms d'origine.
-export type { EtapeTempsFort, MethodePro, MomentKeynote };
-
-/**
- * Conférence I : les sections propres à la page sont obligatoires ici
- * (étapes du temps fort, tableau des méthodes des pros, section « Version keynote »).
- */
-export interface ConferenceIaAuQuotidien extends Conference {
-  tempsFortEtapes: EtapeTempsFort[];
-  methodes: SectionMethodesPros;
-  keynote: SectionKeynote;
-}
-
-export const iaAuQuotidien: ConferenceIaAuQuotidien = {
+export const iaAuQuotidien: Conference = {
   slug: 'ia-au-quotidien',
   numero: 'I',
   disponibilite: 'catalogue',
@@ -45,6 +25,7 @@ export const iaAuQuotidien: ConferenceIaAuQuotidien = {
       "Ce que l'IA sait faire, ce qu'elle invente et les méthodes des pros pour garder la main. Conférence, keynote ou atelier, pour tous les publics.",
   },
   surTitre: "Conférence I · Bien utiliser l'intelligence artificielle",
+  mentionSignature: 'Conférence signature',
   sousTitre:
     "Vous l'utilisez déjà, ou vous vous en méfiez : ce qu'elle sait faire, ce qu'elle invente, et comment garder la tête aux commandes.",
   promesse:
@@ -106,6 +87,31 @@ export const iaAuQuotidien: ConferenceIaAuQuotidien = {
           "Et je demande les sources, puis je les vérifie. C'est le réflexe des équipes qui travaillent avec l'IA tous les jours.",
       },
     ],
+    visuel: {
+      type: 'erreur-sure',
+      entete: 'Assistant IA · nouvelle conversation',
+      question: 'Qui a écrit le roman « Les Horloges de Port-Salies » ? A-t-il reçu un prix ?',
+      reponse: [
+        "« Les Horloges de Port-Salies » est un roman d'",
+        { fait: 'Hélène Varenne' },
+        ', publié en ',
+        { fait: '2011 aux éditions du Phare' },
+        '. Il a reçu le ',
+        { fait: 'prix des Lecteurs du Littoral' },
+        ' en 2012, salué pour son écriture « lumineuse et précise ».',
+      ],
+      source: { libelle: 'Source :', texte: 'La Revue des lettres, n° 214, mars 2012' },
+      tampon: 'Inventé',
+      verification: {
+        titre: 'Le deuxième avis · vérification',
+        recherches: [
+          { requete: '« Les Horloges de Port-Salies »', resultat: 'Aucun résultat' },
+          { requete: '« La Revue des lettres » n° 214', resultat: 'Introuvable' },
+        ],
+      },
+      legende:
+        "Exemple reconstitué : le roman, l'autrice, l'éditeur, le prix et la revue sont fictifs. [À REMPLACER par la démonstration réelle filmée]",
+    },
   },
 
   enClair:

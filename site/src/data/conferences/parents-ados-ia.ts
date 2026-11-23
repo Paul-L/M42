@@ -5,44 +5,13 @@
 // - Précaution 04 : le +138 % de cyberharcèlement vaut pour tous les âges (« tous âges confondus »).
 // - FAQ pass Culture volontairement absente (décision n° 7 de 05).
 //
-// Champs facultatifs du type Conference propres à cette page (./types.ts) : `frise` (heures de la
-// frise de l'animation), `charte` (temps fort), `bonNumero` (bande nuit « 3018 »). Les constantes
-// `friseJournee`, `charteFamille` et `bonNumero` restent exportées.
+// Champs facultatifs du type Conference propres à cette page (./types.ts) :
+// `demonstration.visuel` (téléphone de l'ado), `frise` (heures de la frise de l'animation),
+// `charte` (temps fort), `bonNumero` (bande nuit « 3018 »). Toute la conférence tient dans
+// l'objet exporté (sérialisable en JSON).
 
 import { routes } from '../routes';
-import type { BandeNumero, CharteNumerique, Conference } from './types';
-
-/** Heures de la frise « Une journée d'ado » (une par étape de la démonstration). */
-export const friseJournee: string[] = [
-  '7 h 10',
-  '8 h 05',
-  '17 h 30',
-  '19 h 45',
-  '22 h 40',
-  'La charte',
-];
-
-/** Temps fort : la charte numérique de la famille (modèle à compléter, aucun fichier en v1). */
-export const charteFamille: CharteNumerique = {
-  titre: 'Notre charte numérique',
-  rubriques: [
-    'Nos lieux sans écran',
-    'Nos horaires',
-    "Les devoirs avec l'IA",
-    "Ce qu'on ne publie jamais",
-    "Ce que les parents s'engagent à faire",
-    'Si quelque chose ne va pas, on en parle à',
-  ],
-  signature: 'Signée le ……… par toute la famille.',
-};
-
-/** Bande nuit « Le bon numéro » (3018). */
-export const bonNumero: BandeNumero = {
-  valeur: '3018',
-  titre: 'En cas de cyberharcèlement, un seul numéro à retenir',
-  texte:
-    'Le numéro national contre le harcèlement et les violences numériques, pour les jeunes et pour leurs parents. Gratuit et anonyme.',
-};
+import type { Conference } from './types';
 
 export const parentsAdosIa: Conference = {
   slug: 'parents-ados-ia',
@@ -122,9 +91,62 @@ export const parentsAdosIa: Conference = {
         repere: 'le modèle est fourni ; chaque famille la complète à la maison.',
       },
     ],
+    visuel: {
+      type: 'telephone-ado',
+      verrouille: {
+        heure: '7:10',
+        jour: 'Mardi',
+        notifications: [
+          { titre: 'Groupe « 4e B »', texte: '23 nouveaux messages' },
+          { titre: 'Vidéos', texte: '12 nouvelles vidéos pour vous' },
+          { titre: 'Jeu', texte: 'Votre série vous attend' },
+        ],
+      },
+      groupe: {
+        titre: 'Groupe « 4e B » · 28 membres',
+        photo: { auteur: 'Léo', texte: "[Photo truquée d'un camarade]" },
+        messages: [
+          { auteur: 'Inès', texte: 'trop drôle' },
+          { auteur: 'Tom', texte: 'envoie-la aux 4e A' },
+        ],
+        reponse: '…',
+      },
+      devoirs: {
+        titre: 'Assistant IA',
+        aEviter: '« Écris ma rédaction sur la Révolution française. »',
+        utile: "« Pose-moi trois questions pour m'aider à construire mon plan. »",
+        note: 'La même IA, deux usages opposés.',
+      },
+      repas: {
+        titre: 'Mode repas',
+        texte: "Notifications en pause jusqu'à 20 h 30, sur les téléphones de toute la famille.",
+      },
+      inconnu: {
+        titre: 'nouveau_compte_2026',
+        messages: [
+          'Tu es trop sympa, on a plein de points communs.',
+          "Tu m'envoies une photo de toi ? Juste pour moi.",
+        ],
+        bloquer: 'Bloquer',
+        signaler: 'Signaler',
+      },
+      charte: {
+        titre: 'Notre charte',
+        regles: [
+          'Le téléphone dort hors de la chambre.',
+          'On ne transfère pas une image blessante.',
+          "Je réfléchis d'abord, l'IA ensuite.",
+          "Pas d'écran à table, pour personne.",
+          'On peut tout dire, sans être puni.',
+        ],
+        signature: 'Signée par toute la famille',
+      },
+      legende: 'Journée reconstituée ; prénoms fictifs. Les règles sont des exemples à adapter.',
+    },
   },
 
-  frise: friseJournee,
+  // Heures de la frise « Une journée d'ado » (une par étape de la démonstration).
+  frise: ['7 h 10', '8 h 05', '17 h 30', '19 h 45', '22 h 40', 'La charte'],
 
   enClair:
     "Depuis juin 2025, le cadre d'usage de l'Éducation nationale autorise l'IA générative en classe à partir de la 4e, encadrée par l'enseignant ; un devoir fait par une IA sans autorisation est une fraude. En cas de cyberharcèlement, le 3018 est gratuit et anonyme.",
@@ -208,9 +230,27 @@ export const parentsAdosIa: Conference = {
     note: 'Modèle téléchargeable [À PRODUIRE].',
   },
 
-  charte: charteFamille,
+  // Temps fort : la charte numérique de la famille (modèle à compléter, aucun fichier en v1).
+  charte: {
+    titre: 'Notre charte numérique',
+    rubriques: [
+      'Nos lieux sans écran',
+      'Nos horaires',
+      "Les devoirs avec l'IA",
+      "Ce qu'on ne publie jamais",
+      "Ce que les parents s'engagent à faire",
+      'Si quelque chose ne va pas, on en parle à',
+    ],
+    signature: 'Signée le ……… par toute la famille.',
+  },
 
-  bonNumero,
+  // Bande nuit « Le bon numéro » (3018).
+  bonNumero: {
+    valeur: '3018',
+    titre: 'En cas de cyberharcèlement, un seul numéro à retenir',
+    texte:
+      'Le numéro national contre le harcèlement et les violences numériques, pour les jeunes et pour leurs parents. Gratuit et anonyme.',
+  },
 
   formats: {
     titre: 'Quatre façons de la programmer',

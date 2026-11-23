@@ -16,15 +16,16 @@
  * ou « Recommencer », il revient sur le texte de l'exemple.
  *
  * Props :
- * - exemples : { de, visuel, texte, arnaque, explication }[] (arnaque : faux ou généré par IA).
+ * - exemples : { de, visuel, texte, arnaque, explication }[] (champ `jeu` de la conférence ;
+ *   arnaque : faux ou généré par IA ; visuel : texte du bloc de remplacement).
  */
 import Button from '../../Button.astro';
 import Placeholder from '../../Placeholder.astro';
 import { frenchTypography } from '../../../lib/typo';
-import type { ExempleVraiOuIa } from '../../../data/conferences/desinformation-ia';
+import type { MessageJeu } from '../../../data/conferences/types';
 
 interface Props {
-  exemples: ExempleVraiOuIa[];
+  exemples: MessageJeu[];
 }
 
 const LABELS = {
@@ -70,7 +71,7 @@ const fill = (tpl: string, values: Record<string, number>): string =>
       <div class="visual">
         {exemples.map((e, i) => (
           <div data-vi-visual hidden={i !== 0}>
-            <Placeholder label={e.visuel} />
+            <Placeholder label={e.visuel ?? ''} />
           </div>
         ))}
       </div>

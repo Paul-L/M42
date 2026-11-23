@@ -26,6 +26,8 @@ import OtherConferences from '../../../components/conferences/OtherConferences.a
 import ConferenceCta from '../../../components/conferences/ConferenceCta.astro';
 import { arnaquesIa as conf } from '../../../data/conferences/arnaques-ia';
 import { conferenceJsonLd } from '../../../data/conferences/jsonld';
+
+const visuel = conf.demonstration.visuel;
 ---
 
 <BaseLayout
@@ -52,7 +54,7 @@ import { conferenceJsonLd } from '../../../data/conferences/jsonld';
     k={conf.demonstration.k}
     visualSize="phone"
   >
-    <FauxSms slot="visual" />
+    {visuel?.type === 'faux-sms' && <FauxSms slot="visual" visuel={visuel} />}
   </ScrollStory>
 
   <ConferenceObjectives
