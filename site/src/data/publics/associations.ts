@@ -2,21 +2,7 @@
 // pour mot (espaces normales : le middleware ajoute les insécables).
 // Structure prête pour la collection Directus `publics` (un enregistrement par page « Pour qui »).
 
-import { routes } from '../routes';
-import type {
-  PublicCta,
-  PublicFaqItem,
-  PublicFlowStep,
-  PublicFormat,
-  PublicHeroData,
-  PublicLink,
-  PublicRecommendedConference,
-  PublicStake,
-  PublicStep,
-  PublicTakeawayGroup,
-  PublicTeamNote,
-  PublicTopic,
-} from './types';
+import type { PublicPage } from './types';
 
 export const associations = {
   slug: 'associations',
@@ -24,6 +10,24 @@ export const associations = {
     title: 'Ateliers IA et arnaques pour associations | M42',
     description:
       "Des repères simples sur l'IA et les arnaques pour vos bénévoles, vos équipes et les personnes accompagnées : seniors, aidants, demandeurs d'emploi.",
+    service: {
+      name: "Ateliers et conférences sur l'IA et les arnaques pour les associations",
+      serviceType: 'Atelier et conférence de sensibilisation',
+      audience: [
+        { audienceType: "Associations et structures d'accompagnement" },
+        { audienceType: 'Professionnels et bénévoles' },
+        { audienceType: "Seniors, aidants, demandeurs d'emploi, personnes éloignées du numérique" },
+      ],
+    },
+  },
+
+  labels: {
+    home: 'Accueil',
+    forYou: 'Pour vous : ',
+    signature: 'Conférence signature',
+    conferenceCta: 'Voir le programme',
+    duration: 'Durée',
+    participants: 'Participants',
   },
 
   hero: {
@@ -35,11 +39,11 @@ export const associations = {
       "Des ateliers et des conférences partis de leur quotidien, pas de la technologie : reconnaître une arnaque, se servir de l'IA pour sa recherche d'emploi, savoir qui appeler.",
       'Vos professionnels et vos bénévoles gardent ces repères, pour les transmettre ensuite.',
     ],
-    primary: { label: 'Nous contacter', href: routes['Contact.dc.html'] },
+    primary: { label: 'Nous contacter', href: '/contact/' },
     secondary: { label: "Voir l'atelier pratique", href: '#formats' },
     photo:
       "[Photo : atelier en petit groupe dans les locaux d'une association, participants autour de la table, 4:5, à produire]",
-  } satisfies PublicHeroData,
+  },
 
   stakes: {
     eyebrow: 'Vos enjeux',
@@ -57,7 +61,7 @@ export const associations = {
         title: 'Des professionnels et bénévoles sollicités',
         text: 'Ils reçoivent les questions en premier. Ils ont besoin de réponses fiables, et de savoir orienter.',
       },
-    ] satisfies PublicStake[],
+    ],
   },
 
   /** Bloc propre à la page Associations : schéma « Le relais ». */
@@ -85,7 +89,7 @@ export const associations = {
         detail: "Seniors, aidants, demandeurs d'emploi, personnes éloignées du numérique",
         text: 'Des repères simples et les bons numéros, à appliquer dès le lendemain.',
       },
-    ] satisfies PublicFlowStep[],
+    ],
     note: "Au bilan, un temps d'échange avec vos professionnels : ce qui a marché, les questions qui reviennent, les suites à donner.",
   },
 
@@ -111,12 +115,12 @@ export const associations = {
         duration: '2 h à une demi-journée',
         participants: 'Votre équipe',
       },
-    ] satisfies PublicFormat[],
+    ],
     note: 'Dans vos locaux, aux horaires de vos publics.',
     link: {
       label: 'Collectivité, CCAS ou médiathèque ? Les formats pour les collectivités',
-      href: routes['Collectivites.dc.html'],
-    } satisfies PublicLink,
+      href: '/collectivites/',
+    },
   },
 
   conferences: {
@@ -128,7 +132,7 @@ export const associations = {
       {
         numeral: 'II',
         title: 'Arnaques et IA',
-        href: routes['Conf-arnaques-ia.dc.html'],
+        href: '/conferences/arnaques-ia/',
         summary: 'Les reconnaître, réagir, savoir qui appeler.',
         forYou:
           '« Arnaques 2026 », avec le jeu « Arnaque ou pas ? » : faux conseillers, faux SMS, faux sites dans les démarches.',
@@ -138,7 +142,7 @@ export const associations = {
         numeral: 'I',
         signature: true,
         title: "L'IA au quotidien",
-        href: routes['Conf-ia-au-quotidien.dc.html'],
+        href: '/conferences/ia-au-quotidien/',
         summary: "Ce qu'elle sait faire, ce qu'elle invente, comment bien s'en servir.",
         forYou:
           "L'IA pour sa recherche d'emploi : ce qu'elle fait bien, ce qu'il faut toujours relire.",
@@ -147,7 +151,7 @@ export const associations = {
       {
         numeral: 'III',
         title: 'Vrai ou faux ?',
-        href: routes['Conf-desinformation-ia.dc.html'],
+        href: '/conferences/desinformation-ia/',
         summary: 'Repérer les fausses informations et les images fabriquées.',
         forYou: 'Une méthode simple en quatre étapes, avec des exemples du quotidien.',
         formats: ['Keynote', 'Conférence', 'Atelier', 'Cycle'],
@@ -155,13 +159,13 @@ export const associations = {
       {
         numeral: 'IV',
         title: 'Parents, ados et IA',
-        href: routes['Conf-parents-ados-ia.dc.html'],
+        href: '/conferences/parents-ados-ia/',
         summary: 'Devoirs, réseaux sociaux, cyberharcèlement : des repères pour les familles.',
         forYou:
           'Pour les associations familiales : une soirée avec la charte numérique de la famille.',
         formats: ['Keynote', 'Conférence', 'Atelier', 'Cycle'],
       },
-    ] satisfies PublicRecommendedConference[],
+    ],
     otherTitle: 'Autres exemples de sujets',
     others: [
       { title: 'Faux conseillers, faux SMS, faux sites : se protéger dans ses démarches' },
@@ -173,11 +177,11 @@ export const associations = {
         title: 'Professionnels et bénévoles : accompagner sans faire à la place',
         detail: "Répondre aux questions sur l'IA et orienter une victime.",
       },
-    ] satisfies PublicTopic[],
+    ],
     link: {
       label: 'Voir toutes les conférences et leurs formats',
-      href: routes['Conferences.dc.html'],
-    } satisfies PublicLink,
+      href: '/conferences/',
+    },
   },
 
   takeaways: {
@@ -209,7 +213,7 @@ export const associations = {
           'Les éléments utiles à vos rapports et à vos dossiers de financement : programme, objectifs, devis',
         ],
       },
-    ] satisfies PublicTakeawayGroup[],
+    ],
   },
 
   steps: {
@@ -228,11 +232,11 @@ export const associations = {
         title: "L'atelier et le bilan",
         text: "Un temps d'échange avec vos professionnels pour décider des suites.",
       },
-    ] satisfies PublicStep[],
+    ],
     team: {
       text: "Qui intervient : Clara Peron, conseillère en insertion professionnelle et formatrice d'adultes, qui connaît les publics que vous accompagnez, et Paul Loustaunau, pour les démonstrations et les exemples concrets.",
-      link: { label: 'Parcours et démarche', href: routes['A-propos.dc.html'] },
-    } satisfies PublicTeamNote,
+      link: { label: 'Parcours et démarche', href: '/a-propos/' },
+    },
   },
 
   faq: {
@@ -262,7 +266,7 @@ export const associations = {
         answer:
           "Oui. Le cycle de 4 rendez-vous permet de travailler avec un groupe stable et de revenir sur les questions d'une séance à l'autre. Un module court d'une heure peut aussi s'intégrer à vos ateliers habituels.",
       },
-    ] satisfies PublicFaqItem[],
+    ],
   },
 
   cta: {
@@ -270,6 +274,6 @@ export const associations = {
     title: 'Montons un atelier ensemble',
     lead: 'Décrivez-nous votre public et votre projet. Devis gratuit sous 48 h.',
     ctaLabel: 'Nous contacter',
-    ctaHref: routes['Contact.dc.html'],
-  } satisfies PublicCta,
-};
+    ctaHref: '/contact/',
+  },
+} satisfies PublicPage;

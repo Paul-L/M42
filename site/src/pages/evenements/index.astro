@@ -32,26 +32,11 @@ import { evenements as page } from '../../data/publics/evenements';
 
 const { title, description } = page.seo;
 
-const jsonLd = publicPageJsonLd({
-  path: '/evenements/',
-  title,
-  description,
-  crumb: page.hero.crumb,
-  service: {
-    name: "Keynotes et conférences sur l'IA pour séminaires, salons et congrès",
-    serviceType: 'Keynote, conférence et animation interactive',
-    description: `${page.hero.lead} ${page.hero.paragraphs.join(' ')}`,
-    audience: [
-      { '@type': 'Audience', audienceType: "Organisateurs d'événements" },
-      { '@type': 'Audience', audienceType: 'Participants de séminaires, salons et congrès' },
-    ],
-  },
-  faq: page.faq.items,
-});
+const jsonLd = publicPageJsonLd(page);
 ---
 
 <BaseLayout title={title} description={description} section="entreprises" jsonLd={jsonLd}>
-  <PublicHero {...page.hero} />
+  <PublicHero {...page.hero} homeLabel={page.labels.home} />
 
   <!-- Vos enjeux -->
   <Section id="enjeux" labelledby="titre-enjeux">
@@ -66,7 +51,12 @@ const jsonLd = publicPageJsonLd({
     <PublicSectionHead id="titre-formats" eyebrow={page.formats.eyebrow} lead={page.formats.lead}>
       {page.formats.title}
     </PublicSectionHead>
-    <PublicFormats items={page.formats.items} footnote={page.formats.note} />
+    <PublicFormats
+      items={page.formats.items}
+      footnote={page.formats.note}
+      durationLabel={page.labels.duration}
+      participantsLabel={page.labels.participants}
+    />
     <div class="more more--formats">
       <ArrowLink href={page.formats.link.href}>{page.formats.link.label}</ArrowLink>
     </div>
@@ -114,7 +104,7 @@ const jsonLd = publicPageJsonLd({
     >
       {page.conferences.title}
     </PublicSectionHead>
-    <PublicConferenceGrid items={page.conferences.items} />
+    <PublicConferenceGrid items={page.conferences.items} labels={page.labels} />
     <TopicList title={page.conferences.otherTitle} items={page.conferences.others} />
     <div class="more more--sujets">
       <ArrowLink href={page.conferences.link.href}>{page.conferences.link.label}</ArrowLink>

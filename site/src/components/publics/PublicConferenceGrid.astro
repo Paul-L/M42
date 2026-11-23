@@ -5,15 +5,18 @@
  *
  * Props :
  * - `items` : PublicRecommendedConference[] (src/data/publics/types.ts), dans l'ordre de la maquette.
+ * - `labels` : intitulés des cartes (« Pour vous : », « Conférence signature »,
+ *   « Voir le programme ») tirés de `labels` (PublicPage) ; défauts de PublicConferenceCard sinon.
  */
 import PublicConferenceCard from './PublicConferenceCard.astro';
-import type { PublicRecommendedConference } from '../../data/publics/types';
+import type { PublicLabels, PublicRecommendedConference } from '../../data/publics/types';
 
 export interface Props {
   items: PublicRecommendedConference[];
+  labels?: Pick<PublicLabels, 'forYou' | 'signature' | 'conferenceCta'>;
 }
 
-const { items } = Astro.props;
+const { items, labels } = Astro.props;
 ---
 
 <div class="cards">
@@ -26,6 +29,9 @@ const { items } = Astro.props;
       summary={c.summary}
       forYou={c.forYou}
       formats={c.formats}
+      forYouLabel={labels?.forYou}
+      signatureLabel={labels?.signature}
+      cta={labels?.conferenceCta}
     />
   ))}
 </div>

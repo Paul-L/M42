@@ -11,8 +11,10 @@
  * - `summary` : résumé.
  * - `forYou` : texte après « Pour vous : » ; `forYouLabel` pour changer l'intitulé.
  * - `formats` : formats, joints par « · ».
- * - `signature` : affiche l'étoile et « Conférence signature ».
+ * - `signature` : affiche l'étoile et la mention `signatureLabel` (« Conférence signature »).
  * - `cta` : texte du faux lien en bas de carte (« Voir le programme »).
+ * Les pages passent ces intitulés depuis `labels` (PublicPage) ; les valeurs par défaut servent
+ * à la page /_kit.
  */
 export interface Props {
   numeral: string;
@@ -23,6 +25,7 @@ export interface Props {
   forYouLabel?: string;
   formats?: string[];
   signature?: boolean;
+  signatureLabel?: string;
   cta?: string;
 }
 
@@ -35,6 +38,7 @@ const {
   forYouLabel = 'Pour vous : ',
   formats = [],
   signature = false,
+  signatureLabel = 'Conférence signature',
   cta = 'Voir le programme',
 } = Astro.props;
 ---
@@ -52,7 +56,7 @@ const {
             class="star"
           ></path>
         </svg>
-        <span class="sig-label">Conférence signature</span>
+        <span class="sig-label">{signatureLabel}</span>
       </span>
     ) : (
       <span aria-hidden="true" class="numeral">
