@@ -42,6 +42,10 @@ const scanned = [
 const termHits = [];
 const priceHits = [];
 const priceRe = /€|\beuros?\b|\bHT\b|\bTTC\b/;
+const allowedPrices = readFileSync(join(site, 'scripts', 'prix-autorises.txt'), 'utf8')
+  .split('\n')
+  .map((l) => l.trim())
+  .filter((l) => l && !l.startsWith('#'));
 for (const p of scanned) {
   if (/\.(png|jpe?g|webp|avif|woff2?|ico)$/.test(p)) continue;
   const text = readFileSync(p, 'utf8');
@@ -51,7 +55,15 @@ for (const p of scanned) {
   );
   if (!/contact/i.test(p) && !p.startsWith(join(root, 'cms'))) {
     text.split('\n').forEach((line, i) => {
-      if (priceRe.test(line)) priceHits.push(`${relative(root, p)}:${i + 1}`);
+      // Chaque occurrence est examinée avec son contexte : autorisée si elle fait partie d'un extrait listé.
+      const norm = line.replace(/[\u00a0\u202f]/g, ' ').replace(/&#39;|&#x27;|&apos;/g, "'");
+      for (const m of norm.matchAll(new RegExp(priceRe.source, 'g'))) {
+        const ctx = norm.slice(Math.max(0, m.index - 40), m.index + 40);
+        if (!allowedPrices.some((a) => ctx.includes(a))) {
+          priceHits.push(`${relative(root, p)}:${i + 1}`);
+          break;
+        }
+      }
     });
   }
 }
@@ -100,14 +112,21 @@ const pages = walk(dist)
 const browser = await chromium.launch();
 const axeIssues = [];
 for (const width of [390, 1440]) {
-  const context = await browser.newContext({ viewport: { width, height: 900 } });
+  // État stable (DECISIONS.md 26) : mouvement réduit, contenu entièrement affiché.
+  const context = await browser.newContext({
+    viewport: { width, height: 900 },
+    reducedMotion: 'reduce',
+  });
   const page = await context.newPage();
   for (const path of pages) {
     await page.goto(base + path);
     const { violations } = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])
       .analyze();
-    for (const v of violations)
+    for (const v of violations.filter(
+      // /_kit montre plusieurs fois les mêmes composants : doublons de repères attendus (DECISIONS.md 27).
+      (x) => !(path === '/_kit/' && x.id === 'landmark-unique'),
+    ))
       axeIssues.push(`${path} @${width} : ${v.id} (${v.impact}, ${v.nodes.length} élément(s))`);
   }
   await context.close();

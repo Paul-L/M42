@@ -1,0 +1,98 @@
+---
+/**
+ * Liste numérotée (déroulé, questions, enjeux) : chiffre or à gauche, H3, texte dessous.
+ * Le numéro est répété en texte masqué dans le H3 (« 1. ») pour les lecteurs d'écran.
+ *
+ * Props :
+ * - `items` : { title, html } ; `html` en HTML simple (paragraphes, source `.sat-source`,
+ *   précision `.sat-aside`).
+ */
+import type { SatNumberedItem } from '../../data/satellites/types';
+import './satellites.css';
+
+interface Props {
+  items: SatNumberedItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<ol class="list">
+  {items.map((item, i) => (
+    <li class="item">
+      <span aria-hidden="true" class="num">
+        {i + 1}
+      </span>
+      <div class="content">
+        <h3 class="title">
+          <span class="sr-only">{i + 1}. </span>
+          {item.title}
+        </h3>
+        <div class="body" set:html={item.html} />
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .list {
+    list-style: none;
+    margin: var(--s-6) 0 0;
+    padding: 0;
+    max-width: var(--measure-text);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .item {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: var(--s-1) var(--s-4);
+    align-items: baseline;
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+  }
+
+  .num {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 1;
+    font-variant-numeric: lining-nums;
+    color: var(--gold-deep);
+  }
+
+  .content {
+    min-width: 0;
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--fs-faq);
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: var(--tracking-h3);
+    color: var(--ink);
+  }
+
+  .body {
+    margin-top: var(--s-2);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--ink-2);
+    hyphens: auto;
+  }
+
+  .body :global(p) {
+    margin: 0;
+  }
+
+  .body :global(.sat-source) {
+    margin: var(--s-2) 0 0;
+    max-width: var(--measure-text);
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+</style>

@@ -1,0 +1,33 @@
+---
+/**
+ * Lien fléché de fin de bloc (« La conférence complète… »), avec sa marge haute.
+ *
+ * Props :
+ * - `href` : destination.
+ * - `spacing` : « md » (24 px, défaut) ou « sm » (4 px, sous un court paragraphe).
+ */
+import ArrowLink from '../ArrowLink.astro';
+
+interface Props {
+  href: string;
+  spacing?: 'md' | 'sm';
+}
+
+const { href, spacing = 'md' } = Astro.props;
+---
+
+<div class:list={['more', `more--${spacing}`]}>
+  <ArrowLink href={href}>
+    <slot />
+  </ArrowLink>
+</div>
+
+<style>
+  .more--md {
+    margin-top: var(--s-5);
+  }
+
+  .more--sm {
+    margin-top: var(--s-1);
+  }
+</style>

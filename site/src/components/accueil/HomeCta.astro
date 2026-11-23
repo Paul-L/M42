@@ -1,0 +1,78 @@
+---
+/**
+ * Bandeau nuit final « Parlons de votre projet ».
+ * Variante de CtaBand : ajoute l'apparition au défilement (sur-titre et rangée), absente du
+ * composant partagé ; sans le filet haut de conferences/ConferenceCta (absent de l'accueil).
+ */
+import Button from '../Button.astro';
+import Eyebrow from '../Eyebrow.astro';
+import Section from '../Section.astro';
+import SectionHeading from '../conferences/SectionHeading.astro';
+import { contactTexte as t } from '../../data/accueil';
+---
+
+<Section tone="night" labelledby="titre-contact">
+  <Eyebrow class="m42-reveal">{t.surTitre}</Eyebrow>
+  <div class="row m42-reveal">
+    <div class="text">
+      <SectionHeading id="titre-contact" reveal={false} flush>
+        {t.titre}
+      </SectionHeading>
+      <p class="lead">{t.chapo}</p>
+    </div>
+    <div class="actions">
+      <Button href={t.cta.href}>{t.cta.label}</Button>
+      <p class="contact">
+        Clara : <a href="mailto:clara@m42.guide">clara@m42.guide</a>
+        <br />
+        Paul : <a href="mailto:paul@m42.guide">paul@m42.guide</a>
+        <br />
+        [À COMPLÉTER : téléphone]
+      </p>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .row {
+    margin-top: var(--s-5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-6) var(--s-8);
+  }
+
+  .text {
+    flex: 1 1 520px;
+    min-width: 0;
+  }
+
+  .lead {
+    margin: 20px 0 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--on-night-2);
+  }
+
+  .actions {
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-4);
+  }
+
+  .contact {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--on-night-2);
+  }
+
+  .contact a {
+    color: var(--on-night);
+    text-underline-offset: 3px;
+  }
+</style>

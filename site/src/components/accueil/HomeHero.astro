@@ -1,0 +1,98 @@
+---
+/**
+ * En-tête de l'accueil (variante A) : H1 = sur-titre + baseline dans le même titre,
+ * chapô, deux boutons, symbole animé à droite.
+ * Aucune animation d'entrée sur le titre et le chapô (DA § 8) : pas de m42-reveal ici.
+ */
+import Button from '../Button.astro';
+import Eyebrow from '../Eyebrow.astro';
+import SkySymbol from './SkySymbol.astro';
+import { hero } from '../../data/accueil';
+---
+
+<section aria-labelledby="titre-accueil" class="hero">
+  <div class="inner">
+    <div class="text">
+      <h1 id="titre-accueil" class="h1">
+        <Eyebrow as="span" rule={false}>
+          {hero.surTitre}
+        </Eyebrow>
+        <span class="h1-main">
+          Se repérer dans l'<em>IA</em>.
+        </span>
+      </h1>
+      <p class="lead">{hero.chapo}</p>
+      <div class="actions">
+        <Button href={hero.ctaPrimaire.href}>{hero.ctaPrimaire.label}</Button>
+        <Button href={hero.ctaSecondaire.href} variant="secondary">
+          {hero.ctaSecondaire.label}
+        </Button>
+      </div>
+    </div>
+    <SkySymbol
+      alt={hero.symbole.alt}
+      pauseLabel={hero.symbole.pause}
+      playLabel={hero.symbole.relance}
+    />
+  </div>
+</section>
+
+<style>
+  .hero {
+    overflow: hidden;
+  }
+
+  .inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: clamp(3rem, 5vw, 4rem) var(--gutter-x) clamp(4rem, 7vw, 6rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-7);
+  }
+
+  .text {
+    flex: 999 1 480px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-6);
+  }
+
+  .h1 {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    font-weight: 400;
+  }
+
+  .h1-main {
+    max-width: var(--measure-h1);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+    letter-spacing: var(--tracking-h1);
+    color: var(--ink);
+  }
+
+  .h1-main em {
+    font-weight: 500;
+  }
+
+  .lead {
+    margin: 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+  }
+</style>

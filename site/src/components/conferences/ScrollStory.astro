@@ -12,7 +12,10 @@
  * L'état est exposé sur la section pour le visuel propre à chaque page :
  * - data-mode="anim" | "flat"
  * - data-step="0…n-1" (n-1 en mode à plat, comme dans la maquette)
- * - évènement « m42:story » sur la section (detail : { step, flat }) pour un visuel piloté en JS.
+ * - évènement « m42:story » sur la section (detail : { step, flat }) pour un visuel piloté en JS ;
+ * - data-fit="ok" | "zoom" | "flat" : ajustement à la fenêtre en mode animé (voir l'îlot) :
+ *   si le contenu collant ne tient pas dans la fenêtre, visuel réduit (zoom calculé, plancher 0,66),
+ *   puis passage automatique à plat (sans bouton) s'il ne tient toujours pas.
  * Le visuel écrit ses styles avec :global([data-story][data-mode='anim'][data-step='2']) .x { … }.
  *
  * Props :
@@ -78,7 +81,7 @@ const hasBefore = Astro.slots.has('before');
       <Eyebrow>{surTitre}</Eyebrow>
       {hasBefore && <slot name="before" />}
       <div class:list={['row', { 'row--after-before': hasBefore }]}>
-        <div class:list={['sv', `sv--${visualSize}`]}>
+        <div class:list={['sv', `sv--${visualSize}`]} data-story-visual>
           <slot name="visual" />
         </div>
         <div class="explain">
@@ -427,16 +430,37 @@ const hasBefore = Astro.slots.has('before');
    * - section : vh × k ; bloc collant : vh ;
    * - progression p = -top / (hauteur - vh), bornée à [0 ; 0,9999] ; étape = ⌊p × n⌋.
    * prefers-reduced-motion : rendu à plat, sans bouton (suivi en direct du réglage).
+   *
+   * Ajustement à la fenêtre (mode animé, absent de la maquette) : le contenu collant, centré dans
+   * le bloc d'un écran, doit tenir entre le bas de l'en-tête collant (≥ 960 px) et le bas de la
+   * fenêtre, à toutes les étapes. Sinon : 1) le visuel est réduit par le plus grand zoom qui
+   * convient (entre le zoom CSS courant et le plancher 0,66, comme le zoom de .m42-sv) ; 2) s'il ne tient toujours pas,
+   * passage automatique à plat (sans bouton). Recalcul quand la largeur de la section ou la
+   * hauteur de la fenêtre changent (ResizeObserver + resize, une mesure par image, sans boucle :
+   * le changement de hauteur de la section ne relance pas la mesure).
+   * État exposé : data-fit="ok" | "zoom" | "flat".
    */
   import { frenchTypography } from '../../lib/typo';
 
   const LABEL_FLAT = frenchTypography('Afficher toutes les étapes');
   const LABEL_ANIM = frenchTypography("Revenir à l'animation pas à pas");
+  /** Zoom minimal du visuel (valeur la plus forte de la maquette). */
+  const ZOOM_MIN = 0.66;
+  /** Précision de la recherche du zoom. */
+  const ZOOM_PRECISION = 0.01;
+  /** Marge sous le contenu pour l'anneau de focus du bouton. */
+  const FOCUS_MARGIN = 4;
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+  const clampVh = (): number =>
+    Math.round(Math.max(560, Math.min(window.innerHeight || 820, 1000)));
+
   for (const root of document.querySelectorAll<HTMLElement>('[data-story]')) {
     const sticky = root.querySelector<HTMLElement>('[data-story-sticky]');
+    const inner =
+      sticky?.firstElementChild instanceof HTMLElement ? sticky.firstElementChild : null;
+    const visual = root.querySelector<HTMLElement>('[data-story-visual]');
     const anim = root.querySelector<HTMLElement>('[data-story-anim]');
     const flatList = root.querySelector<HTMLElement>('[data-story-flat]');
     const toggle = root.querySelector<HTMLButtonElement>('[data-story-toggle]');
@@ -444,25 +468,38 @@ const hasBefore = Astro.slots.has('before');
     const dots = Array.from(root.querySelectorAll<HTMLElement>('[data-story-dot]'));
     const n = slides.length;
     const k = Number(root.dataset.k) || 3.6;
-    if (!sticky || !anim || !flatList || !toggle || n === 0) continue;
+    if (!sticky || !inner || !visual || !anim || !flatList || !toggle || n === 0) continue;
 
     let showAll = false;
     let vh = 820;
     let step = 0;
+    /** Le contenu animé ne tient pas dans la fenêtre, même visuel réduit. */
+    let autoFlat = false;
+    /** Zoom calculé du visuel (null : zoom CSS de la feuille de styles). */
+    let zoom: number | null = null;
+    let fitKey = '';
+    let fitFrame = 0;
 
-    const isFlat = (): boolean => reduce.matches || showAll;
+    const isFlat = (): boolean => reduce.matches || showAll || autoFlat;
 
-    const render = (): void => {
-      const flat = isFlat();
-      const s = flat ? n - 1 : Math.min(n - 1, step);
+    /** Pose la présentation (animée ou à plat) et l'étape affichée. */
+    const layout = (flat: boolean, s: number): void => {
       root.dataset.mode = flat ? 'flat' : 'anim';
       root.dataset.step = String(s);
       anim.hidden = flat;
       flatList.hidden = !flat;
-      toggle.hidden = reduce.matches;
-      toggle.textContent = flat ? LABEL_ANIM : LABEL_FLAT;
       root.style.height = flat ? '' : `${Math.round(vh * k)}px`;
       sticky.style.height = flat ? '' : `${vh}px`;
+      visual.style.zoom = !flat && zoom !== null ? String(zoom) : '';
+    };
+
+    const render = (): void => {
+      const flat = isFlat();
+      const s = flat ? n - 1 : Math.min(n - 1, step);
+      layout(flat, s);
+      root.dataset.fit = autoFlat ? 'flat' : zoom !== null ? 'zoom' : 'ok';
+      toggle.hidden = reduce.matches || autoFlat;
+      toggle.textContent = flat ? LABEL_ANIM : LABEL_FLAT;
       slides.forEach((slide, i) => {
         slide.dataset.pos = i === s ? 'current' : i < s ? 'past' : 'future';
         slide.setAttribute('aria-hidden', i === s ? 'false' : 'true');
@@ -471,6 +508,75 @@ const hasBefore = Astro.slots.has('before');
         dot.dataset.pos = i === s ? 'current' : i < s ? 'past' : 'future';
       });
       root.dispatchEvent(new CustomEvent('m42:story', { detail: { step: s, flat } }));
+    };
+
+    /**
+     * Le contenu collant tient-il, à toutes les étapes, avec le zoom `z` du visuel ?
+     * Mesure faite en mode animé (posé par l'appelant), dans la même tâche : rien n'est peint.
+     */
+    const fits = (z: number | null): boolean => {
+      visual.style.zoom = z === null ? '' : String(z);
+      const cs = getComputedStyle(sticky);
+      const padTop = parseFloat(cs.paddingTop) || 0;
+      const padBottom = parseFloat(cs.paddingBottom) || 0;
+      const header = document.querySelector<HTMLElement>('header');
+      const headerH =
+        header && getComputedStyle(header).position === 'sticky'
+          ? header.getBoundingClientRect().height
+          : 0;
+      const bottomLimit = Math.min(vh, window.innerHeight || vh) - FOCUS_MARGIN;
+      // Texte d'étape plus haut que la zone des étapes (étapes en position absolue).
+      const slideOverflow = Math.max(0, ...slides.map((sl) => sl.scrollHeight - sl.clientHeight));
+      let contentH = 0;
+      for (let s = 0; s < n; s++) {
+        root.dataset.step = String(s);
+        contentH = Math.max(contentH, inner.getBoundingClientRect().height + slideOverflow);
+      }
+      // Bloc collant en flex, contenu centré (débordement réparti en haut et en bas).
+      const top = padTop + (vh - padTop - padBottom - contentH) / 2;
+      return top >= headerH && top + contentH <= bottomLimit;
+    };
+
+    /** Choisit le zoom du visuel, ou le passage à plat, pour la fenêtre courante. */
+    const fit = (): void => {
+      fitFrame = 0;
+      const key = `${root.clientWidth}x${window.innerHeight}`;
+      if (key === fitKey) return;
+      fitKey = key;
+      vh = clampVh();
+      autoFlat = false;
+      zoom = null;
+      if (!reduce.matches) {
+        layout(false, Math.min(n - 1, step));
+        // Le bouton fait partie du contenu animé, avec son libellé de ce mode.
+        toggle.hidden = false;
+        toggle.textContent = LABEL_FLAT;
+        if (!fits(null)) {
+          const z0 = parseFloat(getComputedStyle(visual).zoom) || 1;
+          if (z0 > ZOOM_MIN && fits(ZOOM_MIN)) {
+            // Plus grand zoom qui tient, par dichotomie (la hauteur n'est pas proportionnelle au
+            // zoom : la rangée visuel + texte peut passer d'empilée à côte à côte).
+            let lo = ZOOM_MIN;
+            let hi = z0;
+            while (hi - lo > ZOOM_PRECISION) {
+              const mid = (lo + hi) / 2;
+              if (fits(mid)) lo = mid;
+              else hi = mid;
+            }
+            zoom = Math.floor(lo * 1000) / 1000;
+          } else {
+            autoFlat = true;
+          }
+        }
+      }
+      render();
+      onScroll();
+    };
+
+    const scheduleFit = (force = false): void => {
+      if (force) fitKey = '';
+      if (fitFrame) return;
+      fitFrame = requestAnimationFrame(fit);
     };
 
     const onScroll = (): void => {
@@ -485,12 +591,13 @@ const hasBefore = Astro.slots.has('before');
     };
 
     const onResize = (): void => {
-      const h = Math.round(Math.max(560, Math.min(window.innerHeight || 820, 1000)));
+      const h = clampVh();
       if (h !== vh) {
         vh = h;
         render();
       }
       onScroll();
+      scheduleFit();
     };
 
     toggle.addEventListener('click', () => {
@@ -501,16 +608,37 @@ const hasBefore = Astro.slots.has('before');
       toggle.scrollIntoView({ block: 'center' });
     });
 
+    // Tout élément de la section qui reçoit le focus reste visible (WCAG 2.4.11). Appel différé
+    // d'une image : il remplace le défilement natif du focus (doux, html { scroll-behavior }).
+    root.addEventListener('focusin', (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      requestAnimationFrame(() => {
+        if (document.activeElement !== target) return;
+        target.scrollIntoView({
+          block: 'nearest',
+          behavior: reduce.matches ? 'instant' : 'smooth',
+        });
+      });
+    });
+
     reduce.addEventListener('change', () => {
+      scheduleFit(true);
       render();
       onScroll();
     });
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
+    // Largeur de la section (la hauteur, qui change avec le mode, est ignorée par la clé de fit).
+    new ResizeObserver(() => scheduleFit()).observe(root);
+    // Polices chargées après la première mesure : hauteur du texte modifiée.
+    void document.fonts.ready.then(() => scheduleFit(true));
+    document.fonts.addEventListener('loadingdone', () => scheduleFit(true));
 
-    vh = Math.round(Math.max(560, Math.min(window.innerHeight || 820, 1000)));
+    vh = clampVh();
     render();
     onScroll();
+    fit();
   }
 </script>

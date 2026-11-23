@@ -43,12 +43,7 @@ const jsonLd = publicPageJsonLd({
   service: {
     name: "Interventions sur l'IA pour les collèges, les lycées et les parents",
     serviceType: "Intervention de sensibilisation à l'intelligence artificielle",
-    description: `${page.hero.paragraphs.join(' ')} Formats : ${page.formats.items
-      .map(
-        (f) =>
-          `${f.title.toLowerCase()} (${f.duration.charAt(0).toLowerCase()}${f.duration.slice(1)})`,
-      )
-      .join(', ')}.`,
+    description: [page.hero.lead, ...page.hero.paragraphs].join(' '),
     audience: [
       { '@type': 'EducationalAudience', educationalRole: 'student', audienceType: 'Élèves' },
       { '@type': 'EducationalAudience', educationalRole: 'teacher', audienceType: 'Enseignants' },

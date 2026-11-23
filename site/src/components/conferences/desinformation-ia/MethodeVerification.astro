@@ -1,0 +1,128 @@
+---
+/**
+ * Section « La méthode » (conférence III) : les quatre étapes numérotées, la note sur les outils,
+ * puis l'encadré « La règle : la neutralité » (filet encre à gauche).
+ *
+ * Props :
+ * - surTitre, titre : sur-titre et H2.
+ * - etapes : { titre, texte }[].
+ * - note : petite note sous les étapes (marqueurs [À COMPLÉTER] / [À PRODUIRE]).
+ * - regle : { titre, texte } de l'encadré.
+ */
+import Container from '../../Container.astro';
+import Eyebrow from '../../Eyebrow.astro';
+import SectionHeading from '../SectionHeading.astro';
+
+interface Props {
+  surTitre: string;
+  titre: string;
+  etapes: { titre: string; texte: string }[];
+  note: string;
+  regle: { titre: string; texte: string };
+}
+
+const { surTitre, titre, etapes, note, regle } = Astro.props;
+---
+
+<section id="methode" aria-labelledby="titre-methode" class="methode">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <SectionHeading id="titre-methode">{titre}</SectionHeading>
+    <ol class="steps">
+      {etapes.map((e, i) => (
+        <li class="step m42-reveal">
+          <span aria-hidden="true" class="num">
+            {i + 1}
+          </span>
+          <h3 class="step-title">{e.titre}</h3>
+          <p class="step-text">{e.texte}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="note m42-reveal">{note}</p>
+    <div class="rule m42-reveal">
+      <h3 class="rule-title">{regle.titre}</h3>
+      <p class="rule-text">{regle.texte}</p>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .methode {
+    padding: var(--section-y) 0;
+  }
+
+  .steps {
+    list-style: none;
+    margin: 48px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: 32px;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-top: 1px solid var(--ink);
+    padding-top: 20px;
+  }
+
+  .num {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-figure);
+    line-height: var(--lh-figure);
+    color: var(--gold-deep);
+  }
+
+  .step-title,
+  .rule-title {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .step-text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  .note {
+    margin: 32px 0 0;
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    color: var(--ink-3);
+  }
+
+  /* Encadré « La règle : la neutralité » */
+  .rule {
+    margin-top: 48px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--ink);
+    padding: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 48px;
+  }
+
+  .rule-title {
+    flex: 1 1 240px;
+  }
+
+  .rule-text {
+    flex: 3 1 420px;
+    min-width: 0;
+    margin: 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--ink-2);
+  }
+</style>

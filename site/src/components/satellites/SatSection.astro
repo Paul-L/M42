@@ -1,0 +1,55 @@
+---
+/**
+ * Section d'article (pages satellites) : ancre, sur-titre à filet, H2, puis contenu (slot).
+ * L'id du H2 est `${id}-t`. `first` : pas de marge haute (première section de l'article).
+ *
+ * Props :
+ * - `id` : ancre de la section (reprise par le sommaire).
+ * - `eyebrow`, `title` : textes de la maquette.
+ * - `first` : première section de l'article.
+ */
+import Eyebrow from '../Eyebrow.astro';
+import './satellites.css';
+
+interface Props {
+  id: string;
+  eyebrow: string;
+  title: string;
+  first?: boolean;
+}
+
+const { id, eyebrow, title, first = false } = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={['section', 'sat-anchor', { 'section--first': first }]}
+  aria-labelledby={`${id}-t`}
+>
+  <Eyebrow>{eyebrow}</Eyebrow>
+  <h2 id={`${id}-t`} class="title">
+    {title}
+  </h2>
+  <slot />
+</section>
+
+<style>
+  .section {
+    margin-top: 88px;
+  }
+
+  .section--first {
+    margin-top: 0;
+  }
+
+  .title {
+    margin: 20px 0 0;
+    max-width: 24ch;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: var(--tracking-h2);
+    color: var(--ink);
+  }
+</style>

@@ -4,6 +4,9 @@
  * Astro ignore les fichiers préfixés par « _ » : la route passe donc par un paramètre.
  * Partie 1 : reproduction de la démo de kit/maquette/22_gabarit.html (comparable à la maquette).
  * Partie 2 : variantes et états supplémentaires.
+ * Partie 3 : composants de famille (phase 2), une section par famille (H2), un H3 par composant.
+ *   Textes de démonstration entre crochets, ou données réelles importées de src/data/.
+ *   Les composants à id fixe ne sont montrés qu'une fois (voir la note « Non montré ici »).
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ArrowLink from '../components/ArrowLink.astro';
@@ -21,6 +24,79 @@ import Placeholder from '../components/Placeholder.astro';
 import Quote from '../components/Quote.astro';
 import Section from '../components/Section.astro';
 import SectionTitle from '../components/SectionTitle.astro';
+import Container from '../components/Container.astro';
+// Partie 3 : composants de famille
+import LegalProse from '../components/legal/LegalProse.astro';
+import ContactField from '../components/contact/ContactField.astro';
+import ContactAside from '../components/contact/ContactAside.astro';
+import RepereCard from '../components/reperes/RepereCard.astro';
+import CopyBlock from '../components/organisateurs/CopyBlock.astro';
+import SplitHead from '../components/organisateurs/SplitHead.astro';
+import IntervenantProfile from '../components/a-propos/IntervenantProfile.astro';
+import ApproachSymbol from '../components/a-propos/ApproachSymbol.astro';
+import AboutCta from '../components/a-propos/AboutCta.astro';
+import PublicHero from '../components/publics/PublicHero.astro';
+import PublicSectionHead from '../components/publics/PublicSectionHead.astro';
+import IssueGrid from '../components/publics/IssueGrid.astro';
+import TopicList from '../components/publics/TopicList.astro';
+import TakeawayColumns from '../components/publics/TakeawayColumns.astro';
+import PublicFormats from '../components/publics/PublicFormats.astro';
+import StepList from '../components/publics/StepList.astro';
+import PublicConferenceCard from '../components/publics/PublicConferenceCard.astro';
+import PublicConferenceGrid from '../components/publics/PublicConferenceGrid.astro';
+import PublicFlow from '../components/publics/PublicFlow.astro';
+import CrossList from '../components/publics/CrossList.astro';
+import KeynoteTimeline from '../components/publics/KeynoteTimeline.astro';
+import ColorRuleCards from '../components/publics/ColorRuleCards.astro';
+import RichText from '../components/publics/RichText.astro';
+import PublicFaq from '../components/publics/PublicFaq.astro';
+import IntervenantsNote from '../components/publics/IntervenantsNote.astro';
+import EducationAudiences from '../components/publics/EducationAudiences.astro';
+import ScrollStory from '../components/conferences/ScrollStory.astro';
+import FauxSms from '../components/conferences/visuels/FauxSms.astro';
+import KeyFigures from '../components/conferences/KeyFigures.astro';
+import ConferenceProgram from '../components/conferences/ConferenceProgram.astro';
+import TempsFort from '../components/conferences/TempsFort.astro';
+import ArnaqueOuPasGame from '../components/conferences/ArnaqueOuPasGame.astro';
+import VraiOuIaGame from '../components/conferences/desinformation-ia/VraiOuIaGame.astro';
+import ConferenceFormats from '../components/conferences/ConferenceFormats.astro';
+import ConferenceAudiences from '../components/conferences/ConferenceAudiences.astro';
+import HelpNumbers from '../components/conferences/HelpNumbers.astro';
+import ConferenceFaq from '../components/conferences/ConferenceFaq.astro';
+import OtherConferences from '../components/conferences/OtherConferences.astro';
+import SignatureConferenceCard from '../components/conferences/SignatureConferenceCard.astro';
+import SectionHeading from '../components/conferences/SectionHeading.astro';
+import ConferenceCta from '../components/conferences/ConferenceCta.astro';
+import ConferenceDetailCard from '../components/conferences-index/ConferenceDetailCard.astro';
+import SatNote from '../components/satellites/SatNote.astro';
+import SatBox from '../components/satellites/SatBox.astro';
+import SatText from '../components/satellites/SatText.astro';
+import SatPullQuote from '../components/satellites/SatPullQuote.astro';
+import SatFigures from '../components/satellites/SatFigures.astro';
+import SatNumbered from '../components/satellites/SatNumbered.astro';
+import SatTable from '../components/satellites/SatTable.astro';
+import SatDefList from '../components/satellites/SatDefList.astro';
+import SatCta from '../components/satellites/SatCta.astro';
+import SatDraftBlock from '../components/satellites/SatDraftBlock.astro';
+import CaptureCard from '../components/outils/CaptureCard.astro';
+import CaptureField from '../components/outils/CaptureField.astro';
+import SkySymbol from '../components/accueil/SkySymbol.astro';
+import HomeFigures from '../components/accueil/HomeFigures.astro';
+// Données réelles réutilisées telles quelles
+import { themes } from '../data/contact';
+import { reperesDisponibles, reperesBientot } from '../data/reperes';
+import { intervenants } from '../data/intervenants';
+import { entreprises } from '../data/publics/entreprises';
+import { evenements } from '../data/publics/evenements';
+import { associations } from '../data/publics/associations';
+import { education } from '../data/publics/education';
+import { arnaquesIa } from '../data/conferences/arnaques-ia';
+import { desinformationIa, exemplesVraiOuIa } from '../data/conferences/desinformation-ia';
+import { catalogue } from '../data/conferences/catalogue';
+import { cartes, catalogueSection, formatsDetailles } from '../data/conferences-index';
+import * as seminaire from '../data/satellites/seminaire-entreprise';
+import { capture, fieldErrors } from '../data/outils/arnaque-ou-pas';
+import { hero as accueilHero, chiffres, citationChiffres } from '../data/accueil';
 
 export function getStaticPaths() {
   return [{ params: { kit: '_kit' } }];
@@ -33,6 +109,24 @@ const structureTypes = [
   "Établissement scolaire ou d'enseignement supérieur",
   "Association ou structure d'accompagnement",
   'Autre',
+];
+
+// Partie 3 : données de démonstration (entre crochets) et sélections de données réelles
+const legalToc = [
+  { id: 'k-legal-1', label: '[Première section]' },
+  { id: 'k-legal-2', label: '[Deuxième section]' },
+];
+const repereDispo = reperesDisponibles[0];
+const repereBientot = reperesBientot[0];
+const intervenant = intervenants[0];
+const signature = catalogue.find((c) => c.signature);
+const carteSignature = cartes.find((c) => c.signature);
+const carteStandard = cartes.find((c) => !c.signature);
+const premiereConference = entreprises.conferences.items[0];
+const demoRichText = [
+  '[Texte de démonstration avec un marqueur en ligne] ',
+  { marker: '[À COMPLÉTER : marqueur de démonstration]' },
+  ' [suite du texte].',
 ];
 ---
 
@@ -228,6 +322,641 @@ const structureTypes = [
       Sur-titre seul
     </h2>
   </Section>
+
+  <!-- ============ Partie 3 : composants de famille (phase 2) ============ -->
+  <Section labelledby="k-familles" tone="sunk">
+    <SectionTitle
+      id="k-familles"
+      eyebrow="Kit · familles"
+      lead="Composants propres à une page ou à une famille de pages (src/components/<famille>/). Textes entre crochets : démonstration ; sinon, données réelles importées de src/data/."
+    >
+      Composants de famille
+    </SectionTitle>
+    <div class="k-note-box" role="note" aria-labelledby="k-non-montre">
+      <p id="k-non-montre" class="k-note-title">
+        Non montré ici
+      </p>
+      <ul class="k-list">
+        <li>
+          <code>conferences/ConferenceHero</code> : son H1 porte l'id fixe « titre-page », déjà pris
+          par <code>publics/PublicHero</code> (montré plus bas) ; deux en-têtes de page
+          dupliqueraient l'id.
+        </li>
+        <li>
+          <code>Header</code> : rien à montrer hors de l'en-tête de cette page ; ses options{' '}
+          <code>current</code> et <code>section</code> passent par <code>BaseLayout</code>, comme
+          l'option <code>footerCurrent</code> du pied de page.
+        </li>
+      </ul>
+    </div>
+  </Section>
+
+  <!-- Partagés : options ajoutées en phase 2 -->
+  <Section labelledby="k-partages">
+    <h2 id="k-partages" class="k-h2">
+      Composants partagés : options ajoutées
+    </h2>
+
+    <h3 class="k-h3">Eyebrow</h3>
+    <p class="k-desc">rule=&#123;false&#125;, puis as="span" dans un titre (sur-titre de H1).</p>
+    <div class="k-block">
+      <Eyebrow rule={false}>[Sur-titre sans filet]</Eyebrow>
+      <p class="k-h1-sample">
+        <Eyebrow as="span" rule={false}>
+          [Sur-titre dans le titre]
+        </Eyebrow>
+        <span class="k-h1-main">[Titre principal de la page]</span>
+      </p>
+    </div>
+
+    <h3 class="k-h3">Button</h3>
+    <p class="k-desc">stretch : pleine largeur en mobile (flex 1 1 240px).</p>
+    <div class="row k-row">
+      <Button stretch>[Bouton étiré]</Button>
+    </div>
+
+    <h3 class="k-h3">ConferenceCard</h3>
+    <p class="k-desc">reveal=&#123;false&#125; : sans apparition au défilement.</p>
+    <div class="grid k-grid">
+      <ConferenceCard
+        numeral="I"
+        title="[Titre de conférence]"
+        href="#"
+        summary="[Carte sans apparition au défilement : texte de démonstration du kit.]"
+        publics={['[Public]']}
+        formats={['[Format]']}
+        reveal={false}
+      />
+    </div>
+
+    <h3 class="k-h3">Header</h3>
+    <p class="k-desc">Rien à montrer ici : voir l'en-tête de cette page.</p>
+  </Section>
+
+  <!-- legal/ -->
+  <Section labelledby="k-legal" tone="sunk">
+    <h2 id="k-legal" class="k-h2">
+      Famille legal/
+    </h2>
+    <h3 class="k-h3">LegalProse</h3>
+    <p class="k-desc">Sommaire collant à partir de 960 px, sections numérotées.</p>
+  </Section>
+  <LegalProse label="[Démonstration de LegalProse]" toc={legalToc}>
+    <section id="k-legal-1" class="legal-section" aria-labelledby="k-legal-t1">
+      <h2 class="legal-h2" id="k-legal-t1">
+        <span class="legal-num" aria-hidden="true">
+          1
+        </span>
+        [Première section]
+      </h2>
+      <p class="legal-p">
+        [Paragraphe courant de démonstration, avec un{' '}
+        <a class="legal-a" href="#k-legal-2">
+          lien dans le texte
+        </a>
+        .]
+      </p>
+      <dl class="legal-dl legal-dl--fixed">
+        <div class="legal-row">
+          <dt>[Terme]</dt>
+          <dd>[Détail]</dd>
+        </div>
+        <div class="legal-row">
+          <dt>[Autre terme]</dt>
+          <dd>[Autre détail]</dd>
+        </div>
+      </dl>
+      <p class="legal-note">[Note de démonstration en 13 px.]</p>
+    </section>
+    <section id="k-legal-2" class="legal-section" aria-labelledby="k-legal-t2">
+      <h2 class="legal-h2" id="k-legal-t2">
+        <span class="legal-num" aria-hidden="true">
+          2
+        </span>
+        [Deuxième section]
+      </h2>
+      <h3 class="legal-h3">[Sous-titre]</h3>
+      <ul class="legal-ul">
+        <li>[Élément de liste]</li>
+        <li>[Autre élément de liste]</li>
+      </ul>
+      <div class="legal-aside">
+        <p class="legal-aside-title">[À DÉCIDER : encadré de démonstration]</p>
+        <p class="legal-p">[Texte de l'encadré.]</p>
+      </div>
+    </section>
+  </LegalProse>
+
+  <!-- contact/ -->
+  <Section labelledby="k-contact">
+    <h2 id="k-contact" class="k-h2">
+      Famille contact/
+    </h2>
+
+    <h3 class="k-h3">ContactField</h3>
+    <p class="k-desc">
+      Obligatoire (astérisque masqué), facultatif, liste et zone de texte avec aide. Le message
+      d'erreur reste masqué : il est affiché par l'îlot de ContactForm.
+    </p>
+    <form
+      class="form"
+      action="#"
+      method="post"
+      novalidate
+      aria-label="[Formulaire de démonstration]"
+    >
+      <ContactField
+        id="k-c-nom"
+        name="nom"
+        label="[Champ obligatoire]"
+        autocomplete="name"
+        required
+        error="[Message d'erreur de démonstration.]"
+      />
+      <ContactField
+        id="k-c-theme"
+        name="theme"
+        type="select"
+        label="Thème"
+        options={themes}
+        optional
+      />
+      <ContactField
+        id="k-c-message"
+        name="message"
+        type="textarea"
+        label="[Zone de texte]"
+        hint="[Aide de démonstration.]"
+        rows={4}
+      />
+    </form>
+
+    <h3 class="k-h3">ContactAside</h3>
+    <p class="k-desc">Coordonnées et étapes (données de src/data/contact.ts).</p>
+    <div class="k-block k-narrow">
+      <ContactAside />
+    </div>
+  </Section>
+
+  <!-- reperes/ -->
+  <Section labelledby="k-reperes" tone="sunk">
+    <h2 id="k-reperes" class="k-h2">
+      Famille reperes/
+    </h2>
+    <h3 class="k-h3">RepereCard</h3>
+    <p class="k-desc">
+      Disponible (carte cliquable) et bientôt (pointillés), données de src/data/reperes.ts.
+    </p>
+    <div class="grid k-grid">
+      {repereDispo && <RepereCard repere={repereDispo} />}
+      {repereBientot && <RepereCard repere={repereBientot} />}
+    </div>
+  </Section>
+
+  <!-- organisateurs/ -->
+  <Section labelledby="k-orga">
+    <h2 id="k-orga" class="k-h2">
+      Famille organisateurs/
+    </h2>
+
+    <h3 class="k-h3">SplitHead</h3>
+    <p class="k-desc">Titre H2 et chapô côte à côte.</p>
+    <div class="k-block">
+      <SplitHead
+        id="k-split"
+        eyebrow="[Sur-titre]"
+        lead="[Chapô de démonstration, aligné en bas du titre.]"
+      >
+        [Titre de section]
+      </SplitHead>
+    </div>
+
+    <h3 class="k-h3">CopyBlock</h3>
+    <p class="k-desc">
+      Texte à copier (présentation du duo, src/data/organisateurs.ts), bouton « Copier ».
+    </p>
+    <div class="k-block">
+      <CopyBlock textKey="duo" title="Le duo M42" level="h4" size="duo" wide />
+    </div>
+  </Section>
+
+  <!-- a-propos/ -->
+  <Section labelledby="k-apropos" tone="sunk">
+    <h2 id="k-apropos" class="k-h2">
+      Famille a-propos/
+    </h2>
+    <h3 class="k-h3">IntervenantProfile</h3>
+    <p class="k-desc">Fiche d'un intervenant (src/data/intervenants.ts).</p>
+    <div class="k-block">{intervenant && <IntervenantProfile person={intervenant} />}</div>
+  </Section>
+  <Section labelledby="k-approach" tone="night">
+    <h3 id="k-approach" class="k-h3 k-h3--flush">
+      ApproachSymbol
+    </h3>
+    <p class="k-desc">Carte du ciel décorative, sur fond nuit.</p>
+    <div class="k-block">
+      <ApproachSymbol />
+    </div>
+  </Section>
+  <Container class="k-band-label">
+    <h3 class="k-h3 k-h3--flush">AboutCta</h3>
+    <p class="k-desc">Bandeau nuit avec liens fléchés.</p>
+  </Container>
+  <AboutCta
+    id="k-about-cta"
+    eyebrow="[Sur-titre]"
+    title="[Titre du bandeau]"
+    lead="[Chapô de démonstration du bandeau d'appel à l'action.]"
+    links={[
+      { href: '#k-apropos', label: '[Premier lien fléché]' },
+      { href: '#k-orga', label: '[Second lien fléché]' },
+    ]}
+    ctaLabel="[Bouton]"
+    ctaHref="#k-contact"
+  />
+
+  <!-- publics/ -->
+  <Section labelledby="k-publics">
+    <h2 id="k-publics" class="k-h2">
+      Famille publics/
+    </h2>
+    <p class="k-desc">
+      Données réelles des pages « Pour qui » (src/data/publics/), principalement Entreprises.
+    </p>
+    <h3 class="k-h3">PublicHero</h3>
+    <p class="k-desc">En-tête de page (H1 « titre-page ») : page Entreprises.</p>
+  </Section>
+  <PublicHero {...entreprises.hero} />
+
+  <Section labelledby="k-publics-2" tone="sunk">
+    <h2 id="k-publics-2" class="sr-only">
+      Famille publics/ (suite)
+    </h2>
+    <h3 class="k-h3 k-h3--flush">PublicSectionHead</h3>
+    <div class="k-block">
+      <PublicSectionHead
+        id="k-psh"
+        eyebrow={entreprises.formats.eyebrow}
+        lead={entreprises.formats.lead}
+      >
+        {entreprises.formats.title}
+      </PublicSectionHead>
+    </div>
+
+    <h3 class="k-h3">IssueGrid</h3>
+    <IssueGrid items={entreprises.stakes.items} />
+
+    <h3 class="k-h3">PublicFormats</h3>
+    <PublicFormats items={entreprises.formats.items} footnote={entreprises.formats.note} />
+
+    <h3 class="k-h3">PublicConferenceCard</h3>
+    <div class="grid k-grid">
+      {premiereConference && <PublicConferenceCard {...premiereConference} />}
+    </div>
+
+    <h3 class="k-h3">PublicConferenceGrid</h3>
+    <PublicConferenceGrid items={entreprises.conferences.items} />
+
+    <h3 class="k-h3">TopicList</h3>
+    <TopicList
+      title={entreprises.conferences.otherTitle}
+      items={entreprises.conferences.others}
+      note={entreprises.conferences.othersNote}
+    />
+  </Section>
+
+  <Section labelledby="k-publics-3">
+    <h2 id="k-publics-3" class="sr-only">
+      Famille publics/ (suite)
+    </h2>
+    <h3 class="k-h3 k-h3--flush">ColorRuleCards</h3>
+    <ColorRuleCards cards={entreprises.colorRule.cards} />
+
+    <h3 class="k-h3">RichText</h3>
+    <p class="k-desc">Marqueurs de relecture en ligne, rendus en étiquette.</p>
+    <p class="k-text">
+      <RichText value={demoRichText} />
+    </p>
+
+    <h3 class="k-h3">TakeawayColumns</h3>
+    <TakeawayColumns columns={entreprises.takeaways.groups} />
+
+    <h3 class="k-h3">CrossList</h3>
+    <p class="k-desc">rule="strong" (kit organisateur, page Événements).</p>
+    <div class="k-block k-narrow">
+      <CrossList items={evenements.kit.items} rule="strong" />
+    </div>
+
+    <h3 class="k-h3">StepList</h3>
+    <StepList items={entreprises.steps.items} />
+
+    <h3 class="k-h3">IntervenantsNote</h3>
+    <IntervenantsNote {...entreprises.steps.team} />
+
+    <h3 class="k-h3">PublicFlow</h3>
+    <p class="k-desc">Schéma fléché avec note (page Associations).</p>
+    <PublicFlow
+      label={associations.relay.label}
+      items={associations.relay.items}
+      note={associations.relay.note}
+    />
+
+    <h3 class="k-h3">EducationAudiences</h3>
+    <EducationAudiences items={education.audiences.items} />
+
+    <h3 class="k-h3">PublicFaq</h3>
+    <PublicFaq items={entreprises.faq.items} />
+  </Section>
+
+  <Section labelledby="k-keynote" tone="night">
+    <h3 id="k-keynote" class="k-h3 k-h3--flush">
+      KeynoteTimeline
+    </h3>
+    <p class="k-desc">Frise minutée sur fond nuit (page Événements).</p>
+    <KeynoteTimeline
+      sequences={evenements.rundown.sequences}
+      end={evenements.rundown.end}
+      legend={evenements.rundown.legend}
+      note={evenements.rundown.note}
+      link={evenements.rundown.link}
+    />
+  </Section>
+
+  <!-- conferences/ -->
+  <Section labelledby="k-conferences" tone="sunk">
+    <h2 id="k-conferences" class="k-h2">
+      Famille conferences/
+    </h2>
+    <p class="k-desc">
+      Données réelles de la conférence II (src/data/conferences/arnaques-ia.ts), sauf mention.
+      Chaque composant ouvre sa propre section : le nom du composant précède chacune.
+    </p>
+
+    <h3 class="k-h3">SectionHeading</h3>
+    <div class="k-block">
+      <SectionHeading id="k-section-heading" reveal={false} flush>
+        [Titre H2 des pages conférences]
+      </SectionHeading>
+    </div>
+
+    <h3 class="k-h3">SignatureConferenceCard</h3>
+    <div class="grid k-grid">
+      {signature && (
+        <SignatureConferenceCard
+          numeral={signature.numero}
+          title={signature.titre}
+          href={signature.href}
+          summary={signature.resume}
+          publics={signature.publics}
+          formats={signature.formats}
+          reveal={false}
+        />
+      )}
+    </div>
+  </Section>
+
+  <Container class="k-band-label">
+    <h3 class="k-h3 k-h3--flush">ScrollStory (avec visuels/FauxSms)</h3>
+    <p class="k-desc">Une seule instance (ancre « demonstration »).</p>
+  </Container>
+  <ScrollStory
+    label={arnaquesIa.demonstration.label}
+    surTitre={arnaquesIa.demonstration.surTitre}
+    etapes={arnaquesIa.demonstration.etapes}
+    k={arnaquesIa.demonstration.k}
+    visualSize="phone"
+  >
+    <FauxSms slot="visual" />
+  </ScrollStory>
+
+  <Container class="k-band-label">
+    <h3 class="k-h3 k-h3--flush">KeyFigures (avec note)</h3>
+    <p class="k-desc">Chiffres de la conférence III (src/data/conferences/desinformation-ia.ts).</p>
+  </Container>
+  {desinformationIa.chiffres && (
+    <KeyFigures
+      label={desinformationIa.chiffres.label}
+      items={desinformationIa.chiffres.items}
+      note={desinformationIa.chiffres.note}
+    />
+  )}
+
+  <Container class="k-band-label">
+    <h3 class="k-h3 k-h3--flush">ConferenceProgram</h3>
+  </Container>
+  <ConferenceProgram
+    surTitre={arnaquesIa.programme.surTitre}
+    titre={arnaquesIa.programme.titre}
+    chapo={arnaquesIa.programme.chapo}
+    blocs={arnaquesIa.programme.blocs}
+  />
+
+  <Container class="k-band-label">
+    <h3 class="k-h3 k-h3--flush">TempsFort et ArnaqueOuPasGame</h3>
+  </Container>
+  <TempsFort
+    id="k-jeu-arnaque"
+    titre={arnaquesIa.tempsFort.titre}
+    chapo={arnaquesIa.tempsFort.chapo}
+    note={arnaquesIa.tempsFort.note}
+  >
+    {arnaquesIa.jeu && <ArnaqueOuPasGame messages={arnaquesIa.jeu} />}
+  </TempsFort>
+
+  <Container class="k-band-label">
+    <h3 class="k-h3 k-h3--flush">TempsFort et desinformation-ia/VraiOuIaGame</h3>
+  </Container>
+  <TempsFort
+    id="k-jeu-vrai"
+    titre={desinformationIa.tempsFort.titre}
+    chapo={desinformationIa.tempsFort.chapo}
+    note={desinformationIa.tempsFort.note}
+  >
+    <VraiOuIaGame exemples={exemplesVraiOuIa} />
+  </TempsFort>
+
+  <Container class="k-band-label">
+    <h3 class="k-h3 k-h3--flush">ConferenceFormats</h3>
+  </Container>
+  <ConferenceFormats titre={arnaquesIa.formats.titre} items={arnaquesIa.formats.items} />
+
+  <Container class="k-band-label">
+    <h3 class="k-h3 k-h3--flush">ConferenceAudiences</h3>
+  </Container>
+  <ConferenceAudiences
+    titre={arnaquesIa.publics.titre}
+    chapo={arnaquesIa.publics.chapo}
+    items={arnaquesIa.publics.items}
+    declinaison={arnaquesIa.declinaisonEntreprise}
+  />
+
+  <Container class="k-band-label">
+    <h3 class="k-h3 k-h3--flush">HelpNumbers</h3>
+  </Container>
+  {arnaquesIa.numeros && (
+    <HelpNumbers
+      surTitre={arnaquesIa.numeros.surTitre}
+      titre={arnaquesIa.numeros.titre}
+      items={arnaquesIa.numeros.items}
+    />
+  )}
+
+  <Container class="k-band-label">
+    <h3 class="k-h3 k-h3--flush">ConferenceFaq</h3>
+  </Container>
+  <ConferenceFaq
+    titre={arnaquesIa.faq.titre}
+    items={arnaquesIa.faq.items}
+    sources={arnaquesIa.faq.sources}
+  />
+
+  <Container class="k-band-label">
+    <h3 class="k-h3 k-h3--flush">OtherConferences</h3>
+  </Container>
+  <OtherConferences current={arnaquesIa.slug} />
+
+  <Container class="k-band-label">
+    <h3 class="k-h3 k-h3--flush">ConferenceCta</h3>
+  </Container>
+  <ConferenceCta
+    titre="[Titre du bandeau de contact]"
+    chapo="[Chapô de démonstration du bandeau de fin de page conférence.]"
+    cta="[Bouton]"
+    ctaHref="#k-conferences"
+  />
+
+  <!-- conferences-index/ -->
+  <Section labelledby="k-conf-index">
+    <h2 id="k-conf-index" class="k-h2">
+      Famille conferences-index/
+    </h2>
+    <h3 class="k-h3">ConferenceDetailCard</h3>
+    <p class="k-desc">Carte riche de /conferences/ : conférence signature, puis carte standard.</p>
+    <div class="k-stack">
+      {carteSignature && (
+        <ConferenceDetailCard
+          carte={carteSignature}
+          formats={formatsDetailles}
+          cta={catalogueSection.ctaCarte}
+          badge={catalogueSection.badgeSignature}
+        />
+      )}
+      {carteStandard && (
+        <ConferenceDetailCard
+          carte={carteStandard}
+          formats={formatsDetailles}
+          cta={catalogueSection.ctaCarte}
+          badge={catalogueSection.badgeSignature}
+        />
+      )}
+    </div>
+  </Section>
+
+  <!-- satellites/ -->
+  <Section labelledby="k-satellites" tone="sunk">
+    <h2 id="k-satellites" class="k-h2">
+      Famille satellites/
+    </h2>
+    <p class="k-desc">
+      Données réelles de la page séminaire d'entreprise
+      (src/data/satellites/seminaire-entreprise.ts).
+    </p>
+    <div class="k-article">
+      <h3 class="k-h3">SatFigures</h3>
+      <SatFigures items={seminaire.why.figures} />
+
+      <h3 class="k-h3">SatBox (avec SatText)</h3>
+      <SatBox label={seminaire.why.case.label}>
+        <SatText>{seminaire.why.case.text}</SatText>
+        <SatText variant="source">{seminaire.why.case.source}</SatText>
+      </SatBox>
+
+      <h3 class="k-h3">SatPullQuote</h3>
+      <SatPullQuote>{seminaire.why.quote}</SatPullQuote>
+
+      <h3 class="k-h3">SatNumbered</h3>
+      <SatNumbered items={seminaire.keynote.steps} />
+
+      <h3 class="k-h3">SatNote</h3>
+      <SatNote label="À retenir">{seminaire.keynote.takeaway}</SatNote>
+
+      <h3 class="k-h3">SatTable</h3>
+      <SatTable table={seminaire.topics.table} />
+
+      <h3 class="k-h3">SatDefList</h3>
+      <SatDefList items={seminaire.organisation.items} />
+
+      <h3 class="k-h3">SatDraftBlock</h3>
+      <SatDraftBlock>{seminaire.organisation.testimonials}</SatDraftBlock>
+    </div>
+  </Section>
+  <Container class="k-band-label">
+    <h3 class="k-h3 k-h3--flush">SatCta</h3>
+  </Container>
+  <SatCta
+    eyebrow={seminaire.cta.eyebrow}
+    title={seminaire.cta.title}
+    lead={seminaire.cta.lead}
+    primary={seminaire.cta.primary}
+    secondary={seminaire.cta.secondary}
+  />
+
+  <!-- outils/ -->
+  <Section labelledby="k-outils">
+    <h2 id="k-outils" class="k-h2">
+      Famille outils/
+    </h2>
+    <h3 class="k-h3">CaptureCard (avec CaptureField)</h3>
+    <p class="k-desc">
+      Bloc de capture « fiche » (src/data/outils/arnaque-ou-pas.ts) ; rien n'est envoyé.
+    </p>
+    <div class="k-block k-capture">
+      <CaptureCard
+        id="k-fiche"
+        kind="fiche"
+        eyebrow={capture.fiche.eyebrow}
+        title={capture.fiche.title}
+        formLabel={capture.fiche.formLabel}
+        submit={capture.fiche.submit}
+        usage={capture.fiche.usage}
+        texts={capture}
+      >
+        {capture.fiche.text}
+        <Fragment slot="fields">
+          <CaptureField
+            id="k-fiche-mail"
+            name="email"
+            type="email"
+            autocomplete="email"
+            label="E-mail *"
+            error={fieldErrors.ficheMail}
+          />
+        </Fragment>
+      </CaptureCard>
+    </div>
+  </Section>
+
+  <!-- accueil/ -->
+  <Section labelledby="k-accueil" tone="sunk">
+    <h2 id="k-accueil" class="k-h2">
+      Famille accueil/
+    </h2>
+    <h3 class="k-h3">SkySymbol</h3>
+    <p class="k-desc">
+      Une seule instance : arrêt après 10 s, bouton pause, image figée si le mouvement est réduit.
+    </p>
+    <div class="k-block k-sky">
+      <SkySymbol
+        alt={accueilHero.symbole.alt}
+        pauseLabel={accueilHero.symbole.pause}
+        playLabel={accueilHero.symbole.relance}
+      />
+    </div>
+  </Section>
+  <Container class="k-band-label">
+    <h3 class="k-h3 k-h3--flush">HomeFigures</h3>
+  </Container>
+  <HomeFigures label="L'IA en chiffres" items={chiffres} quote={citationChiffres} />
 </BaseLayout>
 
 <style>
@@ -282,5 +1011,106 @@ const structureTypes = [
     font-weight: 600;
     line-height: var(--lh-h3);
     letter-spacing: var(--tracking-h3);
+  }
+
+  /* Partie 3 : composants de famille */
+  .k-h2 {
+    margin: 0;
+    max-width: var(--measure-h2);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .k-h3--flush {
+    margin-top: 0;
+  }
+
+  .k-desc {
+    margin: 8px 0 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-small);
+    color: var(--fg-3);
+  }
+
+  .k-text {
+    margin: 24px 0 0;
+    max-width: var(--measure-text);
+    color: var(--fg-2);
+  }
+
+  .k-block {
+    margin-top: 24px;
+  }
+
+  .k-row,
+  .k-grid {
+    margin-top: 24px;
+  }
+
+  .k-narrow {
+    max-width: 32rem;
+  }
+
+  .k-stack {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+  }
+
+  .k-article {
+    max-width: 46rem;
+  }
+
+  .k-capture {
+    max-width: 40rem;
+  }
+
+  .k-sky {
+    display: flex;
+    justify-content: center;
+  }
+
+  .k-h1-sample {
+    margin: 24px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .k-h1-main {
+    font-family: var(--font-serif);
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+  }
+
+  .k-note-box {
+    margin-top: 48px;
+    max-width: var(--measure-text);
+    border: 1px dashed var(--rule);
+    padding: 16px 20px;
+  }
+
+  .k-note-title {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .k-list {
+    margin: 8px 0 0;
+    padding-left: 1.25rem;
+    color: var(--fg-2);
+  }
+
+  .k-list li + li {
+    margin-top: 8px;
+  }
+
+  :global(.k-band-label) {
+    padding-top: var(--s-6);
+    padding-bottom: var(--s-4);
   }
 </style>

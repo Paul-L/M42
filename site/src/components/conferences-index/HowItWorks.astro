@@ -1,0 +1,98 @@
+---
+/**
+ * Section « Comment ça se passe » de /conferences/ : trois points numérotés 01 à 03 en grille
+ * (numéro en or, H3, texte suivi d'un lien facultatif).
+ *
+ * Props :
+ * - surTitre : défaut « Sur scène ».
+ * - titre : H2.
+ * - items : { numero, titre, texte, lien? }[] (le lien est suivi d'un point, comme la maquette).
+ */
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeading from '../conferences/SectionHeading.astro';
+import type { PointDeroulement } from '../../data/conferences-index';
+
+interface Props {
+  surTitre?: string;
+  titre: string;
+  items: PointDeroulement[];
+}
+
+const { surTitre = 'Sur scène', titre, items } = Astro.props;
+---
+
+<section id="deroulement" aria-labelledby="titre-deroulement" class="how">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <SectionHeading id="titre-deroulement">{titre}</SectionHeading>
+    <div class="grid">
+      {items.map((p) => (
+        <div class="item m42-reveal">
+          <span aria-hidden="true" class="num">
+            {p.numero}
+          </span>
+          <h3 class="item-title">{p.titre}</h3>
+          <p class="item-text">
+            {p.texte}
+            {p.lien && (
+              <>
+                {' '}
+                <a href={p.lien.href}>{p.lien.label}</a>.
+              </>
+            )}
+          </p>
+        </div>
+      ))}
+    </div>
+  </Container>
+</section>
+
+<style>
+  .how {
+    padding: var(--section-y) 0;
+  }
+
+  .grid {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 40px 48px;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+  }
+
+  .num {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+    color: var(--gold-deep);
+  }
+
+  .item-title {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .item-text {
+    margin: 0;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--ink-2);
+  }
+
+  .item-text a {
+    color: var(--ink);
+    text-underline-offset: 3px;
+  }
+</style>

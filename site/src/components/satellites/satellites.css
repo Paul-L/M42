@@ -1,0 +1,28 @@
+/*
+ * Pages satellites : classes globales (kit/maquette/Sat-*.dc.html, bloc « Pages éditoriales »).
+ * Utilisées aussi dans le HTML simple des données (src/data/satellites/*.ts), d'où le global.
+ */
+
+/* Ancres : décalage sous l'en-tête collant */
+.sat-anchor {
+  scroll-margin-top: 104px;
+}
+
+/* Lien dans le texte (.m42-inline) : souligné 1 px ; survol or 2 px */
+.sat-inline {
+  color: var(--ink);
+  font-weight: 500;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color var(--dur-1) var(--ease-out);
+}
+
+.sat-inline:hover {
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 2px;
+}
+
+/* Précision entre crochets dans un paragraphe (marqueur [À VÉRIFIER …] en gris) */
+.sat-aside {
+  color: var(--ink-3);
+}

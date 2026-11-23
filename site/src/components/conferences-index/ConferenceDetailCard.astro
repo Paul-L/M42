@@ -1,0 +1,313 @@
+---
+/**
+ * Carte « riche » d'une conférence sur /conferences/ (kit/maquette/Conferences.dc.html,
+ * section « Catalogue ») : deux colonnes. À gauche, chiffre romain (et pour la signature :
+ * étoile d'or + « Conférence signature »), titre H3 cliquable étendu à toute la carte, accroche,
+ * promesse, publics, formats, appel « Voir le programme complet ». À droite, « Au programme »
+ * minuté et lignes de détail (Temps fort, En entreprise…).
+ * Même comportement que ConferenceCard (bordure encre et barre or au survol), mise en page
+ * différente : ConferenceCard n'a ni deuxième colonne ni promesse (à consolider).
+ *
+ * Props :
+ * - carte : CarteIndex (src/data/conferences-index.ts).
+ * - formats : ligne des formats (« Keynote 45 min à 1 h · … »).
+ * - cta : libellé de l'appel (décoratif, aria-hidden).
+ * - badge : mention de la conférence signature.
+ * - programmeLabel : sur-titre de la colonne programme (défaut « Au programme »).
+ */
+import AudienceTag from '../AudienceTag.astro';
+import type { CarteIndex } from '../../data/conferences-index';
+
+interface Props {
+  carte: CarteIndex;
+  formats: string;
+  cta: string;
+  badge: string;
+  programmeLabel?: string;
+}
+
+const { carte, formats, cta, badge, programmeLabel = 'Au programme' } = Astro.props;
+---
+
+<article id={`conf-${carte.slug}`} class="card m42-reveal">
+  <div class="col col--main">
+    {carte.signature ? (
+      <span class="sig">
+        <span aria-hidden="true" class="numeral">
+          {carte.numero}
+        </span>
+        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path
+            d="M12 1 C13 10 14 11 23 12 C14 13 13 14 12 23 C11 14 10 13 1 12 C10 11 11 10 12 1 Z"
+            fill="currentColor"
+          ></path>
+        </svg>
+        <span class="badge">{badge}</span>
+      </span>
+    ) : (
+      <span aria-hidden="true" class="numeral">
+        {carte.numero}
+      </span>
+    )}
+    <h3 class="title">
+      <a href={carte.href} class="stretch">
+        {carte.titre}
+      </a>
+    </h3>
+    <p class="hook">{carte.accroche}</p>
+    <p class="promise">{carte.promesse}</p>
+    <ul aria-label="Publics" class="publics">
+      {carte.publics.map((p) => (
+        <AudienceTag as="li">{p}</AudienceTag>
+      ))}
+    </ul>
+    <p class="formats">{formats}</p>
+    <span class="cta" aria-hidden="true">
+      {cta} <span class="arrow-i">→</span>
+    </span>
+  </div>
+  <div class="col col--side">
+    <div>
+      <p class="side-title">{programmeLabel}</p>
+      <ol class="program">
+        {carte.programme.map((l) => (
+          <li>
+            <span>{l.titre}</span>
+            <span class="duration">{l.duree}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+    <dl class="details">
+      {carte.details.map((d) => (
+        <div>
+          <dt>{d.label} : </dt>
+          <dd>{d.texte}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+  <span class="bar" aria-hidden="true"></span>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 56px;
+    padding: clamp(28px, 3vw, 44px);
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    transition: border-color var(--dur-2) var(--ease-out);
+  }
+
+  .card:hover {
+    border-color: var(--ink);
+  }
+
+  .col {
+    flex: 1 1 400px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .col--main {
+    gap: 16px;
+  }
+
+  .col--side {
+    gap: 20px;
+  }
+
+  .sig {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .sig svg {
+    color: var(--gold);
+  }
+
+  .numeral {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--gold-deep);
+  }
+
+  .badge {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink-3);
+  }
+
+  .title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
+    line-height: 1.02;
+  }
+
+  .stretch {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .stretch::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .stretch:focus-visible {
+    outline: none;
+  }
+
+  .stretch:focus-visible::after {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  .hook {
+    margin: 0;
+    max-width: 46ch;
+    font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .promise {
+    margin: 0;
+    max-width: var(--measure-lead);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: var(--lh-lead);
+    color: var(--ink);
+  }
+
+  .publics {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .formats {
+    margin: 0;
+    font-size: 13px;
+    line-height: var(--lh-small);
+    color: var(--ink-3);
+  }
+
+  .cta {
+    margin-top: auto;
+    padding-top: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: text-decoration-color var(--dur-1) var(--ease-out);
+  }
+
+  .card:hover .cta {
+    text-decoration-color: var(--gold);
+    text-decoration-thickness: 2px;
+  }
+
+  .arrow-i {
+    display: inline-block;
+    transition: transform var(--dur-1) var(--ease-out);
+  }
+
+  .card:hover .arrow-i {
+    transform: translateX(3px);
+  }
+
+  /* Colonne programme */
+  .side-title {
+    margin: 0 0 8px;
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .program {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--ink);
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .program li {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .duration {
+    flex: none;
+    color: var(--ink-3);
+  }
+
+  .details {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 15px;
+    line-height: var(--lh-small);
+  }
+
+  dt {
+    display: inline;
+    font-weight: 600;
+  }
+
+  dd {
+    display: inline;
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  .bar {
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0.18);
+    transform-origin: left;
+    transition: transform var(--dur-3) var(--ease-out);
+  }
+
+  .card:hover .bar,
+  .card:focus-within .bar {
+    transform: scaleX(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover .arrow-i {
+      transform: none;
+    }
+  }
+</style>

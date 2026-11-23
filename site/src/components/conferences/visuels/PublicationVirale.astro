@@ -1,0 +1,387 @@
+---
+/**
+ * Visuel de l'animation « Une image qui circule » (conférence III), à placer dans le slot
+ * « visual » de ScrollStory (visualSize="wide"). Aucun JavaScript : les états suivent les
+ * attributs data-mode / data-step posés par ScrollStory sur la section.
+ *
+ * Correspondance avec renderVals() de la maquette (5 étapes, 0 à 4 ; à plat : étape 4) :
+ * - étape ≥ 1 : « INCROYABLE » et « Partagez… » surlignés or 32 % (45 % + anneau or à l'étape 1) ;
+ * - étape ≥ 2 : « Compte créé il y a 3 jours » surligné (45 % + anneau à l'étape 2),
+ *   ligne « Recherche d'image inversée » visible ;
+ * - étape ≥ 3 : ligne « Presse locale… » visible, repères numérotés et légende visibles ;
+ * - étape 4 : bandeau « Image générée par IA », « Partager » barré à 45 % d'opacité.
+ * En mode à plat (sans JavaScript, mouvement réduit, « Afficher toutes les étapes »), tout est
+ * visible, surlignages à 32 % sans anneau, comme dans la maquette.
+ * Exemple fictif construit pour la démonstration.
+ */
+---
+
+<div class="post">
+  <div class="head">
+    <span class="avatar" aria-hidden="true"></span>
+    <div class="who">
+      <span class="name">Info_Littoral_24</span>
+      <span class="age hl hl-a fade">Compte créé il y a 3 jours</span>
+    </div>
+    <span class="when">il y a 2 h</span>
+  </div>
+  <p class="msg">
+    <span class="hl hl-e strong fade">INCROYABLE</span> : une baleine géante échouée ce matin sur la
+    grande plage. <span class="hl hl-e fade">Partagez avant que ce soit supprimé !</span>
+  </p>
+  <div class="pic">
+    <svg
+      viewBox="0 0 320 190"
+      class="svg"
+      role="img"
+      aria-label="Illustration : une baleine échouée sur une plage, deux promeneurs, un panneau. Les repères numérotés signalent les incohérences."
+    >
+      <rect x="0" y="0" width="320" height="104" class="f-line"></rect>
+      <circle cx="262" cy="32" r="13" class="f-raised"></circle>
+      <rect x="0" y="100" width="320" height="34" class="f-strong"></rect>
+      <path
+        d="M0 110 q10 -5 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"
+        class="wave"
+      ></path>
+      <path
+        d="M0 121 q10 -5 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"
+        class="wave"
+      ></path>
+      <rect x="0" y="132" width="320" height="58" class="f-sunk"></rect>
+      <path
+        d="M108 150 C112 130 168 124 214 132 C236 136 246 146 248 152 L272 140 L266 156 L276 168 L248 160 C236 168 160 172 124 166 C112 163 106 158 108 150 Z"
+        class="f-ink2"
+      ></path>
+      <rect x="38" y="122" width="4" height="50" class="f-ink2"></rect>
+      <rect x="18" y="98" width="44" height="26" class="sign"></rect>
+      <path
+        d="M23 106 q4 -4 7 0 t6 1 t7 -2 t8 2 M23 114 q5 3 9 -1 t8 2 t9 -1"
+        class="scribble"
+      ></path>
+      <rect x="286" y="146" width="7" height="20" class="f-ink"></rect>
+      <circle cx="289.5" cy="141" r="4" class="f-ink"></circle>
+      <rect x="300" y="148" width="7" height="18" class="f-ink"></rect>
+      <circle cx="303.5" cy="143" r="4" class="f-ink"></circle>
+      <path d="M286 166 L268 172 L276 172 L293 166 Z" class="f-strong"></path>
+      <path d="M307 166 L318 172 L312 172 L300 166 Z" class="f-strong"></path>
+      <g class="marks fade">
+        <path d="M292 170 h12 M298 164 v12" class="cross"></path>
+        <circle cx="298" cy="182" r="7" class="f-ink"></circle>
+        <text x="298" y="185.5" class="mark-n">
+          1
+        </text>
+        <path d="M34 92 h12 M40 86 v12" class="cross"></path>
+        <circle cx="54" cy="86" r="7" class="f-ink"></circle>
+        <text x="54" y="89.5" class="mark-n">
+          2
+        </text>
+        <path d="M144 116 h12 M150 110 v12" class="cross"></path>
+        <circle cx="164" cy="110" r="7" class="f-ink"></circle>
+        <text x="164" y="113.5" class="mark-n">
+          3
+        </text>
+      </g>
+    </svg>
+    <div class="badge fade" aria-hidden="true">
+      <span class="badge-box">Image générée par IA</span>
+    </div>
+  </div>
+  <ol class="legend fade">
+    <li>
+      <strong>1</strong> Ombres dans deux directions
+    </li>
+    <li>
+      <strong>2</strong> Panneau au texte illisible
+    </li>
+    <li>
+      <strong>3</strong> Vagues identiques, répétées
+    </li>
+  </ol>
+  <div class="checks">
+    <div class="check check-1 fade">
+      <span>Recherche d'image inversée</span>
+      <span class="ko">Aucune photo antérieure</span>
+    </div>
+    <div class="check check-2 fade">
+      <span>Presse locale, mairie, préfecture</span>
+      <span class="ko">Aucune mention</span>
+    </div>
+    <div class="share-row">
+      <span>12 400 partages</span>
+      <span class="share fade">Partager</span>
+    </div>
+  </div>
+</div>
+<p class="caption">
+  Exemple fictif construit pour la démonstration. [À REMPLACER par un cas réel documenté, neutre et
+  sourcé]
+</p>
+
+<style>
+  .fade {
+    transition:
+      opacity var(--dur-3) var(--ease-out),
+      transform var(--dur-3) var(--ease-out),
+      background-color var(--dur-3) var(--ease-out),
+      box-shadow var(--dur-3) var(--ease-out),
+      border-color var(--dur-3) var(--ease-out),
+      color var(--dur-3) var(--ease-out);
+  }
+
+  .post {
+    background: var(--paper-raised);
+    color: var(--ink);
+    border: 1px solid var(--night-line);
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+
+  .avatar {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 17px;
+    background: var(--line);
+  }
+
+  .who {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .name {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .age {
+    align-self: flex-start;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--ink-3);
+  }
+
+  .when {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+
+  .msg {
+    margin: 0;
+    padding: 0 14px 12px;
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+
+  .strong {
+    font-weight: 600;
+  }
+
+  /* Surlignages : transparents par défaut (étape 0) */
+  .hl {
+    border-radius: 3px;
+    background-color: color-mix(in srgb, var(--gold) 0%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--gold) 0%, transparent);
+  }
+
+  /* Étape ≥ 1 : l'émotion ; étape ≥ 2 : l'âge du compte (à plat : étape 4) */
+  :global([data-story][data-step='1']) .hl-e,
+  :global([data-story][data-step='2']) .hl-e,
+  :global([data-story][data-step='3']) .hl-e,
+  :global([data-story][data-step='4']) .hl-e,
+  :global([data-story][data-step='2']) .hl-a,
+  :global([data-story][data-step='3']) .hl-a,
+  :global([data-story][data-step='4']) .hl-a {
+    background-color: color-mix(in srgb, var(--gold) 32%, transparent);
+  }
+
+  /* Indice courant (animation seulement) */
+  :global([data-story][data-mode='anim'][data-step='1']) .hl-e,
+  :global([data-story][data-mode='anim'][data-step='2']) .hl-a {
+    background-color: color-mix(in srgb, var(--gold) 45%, transparent);
+    box-shadow: 0 0 0 2px var(--gold);
+  }
+
+  .pic {
+    position: relative;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .f-line {
+    fill: var(--line);
+  }
+
+  .f-raised {
+    fill: var(--paper-raised);
+  }
+
+  .f-strong {
+    fill: var(--line-strong);
+  }
+
+  .f-sunk {
+    fill: var(--paper-sunk);
+  }
+
+  .f-ink2 {
+    fill: var(--ink-2);
+  }
+
+  .f-ink {
+    fill: var(--ink);
+  }
+
+  .wave {
+    fill: none;
+    stroke: var(--paper);
+    stroke-width: 1.5;
+  }
+
+  .sign {
+    fill: var(--paper-raised);
+    stroke: var(--ink-2);
+    stroke-width: 1.5;
+  }
+
+  .scribble {
+    fill: none;
+    stroke: var(--ink-2);
+    stroke-width: 1.2;
+  }
+
+  .cross {
+    stroke: var(--gold);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+  }
+
+  .mark-n {
+    text-anchor: middle;
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 600;
+    fill: var(--paper);
+  }
+
+  /* Bandeau « Image générée par IA » */
+  .badge {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+  }
+
+  .badge-box {
+    border: 2px solid var(--gold);
+    color: var(--gold-night);
+    background: rgb(14 15 18 / 0.9);
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .legend {
+    list-style: none;
+    margin: 0;
+    padding: 10px 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  .checks {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 14px;
+    border-top: 1px solid var(--line);
+  }
+
+  .check {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 12px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .ko {
+    font-weight: 600;
+    color: var(--error);
+  }
+
+  .share-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--ink-3);
+  }
+
+  .share {
+    padding: 4px 12px;
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+  }
+
+  /* Éléments révélés étape par étape : masqués à l'étape 0 et suivantes selon le seuil */
+  .marks,
+  .legend,
+  .check-1,
+  .check-2,
+  .badge {
+    opacity: 0;
+  }
+
+  :global([data-story][data-step='2']) .check-1,
+  :global([data-story][data-step='3']) .check-1,
+  :global([data-story][data-step='4']) .check-1,
+  :global([data-story][data-step='3']) .check-2,
+  :global([data-story][data-step='4']) .check-2,
+  :global([data-story][data-step='3']) .marks,
+  :global([data-story][data-step='4']) .marks,
+  :global([data-story][data-step='3']) .legend,
+  :global([data-story][data-step='4']) .legend,
+  :global([data-story][data-step='4']) .badge {
+    opacity: 1;
+  }
+
+  :global([data-story][data-step='4']) .share {
+    text-decoration: line-through;
+    /* 0,45 dans la maquette (contraste 3,02:1) ; 0,6 donne ~5:1 (WCAG 1.4.3), DECISIONS.md 27. */
+    opacity: 0.6;
+  }
+
+  .caption {
+    margin: 12px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--on-night-3);
+  }
+</style>

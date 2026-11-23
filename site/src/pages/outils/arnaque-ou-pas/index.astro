@@ -1,0 +1,398 @@
+---
+/**
+ * Satellite « outil » : le test « Arnaque ou pas ? » (kit/maquette/Sat-test-arnaque-ou-pas.dc.html).
+ * Contenus : src/data/outils/arnaque-ou-pas.ts.
+ * JSON-LD : le commentaire SEO n'en prévoit pas ; comme les autres satellites (11_architecture_seo,
+ * § 3.3) : WebPage + BreadcrumbList + FAQPage (questions sans marqueur, DECISIONS.md point 19).
+ * Aucun lien d'en-tête marqué dans la maquette : ni `current`, ni `section`.
+ * Îlots : le test (components/outils/ArnaqueTest.astro) et les deux blocs de capture
+ * (components/outils/CaptureCard.astro, rien n'est envoyé avant la phase 4).
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import OutilHero from '../../../components/outils/OutilHero.astro';
+import OutilSection from '../../../components/outils/OutilSection.astro';
+import ArnaqueTest from '../../../components/outils/ArnaqueTest.astro';
+import CaptureCard from '../../../components/outils/CaptureCard.astro';
+import CaptureField from '../../../components/outils/CaptureField.astro';
+import ArrowLink from '../../../components/ArrowLink.astro';
+import Eyebrow from '../../../components/Eyebrow.astro';
+import SatFaq from '../../../components/satellites/SatFaq.astro';
+import SatLinkList from '../../../components/satellites/SatLinkList.astro';
+import SatCta from '../../../components/satellites/SatCta.astro';
+import { routes } from '../../../data/routes';
+import { satellitePageJsonLd } from '../../../data/satellites/json-ld';
+import {
+  capture,
+  crumbs,
+  cta,
+  faq,
+  fieldErrors,
+  hero,
+  numbers,
+  related,
+  results,
+  rules,
+  seo,
+  situations,
+  sources,
+  testLabels,
+} from '../../../data/outils/arnaque-ou-pas';
+
+const jsonLd = satellitePageJsonLd({
+  path: seo.path,
+  title: seo.title,
+  description: seo.description,
+  crumbs,
+  faq: faq.items,
+});
+---
+
+<BaseLayout title={seo.title} description={seo.description} jsonLd={jsonLd}>
+  <OutilHero
+    crumbs={crumbs}
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    lead={hero.lead}
+    source={hero.source}
+  >
+    <Fragment slot="byline">
+      Conçu et animé en salle par{' '}
+      <a href={routes['A-propos.dc.html']} class="sat-inline">
+        Clara Peron et Paul Loustaunau
+      </a>
+    </Fragment>
+    <ArnaqueTest situations={situations} labels={testLabels} results={results} />
+  </OutilHero>
+
+  <OutilSection id="regles" eyebrow={rules.eyebrow} title={rules.title} ruled>
+    <p class="lead">{rules.lead}</p>
+    <ol class="rules">
+      {rules.items.map((rule, i) => (
+        <li class="rule">
+          <span aria-hidden="true" class="rule-num">
+            {i + 1}
+          </span>
+          <p class="rule-text">{rule}</p>
+        </li>
+      ))}
+    </ol>
+  </OutilSection>
+
+  <OutilSection
+    id="numeros"
+    eyebrow={numbers.eyebrow}
+    title={numbers.title}
+    measure="20ch"
+    spacing="night"
+  >
+    <ul class="numbers">
+      {numbers.items.map((item) => (
+        <li class="number">
+          <p class:list={['number-value', { 'number-value--gold': item.gold }]}>{item.value}</p>
+          <p class="number-text">{item.text}</p>
+        </li>
+      ))}
+    </ul>
+    <div class="happened">
+      <h3 class="happened-title">{numbers.happened.title}</h3>
+      <p class="happened-text">{numbers.happened.text}</p>
+    </div>
+  </OutilSection>
+
+  <OutilSection id="recevoir" eyebrow={capture.eyebrow} title={capture.title}>
+    <div class="captures">
+      <CaptureCard
+        id="fiche"
+        kind="fiche"
+        eyebrow={capture.fiche.eyebrow}
+        title={capture.fiche.title}
+        formLabel={capture.fiche.formLabel}
+        submit={capture.fiche.submit}
+        usage={capture.fiche.usage}
+        texts={capture}
+      >
+        {capture.fiche.text}
+        <Fragment slot="fields">
+          <CaptureField
+            id="fiche-mail"
+            name="email"
+            type="email"
+            autocomplete="email"
+            label="E-mail *"
+            error={fieldErrors.ficheMail}
+          />
+        </Fragment>
+      </CaptureCard>
+
+      <CaptureCard
+        id="kit"
+        kind="kit"
+        eyebrow={capture.kit.eyebrow}
+        title={capture.kit.title}
+        formLabel={capture.kit.formLabel}
+        submit={capture.kit.submit}
+        submitVariant="secondary"
+        usage={capture.kit.usage}
+        texts={capture}
+      >
+        <Fragment set:html={capture.kit.html} />
+        <Fragment slot="fields">
+          <div class="pair">
+            <CaptureField
+              id="kit-nom"
+              name="nom"
+              autocomplete="name"
+              label="Nom *"
+              error={fieldErrors.kitNom}
+            />
+            <CaptureField
+              id="kit-structure"
+              name="structure"
+              autocomplete="organization"
+              label="Structure *"
+              error={fieldErrors.kitStructure}
+            />
+          </div>
+          <CaptureField
+            id="kit-type"
+            name="type"
+            label="Type de structure *"
+            options={capture.kit.types}
+            error={fieldErrors.kitType}
+          />
+          <CaptureField
+            id="kit-mail"
+            name="email"
+            type="email"
+            autocomplete="email"
+            label="E-mail professionnel *"
+            error={fieldErrors.kitMail}
+          />
+        </Fragment>
+        <div slot="after" class="more">
+          <p class="more-text" set:html={capture.kit.more.html} />
+          <div class="more-link">
+            <ArrowLink href={capture.kit.more.link.href}>{capture.kit.more.link.label}</ArrowLink>
+          </div>
+        </div>
+      </CaptureCard>
+    </div>
+  </OutilSection>
+
+  <OutilSection id="faq" eyebrow={faq.eyebrow} title={faq.title} spacing="bottom">
+    <SatFaq items={faq.items} />
+    <div class="after-faq">
+      <div class="further">
+        <Eyebrow as="p">Pour aller plus loin</Eyebrow>
+        <SatLinkList items={related} />
+      </div>
+      <div class="sources-col">
+        <section aria-labelledby="sources-t" class="sources">
+          <h2 id="sources-t" class="sources-title">
+            Sources de la page
+          </h2>
+          <ol class="sources-list">
+            {sources.map((s) => (
+              <li>{s}</li>
+            ))}
+          </ol>
+        </section>
+      </div>
+    </div>
+  </OutilSection>
+
+  <SatCta
+    eyebrow={cta.eyebrow}
+    title={cta.title}
+    lead={cta.lead}
+    primary={cta.primary}
+    secondary={cta.secondary}
+  />
+</BaseLayout>
+
+<style>
+  /* Quatre règles */
+  .lead {
+    margin: var(--s-5) 0 0;
+    max-width: 56ch;
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .rules {
+    list-style: none;
+    margin: var(--s-7) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: var(--s-4);
+  }
+
+  .rule {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding: 28px var(--s-5);
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+  }
+
+  .rule-num {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 1;
+    color: var(--gold-deep);
+  }
+
+  .rule-text {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+
+  /* Les bons numéros (section nuit) */
+  .numbers {
+    list-style: none;
+    margin: var(--s-7) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: var(--s-6) 40px;
+  }
+
+  .number {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1px solid var(--night-line);
+    padding-top: 18px;
+  }
+
+  .number-value {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(2rem, 1.6rem + 1.4vw, 2.75rem);
+    line-height: 1.05;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--on-night);
+  }
+
+  .number-value--gold {
+    color: var(--gold-night);
+  }
+
+  .number-text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--on-night-2);
+  }
+
+  .happened {
+    margin-top: 56px;
+    max-width: var(--measure-text);
+    border-left: 1px solid var(--gold);
+    padding-left: var(--s-5);
+  }
+
+  .happened-title {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+    color: var(--on-night);
+  }
+
+  .happened-text {
+    margin: 10px 0 0;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--on-night-2);
+  }
+
+  /* Blocs de capture */
+  .captures {
+    margin-top: var(--s-7);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+    gap: var(--s-5);
+    align-items: start;
+  }
+
+  .pair {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 20px;
+  }
+
+  .more {
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+  }
+
+  .more-text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  .more-text :global(strong) {
+    color: var(--ink);
+  }
+
+  .more-link {
+    margin-top: var(--s-1);
+  }
+
+  /* Après la FAQ : pages liées et sources */
+  .after-faq {
+    margin-top: var(--s-8);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-7) 72px;
+  }
+
+  .further {
+    flex: 1 1 420px;
+    min-width: 0;
+  }
+
+  .sources-col {
+    flex: 1 1 320px;
+    min-width: 0;
+  }
+
+  .sources {
+    max-width: var(--measure-text);
+    border-top: 1px solid var(--line);
+    padding-top: var(--s-4);
+  }
+
+  .sources-title {
+    margin: 0;
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .sources-list {
+    margin: var(--s-3) 0 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+</style>

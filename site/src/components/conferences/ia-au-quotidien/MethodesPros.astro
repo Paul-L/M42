@@ -1,0 +1,126 @@
+---
+/**
+ * Section « Les méthodes des pros, version maison » (conférence I) : titre et chapô en rangée,
+ * puis tableau à trois colonnes « Chez les pros / Version maison / En pratique ».
+ * En-têtes de colonnes visuels (aria-hidden, comme la maquette) ; chaque ligne est un groupe
+ * terme / détails d'une liste de définitions.
+ */
+import Container from '../../Container.astro';
+import Eyebrow from '../../Eyebrow.astro';
+import SectionHeading from '../SectionHeading.astro';
+import type { MethodePro } from '../../../data/conferences/ia-au-quotidien';
+
+interface Props {
+  surTitre: string;
+  titre: string;
+  chapo: string;
+  colonnes: [string, string, string];
+  items: MethodePro[];
+}
+
+const { surTitre, titre, chapo, colonnes, items } = Astro.props;
+---
+
+<section id="methodes" aria-labelledby="titre-methodes" class="meth">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <div class="head">
+      <SectionHeading id="titre-methodes">{titre}</SectionHeading>
+      <p class="lead m42-reveal">{chapo}</p>
+    </div>
+    <div class="table m42-reveal">
+      <div class="cols" aria-hidden="true">
+        {colonnes.map((c) => (
+          <span>{c}</span>
+        ))}
+      </div>
+      <dl class="rows">
+        {items.map((m) => (
+          <div class="row">
+            <dt class="pro">{m.pro}</dt>
+            <dd class="maison">{m.maison}</dd>
+            <dd class="pratique">{m.pratique}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .meth {
+    padding: var(--section-y) 0;
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px 64px;
+  }
+
+  .lead {
+    margin: 20px 0 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .table {
+    margin-top: 48px;
+    border-top: 1px solid var(--ink);
+  }
+
+  .cols,
+  .row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 8px 32px;
+  }
+
+  .cols {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .rows {
+    margin: 0;
+  }
+
+  .row {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .row:last-child {
+    border-bottom: 0;
+  }
+
+  .pro {
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .maison {
+    margin: 0;
+    font-size: var(--fs-faq);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .pratique {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+</style>

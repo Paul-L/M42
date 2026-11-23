@@ -1,0 +1,167 @@
+---
+/**
+ * En-tête des pages satellites : fil d'Ariane, sur-titre, H1, chapô, puis (facultatif) une ligne
+ * de formats, deux boutons, une signature (slot « byline »), et une colonne à droite (slot « aside »).
+ *
+ * Props :
+ * - `crumbs` : fil d'Ariane (le dernier élément est la page courante).
+ * - `eyebrow`, `title`, `lead` : textes de la maquette.
+ * - `size` : « xl » (séminaire, jusqu'à 5,25 rem) ou « lg » (4,5 rem).
+ * - `measure` : largeur max. du H1 (« 20ch » ou « 22ch »).
+ * - `note` : ligne grise sous le chapô (formats).
+ * - `primary`, `secondary` : boutons.
+ */
+import Breadcrumb from '../Breadcrumb.astro';
+import Button from '../Button.astro';
+import Eyebrow from '../Eyebrow.astro';
+import type { Crumb, SatLink } from '../../data/satellites/types';
+import './satellites.css';
+
+interface Props {
+  crumbs: Crumb[];
+  eyebrow: string;
+  title: string;
+  lead: string;
+  size?: 'xl' | 'lg';
+  measure?: '20ch' | '22ch';
+  note?: string;
+  primary?: SatLink;
+  secondary?: SatLink;
+}
+
+const {
+  crumbs,
+  eyebrow,
+  title,
+  lead,
+  size = 'lg',
+  measure = '20ch',
+  note,
+  primary,
+  secondary,
+} = Astro.props;
+---
+
+<section aria-labelledby="titre-page" class="hero">
+  <div class="inner">
+    <Breadcrumb items={crumbs} />
+    <div class="row">
+      <div class="main">
+        <Eyebrow>{eyebrow}</Eyebrow>
+        <h1
+          id="titre-page"
+          class:list={['title', `title--${size}`, measure === '22ch' ? 'title--22' : 'title--20']}
+        >
+          {title}
+        </h1>
+        <p class="lead">{lead}</p>
+        {note && <p class="note">{note}</p>}
+        {Astro.slots.has('byline') && (
+          <p class="byline">
+            <slot name="byline" />
+          </p>
+        )}
+        {(primary || secondary) && (
+          <div class="actions">
+            {primary && <Button href={primary.href}>{primary.label}</Button>}
+            {secondary && (
+              <Button href={secondary.href} variant="secondary">
+                {secondary.label}
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
+      <div class="side">
+        <slot name="aside" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding: clamp(2rem, 4vw, 3rem) 0 clamp(3rem, 6vw, 5rem);
+  }
+
+  .inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 var(--gutter-x);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--s-7) var(--s-8);
+  }
+
+  .main {
+    flex: 999 1 560px;
+    min-width: 0;
+  }
+
+  .side {
+    flex: 1 1 340px;
+    min-width: 0;
+  }
+
+  .title {
+    margin: var(--s-5) 0 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    line-height: 0.98;
+    letter-spacing: var(--tracking-h1);
+    color: var(--ink);
+  }
+
+  .title--xl {
+    font-size: clamp(2.75rem, 1.6rem + 4.2vw, 5.25rem);
+  }
+
+  .title--lg {
+    font-size: clamp(2.5rem, 1.5rem + 3.6vw, 4.5rem);
+  }
+
+  .title--20 {
+    max-width: 20ch;
+  }
+
+  .title--22 {
+    max-width: 22ch;
+  }
+
+  .lead {
+    margin: var(--s-5) 0 0;
+    max-width: 56ch;
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .note {
+    margin: var(--s-5) 0 0;
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    color: var(--ink-3);
+  }
+
+  .byline {
+    margin: var(--s-5) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-4);
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    color: var(--ink-3);
+  }
+
+  .actions {
+    margin-top: var(--s-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-4) var(--s-5);
+  }
+</style>

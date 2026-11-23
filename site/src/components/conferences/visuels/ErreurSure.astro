@@ -1,0 +1,312 @@
+---
+/**
+ * Visuel de l'animation « L'erreur sûre d'elle » (conférence I), à placer dans le slot
+ * « visual » de ScrollStory (visualSize="wide"). Aucun JavaScript : l'état suit les attributs
+ * data-mode / data-step posés par ScrollStory sur la section.
+ *
+ * Le rendu de base est l'état final (mode à plat, sans JavaScript, mouvement réduit) ; les
+ * étapes de l'animation (0 à 5) retirent ce qui n'est pas encore révélé. Correspondance avec
+ * renderVals() de la maquette :
+ * - étape 0 : réponse masquée (opacité 0, 12 px plus bas) ;
+ * - étape 1 : réponse affichée ;
+ * - étape 2 : source surlignée or 45 % + anneau or ;
+ * - étape 3 : faits et source surlignés or 32 %, bloc « Le deuxième avis » affiché ;
+ * - étapes 4 et 5 : faits et source barrés, tampon « Inventé » (échelle 1,4 → 1).
+ * Exemple reconstitué : roman, autrice, éditeur, prix et revue fictifs.
+ */
+
+const legende =
+  "Exemple reconstitué : le roman, l'autrice, l'éditeur, le prix et la revue sont fictifs. [À REMPLACER par la démonstration réelle filmée]";
+
+// Réponse de l'IA : texte et faits inventés (surlignés puis barrés). Rendue par segments pour
+// qu'aucune espace ne s'insère entre « d' » et le nom de l'autrice.
+const reponse: (string | { fait: string })[] = [
+  "« Les Horloges de Port-Salies » est un roman d'",
+  { fait: 'Hélène Varenne' },
+  ', publié en ',
+  { fait: '2011 aux éditions du Phare' },
+  '. Il a reçu le ',
+  { fait: 'prix des Lecteurs du Littoral' },
+  ' en 2012, salué pour son écriture « lumineuse et précise ».',
+];
+---
+
+<div class="chat">
+  <div class="chat-head">
+    <span>Assistant IA · nouvelle conversation</span>
+    <span class="chat-dots" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+  </div>
+  <div class="chat-body">
+    <div class="question">
+      Qui a écrit le roman « Les Horloges de Port-Salies » ? A-t-il reçu un prix ?
+    </div>
+    <div class="answer fade">
+      {reponse.map((seg) =>
+        typeof seg === 'string' ? seg : <span class="hl hl-f fade">{seg.fait}</span>,
+      )}
+      <span class="source">
+        Source : <span class="hl hl-s fade">La Revue des lettres, n° 214, mars 2012</span>
+      </span>
+      <span class="stamp fade" aria-hidden="true">
+        Inventé
+      </span>
+    </div>
+  </div>
+  <div class="verif fade">
+    <p class="verif-label">Le deuxième avis · vérification</p>
+    <div class="search">
+      <span class="search-q">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="M20 20l-4-4"></path>
+        </svg>
+        « Les Horloges de Port-Salies »
+      </span>
+      <span class="search-r">Aucun résultat</span>
+    </div>
+    <div class="search">
+      <span class="search-q">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="M20 20l-4-4"></path>
+        </svg>
+        « La Revue des lettres » n° 214
+      </span>
+      <span class="search-r">Introuvable</span>
+    </div>
+  </div>
+</div>
+<p class="caption">{legende}</p>
+
+<style>
+  .fade {
+    transition:
+      opacity var(--dur-3) var(--ease-out),
+      transform var(--dur-3) var(--ease-out),
+      background-color var(--dur-3) var(--ease-out),
+      box-shadow var(--dur-3) var(--ease-out),
+      color var(--dur-3) var(--ease-out);
+  }
+
+  /* Fenêtre de conversation */
+  .chat {
+    background: var(--paper-raised);
+    color: var(--ink);
+    border: 1px solid var(--night-line);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chat-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink-3);
+  }
+
+  .chat-dots {
+    display: inline-flex;
+    gap: 5px;
+  }
+
+  .chat-dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--line);
+  }
+
+  .chat-body {
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .question {
+    align-self: flex-end;
+    max-width: 86%;
+    background: var(--ink);
+    color: var(--on-night);
+    padding: 10px 14px;
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+
+  .answer {
+    position: relative;
+    align-self: flex-start;
+    max-width: 92%;
+    background: var(--paper-sunk);
+    padding: 12px 14px;
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+
+  .source {
+    display: block;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--ink-3);
+  }
+
+  /* Surlignages : état final par défaut (or 32 %, barrés) */
+  .hl {
+    border-radius: 3px;
+    text-decoration: line-through;
+    background-color: color-mix(in srgb, var(--gold) 32%, transparent);
+  }
+
+  .hl-s {
+    color: var(--ink-2);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--gold) 0%, transparent);
+  }
+
+  .stamp {
+    position: absolute;
+    right: -8px;
+    bottom: -14px;
+    transform: rotate(-7deg) scale(1);
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    background: rgb(14 15 18 / 0.9);
+    padding: 6px 12px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* Le deuxième avis */
+  .verif {
+    border-top: 1px solid var(--line);
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .verif-label {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .search {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px 12px;
+    padding: 8px 10px;
+    border: 1px solid var(--line-strong);
+    background: var(--paper);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .search-q {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .search-q svg {
+    color: var(--ink);
+  }
+
+  .search-r {
+    font-weight: 600;
+    color: var(--error);
+  }
+
+  .caption {
+    margin: 12px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--on-night-3);
+  }
+
+  /* --- Étapes de l'animation (mode « anim » seulement) --- */
+
+  /* Étape 0 : la réponse n'est pas encore arrivée */
+  :global([data-story][data-mode='anim'][data-step='0']) .answer {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  /* Étapes 0 à 3 : rien n'est encore barré, pas de tampon */
+  :global([data-story][data-mode='anim'][data-step='0']) .hl,
+  :global([data-story][data-mode='anim'][data-step='1']) .hl,
+  :global([data-story][data-mode='anim'][data-step='2']) .hl,
+  :global([data-story][data-mode='anim'][data-step='3']) .hl {
+    text-decoration: none;
+  }
+
+  :global([data-story][data-mode='anim'][data-step='0']) .stamp,
+  :global([data-story][data-mode='anim'][data-step='1']) .stamp,
+  :global([data-story][data-mode='anim'][data-step='2']) .stamp,
+  :global([data-story][data-mode='anim'][data-step='3']) .stamp {
+    opacity: 0;
+    transform: rotate(-7deg) scale(1.4);
+  }
+
+  /* Étapes 0 à 2 : faits non surlignés, vérification masquée */
+  :global([data-story][data-mode='anim'][data-step='0']) .hl-f,
+  :global([data-story][data-mode='anim'][data-step='1']) .hl-f,
+  :global([data-story][data-mode='anim'][data-step='2']) .hl-f {
+    background-color: color-mix(in srgb, var(--gold) 0%, transparent);
+  }
+
+  :global([data-story][data-mode='anim'][data-step='0']) .verif,
+  :global([data-story][data-mode='anim'][data-step='1']) .verif,
+  :global([data-story][data-mode='anim'][data-step='2']) .verif {
+    opacity: 0;
+  }
+
+  /* Étapes 0 et 1 : source non surlignée */
+  :global([data-story][data-mode='anim'][data-step='0']) .hl-s,
+  :global([data-story][data-mode='anim'][data-step='1']) .hl-s {
+    background-color: color-mix(in srgb, var(--gold) 0%, transparent);
+  }
+
+  /* Étape 2 : « Elle cite même une source » (surlignage 45 % + anneau or) */
+  :global([data-story][data-mode='anim'][data-step='2']) .hl-s {
+    background-color: color-mix(in srgb, var(--gold) 45%, transparent);
+    box-shadow: 0 0 0 2px var(--gold);
+  }
+</style>

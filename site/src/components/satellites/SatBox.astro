@@ -1,0 +1,39 @@
+---
+/**
+ * Encadré sur fond papier creusé, libellé en capitales (cas signalé, questionnaire…).
+ * Contenu libre (slot), à composer avec SatText ou une liste.
+ *
+ * Props :
+ * - `label` : libellé du bloc.
+ */
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<div class="box">
+  <p class="label">{label}</p>
+  <slot />
+</div>
+
+<style>
+  .box {
+    margin: var(--s-6) 0 0;
+    max-width: var(--measure-text);
+    padding: var(--s-5) 26px;
+    box-sizing: border-box;
+    background: var(--paper-sunk);
+  }
+
+  .label {
+    margin: 0;
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+</style>

@@ -1,0 +1,162 @@
+---
+/**
+ * Section nuit « Version keynote · 45 minutes » (conférence I) : ex-« Voir clair dans l'IA »
+ * (catalogue 04), format de cette page et non page à part (11, § 1.3).
+ * Note éditoriale (marqueur « À DÉCIDER » du nom) en encadré pointillé, déroulé minuté à gauche,
+ * trois règles en citation à droite, lien vers la page Événements.
+ */
+import ArrowLink from '../../ArrowLink.astro';
+import Container from '../../Container.astro';
+import Eyebrow from '../../Eyebrow.astro';
+import SectionHeading from '../SectionHeading.astro';
+import type { MomentKeynote } from '../../../data/conferences/ia-au-quotidien';
+
+interface Props {
+  surTitre: string;
+  titre: string;
+  chapo: string;
+  note?: string | undefined;
+  deroule: MomentKeynote[];
+  regles: string[];
+  lien: { label: string; href: string };
+}
+
+const { surTitre, titre, chapo, note, deroule, regles, lien } = Astro.props;
+---
+
+<section id="version-keynote" class="kn m42-night" aria-labelledby="titre-keynote">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <SectionHeading id="titre-keynote">{titre}</SectionHeading>
+    <p class="lead m42-reveal">{chapo}</p>
+    {note && <p class="note m42-reveal">{note}</p>}
+    <div class="row">
+      <ol class="deroule">
+        {deroule.map((m) => (
+          <li class="moment m42-reveal">
+            <span class="minute">{m.minute}</span>
+            <span class="moment-text">
+              <strong>{m.titre}</strong> {m.texte}
+            </span>
+          </li>
+        ))}
+      </ol>
+      <ol class="regles">
+        {regles.map((r, i) => (
+          <li class="regle m42-reveal">
+            <span class="regle-num">{i + 1}</span>
+            <p class="regle-text">{r}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+    <ArrowLink href={lien.href} class="kn-link">
+      {lien.label}
+    </ArrowLink>
+  </Container>
+</section>
+
+<style>
+  .kn {
+    background: var(--night);
+    color: var(--on-night);
+    padding: var(--section-y) 0;
+  }
+
+  .lead {
+    margin: 20px 0 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--on-night-2);
+  }
+
+  .note {
+    margin: 20px 0 0;
+    display: inline-block;
+    padding: 6px 10px;
+    border: 1px dashed var(--night-line-strong);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--on-night-3);
+  }
+
+  .row {
+    margin-top: 48px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px 64px;
+  }
+
+  .deroule,
+  .regles {
+    flex: 1 1 420px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .deroule {
+    border-top: 1px solid var(--on-night);
+  }
+
+  .moment {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--night-line);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .minute {
+    color: var(--on-night-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .moment-text {
+    color: var(--on-night-2);
+  }
+
+  .moment-text strong {
+    color: var(--on-night);
+    font-weight: 600;
+  }
+
+  .regles {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .regle {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 16px;
+    align-items: baseline;
+  }
+
+  .regle-num {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 44px;
+    line-height: 1;
+    color: var(--gold-night);
+  }
+
+  .regle-text {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: var(--fs-quote);
+    line-height: var(--lh-quote);
+    color: var(--on-night);
+  }
+
+  .kn :global(.kn-link) {
+    margin-top: 48px;
+  }
+</style>

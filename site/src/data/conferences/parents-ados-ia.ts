@@ -5,12 +5,44 @@
 // - Précaution 04 : le +138 % de cyberharcèlement vaut pour tous les âges (« tous âges confondus »).
 // - FAQ pass Culture volontairement absente (décision n° 7 de 05).
 //
-// Champs propres à cette page, absents du type Conference (à intégrer au type en phase 3) :
-// `friseJournee` (heures de la frise de l'animation), `charteFamille` (temps fort),
-// `bonNumero` (bande nuit « 3018 »).
+// Champs facultatifs du type Conference propres à cette page (./types.ts) : `frise` (heures de la
+// frise de l'animation), `charte` (temps fort), `bonNumero` (bande nuit « 3018 »). Les constantes
+// `friseJournee`, `charteFamille` et `bonNumero` restent exportées.
 
 import { routes } from '../routes';
-import type { Conference } from './types';
+import type { BandeNumero, CharteNumerique, Conference } from './types';
+
+/** Heures de la frise « Une journée d'ado » (une par étape de la démonstration). */
+export const friseJournee: string[] = [
+  '7 h 10',
+  '8 h 05',
+  '17 h 30',
+  '19 h 45',
+  '22 h 40',
+  'La charte',
+];
+
+/** Temps fort : la charte numérique de la famille (modèle à compléter, aucun fichier en v1). */
+export const charteFamille: CharteNumerique = {
+  titre: 'Notre charte numérique',
+  rubriques: [
+    'Nos lieux sans écran',
+    'Nos horaires',
+    "Les devoirs avec l'IA",
+    "Ce qu'on ne publie jamais",
+    "Ce que les parents s'engagent à faire",
+    'Si quelque chose ne va pas, on en parle à',
+  ],
+  signature: 'Signée le ……… par toute la famille.',
+};
+
+/** Bande nuit « Le bon numéro » (3018). */
+export const bonNumero: BandeNumero = {
+  valeur: '3018',
+  titre: 'En cas de cyberharcèlement, un seul numéro à retenir',
+  texte:
+    'Le numéro national contre le harcèlement et les violences numériques, pour les jeunes et pour leurs parents. Gratuit et anonyme.',
+};
 
 export const parentsAdosIa: Conference = {
   slug: 'parents-ados-ia',
@@ -91,6 +123,8 @@ export const parentsAdosIa: Conference = {
       },
     ],
   },
+
+  frise: friseJournee,
 
   enClair:
     "Depuis juin 2025, le cadre d'usage de l'Éducation nationale autorise l'IA générative en classe à partir de la 4e, encadrée par l'enseignant ; un devoir fait par une IA sans autorisation est une fraude. En cas de cyberharcèlement, le 3018 est gratuit et anonyme.",
@@ -173,6 +207,10 @@ export const parentsAdosIa: Conference = {
       "Rédigée sur place à partir d'un modèle fourni, puis complétée à la maison, avec les enfants. Chacun la signe, parents compris.",
     note: 'Modèle téléchargeable [À PRODUIRE].',
   },
+
+  charte: charteFamille,
+
+  bonNumero,
 
   formats: {
     titre: 'Quatre façons de la programmer',
@@ -317,36 +355,4 @@ export const parentsAdosIa: Conference = {
     ],
     about: ['Cyberharcèlement', 'Intelligence artificielle générative', 'Parentalité numérique'],
   },
-};
-
-/** Heures de la frise « Une journée d'ado » (une par étape de la démonstration). */
-export const friseJournee: string[] = [
-  '7 h 10',
-  '8 h 05',
-  '17 h 30',
-  '19 h 45',
-  '22 h 40',
-  'La charte',
-];
-
-/** Temps fort : la charte numérique de la famille (modèle à compléter, aucun fichier en v1). */
-export const charteFamille = {
-  titre: 'Notre charte numérique',
-  rubriques: [
-    'Nos lieux sans écran',
-    'Nos horaires',
-    "Les devoirs avec l'IA",
-    "Ce qu'on ne publie jamais",
-    "Ce que les parents s'engagent à faire",
-    'Si quelque chose ne va pas, on en parle à',
-  ],
-  signature: 'Signée le ……… par toute la famille.',
-};
-
-/** Bande nuit « Le bon numéro » (3018). */
-export const bonNumero = {
-  valeur: '3018',
-  titre: 'En cas de cyberharcèlement, un seul numéro à retenir',
-  texte:
-    'Le numéro national contre le harcèlement et les violences numériques, pour les jeunes et pour leurs parents. Gratuit et anonyme.',
 };

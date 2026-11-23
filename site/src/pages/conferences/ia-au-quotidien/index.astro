@@ -1,0 +1,117 @@
+---
+/**
+ * Conférence I « L'IA au quotidien », conférence signature
+ * (kit/maquette/Conf-ia-au-quotidien.dc.html).
+ * Contenus : src/data/conferences/ia-au-quotidien.ts. JSON-LD : WebPage + BreadcrumbList + Service
+ * + FAQPage (src/data/conferences/jsonld.ts).
+ * Îlot : animation au défilement « L'erreur sûre d'elle » (ScrollStory + visuel ErreurSure).
+ * FAQ en <details> sans JavaScript.
+ *
+ * Pas de `current` : la rubrique « Conférences » est marquée par `section` (DECISIONS.md, point 3).
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ConferenceHero from '../../../components/conferences/ConferenceHero.astro';
+import ScrollStory from '../../../components/conferences/ScrollStory.astro';
+import ErreurSure from '../../../components/conferences/visuels/ErreurSure.astro';
+import ConferenceObjectives from '../../../components/conferences/ConferenceObjectives.astro';
+import ConferenceProgram from '../../../components/conferences/ConferenceProgram.astro';
+import TempsFort from '../../../components/conferences/TempsFort.astro';
+import ConferenceFormats from '../../../components/conferences/ConferenceFormats.astro';
+import ConferenceAudiences from '../../../components/conferences/ConferenceAudiences.astro';
+import ConferenceFaq from '../../../components/conferences/ConferenceFaq.astro';
+import OtherConferences from '../../../components/conferences/OtherConferences.astro';
+import ConferenceCta from '../../../components/conferences/ConferenceCta.astro';
+import SignatureMention from '../../../components/conferences/ia-au-quotidien/SignatureMention.astro';
+import TempsFortEtapes from '../../../components/conferences/ia-au-quotidien/TempsFortEtapes.astro';
+import MethodesPros from '../../../components/conferences/ia-au-quotidien/MethodesPros.astro';
+import VersionKeynote from '../../../components/conferences/ia-au-quotidien/VersionKeynote.astro';
+import { iaAuQuotidien as conf } from '../../../data/conferences/ia-au-quotidien';
+import { conferenceJsonLd } from '../../../data/conferences/jsonld';
+---
+
+<BaseLayout
+  section="conferences"
+  title={conf.seo.title}
+  description={conf.seo.description}
+  jsonLd={conferenceJsonLd(conf)}
+>
+  <ConferenceHero
+    titre={conf.titre}
+    surTitre={conf.surTitre}
+    sousTitre={conf.sousTitre}
+    promesse={conf.promesse}
+    ctaSecondaire={conf.ctaSecondaire}
+    miseAJour={conf.miseAJour}
+    fiche={conf.fiche}
+    subtitleMax={28}
+  >
+    <SignatureMention slot="before-title" />
+  </ConferenceHero>
+
+  <ScrollStory
+    label={conf.demonstration.label}
+    surTitre={conf.demonstration.surTitre}
+    etapes={conf.demonstration.etapes}
+    k={conf.demonstration.k}
+    visualSize="wide"
+  >
+    <ErreurSure slot="visual" />
+  </ScrollStory>
+
+  <ConferenceObjectives
+    titre={conf.objectifs.titre}
+    enClair={conf.enClair}
+    items={conf.objectifs.items}
+  />
+
+  <ConferenceProgram
+    surTitre={conf.programme.surTitre}
+    titre={conf.programme.titre}
+    chapo={conf.programme.chapo}
+    blocs={conf.programme.blocs}
+  />
+
+  <TempsFort
+    id={conf.tempsFort.id}
+    titre={conf.tempsFort.titre}
+    chapo={conf.tempsFort.chapo}
+    note={conf.tempsFort.note}
+    notePosition={conf.tempsFort.notePosition}
+    asideBasis={360}
+  >
+    <TempsFortEtapes etapes={conf.tempsFortEtapes} />
+  </TempsFort>
+
+  <MethodesPros
+    surTitre={conf.methodes.surTitre}
+    titre={conf.methodes.titre}
+    chapo={conf.methodes.chapo}
+    colonnes={conf.methodes.colonnes}
+    items={conf.methodes.items}
+  />
+
+  <VersionKeynote
+    surTitre={conf.keynote.surTitre}
+    titre={conf.keynote.titre}
+    chapo={conf.keynote.chapo}
+    note={conf.keynote.note}
+    deroule={conf.keynote.deroule}
+    regles={conf.keynote.regles}
+    lien={conf.keynote.lien}
+  />
+
+  <ConferenceFormats titre={conf.formats.titre} items={conf.formats.items} />
+
+  <ConferenceAudiences
+    titre={conf.publics.titre}
+    chapo={conf.publics.chapo}
+    items={conf.publics.items}
+    declinaison={conf.declinaisonEntreprise}
+  />
+
+  <ConferenceFaq titre={conf.faq.titre} items={conf.faq.items} sources={conf.faq.sources} />
+
+  <OtherConferences current={conf.slug} />
+
+  <ConferenceCta titre={conf.contact.titre} chapo={conf.contact.chapo} cta={conf.contact.cta} />
+</BaseLayout>

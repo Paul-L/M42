@@ -1,0 +1,210 @@
+---
+/**
+ * Section « Formats » de /conferences/ (fond sable) : titre et chapô en rangée, quatre formats
+ * (durée, H3, texte), puis le tableau « Quel format pour quel moment ? ».
+ * Variante de conferences/ConferenceFormats : celui-ci ajoute le chapô en rangée, le fond sable
+ * et le tableau de choix.
+ *
+ * Props :
+ * - surTitre : défaut « Formats ».
+ * - titre, chapo : H2 et chapô.
+ * - items : { duree, titre, texte }[].
+ * - choix : { titre, colonnes, lignes: { evenement, format (texte ou lien) }[] }.
+ */
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeading from '../conferences/SectionHeading.astro';
+import type { Format, Lien } from '../../data/conferences/types';
+
+interface Props {
+  surTitre?: string;
+  titre: string;
+  chapo: string;
+  items: Format[];
+  choix: {
+    titre: string;
+    colonnes: [string, string];
+    lignes: { evenement: string; format: Lien | string }[];
+  };
+}
+
+const { surTitre = 'Formats', titre, chapo, items, choix } = Astro.props;
+---
+
+<section id="formats" aria-labelledby="titre-formats" class="formats">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <div class="head m42-reveal">
+      <SectionHeading id="titre-formats" reveal={false} flush>
+        {titre}
+      </SectionHeading>
+      <p class="lead">{chapo}</p>
+    </div>
+    <div class="grid">
+      {items.map((f) => (
+        <div class="item m42-reveal">
+          <p class="duration">{f.duree}</p>
+          <h3 class="item-title">{f.titre}</h3>
+          <p class="item-text">{f.texte}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="choice m42-reveal">
+      <h3 class="choice-title">{choix.titre}</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col" class="th-event">
+              {choix.colonnes[0]}
+            </th>
+            <th scope="col" class="th-format">
+              {choix.colonnes[1]}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {choix.lignes.map((l) => (
+            <tr>
+              <td class="td-event">{l.evenement}</td>
+              <td class="td-format">
+                {typeof l.format === 'string' ? (
+                  l.format
+                ) : (
+                  <a href={l.format.href}>{l.format.label}</a>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .formats {
+    padding: var(--section-y) 0;
+    background: var(--paper-sunk);
+  }
+
+  .head {
+    margin-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px 64px;
+  }
+
+  .lead {
+    flex: 0 1 52ch;
+    margin: 0;
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .grid {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: 32px;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1px solid var(--ink);
+    padding-top: 20px;
+  }
+
+  .duration {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-card);
+    line-height: var(--lh-card);
+  }
+
+  .item-title {
+    margin: 0;
+    font-size: var(--fs-faq);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .item-text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  /* Quel format pour quel moment ? */
+  .choice {
+    margin-top: 64px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 64px;
+  }
+
+  .choice-title {
+    flex: 1 1 260px;
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .table {
+    flex: 3 1 560px;
+    min-width: 0;
+    border-collapse: collapse;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  thead tr {
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--line-strong);
+    text-align: left;
+  }
+
+  th {
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+
+  .th-event {
+    padding: 12px 16px 12px 0;
+  }
+
+  .th-format {
+    padding: 12px 0;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .td-event {
+    padding: 14px 16px 14px 0;
+    color: var(--ink-2);
+  }
+
+  .td-format {
+    padding: 14px 0;
+    font-weight: 600;
+  }
+
+  .td-format a {
+    color: var(--ink);
+    text-underline-offset: 3px;
+  }
+</style>

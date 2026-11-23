@@ -1,0 +1,22 @@
+---
+/** Phrase mise en exergue : Cormorant italique, filet or de 1 px à gauche (slot). */
+---
+
+<p class="pull">
+  <slot />
+</p>
+
+<style>
+  .pull {
+    margin: 40px 0 0;
+    max-width: 26ch;
+    padding-left: var(--s-5);
+    border-left: 1px solid var(--gold);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
+    line-height: var(--lh-quote);
+    color: var(--ink);
+  }
+</style>

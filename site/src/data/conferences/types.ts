@@ -99,6 +99,74 @@ export interface MessageJeu {
   texte: string;
   arnaque: boolean;
   explication: string;
+  /**
+   * Texte du bloc de remplacement du visuel (« [Photo : …] »), en attendant le vrai contenu
+   * (jeu « Vrai ou IA ? », conférence III).
+   */
+  visuel?: string;
+}
+
+/** Étape numérotée d'un temps fort (« L'erreur sûre d'elle », conférence I). */
+export interface EtapeTempsFort {
+  titre: string;
+  texte: string;
+}
+
+/** Ligne du tableau « Chez les pros / Version maison / En pratique » (conférence I). */
+export interface MethodePro {
+  pro: string;
+  maison: string;
+  pratique: string;
+}
+
+/** Section « Les méthodes des pros, version maison » (conférence I). */
+export interface SectionMethodesPros {
+  surTitre: string;
+  titre: string;
+  chapo: string;
+  colonnes: [string, string, string];
+  items: MethodePro[];
+}
+
+/** Moment du déroulé de la version keynote (« 0:00 Ouverture. … »). */
+export interface MomentKeynote {
+  minute: string;
+  titre: string;
+  texte: string;
+}
+
+/** Section « Version keynote » (conférence I). */
+export interface SectionKeynote {
+  surTitre: string;
+  titre: string;
+  chapo: string;
+  note: string;
+  deroule: MomentKeynote[];
+  regles: string[];
+  lien: Lien;
+}
+
+/** Section « La méthode » : étapes, note et encadré de règle (conférence III). */
+export interface SectionMethode {
+  surTitre: string;
+  titre: string;
+  etapes: { titre: string; texte: string }[];
+  note: string;
+  regle: { titre: string; texte: string };
+}
+
+/** Charte à compléter du temps fort (« Notre charte numérique », conférence IV). */
+export interface CharteNumerique {
+  titre: string;
+  rubriques: string[];
+  signature: string;
+}
+
+/** Bande nuit d'un numéro unique (« 3018 », conférence IV). */
+export interface BandeNumero {
+  valeur: string;
+  titre: string;
+  texte: string;
 }
 
 /**
@@ -144,11 +212,44 @@ export interface Conference {
   enClair: string;
   objectifs: { titre: string; items: string[] };
 
-  chiffres?: { label: string; items: Chiffre[] };
+  chiffres?: {
+    label: string;
+    items: Chiffre[];
+    /** Petite note sous les chiffres (marqueur [À VÉRIFIER …], conférence III). */
+    note?: string;
+  };
 
   programme: { surTitre: string; titre: string; chapo: string; blocs: BlocProgramme[] };
 
-  tempsFort: { id: string; titre: string; chapo: string; note?: string };
+  tempsFort: {
+    id: string;
+    titre: string;
+    chapo: string;
+    note?: string;
+    /** Place de la note : sous le chapô (défaut) ou sous la rangée, pleine largeur (conférence I). */
+    notePosition?: 'aside' | 'after';
+  };
+
+  /** Étapes numérotées du temps fort (conférence I). */
+  tempsFortEtapes?: EtapeTempsFort[];
+
+  /** Section « Les méthodes des pros, version maison » (conférence I). */
+  methodes?: SectionMethodesPros;
+
+  /** Section « Version keynote » (conférence I). */
+  keynote?: SectionKeynote;
+
+  /** Section « La méthode » (conférence III). */
+  methode?: SectionMethode;
+
+  /** Heures de la frise de l'animation au défilement, une par étape (conférence IV). */
+  frise?: string[];
+
+  /** Charte du temps fort (conférence IV). */
+  charte?: CharteNumerique;
+
+  /** Bande nuit « Le bon numéro » (conférence IV). */
+  bonNumero?: BandeNumero;
 
   jeu?: MessageJeu[];
 

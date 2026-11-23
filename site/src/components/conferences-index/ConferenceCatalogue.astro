@@ -1,0 +1,61 @@
+---
+/**
+ * Section « Catalogue » de /conferences/ : sur-titre, H2, chapô, puis les quatre cartes
+ * riches (ConferenceDetailCard) empilées. Pas de padding haut : la section suit l'en-tête.
+ *
+ * Props :
+ * - surTitre, titre, chapo.
+ * - cartes : CarteIndex[] ; formats : ligne des formats ; cta, badge : libellés des cartes.
+ */
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeading from '../conferences/SectionHeading.astro';
+import ConferenceDetailCard from './ConferenceDetailCard.astro';
+import type { CarteIndex } from '../../data/conferences-index';
+
+interface Props {
+  surTitre: string;
+  titre: string;
+  chapo: string;
+  cartes: CarteIndex[];
+  formats: string;
+  cta: string;
+  badge: string;
+}
+
+const { surTitre, titre, chapo, cartes, formats, cta, badge } = Astro.props;
+---
+
+<section id="conferences" aria-labelledby="titre-conferences" class="catalogue">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <SectionHeading id="titre-conferences">{titre}</SectionHeading>
+    <p class="lead m42-reveal">{chapo}</p>
+    <div class="list">
+      {cartes.map((c) => (
+        <ConferenceDetailCard carte={c} formats={formats} cta={cta} badge={badge} />
+      ))}
+    </div>
+  </Container>
+</section>
+
+<style>
+  .catalogue {
+    padding: 0 0 var(--section-y);
+  }
+
+  .lead {
+    margin: 20px 0 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .list {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+</style>

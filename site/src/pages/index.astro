@@ -1,0 +1,103 @@
+---
+/**
+ * Accueil (kit/maquette/Main.dc.html) : /.
+ * SEO : title et meta du commentaire SEO de la maquette, canonical https://m42.guide/,
+ * H1 = sur-titre + baseline dans le même titre.
+ * JSON-LD : Organization + WebSite + Person ×2 (Clara puis Paul) + WebPage
+ * (11_architecture_seo.md, § 3.3, exemple 1). Aucun employeur, aucune structure de
+ * facturation, aucune valeur contenant un marqueur [À …] (DECISIONS.md, point 19) :
+ * téléphone et sameAs, encore à compléter, ne sont pas émis.
+ * Pas de `current` d'en-tête : la maquette n'en marque aucun sur l'accueil (point 3).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeHero from '../components/accueil/HomeHero.astro';
+import HomeFigures from '../components/accueil/HomeFigures.astro';
+import HomePrinciples from '../components/accueil/HomePrinciples.astro';
+import HomeReperes from '../components/accueil/HomeReperes.astro';
+import HomeConferences from '../components/accueil/HomeConferences.astro';
+import HomeAudiences from '../components/accueil/HomeAudiences.astro';
+import HomeDuo from '../components/accueil/HomeDuo.astro';
+import HomeOrganizers from '../components/accueil/HomeOrganizers.astro';
+import HomeCta from '../components/accueil/HomeCta.astro';
+import { assertNoMarker } from '../components/publics/json-ld';
+import { chiffres, citationChiffres } from '../data/accueil';
+import { intervenants, personId, personSchema } from '../data/intervenants';
+
+const title = "Se repérer dans l'IA : conférences, ateliers et repères | M42";
+const description =
+  "Conférences, ateliers et outils gratuits pour comprendre l'IA, déjouer ses pièges et garder l'esprit critique. Entreprises, événements, collectivités, écoles.";
+
+const SITE = 'https://m42.guide';
+const url = `${SITE}/`;
+const orgId = `${SITE}/#organisation`;
+const siteId = `${SITE}/#site`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': orgId,
+      name: 'M42',
+      alternateName: 'M42.guide',
+      url,
+      // Le PNG 512 px de l'exemple SEO n'existe pas encore : logo horizontal du kit (publié).
+      logo: `${SITE}/logos/M42_logo_horizontal_couleur_2000.png`,
+      slogan: "Se repérer dans l'IA.",
+      description:
+        "Conférences, keynotes et ateliers sur l'intelligence artificielle pour les entreprises, les événements, les collectivités, les établissements scolaires et les associations.",
+      email: 'clara@m42.guide',
+      areaServed: { '@type': 'Country', name: 'France' },
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Salies-de-Béarn',
+        addressRegion: 'Nouvelle-Aquitaine',
+        addressCountry: 'FR',
+      },
+      founder: intervenants.map((i) => ({ '@id': personId(i.slug) })),
+      knowsAbout: [
+        'intelligence artificielle',
+        'IA générative',
+        'arnaques et fraudes',
+        'désinformation',
+        'éducation aux médias',
+        'parentalité numérique',
+      ],
+      knowsLanguage: 'fr',
+    },
+    {
+      '@type': 'WebSite',
+      '@id': siteId,
+      url,
+      name: 'M42',
+      alternateName: 'M42.guide',
+      inLanguage: 'fr-FR',
+      publisher: { '@id': orgId },
+    },
+    ...intervenants.map(personSchema),
+    {
+      '@type': 'WebPage',
+      '@id': `${SITE}/#accueil`,
+      url,
+      name: title,
+      description,
+      isPartOf: { '@id': siteId },
+      about: { '@id': orgId },
+      inLanguage: 'fr-FR',
+    },
+  ],
+};
+assertNoMarker(jsonLd, 'accueil');
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <HomeHero />
+  <HomeFigures label="L'IA en chiffres" items={chiffres} quote={citationChiffres} />
+  <HomePrinciples />
+  <HomeReperes />
+  <HomeConferences />
+  <HomeAudiences />
+  <HomeDuo />
+  <HomeOrganizers />
+  <HomeCta />
+</BaseLayout>

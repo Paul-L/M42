@@ -1,0 +1,48 @@
+---
+/**
+ * « Sources de la page » : liste numérotée en 13 px, puis notes facultatives (`notes`).
+ *
+ * Props :
+ * - `items` : sources, texte exact (marqueurs [À …] conservés).
+ * - `notes` : paragraphes sous la liste (mention à valider…).
+ */
+import SatMinor from './SatMinor.astro';
+
+interface Props {
+  items: string[];
+  notes?: string[];
+}
+
+const { items, notes = [] } = Astro.props;
+---
+
+<SatMinor headingId="sources-t" title="Sources de la page">
+  <ol class="list">
+    {items.map((item) => (
+      <li>{item}</li>
+    ))}
+  </ol>
+  {notes.map((note) => (
+    <p class="note">{note}</p>
+  ))}
+</SatMinor>
+
+<style>
+  .list {
+    margin: var(--s-3) 0 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .note {
+    margin: var(--s-3) 0 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+</style>

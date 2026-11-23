@@ -1,0 +1,232 @@
+---
+/**
+ * Satellite « secteur » (kit/maquette/Sat-experts-comptables.dc.html).
+ * Contenus : src/data/satellites/experts-comptables.ts (les notes internes de la maquette,
+ * « NE PAS PUBLIER », y sont reprises en commentaire de code, jamais dans le HTML).
+ * JSON-LD : WebPage + BreadcrumbList + FAQPage (questions sans marqueur seulement,
+ * DECISIONS.md point 19 ; src/data/satellites/json-ld.ts).
+ * Aucun lien d'en-tête marqué dans la maquette : pas de `current`.
+ * Pas de logique interactive (renderVals() vide) ; la FAQ est en <details> natif.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SatHero from '../../components/satellites/SatHero.astro';
+import SatBody from '../../components/satellites/SatBody.astro';
+import SatSection from '../../components/satellites/SatSection.astro';
+import SatText from '../../components/satellites/SatText.astro';
+import SatFigures from '../../components/satellites/SatFigures.astro';
+import SatNote from '../../components/satellites/SatNote.astro';
+import SatPullQuote from '../../components/satellites/SatPullQuote.astro';
+import SatNumbered from '../../components/satellites/SatNumbered.astro';
+import SatTable from '../../components/satellites/SatTable.astro';
+import SatMinor from '../../components/satellites/SatMinor.astro';
+import SatMore from '../../components/satellites/SatMore.astro';
+import SatDraftBlock from '../../components/satellites/SatDraftBlock.astro';
+import SatFaq from '../../components/satellites/SatFaq.astro';
+import SatLinkList from '../../components/satellites/SatLinkList.astro';
+import SatSources from '../../components/satellites/SatSources.astro';
+import SatCta from '../../components/satellites/SatCta.astro';
+import { satellitePageJsonLd } from '../../data/satellites/json-ld';
+import {
+  crumbs,
+  cta,
+  faq,
+  findings,
+  formats,
+  hero,
+  related,
+  seo,
+  sources,
+  speakers,
+  stakes,
+  takeaways,
+  toc,
+} from '../../data/satellites/experts-comptables';
+
+const jsonLd = satellitePageJsonLd({
+  path: seo.path,
+  title: seo.title,
+  description: seo.description,
+  crumbs,
+  faq: faq.items,
+});
+
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<BaseLayout title={seo.title} description={seo.description} jsonLd={jsonLd}>
+  <SatHero
+    crumbs={crumbs}
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    lead={hero.lead}
+    size="lg"
+    measure="22ch"
+    primary={hero.primary}
+    secondary={hero.secondary}
+  >
+    <div slot="aside" class="audiences">
+      <p class="audiences-label">{hero.audiences.label}</p>
+      <ul class="audiences-list">
+        {hero.audiences.items.map((item) => (
+          <li>
+            <p class="audiences-title">{item.title}</p>
+            <p class="audiences-detail">{item.detail}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </SatHero>
+
+  <SatBody toc={toc}>
+    <SatSection id="constat" eyebrow={findings.eyebrow} title={findings.title} first>
+      <SatText>{findings.text}</SatText>
+      <SatFigures items={findings.figures} />
+      <SatNote label={findings.caution.label}>{findings.caution.text}</SatNote>
+      <SatPullQuote>{findings.quote}</SatPullQuote>
+    </SatSection>
+
+    <SatSection id="enjeux" eyebrow={stakes.eyebrow} title={stakes.title}>
+      <SatNumbered items={stakes.items} />
+    </SatSection>
+
+    <SatSection id="formats" eyebrow={formats.eyebrow} title={formats.title}>
+      <SatTable table={formats.table} />
+    </SatSection>
+
+    <SatSection id="emporter" eyebrow={takeaways.eyebrow} title={takeaways.title}>
+      <ul class="takeaways">
+        {takeaways.items.map((item, i) => (
+          <li>
+            <span aria-hidden="true" class="takeaway-num">
+              {pad(i + 1)}
+            </span>
+            <p class="takeaway-text">
+              <strong>{item.strong}</strong>
+              {item.rest}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </SatSection>
+
+    <SatMinor id="intervenants" headingId="intervenants-t" title={speakers.title} spacing="lg">
+      <p class="speakers">{speakers.text}</p>
+      <SatMore href={speakers.link.href} spacing="sm">
+        {speakers.link.label}
+      </SatMore>
+      <SatDraftBlock>{speakers.placeholder}</SatDraftBlock>
+    </SatMinor>
+
+    <SatSection id="faq" eyebrow={faq.eyebrow} title={faq.title}>
+      <SatFaq items={faq.items} />
+    </SatSection>
+
+    <SatSection id="plus-loin" eyebrow="Pour aller plus loin" title="Pages liées">
+      <SatLinkList items={related} />
+    </SatSection>
+
+    <SatSources items={sources} />
+  </SatBody>
+
+  <SatCta
+    eyebrow={cta.eyebrow}
+    title={cta.title}
+    lead={cta.lead}
+    primary={cta.primary}
+    secondary={cta.secondary}
+  />
+</BaseLayout>
+
+<style>
+  /* Encadré « Trois publics, un même cadre » (colonne droite de l'en-tête) */
+  .audiences {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    padding: 28px 26px;
+  }
+
+  .audiences-label {
+    margin: 0;
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .audiences-list {
+    list-style: none;
+    margin: var(--s-4) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .audiences-list li {
+    border-top: 1px solid var(--line);
+    padding: 14px 0;
+  }
+
+  .audiences-title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  .audiences-detail {
+    margin: 2px 0 0;
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    color: var(--ink-3);
+  }
+
+  /* Ce que vos équipes emportent */
+  .takeaways {
+    list-style: none;
+    margin: var(--s-6) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: var(--s-4);
+  }
+
+  .takeaways li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-5) 22px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+  }
+
+  .takeaway-num {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+    color: var(--gold-deep);
+  }
+
+  .takeaway-text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .takeaway-text strong {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* Qui intervient */
+  .speakers {
+    margin: var(--s-3) 0 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+</style>

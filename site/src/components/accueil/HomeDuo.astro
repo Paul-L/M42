@@ -1,0 +1,85 @@
+---
+/**
+ * « Qui intervient » (section alternée, sans marge haute propre) : Clara avant Paul.
+ * Le H2 a l'apparence d'un sur-titre, comme dans la maquette.
+ * Description de Paul avec son marqueur [À VALIDER] (formulation de repli, aucun employeur).
+ */
+import ArrowLink from '../ArrowLink.astro';
+import Container from '../Container.astro';
+import { intervenants } from '../../data/intervenants';
+import { routes } from '../../data/routes';
+
+const [clara, paul] = intervenants;
+---
+
+<section id="duo" aria-labelledby="titre-duo" class="duo">
+  <Container>
+    <div class="row m42-reveal">
+      <div class="text">
+        <h2 id="titre-duo" class="label">
+          Qui intervient
+        </h2>
+        <p class="body">
+          Les interventions M42 sont conçues et animées par <strong>{clara?.nom}</strong>,
+          formatrice d'adultes, et <strong>{paul?.nom}</strong>, qui conçoit et déploie des systèmes
+          d'IA en entreprise [À VALIDER]. La pédagogie de l'une, la pratique de l'autre.
+        </p>
+      </div>
+      <div class="link">
+        <ArrowLink href={routes['A-propos.dc.html']}>Parcours et démarche</ArrowLink>
+      </div>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .duo {
+    background: var(--paper-sunk);
+    padding: clamp(3rem, 6vw, 5rem) 0;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-6) var(--s-8);
+    border-top: 1px solid var(--ink);
+    padding-top: var(--s-6);
+  }
+
+  .text {
+    flex: 1 1 420px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .label {
+    margin: 0;
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .body {
+    margin: 0;
+    max-width: 60ch;
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  .body strong {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .link {
+    flex: 0 0 auto;
+  }
+</style>

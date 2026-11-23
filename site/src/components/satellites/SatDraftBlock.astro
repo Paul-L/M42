@@ -1,0 +1,30 @@
+---
+/**
+ * Bloc en attente de contenu (« [À COMPLÉTER : témoignages…] ») : même rendu que Placeholder
+ * (fond creusé, bordure pointillée), mais sans format d'image imposé, 24 px sous le bloc précédent.
+ * Le composant partagé Placeholder impose un ratio (3/2, 4/5, 16/9, 1/1) : d'où ce composant.
+ *
+ * Slot : texte exact de la maquette.
+ */
+---
+
+<div class="draft">
+  <slot />
+</div>
+
+<style>
+  .draft {
+    margin-top: var(--s-5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--s-5);
+    box-sizing: border-box;
+    text-align: center;
+    background: var(--paper-sunk);
+    border: 1px dashed var(--line-strong);
+    color: var(--ink-3);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+</style>

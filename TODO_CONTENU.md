@@ -223,13 +223,16 @@ et la liste automatique des marqueurs `[À …]` (régénérée par `node script
 
 - [ ] `site/src/components/CtaBand.astro` : [À COMPLÉTER : téléphone]
 - [ ] `site/src/components/a-propos/AboutCta.astro` : [À COMPLÉTER : téléphone]
+- [ ] `site/src/components/accueil/HomeCta.astro` : [À COMPLÉTER : téléphone]
+- [ ] `site/src/components/accueil/HomeDuo.astro` : [À VALIDER]
 - [ ] `site/src/components/conferences/ConferenceCta.astro` : [À COMPLÉTER : téléphone]
 - [ ] `site/src/components/conferences/ConferenceHero.astro` : [À DÉCIDER]
+- [ ] `site/src/components/conferences/KeyFigures.astro` : [À VÉRIFIER …]
 - [ ] `site/src/components/conferences/desinformation-ia/ChiffresAvecNote.astro` : [À VÉRIFIER …]
 - [ ] `site/src/components/conferences/desinformation-ia/MethodeVerification.astro` : [À COMPLÉTER]
 - [ ] `site/src/components/conferences/desinformation-ia/MethodeVerification.astro` : [À PRODUIRE]
-- [ ] `site/src/components/conferences/ia-au-quotidien/VersionKeynote.astro` : [À DÉCIDER]
 - [ ] `site/src/components/conferences/parents-ados-ia/CharteFamille.astro` : [À PRODUIRE]
+- [ ] `site/src/components/conferences/visuels/ErreurSure.astro` : [À REMPLACER par la démonstration réelle filmée]
 - [ ] `site/src/components/conferences/visuels/PublicationVirale.astro` : [À REMPLACER par un cas réel documenté, neutre et sourcé]
 - [ ] `site/src/components/contact/ContactAside.astro` : [À COMPLÉTER : téléphone]
 - [ ] `site/src/components/contact/ContactForm.astro` : [À VALIDER]
@@ -250,6 +253,7 @@ et la liste automatique des marqueurs `[À …]` (régénérée par `node script
 - [ ] `site/src/components/satellites/SatDraftBlock.astro` : [À COMPLÉTER : témoignages…]
 - [ ] `site/src/components/satellites/satellites.css` : [À VÉRIFIER …]
 - [ ] `site/src/data/a-propos.ts` : [À VALIDER]
+- [ ] `site/src/data/accueil.ts` : [À PRODUIRE]
 - [ ] `site/src/data/conferences/arnaques-ia.ts` : [À DÉCIDER]
 - [ ] `site/src/data/conferences/arnaques-ia.ts` : [À DÉCIDER : titre daté « Arnaques 2026 », renommé chaque 1er janvier, ou titre intemporel « Arnaques et IA »]
 - [ ] `site/src/data/conferences/arnaques-ia.ts` : [À COMPLÉTER : date]
@@ -277,6 +281,9 @@ et la liste automatique des marqueurs `[À …]` (régénérée par `node script
 - [ ] `site/src/data/conferences/parents-ados-ia.ts` : [À VALIDER : rythme et déroulé]
 - [ ] `site/src/data/conferences/types.ts` : [À DÉCIDER]
 - [ ] `site/src/data/conferences/types.ts` : [À COMPLÉTER : date]
+- [ ] `site/src/data/conferences/types.ts` : [À VÉRIFIER …]
+- [ ] `site/src/data/conferences-index.ts` : [À VALIDER : jauge maximale testée]
+- [ ] `site/src/data/conferences-index.ts` : [À VALIDER : rythme]
 - [ ] `site/src/data/contact.ts` : [À VALIDER]
 - [ ] `site/src/data/contact.ts` : [À VALIDER : jours ouvrés]
 - [ ] `site/src/data/contact.ts` : [À VALIDER : délai minimal]
@@ -296,6 +303,7 @@ et la liste automatique des marqueurs `[À …]` (régénérée par `node script
 - [ ] `site/src/data/organisateurs.ts` : [À PRODUIRE]
 - [ ] `site/src/data/organisateurs.ts` : [À VALIDER : jauge maximale testée]
 - [ ] `site/src/data/organisateurs.ts` : [À PRODUIRE : fichiers]
+- [ ] `site/src/data/outils/arnaque-ou-pas.ts` : [À COMPLÉTER : entité éditrice]
 - [ ] `site/src/data/publics/associations.ts` : [À PRODUIRE]
 - [ ] `site/src/data/publics/collectivites.ts` : [À VALIDER : nouveau format]
 - [ ] `site/src/data/publics/collectivites.ts` : [À PRODUIRE]
@@ -320,6 +328,7 @@ et la liste automatique des marqueurs `[À …]` (régénérée par `node script
 - [ ] `site/src/data/satellites/seminaire-entreprise.ts` : [À COMPLÉTER : témoignages d'organisateurs, avec accord écrit. Bloc absent tant qu'il n'y en a pas de vrai.]
 - [ ] `site/src/data/satellites/sensibiliser-equipes-ia.ts` : [À COMPLÉTER : date]
 - [ ] `site/src/data/satellites/sensibiliser-equipes-ia.ts` : [À VÉRIFIER avant publication : texte consolidé de l'article 4 après le règlement (UE) 2026/1744.]
+- [ ] `site/src/data/satellites/sensibiliser-equipes-ia.ts` : [À VÉRIFIER avant publication]
 - [ ] `site/src/data/satellites/sensibiliser-equipes-ia.ts` : [À ACTIVER quand l'outil sera en ligne : lien « Recevoir le modèle de charte d'usage de l'IA » et fiche « 10 réflexes ».]
 - [ ] `site/src/data/satellites/sensibiliser-equipes-ia.ts` : [À VALIDER : « Rédigé avec l'aide d'un outil d'IA, relu et vérifié par Clara Peron et Paul Loustaunau. »]
 - [ ] `site/src/data/satellites/sensibiliser-equipes-ia.ts` : [À ACTIVER : lien secondaire « Recevoir le modèle de charte d'usage de l'IA », quand l'outil sera en ligne]
@@ -364,6 +373,6 @@ et la liste automatique des marqueurs `[À …]` (régénérée par `node script
 - [ ] `site/src/pages/reperes/index.astro` : [À DÉCIDER]
 - [ ] `site/src/pages/reperes/index.astro` : [À CHOISIR]
 
-_134 marqueurs uniques dans la maquette, 142 dans le site._
+_134 marqueurs uniques dans la maquette, 151 dans le site._
 
 <!-- END marqueurs -->

@@ -1,0 +1,51 @@
+---
+/**
+ * Encadré à retenir (role="note") : fond papier relevé, filet or de 3 px à gauche,
+ * libellé or en capitales, texte en gras (slot).
+ *
+ * Props :
+ * - `label` : libellé (« À retenir », « Ce que vous pouvez exiger »…), aussi nom accessible.
+ */
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<div role="note" aria-label={label} class="note">
+  <p class="label">{label}</p>
+  <div class="text">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .note {
+    margin: var(--s-6) 0 0;
+    max-width: var(--measure-text);
+    padding: 22px 26px;
+    box-sizing: border-box;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold);
+  }
+
+  .label {
+    margin: 0;
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--gold-deep);
+  }
+
+  .text {
+    margin: 10px 0 0;
+    font-size: var(--fs-body);
+    line-height: 1.6;
+    font-weight: 500;
+    color: var(--ink);
+  }
+</style>

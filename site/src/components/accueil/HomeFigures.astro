@@ -1,0 +1,103 @@
+---
+/**
+ * Bandeau nuit « L'IA en chiffres » de l'accueil : chiffres sourcés (source sous chaque
+ * chiffre, un seul chiffre en or) et citation à filet.
+ * Variante de conferences/KeyFigures : texte limité à 30ch et citation en troisième colonne.
+ *
+ * Props : label (nom accessible), items (chiffres), quote (citation).
+ */
+import type { Chiffre } from '../../data/conferences/types';
+
+interface Props {
+  label: string;
+  items: Chiffre[];
+  quote: string;
+}
+
+const { label, items, quote } = Astro.props;
+---
+
+<section class="figures m42-night" aria-label={label}>
+  <div class="grid">
+    {items.map((c) => (
+      <div class="item m42-reveal">
+        <p class:list={['value', { 'value--accent': c.accent }]}>{c.valeur}</p>
+        <p class="text">{c.texte}</p>
+        <p class="source">{c.source}</p>
+      </div>
+    ))}
+    <div class="quote m42-reveal">
+      <p>{quote}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .figures {
+    background: var(--night);
+    color: var(--on-night);
+  }
+
+  .grid {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: var(--s-8) var(--gutter-x);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 40px var(--s-8);
+    align-items: start;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .value {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-figure);
+    line-height: var(--lh-figure);
+    letter-spacing: -0.01em;
+    font-variant-numeric: lining-nums tabular-nums;
+    white-space: nowrap;
+  }
+
+  .value--accent {
+    color: var(--gold-night);
+  }
+
+  .text {
+    margin: 0;
+    max-width: 30ch;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--on-night-2);
+  }
+
+  .source {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--on-night-3);
+  }
+
+  .quote {
+    align-self: center;
+    border-left: 1px solid var(--night-line);
+    padding-left: var(--s-6);
+  }
+
+  .quote p {
+    margin: 0;
+    max-width: 16ch;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: var(--fs-quote);
+    line-height: var(--lh-quote);
+    color: var(--on-night);
+  }
+</style>

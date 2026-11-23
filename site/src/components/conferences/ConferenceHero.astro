@@ -15,6 +15,8 @@
  * - ctaSecondaire : bouton secondaire (ancre vers la démonstration ou le jeu).
  * - miseAJour : date affichée après la signature.
  * - fiche : lignes de la fiche (Pour qui, Formats, Participants, Où).
+ * - subtitleMax : largeur maximale du sous-titre en ch (26 par défaut, conférence II ;
+ *   28 dans les maquettes des conférences I, III et IV).
  *
  * Slots :
  * - before-title : au-dessus du H1 (ex. « Conférence signature » avec l'étoile, conférence I).
@@ -37,6 +39,7 @@ interface Props {
   ctaSecondaire: Lien;
   miseAJour: string;
   fiche: LigneFiche[];
+  subtitleMax?: 26 | 28;
 }
 
 const {
@@ -49,6 +52,7 @@ const {
   ctaSecondaire,
   miseAJour,
   fiche,
+  subtitleMax = 26,
 } = Astro.props;
 ---
 
@@ -71,7 +75,7 @@ const {
           <span class="h1-title">{titre}</span>
         </h1>
         {noteTitre && <p class="note">{noteTitre}</p>}
-        <p class="subtitle">{sousTitre}</p>
+        <p class:list={['subtitle', { 'subtitle--28': subtitleMax === 28 }]}>{sousTitre}</p>
         <p class="promise">{promesse}</p>
         <div class="actions">
           <Button href={ctaPrincipal.href}>{ctaPrincipal.label}</Button>
@@ -155,6 +159,10 @@ const {
     font-size: var(--fs-quote);
     line-height: var(--lh-quote);
     color: var(--ink-2);
+  }
+
+  .subtitle--28 {
+    max-width: 28ch;
   }
 
   .promise {

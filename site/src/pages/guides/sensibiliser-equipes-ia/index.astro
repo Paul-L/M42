@@ -1,0 +1,350 @@
+---
+/**
+ * Satellite « guide » (kit/maquette/Sat-sensibiliser-equipes-ia.dc.html).
+ * Contenus : src/data/satellites/sensibiliser-equipes-ia.ts.
+ * JSON-LD : Article (auteurs Person ×2, Clara puis Paul, via personSchema()) + WebPage
+ * + BreadcrumbList + FAQPage (questions sans marqueur seulement, DECISIONS.md point 19).
+ * `dateModified` absent tant que la date de mise à jour est « [À COMPLÉTER : date] ».
+ * Aucun lien d'en-tête marqué dans la maquette : pas de `current`.
+ * Pas de logique interactive (renderVals() vide) ; la FAQ est en <details> natif.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SatHero from '../../../components/satellites/SatHero.astro';
+import SatBody from '../../../components/satellites/SatBody.astro';
+import SatStep from '../../../components/satellites/SatStep.astro';
+import SatSection from '../../../components/satellites/SatSection.astro';
+import SatText from '../../../components/satellites/SatText.astro';
+import SatBox from '../../../components/satellites/SatBox.astro';
+import SatNote from '../../../components/satellites/SatNote.astro';
+import SatTable from '../../../components/satellites/SatTable.astro';
+import SatNumbered from '../../../components/satellites/SatNumbered.astro';
+import SatMore from '../../../components/satellites/SatMore.astro';
+import SatFaq from '../../../components/satellites/SatFaq.astro';
+import SatLinkList from '../../../components/satellites/SatLinkList.astro';
+import SatSources from '../../../components/satellites/SatSources.astro';
+import SatCta from '../../../components/satellites/SatCta.astro';
+import { routes } from '../../../data/routes';
+import { satelliteArticleJsonLd } from '../../../data/satellites/json-ld';
+import {
+  crumbs,
+  cta,
+  dateModified,
+  dateModifiedPlaceholder,
+  faq,
+  hero,
+  mistakes,
+  publicSection,
+  related,
+  relatedNote,
+  seo,
+  sources,
+  sourcesNote,
+  step1,
+  step2,
+  step3,
+  step4,
+  step5,
+  toc,
+} from '../../../data/satellites/sensibiliser-equipes-ia';
+
+const jsonLd = satelliteArticleJsonLd({
+  path: seo.path,
+  title: seo.title,
+  description: seo.description,
+  crumbs,
+  faq: faq.items,
+  headline: hero.title,
+  dateModified,
+});
+
+const dateLabel = dateModified
+  ? new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long', timeZone: 'UTC' }).format(
+      new Date(`${dateModified}T00:00:00Z`),
+    )
+  : undefined;
+---
+
+<BaseLayout title={seo.title} description={seo.description} jsonLd={jsonLd}>
+  <SatHero
+    crumbs={crumbs}
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    lead={hero.lead}
+    size="lg"
+    measure="20ch"
+  >
+    <Fragment slot="byline">
+      <span>
+        Par{' '}
+        <a href={routes['A-propos.dc.html']} class="sat-inline">
+          Clara Peron et Paul Loustaunau
+        </a>
+      </span>
+      <span aria-hidden="true">·</span>
+      <span>
+        Mis à jour le{' '}
+        {dateModified ? <time datetime={dateModified}>{dateLabel}</time> : dateModifiedPlaceholder}
+      </span>
+      <span aria-hidden="true">·</span>
+      <span>{hero.readingTime}</span>
+    </Fragment>
+    <div slot="aside" role="note" aria-labelledby="bref-t" class="brief m42-night">
+      <p id="bref-t" class="brief-label">
+        {hero.brief.label}
+      </p>
+      <ol class="brief-list">
+        {hero.brief.items.map((item, i) => (
+          <li>
+            <a href={item.href} class="brief-link">
+              <span class="brief-num">{i + 1}</span>
+              <span>{item.label}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </SatHero>
+
+  <SatBody toc={toc}>
+    <SatStep id="etape-1" n={1} total={5} title={step1.title} first>
+      <SatText>
+        <Fragment set:html={step1.html} />
+      </SatText>
+      <SatBox label={step1.questionnaire.label}>
+        <ol class="questionnaire">
+          {step1.questionnaire.items.map((q) => (
+            <li>{q}</li>
+          ))}
+        </ol>
+      </SatBox>
+      <SatNote label="À retenir">{step1.takeaway}</SatNote>
+    </SatStep>
+
+    <SatStep id="etape-2" n={2} total={5} title={step2.title}>
+      <SatText>{step2.text}</SatText>
+      <SatTable table={step2.table} />
+      <SatText>{step2.after}</SatText>
+      <SatText variant="source">{step2.source}</SatText>
+      <SatNote label="À retenir">{step2.takeaway}</SatNote>
+    </SatStep>
+
+    <SatStep id="etape-3" n={3} total={5} title={step3.title}>
+      <SatText>{step3.text}</SatText>
+      <SatNumbered items={step3.messages} />
+      <SatMore href={step3.link.href}>{step3.link.label}</SatMore>
+    </SatStep>
+
+    <SatStep id="etape-4" n={4} total={5} title={step4.title}>
+      <SatText>{step4.text}</SatText>
+      <figure class="sort">
+        <div class="sort-grid">
+          {step4.columns.map((col) => (
+            <div class:list={['sort-col', `sort-col--${col.level}`]}>
+              <p class="sort-label">{col.label}</p>
+              <span aria-hidden="true" class="sort-slot"></span>
+              <span aria-hidden="true" class="sort-slot"></span>
+            </div>
+          ))}
+        </div>
+        <figcaption>{step4.caption}</figcaption>
+      </figure>
+      <SatNote label="À retenir">{step4.takeaway}</SatNote>
+    </SatStep>
+
+    <SatStep id="etape-5" n={5} total={5} title={step5.title}>
+      <SatText>{step5.text}</SatText>
+      <SatText variant="source">{step5.source}</SatText>
+      <SatNote label="À retenir">{step5.takeaway}</SatNote>
+    </SatStep>
+
+    <SatSection id="erreurs" eyebrow={mistakes.eyebrow} title={mistakes.title}>
+      <ul class="mistakes">
+        {mistakes.items.map((item) => (
+          <li>
+            <h3 class="mistake-title">{item.title}</h3>
+            <p class="mistake-text">{item.text}</p>
+          </li>
+        ))}
+      </ul>
+    </SatSection>
+
+    <SatSection id="public" eyebrow={publicSection.eyebrow} title={publicSection.title}>
+      <SatText>
+        <Fragment set:html={publicSection.html} />
+      </SatText>
+    </SatSection>
+
+    <SatSection id="faq" eyebrow={faq.eyebrow} title={faq.title}>
+      <SatFaq items={faq.items} />
+    </SatSection>
+
+    <SatSection id="plus-loin" eyebrow="Pour aller plus loin" title="Pages liées">
+      <SatLinkList items={related} />
+      <p class="related-note">{relatedNote}</p>
+    </SatSection>
+
+    <SatSources items={sources} notes={[sourcesNote]} />
+  </SatBody>
+
+  <SatCta
+    eyebrow={cta.eyebrow}
+    title={cta.title}
+    lead={cta.lead}
+    note={cta.note}
+    primary={cta.primary}
+    secondary={cta.secondary}
+  />
+</BaseLayout>
+
+<style>
+  /* En bref (colonne droite de l'en-tête, fond nuit) */
+  .brief {
+    background: var(--night);
+    color: var(--on-night);
+    padding: 28px 28px var(--s-5);
+  }
+
+  .brief-label {
+    margin: 0;
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--on-night-3);
+  }
+
+  .brief-list {
+    list-style: none;
+    margin: var(--s-4) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .brief-list li {
+    border-top: 1px solid var(--night-line);
+  }
+
+  .brief-link {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: var(--s-3);
+    align-items: baseline;
+    padding: var(--s-3) 0;
+    color: var(--on-night);
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+
+  .brief-num {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--gold-night);
+  }
+
+  /* Questionnaire prêt à l'emploi */
+  .questionnaire {
+    margin: var(--s-4) 0 0;
+    padding-left: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: var(--fs-body);
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  /* Exercice de tri en trois colonnes */
+  .sort {
+    margin: var(--s-6) 0 0;
+  }
+
+  .sort-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    gap: var(--s-3);
+  }
+
+  .sort-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px var(--s-4) 20px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--ink);
+  }
+
+  .sort-col--vert {
+    border-top-color: var(--success);
+  }
+
+  .sort-col--orange {
+    /* Pas de token « orange » dans la DA : valeur de la maquette */
+    border-top-color: #8a5300;
+  }
+
+  .sort-label {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+
+  .sort-slot {
+    display: block;
+    height: 28px;
+    border: 1px dashed var(--line-strong);
+  }
+
+  .sort figcaption {
+    margin-top: var(--s-3);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  /* Les quatre erreurs */
+  .mistakes {
+    list-style: none;
+    margin: var(--s-6) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: var(--s-4);
+  }
+
+  .mistakes li {
+    padding: 22px 22px var(--s-5);
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+  }
+
+  .mistake-title {
+    margin: 0;
+    font-size: var(--fs-faq);
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: var(--tracking-h3);
+    color: var(--ink);
+  }
+
+  .mistake-text {
+    margin: var(--s-2) 0 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .related-note {
+    margin: var(--s-4) 0 0;
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    color: var(--ink-3);
+  }
+</style>

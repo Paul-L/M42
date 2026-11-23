@@ -1,0 +1,376 @@
+---
+/**
+ * Bloc de capture de la page outil (Sat-test-arnaque-ou-pas.dc.html, #fiche et #kit) :
+ * sur-titre, H3, texte, puis formulaire (champs en slot « fields »), case facultative non cochée
+ * pour la lettre, bouton d'envoi et mention RGPD. Après envoi : confirmation à la place du
+ * formulaire (« C'est noté. »), avec « Revenir au formulaire ». Slot « after » : bas du bloc.
+ *
+ * Maquette : rien n'est envoyé (sendSheet / sendKit). Phase 4 : <form method="post"> vers
+ * Directus + page de confirmation ; voir envoyerCapture() dans l'îlot.
+ *
+ * Props :
+ * - id : ancre du bloc (« fiche », « kit ») ; préfixe des champs (`${id}-lettre`).
+ * - kind : « fiche » ou « kit » (message de confirmation de l'îlot).
+ * - eyebrow, title : textes de la maquette ; le texte d'introduction passe par le slot par défaut.
+ * - formLabel : nom accessible du formulaire.
+ * - submit : libellé du bouton ; submitVariant : « primary » (fiche) ou « secondary » (kit).
+ * - usage : première phrase de la mention RGPD.
+ * - texts : libellés communs (case lettre, confirmation, responsable, lien confidentialité).
+ */
+import Button from '../Button.astro';
+import Eyebrow from '../Eyebrow.astro';
+import type { capture } from '../../data/outils/arnaque-ou-pas';
+import '../satellites/satellites.css';
+
+interface Props {
+  id: string;
+  kind: 'fiche' | 'kit';
+  eyebrow: string;
+  title: string;
+  formLabel: string;
+  submit: string;
+  submitVariant?: 'primary' | 'secondary';
+  usage: string;
+  texts: typeof capture;
+}
+
+const {
+  id,
+  kind,
+  eyebrow,
+  title,
+  formLabel,
+  submit,
+  submitVariant = 'primary',
+  usage,
+  texts,
+} = Astro.props;
+---
+
+<div id={id} class="card sat-anchor" data-capture={kind}>
+  <Eyebrow as="p" rule={false}>
+    {eyebrow}
+  </Eyebrow>
+  <h3 class="title">{title}</h3>
+  <p class="intro">
+    <slot />
+  </p>
+  <div aria-live="polite" class="live">
+    <div class="done" tabindex="-1" data-done hidden>
+      <p class="done-title">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M8 12.5l2.5 2.5L16 9.5"></path>
+        </svg>
+        {texts.done}
+      </p>
+      <p class="done-msg" data-done-msg></p>
+      <p class="done-note">{texts.doneNote}</p>
+      <button type="button" class="txtbtn" data-back>
+        {texts.back}
+      </button>
+    </div>
+
+    <form method="post" aria-label={formLabel} class="form" data-form>
+      <p id={`${id}-t`} class="note">
+        {texts.requiredNote}
+      </p>
+      <slot name="fields" />
+      <div class="check">
+        <input type="checkbox" id={`${id}-lettre`} name="lettre" data-letter />
+        <label for={`${id}-lettre`}>
+          {texts.letter} <span class="optional">{texts.optional}</span>
+        </label>
+      </div>
+      <div class="submit">
+        <Button type="submit" variant={submitVariant} stretch>
+          {submit}
+        </Button>
+        <p class="rgpd">
+          {usage} {texts.responsible} <a href={texts.privacy.href}>{texts.privacy.label}</a>.
+        </p>
+      </div>
+    </form>
+  </div>
+  <slot name="after" />
+</div>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: clamp(24px, 3vw, 36px);
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+    color: var(--ink);
+  }
+
+  .intro {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  .intro :global(strong) {
+    color: var(--ink);
+  }
+
+  .live,
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form[hidden] {
+    display: none;
+  }
+
+  .note {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  /* Case à cocher facultative (lettre), non cochée par défaut */
+  .check {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-3);
+  }
+
+  .check input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin: 2px 0 0;
+    accent-color: var(--ink);
+  }
+
+  .check label {
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  .optional {
+    color: var(--ink-3);
+  }
+
+  .submit {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+  }
+
+  .rgpd {
+    flex: 1 1 100%;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .rgpd a {
+    color: var(--ink-3);
+    text-underline-offset: 3px;
+  }
+
+  /* Confirmation */
+  .done {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 22px;
+    background: var(--paper);
+    border-left: 3px solid var(--success);
+  }
+
+  .done[hidden] {
+    display: none;
+  }
+
+  .done:focus {
+    outline: none;
+  }
+
+  .done-title {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--success);
+  }
+
+  .done-msg {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  .done-note {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  /* Petit bouton texte (.m42-txtbtn) */
+  .txtbtn {
+    align-self: flex-start;
+    min-height: var(--target-min);
+    padding: 0 2px;
+    border: 0;
+    background: transparent;
+    color: var(--ink-2);
+    font-family: inherit;
+    font-size: var(--fs-small);
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: color var(--dur-1) var(--ease-out);
+  }
+
+  .txtbtn:hover {
+    color: var(--ink);
+    text-decoration-color: var(--gold);
+  }
+</style>
+
+<script>
+  /*
+   * Îlot des blocs de capture (sendSheet / sendKit de la maquette) : validation côté client,
+   * messages d'erreur reliés par aria-describedby, focus sur le premier champ en erreur,
+   * confirmation à la place du formulaire, « Revenir au formulaire ». Rien n'est envoyé.
+   */
+  import { frenchTypography } from '../../lib/typo';
+
+  type Control = HTMLInputElement | HTMLSelectElement;
+  type Kind = 'fiche' | 'kit';
+
+  /**
+   * Phase 4 : envoi vers Directus.
+   * À brancher : POST des champs (fiche : e-mail ; kit : nom, structure, type, e-mail) et de la
+   * case « lettre » (consentement séparé, jamais une condition), envoi de la fiche ou du kit,
+   * puis page de confirmation. Pour l'instant : rien n'est envoyé, la confirmation s'affiche
+   * comme dans la maquette.
+   */
+  async function envoyerCapture(_kind: Kind, _data: FormData): Promise<void> {
+    // Phase 4 : envoi vers Directus
+  }
+
+  /** Message de confirmation (sheetMsg / kitMsg de la maquette). */
+  function confirmation(kind: Kind, mail: string, lettre: boolean): string {
+    if (kind === 'fiche') {
+      return (
+        'Vous allez recevoir la fiche à imprimer' +
+        (mail ? ` à l'adresse ${mail}` : '') +
+        (lettre ? ', puis notre lettre mensuelle.' : '.')
+      );
+    }
+    return (
+      'Le kit de diffusion part' +
+      (mail ? ` à l'adresse ${mail}` : " à l'adresse indiquée") +
+      ' : texte prêt à publier, visuel et version papier du test.' +
+      (lettre ? ' Vous recevrez aussi notre lettre mensuelle.' : '')
+    );
+  }
+
+  const isValid = (el: Control): boolean => el.value.trim() !== '' && el.checkValidity();
+
+  function setError(el: Control, invalid: boolean): void {
+    const errId = el.dataset.errorId;
+    if (!errId) return;
+    const msg = document.getElementById(errId);
+    if (invalid) {
+      el.setAttribute('aria-invalid', 'true');
+      el.setAttribute('aria-describedby', errId);
+    } else {
+      el.removeAttribute('aria-invalid');
+      el.removeAttribute('aria-describedby');
+    }
+    if (msg) msg.hidden = !invalid;
+  }
+
+  function mount(root: HTMLElement): void {
+    const kind = root.dataset.capture as Kind;
+    const form = root.querySelector<HTMLFormElement>('[data-form]');
+    const done = root.querySelector<HTMLElement>('[data-done]');
+    const doneMsg = root.querySelector<HTMLElement>('[data-done-msg]');
+    const back = root.querySelector<HTMLButtonElement>('[data-back]');
+    const letter = root.querySelector<HTMLInputElement>('[data-letter]');
+    if (!form || !done || !doneMsg || !back) return;
+
+    const controls = (): Control[] => Array.from(form.querySelectorAll<Control>('[data-error-id]'));
+
+    // Validation par l'îlot (messages de la maquette) ; sans JavaScript, celle du navigateur.
+    form.noValidate = true;
+
+    // Une erreur affichée disparaît dès que le champ est corrigé.
+    const clearIfFixed = (e: Event): void => {
+      const el = e.target as Control;
+      if (el.getAttribute('aria-invalid') === 'true' && isValid(el)) setError(el, false);
+    };
+    form.addEventListener('input', clearIfFixed);
+    form.addEventListener('change', clearIfFixed);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let first: Control | undefined;
+      for (const el of controls()) {
+        const ok = isValid(el);
+        setError(el, !ok);
+        if (!ok && !first) first = el;
+      }
+      if (first) {
+        first.focus();
+        return;
+      }
+      await envoyerCapture(kind, new FormData(form));
+      const mail = form.querySelector<HTMLInputElement>('input[type="email"]')?.value.trim() ?? '';
+      doneMsg.textContent = frenchTypography(confirmation(kind, mail, letter?.checked ?? false));
+      form.hidden = true;
+      done.hidden = false;
+      // Le focus suit le contenu remplacé (le bouton d'envoi disparaît).
+      done.focus({ preventScroll: true });
+    });
+
+    back.addEventListener('click', () => {
+      form.reset();
+      controls().forEach((el) => setError(el, false));
+      done.hidden = true;
+      form.hidden = false;
+      controls()[0]?.focus();
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-capture]').forEach(mount);
+</script>

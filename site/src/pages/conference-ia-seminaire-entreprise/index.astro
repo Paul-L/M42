@@ -1,0 +1,137 @@
+---
+/**
+ * Satellite « événement » (kit/maquette/Sat-seminaire-entreprise.dc.html).
+ * Contenus : src/data/satellites/seminaire-entreprise.ts.
+ * JSON-LD : WebPage + BreadcrumbList + FAQPage (questions sans marqueur seulement,
+ * DECISIONS.md point 19 ; src/data/satellites/json-ld.ts).
+ * Aucun lien d'en-tête marqué dans la maquette : pas de `current`.
+ * Pas de logique interactive (renderVals() vide) ; la FAQ est en <details> natif.
+ * L'ancre #cinq-questions est appelée depuis la page Repères : ne pas la renommer.
+ *
+ * Maillage SEO (commentaire de la maquette) : « Voir clair dans l'IA » est un format de
+ * /conferences/ia-au-quotidien/ (11_architecture_seo, 1.3) : pas de page dédiée. Les sujets du
+ * tableau (Garder la main, Déléguer sans abdiquer…) n'ont pas de page en v1 : pas de lien.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import SatHero from '../../components/satellites/SatHero.astro';
+import SatBody from '../../components/satellites/SatBody.astro';
+import SatSection from '../../components/satellites/SatSection.astro';
+import SatText from '../../components/satellites/SatText.astro';
+import SatFigures from '../../components/satellites/SatFigures.astro';
+import SatBox from '../../components/satellites/SatBox.astro';
+import SatPullQuote from '../../components/satellites/SatPullQuote.astro';
+import SatNumbered from '../../components/satellites/SatNumbered.astro';
+import SatNote from '../../components/satellites/SatNote.astro';
+import SatMore from '../../components/satellites/SatMore.astro';
+import SatTable from '../../components/satellites/SatTable.astro';
+import SatDefList from '../../components/satellites/SatDefList.astro';
+import SatDraftBlock from '../../components/satellites/SatDraftBlock.astro';
+import SatFaq from '../../components/satellites/SatFaq.astro';
+import SatLinkList from '../../components/satellites/SatLinkList.astro';
+import SatSources from '../../components/satellites/SatSources.astro';
+import SatCta from '../../components/satellites/SatCta.astro';
+import { satellitePageJsonLd } from '../../data/satellites/json-ld';
+import {
+  crumbs,
+  cta,
+  faq,
+  fiveQuestions,
+  hero,
+  keynote,
+  organisation,
+  related,
+  seo,
+  sources,
+  toc,
+  topics,
+  why,
+} from '../../data/satellites/seminaire-entreprise';
+
+const jsonLd = satellitePageJsonLd({
+  path: seo.path,
+  title: seo.title,
+  description: seo.description,
+  crumbs,
+  faq: faq.items,
+});
+---
+
+<BaseLayout title={seo.title} description={seo.description} jsonLd={jsonLd}>
+  <SatHero
+    crumbs={crumbs}
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    lead={hero.lead}
+    size="xl"
+    measure="20ch"
+    note={hero.note}
+    primary={hero.primary}
+    secondary={hero.secondary}
+  >
+    <Placeholder slot="aside" label={hero.photo} ratio="3/2" />
+  </SatHero>
+
+  <SatBody toc={toc}>
+    <SatSection id="pourquoi" eyebrow={why.eyebrow} title={why.title} first>
+      <SatText>{why.text}</SatText>
+      <SatFigures items={why.figures} />
+      <SatBox label={why.case.label}>
+        <SatText>{why.case.text}</SatText>
+        <SatText variant="source">{why.case.source}</SatText>
+      </SatBox>
+      <SatPullQuote>{why.quote}</SatPullQuote>
+    </SatSection>
+
+    <SatSection id="keynote" eyebrow={keynote.eyebrow} title={keynote.title}>
+      <SatText>{keynote.text}</SatText>
+      <SatNumbered items={keynote.steps} />
+      <SatNote label="À retenir">{keynote.takeaway}</SatNote>
+      <SatMore href={keynote.link.href}>{keynote.link.label}</SatMore>
+    </SatSection>
+
+    <SatSection id="sujets" eyebrow={topics.eyebrow} title={topics.title}>
+      <SatText>{topics.text}</SatText>
+      <SatTable table={topics.table} />
+      <SatMore href={topics.link.href}>{topics.link.label}</SatMore>
+    </SatSection>
+
+    <SatSection id="cinq-questions" eyebrow={fiveQuestions.eyebrow} title={fiveQuestions.title}>
+      <SatText>{fiveQuestions.text}</SatText>
+      <SatNumbered items={fiveQuestions.items} />
+      <SatNote label={fiveQuestions.demand.label}>{fiveQuestions.demand.text}</SatNote>
+    </SatSection>
+
+    <SatSection id="organisation" eyebrow={organisation.eyebrow} title={organisation.title}>
+      <SatDefList items={organisation.items} />
+      <div class="video">
+        <Placeholder label={organisation.video} ratio="16/9" />
+      </div>
+      <SatDraftBlock>{organisation.testimonials}</SatDraftBlock>
+    </SatSection>
+
+    <SatSection id="faq" eyebrow={faq.eyebrow} title={faq.title}>
+      <SatFaq items={faq.items} />
+    </SatSection>
+
+    <SatSection id="plus-loin" eyebrow="Pour aller plus loin" title="Pages liées">
+      <SatLinkList items={related} />
+    </SatSection>
+
+    <SatSources items={sources} />
+  </SatBody>
+
+  <SatCta
+    eyebrow={cta.eyebrow}
+    title={cta.title}
+    lead={cta.lead}
+    primary={cta.primary}
+    secondary={cta.secondary}
+  />
+</BaseLayout>
+
+<style>
+  .video {
+    margin-top: 40px;
+  }
+</style>

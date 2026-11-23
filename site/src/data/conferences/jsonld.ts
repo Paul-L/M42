@@ -4,6 +4,10 @@
 // Pas de bloc `offers` (aucun prix affiché). `dateModified` seulement quand une vraie date est fixée.
 
 import type { Conference, QuestionFaq } from './types';
+import { assertNoMarker } from '../../components/publics/json-ld';
+
+/** Marqueurs de relecture : une question qui en contient reste visible mais sort du FAQPage (DECISIONS.md 19). */
+const MARQUEUR = /\[(?:À|PDF À|SI) /;
 
 const SITE = 'https://m42.guide';
 
@@ -23,15 +27,23 @@ export function faqJsonLd(items: QuestionFaq[], id: string): Record<string, unkn
   return {
     '@type': 'FAQPage',
     '@id': id,
-    mainEntity: items.map((q) => ({
-      '@type': 'Question',
-      name: q.question,
-      acceptedAnswer: { '@type': 'Answer', text: texteBrut(q.reponse) },
-    })),
+    mainEntity: items
+      .filter((q) => !MARQUEUR.test(q.question) && !MARQUEUR.test(q.reponse))
+      .map((q) => ({
+        '@type': 'Question',
+        name: q.question,
+        acceptedAnswer: { '@type': 'Answer', text: texteBrut(q.reponse) },
+      })),
   };
 }
 
 export function conferenceJsonLd(conf: Conference): Record<string, unknown> {
+  const graph = construireGraphe(conf);
+  assertNoMarker(graph, `conférence ${conf.slug}`);
+  return graph;
+}
+
+function construireGraphe(conf: Conference): Record<string, unknown> {
   const url = `${SITE}/conferences/${conf.slug}/`;
   return {
     '@context': 'https://schema.org',

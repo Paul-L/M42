@@ -1,0 +1,26 @@
+---
+/**
+ * FAQ d'une page satellite : le composant partagé Faq (<details>), 40 px sous le H2.
+ *
+ * Props :
+ * - `items` : { question, answer } ; réponse en HTML simple, identique au balisage FAQPage.
+ */
+import Faq from '../Faq.astro';
+import type { FaqItem } from '../../data/satellites/types';
+
+interface Props {
+  items: FaqItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="wrap">
+  <Faq items={items} />
+</div>
+
+<style>
+  .wrap {
+    margin-top: 40px;
+  }
+</style>

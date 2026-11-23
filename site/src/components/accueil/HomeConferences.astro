@@ -1,0 +1,99 @@
+---
+/**
+ * « Nos conférences » : les quatre cartes du catalogue (la signature avec l'étoile d'or),
+ * le bloc nuit « Sur mesure » et le lien vers l'index des conférences.
+ */
+import ArrowLink from '../ArrowLink.astro';
+import Button from '../Button.astro';
+import ConferenceCard from '../ConferenceCard.astro';
+import Section from '../Section.astro';
+import SignatureConferenceCard from '../conferences/SignatureConferenceCard.astro';
+import PublicSectionHead from '../publics/PublicSectionHead.astro';
+import { catalogueTexte, conferences } from '../../data/accueil';
+
+const t = catalogueTexte;
+---
+
+<Section id="conferences" labelledby="titre-conferences">
+  <PublicSectionHead id="titre-conferences" eyebrow={t.surTitre} lead={t.chapo}>
+    {t.titre}
+  </PublicSectionHead>
+
+  <div class="grid">
+    {conferences.map((c) => {
+      const props = {
+        numeral: c.numero,
+        title: c.titre,
+        href: c.href,
+        summary: c.resume,
+        publics: c.publics,
+        formats: c.formats,
+        cta: 'Voir le programme',
+      };
+      return c.signature ? <SignatureConferenceCard {...props} /> : <ConferenceCard {...props} />;
+    })}
+  </div>
+
+  <div class="custom m42-night m42-reveal">
+    <div class="custom-text">
+      <h3 class="custom-title">{t.surMesure.titre}</h3>
+      <p class="custom-body">{t.surMesure.texte}</p>
+    </div>
+    <Button href={t.surMesure.cta.href} variant="secondary">
+      {t.surMesure.cta.label}
+    </Button>
+  </div>
+
+  <div class="all">
+    <ArrowLink href={t.toutes.href}>{t.toutes.label}</ArrowLink>
+  </div>
+</Section>
+
+<style>
+  .grid {
+    margin-top: var(--s-7);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+    gap: var(--s-5);
+  }
+
+  .custom {
+    margin-top: var(--s-5);
+    background: var(--night);
+    color: var(--on-night);
+    padding: 32px 28px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5) var(--s-7);
+  }
+
+  .custom-text {
+    flex: 1 1 420px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .custom-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-card);
+    line-height: var(--lh-card);
+  }
+
+  .custom-body {
+    margin: 0;
+    max-width: 60ch;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--on-night-2);
+  }
+
+  .all {
+    margin-top: var(--s-6);
+  }
+</style>

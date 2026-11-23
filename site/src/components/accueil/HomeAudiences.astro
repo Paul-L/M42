@@ -1,0 +1,141 @@
+---
+/**
+ * « Pour qui » (section alternée) : cinq portes vers les pages publics, en liste à filets
+ * (lien du titre étendu à toute la ligne), puis la phrase sur le devis et un bouton.
+ */
+import Button from '../Button.astro';
+import Section from '../Section.astro';
+import PublicSectionHead from '../publics/PublicSectionHead.astro';
+import { publics, publicsTexte } from '../../data/accueil';
+
+const t = publicsTexte;
+---
+
+<Section id="pour-qui" labelledby="titre-pour-qui" tone="sunk">
+  <PublicSectionHead id="titre-pour-qui" eyebrow={t.surTitre} lead={t.chapo}>
+    {t.titre}
+  </PublicSectionHead>
+
+  <div class="grid">
+    {publics.map((p) => (
+      <div class="door m42-reveal">
+        <h3 class="door-title">
+          <a href={p.href} class="stretch">
+            {p.titre}
+          </a>
+          <span class="arrow-i" aria-hidden="true">
+            →
+          </span>
+        </h3>
+        <p class="door-body">{p.texte}</p>
+      </div>
+    ))}
+  </div>
+
+  <div class="quote-row m42-reveal">
+    <p class="quote-text">{t.devis}</p>
+    <Button href={t.cta.href} variant="secondary">
+      {t.cta.label}
+    </Button>
+  </div>
+</Section>
+
+<style>
+  .grid {
+    margin-top: var(--s-7);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 0 var(--s-6);
+    border-top: 1px solid var(--ink);
+  }
+
+  .door {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px 0 32px;
+    border-bottom: 1px solid var(--line);
+    transition: border-color var(--dur-2) var(--ease-out);
+  }
+
+  .door:hover {
+    border-color: var(--ink);
+  }
+
+  .door-title {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-4);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-card);
+    line-height: var(--lh-card);
+  }
+
+  .stretch {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .stretch::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .stretch:focus-visible {
+    outline: none;
+  }
+
+  .stretch:focus-visible::after {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  .arrow-i {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 400;
+    transition: transform var(--dur-1) var(--ease-out);
+  }
+
+  .door:hover .arrow-i {
+    transform: translateX(3px);
+  }
+
+  .door-body {
+    margin: 0;
+    max-width: 44ch;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  .quote-row {
+    margin-top: var(--s-7);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px var(--s-7);
+  }
+
+  .quote-text {
+    margin: 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .door:hover .arrow-i {
+      transform: none;
+    }
+  }
+</style>

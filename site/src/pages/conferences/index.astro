@@ -1,0 +1,94 @@
+---
+/**
+ * Index des conférences (kit/maquette/Conferences.dc.html → /conferences/).
+ * Contenus : src/data/conferences-index.ts (identité des 4 conférences : conferences/catalogue.ts).
+ * JSON-LD : CollectionPage + BreadcrumbList + ItemList des 4 Service par @id.
+ * Aucun îlot : la page n'a pas de logique interactive (apparitions au défilement en CSS,
+ * FAQ en <details>). « Sur mesure » est une section (#sur-mesure), pas une page.
+ * Les 5 conférences entreprise « sur demande » ne sont pas listées ici (simple renvoi vers
+ * /entreprises/ dans la section Sur mesure).
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import IndexHero from '../../components/conferences-index/IndexHero.astro';
+import ConferenceCatalogue from '../../components/conferences-index/ConferenceCatalogue.astro';
+import FormatsOverview from '../../components/conferences-index/FormatsOverview.astro';
+import HowItWorks from '../../components/conferences-index/HowItWorks.astro';
+import CustomTalk from '../../components/conferences-index/CustomTalk.astro';
+import ConferenceAudiences from '../../components/conferences/ConferenceAudiences.astro';
+import ConferenceFaq from '../../components/conferences/ConferenceFaq.astro';
+import ConferenceCta from '../../components/conferences/ConferenceCta.astro';
+import {
+  cartes,
+  catalogueSection,
+  conferencesIndexJsonLd,
+  contact,
+  deroulement,
+  faq,
+  formats,
+  formatsDetailles,
+  hero,
+  pourQui,
+  seo,
+  surMesure,
+} from '../../data/conferences-index';
+
+const coupDoeil = [
+  ...cartes.map((c) => ({
+    numero: c.numero,
+    label: c.titre,
+    note: c.signature ? '· signature' : undefined,
+    href: `#conf-${c.slug}`,
+  })),
+  hero.coupDoeil.surMesure,
+];
+---
+
+<BaseLayout
+  title={seo.title}
+  description={seo.description}
+  current="conferences"
+  jsonLd={conferencesIndexJsonLd()}
+>
+  <IndexHero
+    surTitre={hero.surTitre}
+    titre={hero.titre}
+    chapo={hero.chapo}
+    ctaPrincipal={hero.ctaPrincipal}
+    ctaSecondaire={hero.ctaSecondaire}
+    nav={{ label: hero.coupDoeil.label, surTitre: hero.coupDoeil.surTitre, items: coupDoeil }}
+  />
+
+  <ConferenceCatalogue
+    surTitre={catalogueSection.surTitre}
+    titre={catalogueSection.titre}
+    chapo={catalogueSection.chapo}
+    cartes={cartes}
+    formats={formatsDetailles}
+    cta={catalogueSection.ctaCarte}
+    badge={catalogueSection.badgeSignature}
+  />
+
+  <FormatsOverview
+    titre={formats.titre}
+    chapo={formats.chapo}
+    items={formats.items}
+    choix={formats.choix}
+  />
+
+  <HowItWorks surTitre={deroulement.surTitre} titre={deroulement.titre} items={deroulement.items} />
+
+  <CustomTalk
+    surTitre={surMesure.surTitre}
+    titre={surMesure.titre}
+    chapo={surMesure.chapo}
+    renvoiAvant={surMesure.renvoiAvant}
+    renvoi={surMesure.renvoi}
+    cta={surMesure.cta}
+  />
+
+  <ConferenceAudiences titre={pourQui.titre} chapo={pourQui.chapo} items={pourQui.items} />
+
+  <ConferenceFaq titre={faq.titre} items={faq.items} />
+
+  <ConferenceCta titre={contact.titre} chapo={contact.chapo} cta={contact.cta} />
+</BaseLayout>

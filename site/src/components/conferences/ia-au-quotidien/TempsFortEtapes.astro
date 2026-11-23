@@ -1,0 +1,82 @@
+---
+/**
+ * Contenu du temps fort « L'erreur sûre d'elle » (slot de TempsFort) : trois étapes numérotées.
+ *
+ * La note « vidéo de secours » est désormais rendue par TempsFort (`notePosition="after"` :
+ * sous la rangée, pleine largeur, 32 px, comme dans la maquette). La prop `note` est conservée
+ * pour compatibilité : élément flex à 100 % de la rangée, la marge négative ramenant l'écart
+ * vertical de 48 px (gap de la rangée) à 32 px (même rendu).
+ */
+import type { EtapeTempsFort } from '../../../data/conferences/ia-au-quotidien';
+
+interface Props {
+  etapes: EtapeTempsFort[];
+  note?: string | undefined;
+}
+
+const { etapes, note } = Astro.props;
+---
+
+<ol class="steps">
+  {etapes.map((e, i) => (
+    <li class="step m42-reveal">
+      <span aria-hidden="true" class="num">
+        {i + 1}
+      </span>
+      <h3 class="title">{e.titre}</h3>
+      <p class="text">{e.texte}</p>
+    </li>
+  ))}
+</ol>
+{note && <p class="note m42-reveal">{note}</p>}
+
+<style>
+  .steps {
+    flex: 999 1 520px;
+    min-width: 0;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 24px;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1px solid var(--ink);
+    padding-top: 18px;
+  }
+
+  .num {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--gold-deep);
+  }
+
+  .title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  .note {
+    flex: 1 1 100%;
+    margin: calc(var(--s-6) - var(--s-7)) 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+</style>

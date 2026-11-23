@@ -1,0 +1,41 @@
+---
+/**
+ * Paragraphe d'article (pages satellites).
+ * - `body` (défaut) : texte courant, 68ch, césure automatique, 16 px au-dessus.
+ * - `source` : mention de source, 12 px gris, 8 px au-dessus.
+ */
+interface Props {
+  variant?: 'body' | 'source';
+}
+
+const { variant = 'body' } = Astro.props;
+---
+
+<p class:list={['text', `text--${variant}`]}>
+  <slot />
+</p>
+
+<style>
+  .text {
+    max-width: var(--measure-text);
+  }
+
+  .text--body {
+    margin: var(--s-4) 0 0;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--ink-2);
+    hyphens: auto;
+  }
+
+  .text--body :global(strong) {
+    color: var(--ink);
+  }
+
+  .text--source {
+    margin: var(--s-2) 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+</style>

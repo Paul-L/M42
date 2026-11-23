@@ -1,0 +1,91 @@
+---
+/**
+ * Section nuit « Sur mesure » de /conferences/ (ancre #sur-mesure ; « Sur mesure » est une
+ * section, pas une page : 11_architecture_seo.md, § 1.1). Titre, chapô, renvoi vers les sujets
+ * entreprise sur demande, bouton secondaire (sur fond nuit) vers le contact.
+ *
+ * Props :
+ * - surTitre, titre, chapo.
+ * - renvoiAvant : texte avant le lien de renvoi ; renvoi : lien (suivi d'un point).
+ * - cta : bouton.
+ */
+import Button from '../Button.astro';
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeading from '../conferences/SectionHeading.astro';
+import type { Lien } from '../../data/conferences/types';
+
+interface Props {
+  surTitre: string;
+  titre: string;
+  chapo: string;
+  renvoiAvant: string;
+  renvoi: Lien;
+  cta: Lien;
+}
+
+const { surTitre, titre, chapo, renvoiAvant, renvoi, cta } = Astro.props;
+---
+
+<section id="sur-mesure" class="custom m42-night" aria-labelledby="titre-sur-mesure">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <div class="row">
+      <div class="text m42-reveal">
+        <SectionHeading id="titre-sur-mesure" reveal={false} flush>
+          {titre}
+        </SectionHeading>
+        <p class="lead">{chapo}</p>
+        <p class="note">
+          {renvoiAvant} <a href={renvoi.href}>{renvoi.label}</a>.
+        </p>
+      </div>
+      <Button href={cta.href} variant="secondary" class="m42-reveal">
+        {cta.label}
+      </Button>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .custom {
+    background: var(--night);
+    color: var(--on-night);
+    padding: var(--section-y) 0;
+  }
+
+  .row {
+    margin-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 32px 64px;
+  }
+
+  .text {
+    flex: 1 1 520px;
+    min-width: 0;
+  }
+
+  .lead {
+    margin: 20px 0 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--on-night-2);
+  }
+
+  .note {
+    margin: 16px 0 0;
+    max-width: 60ch;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--on-night-2);
+  }
+
+  .note a {
+    color: var(--on-night);
+    text-underline-offset: 3px;
+  }
+</style>

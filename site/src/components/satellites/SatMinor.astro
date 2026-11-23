@@ -1,0 +1,59 @@
+---
+/**
+ * Petite section de fin d'article (« Sources de la page », « Qui intervient ») :
+ * filet fin, H2 au style de sur-titre, 68ch max., contenu (slot).
+ *
+ * Props :
+ * - `headingId` : id du H2.
+ * - `title` : texte du H2.
+ * - `id` : ancre facultative (reprise par le sommaire).
+ * - `spacing` : marge haute, « lg » (88 px, section du sommaire) ou « md » (80 px, sources).
+ */
+import './satellites.css';
+
+interface Props {
+  headingId: string;
+  title: string;
+  id?: string;
+  spacing?: 'lg' | 'md';
+}
+
+const { headingId, title, id, spacing = 'md' } = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={['minor', `minor--${spacing}`, { 'sat-anchor': id }]}
+  aria-labelledby={headingId}
+>
+  <h2 id={headingId} class="title">
+    {title}
+  </h2>
+  <slot />
+</section>
+
+<style>
+  .minor {
+    max-width: var(--measure-text);
+    border-top: 1px solid var(--line);
+    padding-top: var(--s-4);
+  }
+
+  .minor--lg {
+    margin-top: 88px;
+  }
+
+  .minor--md {
+    margin-top: 80px;
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+</style>

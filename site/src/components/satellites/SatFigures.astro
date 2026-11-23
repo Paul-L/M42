@@ -1,0 +1,68 @@
+---
+/**
+ * Chiffres clés sourcés : grille auto (190 px min.), filet fin au-dessus de chaque chiffre.
+ *
+ * Props :
+ * - `items` : { value, label, source }.
+ */
+import type { SatFigure } from '../../data/satellites/types';
+
+interface Props {
+  items: SatFigure[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="grid">
+  {items.map((item) => (
+    <div class="fig">
+      <p class="value">{item.value}</p>
+      <p class="label">{item.label}</p>
+      <p class="source">{item.source}</p>
+    </div>
+  ))}
+</div>
+
+<style>
+  .grid {
+    margin-top: var(--s-6);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+    gap: 28px var(--s-6);
+  }
+
+  .fig {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    border-top: 1px solid var(--line);
+    padding-top: var(--s-4);
+  }
+
+  .value {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(2.75rem, 2rem + 2.4vw, 3.75rem);
+    line-height: var(--lh-figure);
+    letter-spacing: var(--tracking-h2);
+    font-variant-numeric: lining-nums tabular-nums;
+    white-space: nowrap;
+    color: var(--ink);
+  }
+
+  .label {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  .source {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+</style>

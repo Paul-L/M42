@@ -1,0 +1,153 @@
+---
+/**
+ * Conférence III « Vrai ou faux ? » (kit/maquette/Conf-desinformation-ia.dc.html).
+ * Contenus : src/data/conferences/desinformation-ia.ts. JSON-LD : WebPage + BreadcrumbList + Service
+ * + FAQPage (src/data/conferences/jsonld.ts).
+ * Îlots : animation au défilement « Une image qui circule » (ScrollStory + visuel PublicationVirale),
+ * jeu « Vrai ou IA ? » (VraiOuIaGame). FAQ en <details> sans JavaScript.
+ *
+ * Neutralité politique stricte : textes de la maquette à l'identique (Storm-1516, Viginum).
+ * Rubrique « Conférences » marquée aria-current="true" (section), comme dans la maquette.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ConferenceHero from '../../../components/conferences/ConferenceHero.astro';
+import ScrollStory from '../../../components/conferences/ScrollStory.astro';
+import PublicationVirale from '../../../components/conferences/visuels/PublicationVirale.astro';
+import ConferenceObjectives from '../../../components/conferences/ConferenceObjectives.astro';
+import KeyFigures from '../../../components/conferences/KeyFigures.astro';
+import ConferenceProgram from '../../../components/conferences/ConferenceProgram.astro';
+import TempsFort from '../../../components/conferences/TempsFort.astro';
+import VraiOuIaGame from '../../../components/conferences/desinformation-ia/VraiOuIaGame.astro';
+import MethodeVerification from '../../../components/conferences/desinformation-ia/MethodeVerification.astro';
+import ConferenceFormats from '../../../components/conferences/ConferenceFormats.astro';
+import ConferenceAudiences from '../../../components/conferences/ConferenceAudiences.astro';
+import ConferenceFaq from '../../../components/conferences/ConferenceFaq.astro';
+import OtherConferences from '../../../components/conferences/OtherConferences.astro';
+import ConferenceCta from '../../../components/conferences/ConferenceCta.astro';
+import {
+  desinformationIa as conf,
+  exemplesVraiOuIa,
+} from '../../../data/conferences/desinformation-ia';
+import { conferenceJsonLd } from '../../../data/conferences/jsonld';
+---
+
+<BaseLayout
+  section="conferences"
+  title={conf.seo.title}
+  description={conf.seo.description}
+  jsonLd={conferenceJsonLd(conf)}
+>
+  <ConferenceHero
+    titre={conf.titre}
+    surTitre={conf.surTitre}
+    noteTitre={conf.noteTitre}
+    sousTitre={conf.sousTitre}
+    promesse={conf.promesse}
+    ctaSecondaire={conf.ctaSecondaire}
+    miseAJour={conf.miseAJour}
+    fiche={conf.fiche}
+    subtitleMax={28}
+  >
+    <p slot="after-actions" class="neutre">
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+        class="neutre-i"
+      >
+        <path d="M12 3v18"></path>
+        <path d="M5 7h14"></path>
+        <path d="M5 7l-3 7h6z"></path>
+        <path d="M19 7l-3 7h6z"></path>
+      </svg>
+      Strictement neutre : des mécanismes, jamais de contenu partisan.
+    </p>
+  </ConferenceHero>
+
+  <ScrollStory
+    label={conf.demonstration.label}
+    surTitre={conf.demonstration.surTitre}
+    etapes={conf.demonstration.etapes}
+    k={conf.demonstration.k}
+    minHeight={320}
+    visualSize="wide"
+  >
+    <PublicationVirale slot="visual" />
+  </ScrollStory>
+
+  <ConferenceObjectives
+    titre={conf.objectifs.titre}
+    enClair={conf.enClair}
+    items={conf.objectifs.items}
+  />
+
+  {conf.chiffres && (
+    <KeyFigures label={conf.chiffres.label} items={conf.chiffres.items} note={conf.chiffres.note} />
+  )}
+
+  <ConferenceProgram
+    surTitre={conf.programme.surTitre}
+    titre={conf.programme.titre}
+    chapo={conf.programme.chapo}
+    blocs={conf.programme.blocs}
+  />
+
+  <TempsFort
+    id={conf.tempsFort.id}
+    titre={conf.tempsFort.titre}
+    chapo={conf.tempsFort.chapo}
+    note={conf.tempsFort.note}
+  >
+    <VraiOuIaGame exemples={exemplesVraiOuIa} />
+  </TempsFort>
+
+  {conf.methode && (
+    <MethodeVerification
+      surTitre={conf.methode.surTitre}
+      titre={conf.methode.titre}
+      etapes={conf.methode.etapes}
+      note={conf.methode.note}
+      regle={conf.methode.regle}
+    />
+  )}
+
+  <ConferenceFormats titre={conf.formats.titre} items={conf.formats.items} />
+
+  <ConferenceAudiences
+    titre={conf.publics.titre}
+    chapo={conf.publics.chapo}
+    items={conf.publics.items}
+    declinaison={conf.declinaisonEntreprise}
+  />
+
+  <ConferenceFaq titre={conf.faq.titre} items={conf.faq.items} sources={conf.faq.sources} />
+
+  <OtherConferences current={conf.slug} />
+
+  <ConferenceCta titre={conf.contact.titre} chapo={conf.contact.chapo} cta={conf.contact.cta} />
+</BaseLayout>
+
+<style>
+  /* Mention « Strictement neutre » sous les boutons (slot after-actions de ConferenceHero). */
+  .neutre {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    color: var(--ink-2);
+  }
+
+  .neutre-i {
+    flex: none;
+    color: var(--ink);
+  }
+</style>

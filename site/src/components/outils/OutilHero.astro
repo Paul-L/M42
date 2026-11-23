@@ -1,0 +1,104 @@
+---
+/**
+ * En-tête de la page outil (Sat-test-arnaque-ou-pas.dc.html) : fil d'Ariane, sur-titre, H1 (16ch),
+ * chapô, source, signature ; l'outil lui-même (slot par défaut) dans la colonne de droite.
+ * Diffère de satellites/SatHero : colonnes alignées en haut, H1 plus court (4,25 rem, 16ch),
+ * colonne droite plus large (flex 1.25 1 520px, portée par l'outil), marge basse 4 à 6 rem.
+ *
+ * Props :
+ * - crumbs : fil d'Ariane (le dernier élément est la page courante).
+ * - eyebrow, title, lead, source : textes de la maquette.
+ * Slot « byline » : ligne « Conçu et animé en salle par … ».
+ */
+import Breadcrumb from '../Breadcrumb.astro';
+import Eyebrow from '../Eyebrow.astro';
+import type { Crumb } from '../../data/satellites/types';
+
+interface Props {
+  crumbs: Crumb[];
+  eyebrow: string;
+  title: string;
+  lead: string;
+  source: string;
+}
+
+const { crumbs, eyebrow, title, lead, source } = Astro.props;
+---
+
+<section aria-labelledby="titre-page" class="hero">
+  <div class="inner">
+    <Breadcrumb items={crumbs} />
+    <div class="row">
+      <div class="main">
+        <Eyebrow>{eyebrow}</Eyebrow>
+        <h1 id="titre-page" class="title">
+          {title}
+        </h1>
+        <p class="lead">{lead}</p>
+        <p class="source">{source}</p>
+        <p class="byline">
+          <slot name="byline" />
+        </p>
+      </div>
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding: clamp(2rem, 4vw, 3rem) 0 clamp(4rem, 7vw, 6rem);
+  }
+
+  .inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 var(--gutter-x);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--s-7) var(--s-8);
+  }
+
+  .main {
+    flex: 1 1 380px;
+    min-width: 0;
+  }
+
+  .title {
+    margin: var(--s-5) 0 0;
+    max-width: 16ch;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(2.5rem, 1.5rem + 3.4vw, 4.25rem);
+    line-height: 1;
+    letter-spacing: var(--tracking-h1);
+    color: var(--ink);
+  }
+
+  .lead {
+    margin: var(--s-5) 0 0;
+    max-width: 56ch;
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .source {
+    margin: var(--s-2) 0 0;
+    max-width: var(--measure-text);
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .byline {
+    margin: var(--s-5) 0 0;
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    color: var(--ink-3);
+  }
+</style>

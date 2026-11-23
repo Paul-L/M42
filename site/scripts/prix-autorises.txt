@@ -1,0 +1,6 @@
+# Montants qui ne sont PAS des tarifs M42 (exemples d'arnaque, chiffres sourcés, seuils légaux).
+# Une ligne = un extrait exact ; tout autre montant détecté par /verif reste bloquant.
+1,99 €
+300 €
+516 millions d'euros
+60 000 € HT

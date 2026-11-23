@@ -1,0 +1,153 @@
+---
+/**
+ * Tableau éditorial (pages satellites) : légende au-dessus, en-têtes en capitales sur filet encre,
+ * en-têtes de ligne en gras, défilement horizontal sous 520 px.
+ * En-têtes de ligne et cellules en HTML simple :
+ * - `.sat-th-sub` : précision sous l'en-tête de ligne (400, 14 px, gris) ;
+ * - `.sat-level` + `--vert | --orange | --rouge` et `.sat-level-sub` : règle des trois couleurs
+ *   (pictogramme de forme différente pour ne jamais coder par la couleur seule).
+ *
+ * Props :
+ * - `table` : { caption, columns, rows: { head, cells } }.
+ */
+import type { SatTable } from '../../data/satellites/types';
+
+interface Props {
+  table: SatTable;
+}
+
+const { table } = Astro.props;
+// Identifiant stable tiré de la légende : la zone défilante (< 520 px) est nommée par elle.
+const captionId = `tableau-${table.caption
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/g, '')
+  .slice(0, 48)}`;
+---
+
+<!-- Zone défilante atteignable au clavier (WCAG 2.1.1, règle axe scrollable-region-focusable). -->
+<div class="wrap" tabindex="0" role="region" aria-labelledby={captionId}>
+  <table class="table">
+    <caption id={captionId}>{table.caption}</caption>
+    <thead>
+      <tr>
+        {table.columns.map((col) => (
+          <th scope="col">{col}</th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {table.rows.map((row) => (
+        <tr>
+          <th scope="row" set:html={row.head} />
+          {row.cells.map((cell) => (
+            <td set:html={cell} />
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .wrap {
+    margin-top: var(--s-6);
+    overflow-x: auto;
+  }
+
+  .table {
+    width: 100%;
+    min-width: 520px;
+    border-collapse: collapse;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  .wrap:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  caption {
+    caption-side: top;
+    text-align: left;
+    padding-bottom: var(--s-3);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  thead th {
+    text-align: left;
+    vertical-align: bottom;
+    padding: 0 20px var(--s-3) 0;
+    border-bottom: 1px solid var(--ink);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  tbody th {
+    text-align: left;
+    vertical-align: top;
+    padding: 18px 20px 18px 0;
+    border-bottom: 1px solid var(--line);
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  td {
+    vertical-align: top;
+    padding: 18px 20px 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  td :global(strong) {
+    color: var(--ink);
+  }
+
+  th :global(.sat-th-sub) {
+    display: block;
+    font-weight: 400;
+    font-size: var(--fs-small);
+    color: var(--ink-3);
+  }
+
+  th :global(.sat-level) {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Pictogramme de forme : 18 × 18 px fixe (la règle globale svg { max-width: 100% } le faisait rétrécir). */
+  th :global(.sat-level svg) {
+    flex-shrink: 0;
+    max-width: none;
+  }
+
+  th :global(.sat-level--vert) {
+    color: var(--success);
+  }
+
+  th :global(.sat-level--orange) {
+    /* Pas de token « orange » dans la DA : valeur de la maquette */
+    color: #8a5300;
+  }
+
+  th :global(.sat-level--rouge) {
+    color: var(--error);
+  }
+
+  th :global(.sat-level-sub) {
+    display: block;
+    margin-top: var(--s-1);
+    font-size: var(--fs-small);
+    font-weight: 500;
+    color: var(--ink-2);
+  }
+</style>

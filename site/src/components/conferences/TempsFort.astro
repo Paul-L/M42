@@ -9,7 +9,9 @@
  * - id : ancre de la section (« jeu », « temps-fort », « charte »…) ; le H2 reçoit `titre-<id>`.
  * - surTitre : défaut « Le temps fort ».
  * - titre, chapo : titre H2 et chapô.
- * - note : petite note sous le chapô (facultative).
+ * - note : petite note (facultative).
+ * - notePosition : « aside » (défaut) sous le chapô, 44ch ; « after » sous la rangée, pleine
+ *   largeur, 32 px au-dessus, avec apparition au défilement (conférence I).
  * - asideBasis : base flex de la colonne de gauche en px (320, 340 ou 360, selon la page).
  */
 import Container from '../Container.astro';
@@ -22,10 +24,19 @@ interface Props {
   titre: string;
   chapo: string;
   note?: string | undefined;
+  notePosition?: 'aside' | 'after' | undefined;
   asideBasis?: 320 | 340 | 360;
 }
 
-const { id, surTitre = 'Le temps fort', titre, chapo, note, asideBasis = 320 } = Astro.props;
+const {
+  id,
+  surTitre = 'Le temps fort',
+  titre,
+  chapo,
+  note,
+  notePosition = 'aside',
+  asideBasis = 320,
+} = Astro.props;
 const headingId = `titre-${id}`;
 ---
 
@@ -36,10 +47,11 @@ const headingId = `titre-${id}`;
       <div class:list={['aside', `aside--${asideBasis}`]}>
         <SectionHeading id={headingId}>{titre}</SectionHeading>
         <p class="lead m42-reveal">{chapo}</p>
-        {note && <p class="note">{note}</p>}
+        {note && notePosition === 'aside' && <p class="note">{note}</p>}
       </div>
       <slot />
     </div>
+    {note && notePosition === 'after' && <p class="note-after m42-reveal">{note}</p>}
   </Container>
 </section>
 
@@ -85,6 +97,13 @@ const headingId = `titre-${id}`;
   .note {
     margin: 16px 0 0;
     max-width: 44ch;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .note-after {
+    margin: var(--s-6) 0 0;
     font-size: 14px;
     line-height: 1.5;
     color: var(--ink-3);

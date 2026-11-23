@@ -1,0 +1,74 @@
+---
+/**
+ * « Notre approche » : trois principes numérotés (01, 02, 03) sous un filet.
+ * Marges propres à l'accueil : la section se resserre en bas pour enchaîner sur les repères.
+ */
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeading from '../conferences/SectionHeading.astro';
+import { principes } from '../../data/accueil';
+---
+
+<section aria-labelledby="titre-pourquoi" class="principles">
+  <Container>
+    <Eyebrow class="m42-reveal">Notre approche</Eyebrow>
+    <SectionHeading id="titre-pourquoi">Trois principes pour se repérer</SectionHeading>
+    <div class="grid">
+      {principes.map((p) => (
+        <div class="item m42-reveal">
+          <span aria-hidden="true" class="num">
+            {p.numero}
+          </span>
+          <h3 class="h3">{p.titre}</h3>
+          <p class="body">{p.texte}</p>
+        </div>
+      ))}
+    </div>
+  </Container>
+</section>
+
+<style>
+  .principles {
+    padding: var(--section-y) 0 clamp(2rem, 4vw, 4rem);
+  }
+
+  .grid {
+    margin-top: var(--s-7);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 40px var(--s-7);
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    border-top: 1px solid var(--line);
+    padding-top: var(--s-5);
+  }
+
+  .num {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+    color: var(--gold-deep);
+  }
+
+  .h3 {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .body {
+    margin: 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--ink-2);
+    hyphens: auto;
+  }
+</style>

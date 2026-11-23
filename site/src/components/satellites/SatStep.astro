@@ -1,0 +1,92 @@
+---
+/**
+ * Étape numérotée d'un guide (page « sensibiliser ») : filet encre, grand chiffre or,
+ * H2 précédé de « Étape n sur N », puis contenu (slot). L'id du H2 est `${id}-t`.
+ *
+ * Props :
+ * - `id` : ancre (« etape-1 »).
+ * - `n`, `total` : numéro de l'étape et nombre d'étapes.
+ * - `title` : titre de l'étape.
+ * - `first` : première section de l'article (pas de marge haute).
+ */
+import './satellites.css';
+
+interface Props {
+  id: string;
+  n: number;
+  total: number;
+  title: string;
+  first?: boolean;
+}
+
+const { id, n, total, title, first = false } = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={['step', 'sat-anchor', { 'step--first': first }]}
+  aria-labelledby={`${id}-t`}
+>
+  <div class="head">
+    <span aria-hidden="true" class="num">
+      {n}
+    </span>
+    <h2 id={`${id}-t`} class="title">
+      <span class="kicker">
+        Étape {n} sur {total}
+      </span>
+      {title}
+    </h2>
+  </div>
+  <slot />
+</section>
+
+<style>
+  .step {
+    margin-top: 88px;
+    border-top: 1px solid var(--ink);
+    padding-top: var(--s-5);
+  }
+
+  .step--first {
+    margin-top: 0;
+  }
+
+  .head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0 var(--s-5);
+    align-items: start;
+  }
+
+  .num {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(3.5rem, 2.5rem + 3vw, 5rem);
+    line-height: 0.85;
+    font-variant-numeric: lining-nums;
+    color: var(--gold-deep);
+  }
+
+  .title {
+    margin: 0;
+    max-width: 22ch;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .kicker {
+    display: block;
+    margin-bottom: var(--s-2);
+    font-family: var(--font-sans);
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+</style>

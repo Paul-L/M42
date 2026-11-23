@@ -1,0 +1,47 @@
+---
+/**
+ * Liste de pages liées : lien fléché + une ligne de description, filets entre les lignes.
+ *
+ * Props :
+ * - `items` : { href, label, description }.
+ */
+import ArrowLink from '../ArrowLink.astro';
+import type { SatRelatedLink } from '../../data/satellites/types';
+
+interface Props {
+  items: SatRelatedLink[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="list">
+  {items.map((item) => (
+    <li class="item">
+      <ArrowLink href={item.href}>{item.label}</ArrowLink>
+      <p class="desc">{item.description}</p>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .list {
+    list-style: none;
+    margin: var(--s-6) 0 0;
+    padding: 0;
+    max-width: var(--measure-text);
+    border-top: 1px solid var(--ink);
+  }
+
+  .item {
+    border-bottom: 1px solid var(--line);
+    padding: 14px 0;
+  }
+
+  .desc {
+    margin: 2px 0 0;
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    color: var(--ink-3);
+  }
+</style>

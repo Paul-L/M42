@@ -1,0 +1,58 @@
+---
+/**
+ * Liste terme / détail (« Ce qu'il faut prévoir ») : filet encre en tête, filets fins entre lignes,
+ * terme de 160 px, détail qui passe dessous quand la place manque.
+ *
+ * Props :
+ * - `items` : { term, html } ; `html` en HTML simple (lien `.sat-inline`).
+ */
+import type { SatDefinition } from '../../data/satellites/types';
+import './satellites.css';
+
+interface Props {
+  items: SatDefinition[];
+}
+
+const { items } = Astro.props;
+---
+
+<dl class="list">
+  {items.map((item) => (
+    <div class="row">
+      <dt>{item.term}</dt>
+      <dd set:html={item.html} />
+    </div>
+  ))}
+</dl>
+
+<style>
+  .list {
+    margin: var(--s-6) 0 0;
+    max-width: var(--measure-text);
+    border-top: 1px solid var(--ink);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-5);
+    padding: var(--s-4) 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  dt {
+    flex: 0 0 160px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  dd {
+    flex: 1 1 280px;
+    margin: 0;
+    font-size: var(--fs-body);
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+</style>

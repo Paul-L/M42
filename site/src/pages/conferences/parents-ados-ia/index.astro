@@ -26,12 +26,7 @@ import ConferenceAudiences from '../../../components/conferences/ConferenceAudie
 import ConferenceFaq from '../../../components/conferences/ConferenceFaq.astro';
 import OtherConferences from '../../../components/conferences/OtherConferences.astro';
 import ConferenceCta from '../../../components/conferences/ConferenceCta.astro';
-import {
-  parentsAdosIa as conf,
-  friseJournee,
-  charteFamille,
-  bonNumero,
-} from '../../../data/conferences/parents-ados-ia';
+import { parentsAdosIa as conf } from '../../../data/conferences/parents-ados-ia';
 import { conferenceJsonLd } from '../../../data/conferences/jsonld';
 ---
 
@@ -50,6 +45,7 @@ import { conferenceJsonLd } from '../../../data/conferences/jsonld';
     ctaSecondaire={conf.ctaSecondaire}
     miseAJour={conf.miseAJour}
     fiche={conf.fiche}
+    subtitleMax={28}
   />
 
   <ScrollStory
@@ -61,7 +57,7 @@ import { conferenceJsonLd } from '../../../data/conferences/jsonld';
     minHeight={340}
     visualSize="phone-narrow"
   >
-    <FriseJournee slot="before" heures={friseJournee} />
+    {conf.frise && <FriseJournee slot="before" heures={conf.frise} />}
     <TelephoneAdo slot="visual" />
   </ScrollStory>
 
@@ -87,14 +83,22 @@ import { conferenceJsonLd } from '../../../data/conferences/jsonld';
     note={conf.tempsFort.note}
     asideBasis={340}
   >
-    <CharteFamille
-      titre={charteFamille.titre}
-      rubriques={charteFamille.rubriques}
-      signature={charteFamille.signature}
-    />
+    {conf.charte && (
+      <CharteFamille
+        titre={conf.charte.titre}
+        rubriques={conf.charte.rubriques}
+        signature={conf.charte.signature}
+      />
+    )}
   </TempsFort>
 
-  <BonNumero valeur={bonNumero.valeur} titre={bonNumero.titre} texte={bonNumero.texte} />
+  {conf.bonNumero && (
+    <BonNumero
+      valeur={conf.bonNumero.valeur}
+      titre={conf.bonNumero.titre}
+      texte={conf.bonNumero.texte}
+    />
+  )}
 
   <ConferenceFormats titre={conf.formats.titre} items={conf.formats.items} />
 
@@ -111,14 +115,3 @@ import { conferenceJsonLd } from '../../../data/conferences/jsonld';
 
   <ConferenceCta titre={conf.contact.titre} chapo={conf.contact.chapo} cta={conf.contact.cta} />
 </BaseLayout>
-
-<style>
-  /*
-   * Sous-titre en italique : 28ch dans cette maquette (26ch dans ConferenceHero, valeur de la
-   * conférence II). Composant partagé non modifié pendant l'intégration en parallèle :
-   * surcharge ciblée (l'id l'emporte sur la classe scopée). À consolider en option `sousTitreMax`.
-   */
-  :global(#titre-page + .subtitle) {
-    max-width: 28ch;
-  }
-</style>

@@ -5,15 +5,22 @@
  * Props :
  * - label : nom accessible de la section (aria-label).
  * - items : { valeur, texte, source, accent? }[] (accent : valeur en or).
+ * - note : petite note sous la grille, dans la même section (facultative ; ex. marqueur
+ *   [À VÉRIFIER …] de la conférence III).
+ *
+ * Slot :
+ * - note : même emplacement que la prop `note`, pour un contenu riche (l'emporte sur la prop).
  */
 import type { Chiffre } from '../../data/conferences/types';
 
 interface Props {
   label: string;
   items: Chiffre[];
+  note?: string | undefined;
 }
 
-const { label, items } = Astro.props;
+const { label, items, note } = Astro.props;
+const hasNoteSlot = Astro.slots.has('note');
 ---
 
 <section class="figures m42-night" aria-label={label}>
@@ -26,6 +33,13 @@ const { label, items } = Astro.props;
       </div>
     ))}
   </div>
+  {hasNoteSlot ? (
+    <p class="note">
+      <slot name="note" />
+    </p>
+  ) : (
+    note && <p class="note">{note}</p>
+  )}
 </section>
 
 <style>
@@ -75,6 +89,16 @@ const { label, items } = Astro.props;
 
   .source {
     margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--on-night-3);
+  }
+
+  .note {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 var(--gutter-x) 48px;
+    box-sizing: border-box;
     font-size: 12px;
     line-height: 1.5;
     color: var(--on-night-3);

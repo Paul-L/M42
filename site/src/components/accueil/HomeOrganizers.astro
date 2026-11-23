@@ -1,0 +1,105 @@
+---
+/**
+ * « Kit organisateur » : ce que contient l'espace organisateurs (liste à croix de repère)
+ * et l'emplacement de la vidéo (Placeholder 16:9, à remplacer par la vidéo).
+ */
+import ArrowLink from '../ArrowLink.astro';
+import Eyebrow from '../Eyebrow.astro';
+import Placeholder from '../Placeholder.astro';
+import Section from '../Section.astro';
+import SectionHeading from '../conferences/SectionHeading.astro';
+import { kitOrganisateur as k } from '../../data/accueil';
+---
+
+<Section id="organisateurs" labelledby="titre-organisateurs">
+  <Eyebrow class="m42-reveal">{k.surTitre}</Eyebrow>
+  <div class="row">
+    <div class="text m42-reveal">
+      <SectionHeading id="titre-organisateurs" reveal={false} flush>
+        {k.titre}
+      </SectionHeading>
+      <p class="lead">{k.chapo}</p>
+      <ul class="list">
+        {k.liste.map((item) => (
+          <li>
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M12 3v18" />
+              <path d="M3 12h18" />
+            </svg>
+            {item}
+          </li>
+        ))}
+      </ul>
+      <div>
+        <ArrowLink href={k.lien.href}>{k.lien.label}</ArrowLink>
+      </div>
+    </div>
+    <div class="video m42-reveal">
+      <Placeholder label={k.video} ratio="16/9" />
+    </div>
+  </div>
+</Section>
+
+<style>
+  .row {
+    margin-top: var(--s-5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--s-7) var(--s-8);
+  }
+
+  .text {
+    flex: 1 1 380px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+  }
+
+  .lead {
+    margin: 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  .list li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .list svg {
+    flex: none;
+    color: var(--ink);
+  }
+
+  .video {
+    flex: 999 1 520px;
+    min-width: 0;
+  }
+</style>

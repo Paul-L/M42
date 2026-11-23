@@ -1,0 +1,136 @@
+---
+/**
+ * Bandeau nuit de fin de page satellite : comme CtaBand, avec un bouton secondaire à côté du
+ * primaire, un H2 de 20ch et une note facultative sous le chapô (marqueur [À ACTIVER …]).
+ *
+ * Props :
+ * - `eyebrow`, `title`, `lead` : textes de la maquette.
+ * - `note` : ligne grise sous le chapô.
+ * - `primary`, `secondary` : boutons (le secondaire est facultatif).
+ */
+import Button from '../Button.astro';
+import Eyebrow from '../Eyebrow.astro';
+import type { SatLink } from '../../data/satellites/types';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  note?: string;
+  primary: SatLink;
+  secondary?: SatLink;
+}
+
+const { eyebrow, title, lead, note, primary, secondary } = Astro.props;
+---
+
+<section class="cta m42-night" aria-labelledby="cta-t">
+  <div class="inner">
+    <Eyebrow>{eyebrow}</Eyebrow>
+    <div class="row">
+      <div class="text">
+        <h2 id="cta-t" class="title">
+          {title}
+        </h2>
+        <p class="lead">{lead}</p>
+        {note && <p class="note">{note}</p>}
+      </div>
+      <div class="actions">
+        <div class="buttons">
+          <Button href={primary.href}>{primary.label}</Button>
+          {secondary && (
+            <Button href={secondary.href} variant="secondary">
+              {secondary.label}
+            </Button>
+          )}
+        </div>
+        <p class="contact">
+          Clara : <a href="mailto:clara@m42.guide">clara@m42.guide</a>
+          <br />
+          Paul : <a href="mailto:paul@m42.guide">paul@m42.guide</a>
+          <br />
+          [À COMPLÉTER : téléphone]
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    background: var(--night);
+    color: var(--on-night);
+    padding: var(--section-y) 0;
+  }
+
+  .inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 var(--gutter-x);
+  }
+
+  .row {
+    margin-top: var(--s-5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-6) var(--s-8);
+  }
+
+  .text {
+    flex: 1 1 520px;
+    min-width: 0;
+  }
+
+  .title {
+    margin: 0;
+    max-width: 20ch;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .lead {
+    margin: 20px 0 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--on-night-2);
+  }
+
+  .note {
+    margin: var(--s-4) 0 0;
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    color: var(--on-night-3);
+  }
+
+  .actions {
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-4);
+  }
+
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+  }
+
+  .contact {
+    margin: 0;
+    font-size: var(--fs-small);
+    line-height: 1.6;
+    color: var(--on-night-2);
+  }
+
+  .contact a {
+    color: var(--on-night);
+    text-underline-offset: 3px;
+  }
+</style>

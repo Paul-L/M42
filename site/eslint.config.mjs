@@ -8,7 +8,10 @@ export default [
   {
     // Paramètre préfixé par « _ » : volontairement inutilisé (ex. fonctions branchées en phase 4).
     rules: {
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
     },
   },
 ];

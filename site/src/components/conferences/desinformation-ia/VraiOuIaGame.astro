@@ -1,0 +1,296 @@
+---
+/**
+ * Jeu « Vrai ou IA ? » (conférence III, temps fort) : un exemple à la fois (nature du contenu,
+ * visuel, description), deux boutons « Vrai » / « IA ou faux », verdict et explication annoncés
+ * (aria-live), score au dernier exemple, puis « Recommencer ». Logique de la maquette
+ * (renderVals, objet `g`) ; moteur partagé en lecture seule : ../quiz.ts
+ * (« IA ou faux » = choix « a », « Vrai » = choix « f »).
+ *
+ * Différences avec ArnaqueOuPasGame : bloc visuel (Placeholder, un par exemple, seul le courant
+ * est affiché), ordre des boutons (secondaire « Vrai » d'abord, primaire « IA ou faux » ensuite),
+ * libellés propres.
+ *
+ * Rendu serveur : premier exemple (état initial de la maquette). Textes passés à l'îlot en JSON,
+ * typographie française déjà appliquée.
+ * Clavier : après une réponse, le focus va sur « Exemple suivant » ; après « Exemple suivant »
+ * ou « Recommencer », il revient sur le texte de l'exemple.
+ *
+ * Props :
+ * - exemples : { de, visuel, texte, arnaque, explication }[] (arnaque : faux ou généré par IA).
+ */
+import Button from '../../Button.astro';
+import Placeholder from '../../Placeholder.astro';
+import { frenchTypography } from '../../../lib/typo';
+import type { ExempleVraiOuIa } from '../../../data/conferences/desinformation-ia';
+
+interface Props {
+  exemples: ExempleVraiOuIa[];
+}
+
+const LABELS = {
+  counter: 'Exemple {n} sur {total}',
+  right: 'Bien vu. ',
+  wrong: 'Raté. ',
+  verdictFake: "C'est un contenu faux ou généré par IA.",
+  verdictTrue: 'Ce contenu est vrai.',
+  score:
+    'Votre score : {score} sur {total}. En conférence, la salle vote, puis on montre les indices un par un.',
+  next: 'Exemple suivant →',
+  restart: 'Recommencer',
+};
+
+const { exemples } = Astro.props;
+const first = exemples[0];
+const total = exemples.length;
+
+const typo = (s: string): string => frenchTypography(s);
+const data = {
+  exemples: exemples.map((e) => ({
+    de: typo(e.de),
+    texte: typo(e.texte),
+    faux: e.arnaque,
+    explication: typo(e.explication),
+  })),
+  labels: Object.fromEntries(Object.entries(LABELS).map(([key, v]) => [key, typo(v)])),
+};
+// Pas de « < » brut dans le bloc JSON (aucune fermeture de balise possible).
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+const fill = (tpl: string, values: Record<string, number>): string =>
+  tpl.replace(/\{(\w+)\}/g, (_m, key: string) => String(values[key] ?? ''));
+---
+
+<div class="game m42-reveal" data-vi-game>
+  <script type="application/json" data-vi-data set:html={json} />
+  {first && (
+    <>
+      <div class="top">
+        <span data-vi-kind>{first.de}</span>
+        <span data-vi-count>{fill(LABELS.counter, { n: 1, total })}</span>
+      </div>
+      <div class="visual">
+        {exemples.map((e, i) => (
+          <div data-vi-visual hidden={i !== 0}>
+            <Placeholder label={e.visuel} />
+          </div>
+        ))}
+      </div>
+      <p class="text" data-vi-text tabindex="-1">
+        {first.texte}
+      </p>
+      <div role="group" aria-label="Votre réponse" class="choices" data-vi-choices>
+        <Button variant="secondary" data-vi-pick="f">
+          Vrai
+        </Button>
+        <Button data-vi-pick="a">IA ou faux</Button>
+      </div>
+      <div aria-live="polite">
+        <div class="feedback" data-vi-feedback hidden>
+          <p class="verdict" data-vi-verdict></p>
+          <p class="explain" data-vi-explain></p>
+          <p class="score" data-vi-score hidden></p>
+          <button type="button" class="next" data-vi-next></button>
+        </div>
+      </div>
+    </>
+  )}
+</div>
+
+<style>
+  .game {
+    flex: 999 1 520px;
+    min-width: 0;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: clamp(24px, 3vw, 40px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 16px;
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* Bloc de remplacement de la maquette : hauteur minimale 140 px (pas de format fixe),
+     marges 20 px, texte 14 px. */
+  .visual :global(.ph) {
+    aspect-ratio: auto;
+    min-height: 140px;
+    padding: 20px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .text {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: var(--fs-card);
+    font-weight: 500;
+    line-height: 1.25;
+  }
+
+  /* Cible de focus programmatique (non interactive) */
+  .text:focus {
+    outline: none;
+  }
+
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .choices[hidden],
+  .feedback[hidden],
+  .score[hidden] {
+    display: none;
+  }
+
+  .feedback {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+  }
+
+  .verdict {
+    margin: 0;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 1.4;
+    color: var(--error);
+  }
+
+  .verdict[data-right='true'] {
+    color: var(--success);
+  }
+
+  .explain {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  .score {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  /* Petit bouton texte */
+  .next {
+    align-self: flex-start;
+    min-height: var(--target-min);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: color var(--dur-1) var(--ease-out);
+  }
+
+  .next:hover {
+    color: var(--ink);
+    text-decoration-color: var(--gold);
+  }
+</style>
+
+<script>
+  /* Îlot du jeu « Vrai ou IA ? » (objet `g` de renderVals dans la maquette). */
+  import { initialState, isLast, next, pick, score, type Choice, type QuizState } from '../quiz';
+
+  interface GameData {
+    exemples: { de: string; texte: string; faux: boolean; explication: string }[];
+    labels: Record<string, string>;
+  }
+
+  const fill = (tpl: string, values: Record<string, number>): string =>
+    tpl.replace(/\{(\w+)\}/g, (_m, key: string) => String(values[key] ?? ''));
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-vi-game]')) {
+    const raw = root.querySelector('[data-vi-data]')?.textContent;
+    if (!raw) continue;
+    const { exemples, labels } = JSON.parse(raw) as GameData;
+    const total = exemples.length;
+
+    const $ = <T extends HTMLElement>(sel: string): T | null => root.querySelector<T>(sel);
+    const kind = $('[data-vi-kind]');
+    const count = $('[data-vi-count]');
+    const text = $('[data-vi-text]');
+    const choices = $('[data-vi-choices]');
+    const feedback = $('[data-vi-feedback]');
+    const verdict = $('[data-vi-verdict]');
+    const explain = $('[data-vi-explain]');
+    const scoreEl = $('[data-vi-score]');
+    const nextBtn = $<HTMLButtonElement>('[data-vi-next]');
+    const visuals = Array.from(root.querySelectorAll<HTMLElement>('[data-vi-visual]'));
+    if (!kind || !count || !text || !choices || !feedback || !verdict || !explain || !scoreEl)
+      continue;
+    if (!nextBtn) continue;
+
+    let state: QuizState = initialState();
+
+    const render = (): void => {
+      const e = exemples[state.index];
+      if (!e) return;
+      const last = isLast(state, total);
+      const answered = state.answer !== null;
+      const right = state.results[state.index] === true;
+
+      kind.textContent = e.de;
+      count.textContent = fill(labels.counter ?? '', { n: state.index + 1, total });
+      visuals.forEach((v, i) => {
+        v.hidden = i !== state.index;
+      });
+      text.textContent = e.texte;
+      choices.hidden = answered;
+      feedback.hidden = !answered;
+      if (answered) {
+        verdict.textContent =
+          (right ? labels.right : labels.wrong) +
+          (e.faux ? labels.verdictFake : labels.verdictTrue);
+        verdict.dataset.right = String(right);
+        explain.textContent = e.explication;
+        scoreEl.hidden = !last;
+        scoreEl.textContent = last ? fill(labels.score ?? '', { score: score(state), total }) : '';
+        nextBtn.textContent = (last ? labels.restart : labels.next) ?? '';
+      }
+    };
+
+    for (const btn of root.querySelectorAll<HTMLButtonElement>('[data-vi-pick]')) {
+      btn.addEventListener('click', () => {
+        const e = exemples[state.index];
+        if (!e) return;
+        state = pick(state, btn.dataset.viPick as Choice, e.faux);
+        render();
+        nextBtn.focus();
+      });
+    }
+
+    nextBtn.addEventListener('click', () => {
+      // Au dernier exemple, « Recommencer » remet le jeu à zéro (pas d'écran de fin ici).
+      state = isLast(state, total) ? initialState() : next(state, total);
+      render();
+      text.focus();
+    });
+  }
+</script>

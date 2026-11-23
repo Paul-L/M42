@@ -1,0 +1,498 @@
+---
+/**
+ * Symbole animé de l'accueil (kit/maquette/Main.dc.html, classe `Component`) :
+ * carte du ciel en 3D sur <canvas> qui s'incline vers le curseur. Séquence d'ouverture
+ * (cercle tracé, repères, anneau pointillé, M relié étoile après étoile, étoile d'or),
+ * puis légère oscillation, anneau qui tourne et étoile qui pulse.
+ *
+ * Accessibilité et sobriété (WCAG 2.2.2, DA § 8) :
+ * - arrêt automatique après 10 s sans interaction (la dernière image reste affichée) ;
+ *   survol ou clic sur le symbole la relancent, jamais après une pause volontaire ;
+ * - bouton pause / relance visible, utilisable au clavier (affiché seulement si
+ *   l'animation est possible, comme dans la maquette) ;
+ * - prefers-reduced-motion : image finale figée, aucune boucle, aucun écouteur de pointeur ;
+ * - boucle suspendue quand l'onglet est masqué ou le canevas hors écran ;
+ * - devicePixelRatio (plafonné à 2) et redimensionnement (ResizeObserver).
+ * Canevas décrit (role="img" + aria-label), comme dans la maquette.
+ *
+ * Props : alt (nom accessible du canevas), pauseLabel, playLabel (libellés du bouton).
+ */
+interface Props {
+  alt: string;
+  pauseLabel: string;
+  playLabel: string;
+  /** Inclinaison maximale vers le curseur, de 0 à 1 (option « inclinaison » de la maquette). */
+  tilt?: number;
+}
+
+const { alt, pauseLabel, playLabel, tilt = 0.5 } = Astro.props;
+---
+
+<div class="sky" data-m42-sky-root data-pause={pauseLabel} data-play={playLabel} data-tilt={tilt}>
+  <canvas data-m42-sky role="img" aria-label={alt} class="canvas"></canvas>
+  <button type="button" class="toggle" data-m42-sky-toggle hidden>
+    {pauseLabel}
+  </button>
+</div>
+
+<style>
+  .sky {
+    flex: 1 1 460px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-1);
+  }
+
+  .canvas {
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 1 / 1;
+    display: block;
+    touch-action: pan-y;
+  }
+
+  /* Petit bouton texte (.m42-txtbtn) */
+  .toggle {
+    align-self: flex-end;
+    min-height: var(--target-min);
+    padding: 0 4px;
+    border: 0;
+    background: transparent;
+    color: var(--ink-3);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: color var(--dur-1) var(--ease-out);
+  }
+
+  .toggle:hover {
+    color: var(--ink);
+    text-decoration-color: var(--gold);
+  }
+
+  .toggle[hidden] {
+    display: none;
+  }
+
+  @media (max-width: 959px) {
+    .canvas {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .canvas {
+      max-width: 240px;
+    }
+  }
+</style>
+
+<script>
+  /** Durée maximale sans interaction avant l'arrêt automatique (WCAG 2.2.2). */
+  const IDLE_MAX = 10000;
+
+  type Point = [number, number, number];
+
+  /** « #0e0f12 » → « 14,15,18 » (couleur encre lue dans les tokens). */
+  const hexToRgb = (hex: string, fallback: string): string => {
+    const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex.trim());
+    if (!m) return fallback;
+    return [m[1], m[2], m[3]].map((h) => parseInt(h ?? '0', 16)).join(',');
+  };
+
+  function mount(root: HTMLElement): void {
+    const c = root.querySelector<HTMLCanvasElement>('canvas[data-m42-sky]');
+    const btn = root.querySelector<HTMLButtonElement>('[data-m42-sky-toggle]');
+    const ctx = c?.getContext('2d');
+    if (!c || !btn || !ctx) return;
+
+    const pauseLabel = root.dataset.pause ?? '';
+    const playLabel = root.dataset.play ?? '';
+    const tiltMax = 0.75 * Number(root.dataset.tilt ?? 0.5);
+    const css = getComputedStyle(c);
+    const gold = css.getPropertyValue('--gold').trim() || '#B08D57';
+    const INK = hexToRgb(css.getPropertyValue('--ink'), '14,15,18');
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    let still = motion.matches;
+    let W = 1;
+    let H = 1;
+    let u = 1;
+    let dpr = 1;
+    let time = still ? 99999 : 0;
+    let last = 0;
+    let rx = 0;
+    let ry = 0;
+    let flashT = 2800;
+    let shock: { x: number; y: number; age: number } | null = null;
+    let idle = 0;
+    let raf = 0;
+    /** Pause volontaire (bouton) : seule une action de l'utilisateur relance. */
+    let held = false;
+    let onScreen = true;
+    const mouse = { x: 0, y: 0, on: false };
+    const rnd = (a: number, b: number) => a + Math.random() * (b - a);
+
+    // Ciel de fond, symbole M42 (coordonnées centrées, rayon du cercle 0,47).
+    const bg = Array.from({ length: 140 }, () => ({
+      x: rnd(-0.62, 0.62),
+      y: rnd(-0.62, 0.62),
+      z: rnd(-0.55, -0.12),
+      r: rnd(0.5, 1.4),
+      ph: rnd(0, 6.28),
+    }));
+    const M: [number, number][] = [
+      [-0.23, 0.21],
+      [-0.23, -0.21],
+      [0, 0.05],
+      [0.23, -0.21],
+      [0.23, 0.21],
+    ];
+    const MS: [number, number, number][] = [
+      [-0.23, 0.21, 0.016],
+      [-0.23, -0.21, 0.021],
+      [0.23, -0.21, 0.021],
+      [0.23, 0.21, 0.016],
+    ];
+    const hov = MS.map(() => 1);
+
+    const proj = (x: number, y: number, z: number): Point => {
+      const cy = Math.cos(ry);
+      const sy = Math.sin(ry);
+      const cx = Math.cos(rx);
+      const sx = Math.sin(rx);
+      const x1 = x * cy + z * sy;
+      const z1 = -x * sy + z * cy;
+      const y2 = y * cx - z1 * sx;
+      const z2 = y * sx + z1 * cx;
+      const p = 2.4 / (2.4 - z2);
+      return [W / 2 + x1 * p * u, H / 2 + y2 * p * u, p];
+    };
+    const ease = (t: number) => (t <= 0 ? 0 : t >= 1 ? 1 : 1 - Math.pow(1 - t, 3));
+    const seg = (t: number, a: number, b: number) => ease((t - a) / (b - a));
+    const sparkle = (x: number, y: number, r: number) => {
+      const k = r * 0.14;
+      ctx.beginPath();
+      ctx.moveTo(x, y - r);
+      ctx.quadraticCurveTo(x + k, y - k, x + r, y);
+      ctx.quadraticCurveTo(x + k, y + k, x, y + r);
+      ctx.quadraticCurveTo(x - k, y + k, x - r, y);
+      ctx.quadraticCurveTo(x - k, y - k, x, y - r);
+      ctx.closePath();
+      ctx.fill();
+    };
+
+    const draw = () => {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      const lw = u / 520;
+
+      // Ciel de fond, en profondeur
+      for (const s of bg) {
+        const q = proj(s.x, s.y, s.z);
+        let a = 0.22 + 0.16 * Math.sin(time / 900 + s.ph);
+        if (shock) {
+          const d = Math.hypot(q[0] - shock.x, q[1] - shock.y);
+          const r = shock.age * 0.9;
+          a += Math.max(0, 1 - Math.abs(d - r) / 40) * 0.7;
+        }
+        ctx.fillStyle = `rgba(${INK},${Math.min(1, a * seg(time, 0, 1200)).toFixed(3)})`;
+        ctx.beginPath();
+        ctx.arc(q[0], q[1], s.r * q[2] * lw, 0, 6.283);
+        ctx.fill();
+      }
+
+      // Cercle extérieur, tracé à l'ouverture
+      const pc = seg(time, 0, 1500);
+      ctx.strokeStyle = `rgb(${INK})`;
+      ctx.lineWidth = 1.3 * lw;
+      ctx.beginPath();
+      const n = 160;
+      const lim = Math.round(n * pc);
+      for (let i = 0; i <= lim; i++) {
+        const a = -Math.PI / 2 + (i / n) * Math.PI * 2;
+        const q = proj(Math.cos(a) * 0.47, Math.sin(a) * 0.47, 0);
+        if (i) ctx.lineTo(q[0], q[1]);
+        else ctx.moveTo(q[0], q[1]);
+      }
+      ctx.stroke();
+
+      // Repères cardinaux
+      ctx.globalAlpha = seg(time, 900, 1700);
+      for (const d of [
+        [0, -1],
+        [0, 1],
+        [-1, 0],
+        [1, 0],
+      ] as const) {
+        const a = proj(d[0] * 0.49, d[1] * 0.49, 0);
+        const b = proj(d[0] * 0.53, d[1] * 0.53, 0);
+        ctx.beginPath();
+        ctx.moveTo(a[0], a[1]);
+        ctx.lineTo(b[0], b[1]);
+        ctx.stroke();
+      }
+
+      // Anneau pointillé qui tourne lentement
+      const rot = still ? 0 : time / 26000;
+      ctx.fillStyle = `rgb(${INK})`;
+      for (let i = 0; i < 120; i++) {
+        const a = rot + (i / 120) * Math.PI * 2;
+        const q = proj(Math.cos(a) * 0.42, Math.sin(a) * 0.42, 0.03);
+        ctx.beginPath();
+        ctx.arc(q[0], q[1], 0.75 * lw * q[2], 0, 6.283);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+      // Le M, relié étoile après étoile
+      const pm = seg(time, 1300, 2700) * (M.length - 1);
+      ctx.lineWidth = 1.8 * lw;
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      for (let i = 0; i < M.length; i++) {
+        if (i > pm + 1) break;
+        const cur = M[i] as [number, number];
+        let x = cur[0];
+        let y = cur[1];
+        if (i > pm) {
+          const prev = M[i - 1] as [number, number];
+          const f = pm - (i - 1);
+          x = prev[0] + (cur[0] - prev[0]) * f;
+          y = prev[1] + (cur[1] - prev[1]) * f;
+        }
+        const q = proj(x, y, 0.1);
+        if (i) ctx.lineTo(q[0], q[1]);
+        else ctx.moveTo(q[0], q[1]);
+      }
+      if (pm > 0) ctx.stroke();
+
+      // Les quatre étoiles du M
+      MS.forEach((s, i) => {
+        const pop = seg(time, 1500 + i * 350, 2000 + i * 350);
+        if (pop <= 0) return;
+        const q = proj(s[0], s[1], 0.12);
+        const near = mouse.on && Math.hypot(q[0] - mouse.x, q[1] - mouse.y) < u * 0.08;
+        const h = (hov[i] ?? 1) + ((near ? 1.8 : 1) - (hov[i] ?? 1)) * 0.15;
+        hov[i] = h;
+        const r = s[2] * u * q[2] * pop * h;
+        if (h > 1.05) {
+          ctx.fillStyle = gold;
+          ctx.globalAlpha = (h - 1) * 0.35;
+          ctx.beginPath();
+          ctx.arc(q[0], q[1], r * 2.6, 0, 6.283);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+        ctx.fillStyle = `rgb(${INK})`;
+        ctx.beginPath();
+        ctx.arc(q[0], q[1], r, 0, 6.283);
+        ctx.fill();
+      });
+
+      // L'étoile d'or
+      const pg = seg(time, 2500, 3000);
+      if (pg > 0) {
+        const q = proj(0, 0.05, 0.22);
+        const f = (time - flashT) / 1200;
+        const env = !still && f > 0 && f < 1 ? Math.sin(Math.PI * f) : 0;
+        const r =
+          0.06 * u * q[2] * pg * (1 + (still ? 0 : 0.05 * Math.sin(time / 800)) + 0.5 * env);
+        ctx.fillStyle = gold;
+        ctx.shadowColor = gold;
+        ctx.shadowBlur = 30 * env;
+        sparkle(q[0], q[1], r);
+        ctx.shadowBlur = 0;
+      }
+    };
+
+    const resize = () => {
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = Math.max(1, c.clientWidth);
+      H = Math.max(1, c.clientHeight);
+      c.width = Math.round(W * dpr);
+      c.height = Math.round(H * dpr);
+      u = Math.min(W, H) * 0.92;
+      // Changer la taille du canevas l'efface : on redessine l'image courante.
+      if (!raf) draw();
+    };
+
+    const step = (dt: number) => {
+      time += dt;
+      idle += dt;
+      let tx: number;
+      let ty: number;
+      if (mouse.on) {
+        tx = -(mouse.y / H - 0.5) * tiltMax;
+        ty = (mouse.x / W - 0.5) * tiltMax;
+      } else {
+        tx = 0.08 * Math.sin(time / 5200);
+        ty = 0.12 * Math.sin(time / 4100);
+      }
+      rx += (tx - rx) * 0.06;
+      ry += (ty - ry) * 0.06;
+      if (shock) {
+        shock.age += dt;
+        if (shock.age > 1400) shock = null;
+      }
+    };
+
+    const canRun = () => !still && !held && onScreen && !document.hidden && idle <= IDLE_MAX;
+
+    /**
+     * Animation « active » : ni pause volontaire, ni arrêt automatique. Une suspension
+     * technique (onglet masqué, canevas hors écran) ne change pas l'état affiché.
+     */
+    const active = () => !held && idle <= IDLE_MAX;
+
+    /** Libellé du bouton : ce qu'il fera (mettre en pause si active, relancer sinon). */
+    const syncButton = () => {
+      const label = active() ? pauseLabel : playLabel;
+      if (btn.textContent !== label) btn.textContent = label;
+    };
+
+    const loop = (now: number) => {
+      raf = 0;
+      if (!canRun()) {
+        last = 0;
+        syncButton();
+        return;
+      }
+      const dt = last ? Math.min(50, now - last) : 16.7;
+      last = now;
+      step(dt);
+      draw();
+      // Arrêt automatique : la dernière image reste affichée.
+      if (idle > IDLE_MAX) {
+        last = 0;
+        syncButton();
+        return;
+      }
+      raf = requestAnimationFrame(loop);
+    };
+
+    const start = () => {
+      if (!raf && canRun()) {
+        last = 0;
+        raf = requestAnimationFrame(loop);
+      }
+      syncButton();
+    };
+
+    const stop = () => {
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
+      last = 0;
+      syncButton();
+    };
+
+    /** Relance après un arrêt automatique (jamais après une pause volontaire). */
+    const wake = () => {
+      idle = 0;
+      start();
+    };
+
+    const local = (e: PointerEvent): [number, number] => {
+      const r = c.getBoundingClientRect();
+      return [((e.clientX - r.left) / r.width) * W, ((e.clientY - r.top) / r.height) * H];
+    };
+    const onMove = (e: PointerEvent) => {
+      const q = local(e);
+      mouse.x = q[0];
+      mouse.y = q[1];
+      mouse.on = true;
+      wake();
+    };
+    const onLeave = () => {
+      mouse.on = false;
+    };
+    const onDown = (e: PointerEvent) => {
+      const q = local(e);
+      shock = { x: q[0], y: q[1], age: 0 };
+      flashT = time;
+      held = false;
+      wake();
+    };
+
+    const bindPointer = () => {
+      c.addEventListener('pointermove', onMove);
+      c.addEventListener('pointerleave', onLeave);
+      c.addEventListener('pointerdown', onDown);
+    };
+    const unbindPointer = () => {
+      c.removeEventListener('pointermove', onMove);
+      c.removeEventListener('pointerleave', onLeave);
+      c.removeEventListener('pointerdown', onDown);
+    };
+
+    // Bouton pause / relance (WCAG 2.2.2)
+    btn.addEventListener('click', () => {
+      if (active()) {
+        held = true;
+        stop();
+      } else {
+        held = false;
+        wake();
+      }
+    });
+
+    // Mouvement réduit : image finale figée, ni boucle ni bouton. Suit un changement de réglage.
+    const applyMotion = () => {
+      still = motion.matches;
+      if (still) {
+        stop();
+        unbindPointer();
+        mouse.on = false;
+        shock = null;
+        rx = 0;
+        ry = 0;
+        time = 99999;
+        hov.fill(1);
+        btn.hidden = true;
+        draw();
+      } else {
+        bindPointer();
+        btn.hidden = false;
+        wake();
+      }
+    };
+    motion.addEventListener('change', applyMotion);
+
+    // Onglet masqué : pas de boucle inutile.
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stop();
+      else start();
+    });
+
+    // Canevas hors écran : boucle suspendue.
+    if (typeof IntersectionObserver === 'function') {
+      new IntersectionObserver((entries) => {
+        const entry = entries[entries.length - 1];
+        onScreen = entry ? entry.isIntersecting : true;
+        if (onScreen) start();
+        else stop();
+      }).observe(c);
+    }
+
+    resize();
+    if (typeof ResizeObserver === 'function') new ResizeObserver(resize).observe(c);
+    else addEventListener('resize', resize);
+
+    if (still) {
+      btn.hidden = true;
+      return;
+    }
+    btn.hidden = false;
+    bindPointer();
+    start();
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-m42-sky-root]').forEach(mount);
+</script>
