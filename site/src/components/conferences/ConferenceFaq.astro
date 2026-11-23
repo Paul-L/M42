@@ -1,0 +1,128 @@
+---
+/**
+ * Section « Questions fréquentes » des pages conférences : titre à gauche, FAQ en <details>
+ * (composant partagé Faq) et sources à droite.
+ * Le JSON-LD FAQPage se construit avec faqJsonLd() (src/data/conferences/jsonld.ts),
+ * à partir des mêmes données : réponses identiques au texte visible.
+ *
+ * Props :
+ * - surTitre : défaut « Questions fréquentes ».
+ * - titre : H2 (« Avant de programmer cette conférence »).
+ * - items : { question, reponse }[] (réponse en HTML simple).
+ * - sources : { avant, titre, apres, url }[] (liste « Sources », facultative).
+ */
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import Faq from '../Faq.astro';
+import SectionHeading from './SectionHeading.astro';
+import type { QuestionFaq, Source } from '../../data/conferences/types';
+
+interface Props {
+  surTitre?: string;
+  titre: string;
+  items: QuestionFaq[];
+  sources?: Source[];
+}
+
+const { surTitre = 'Questions fréquentes', titre, items, sources = [] } = Astro.props;
+const faqItems = items.map((q) => ({ question: q.question, answer: q.reponse }));
+---
+
+<section id="questions" aria-labelledby="titre-faq" class="qs">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <div class="row">
+      <div class="aside">
+        <SectionHeading id="titre-faq">{titre}</SectionHeading>
+      </div>
+      <div class="main">
+        <Faq items={faqItems} />
+        {sources.length > 0 && (
+          <div class="sources">
+            <h3 id="sources" class="sources-title">
+              Sources
+            </h3>
+            <ul class="sources-list">
+              {sources.map((s) => (
+                <li>
+                  {s.avant}
+                  <em>{s.titre}</em>
+                  {s.apres}
+                  <br />
+                  <a href={s.url} rel="noopener">
+                    {s.url}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .qs {
+    padding: var(--section-y) 0;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px 64px;
+  }
+
+  .aside {
+    flex: 1 1 300px;
+    min-width: 0;
+  }
+
+  .main {
+    flex: 999 1 560px;
+    min-width: 0;
+    margin-top: 24px;
+  }
+
+  /* Le composant Faq plafonne sa largeur à 52rem : ici, il occupe toute la colonne (maquette). */
+  .main :global(.faq) {
+    max-width: none;
+  }
+
+  .sources {
+    margin-top: 56px;
+  }
+
+  .sources-title {
+    margin: 0 0 8px;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .sources-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .sources-list li {
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .sources-list a {
+    color: var(--ink-2);
+    text-underline-offset: 3px;
+    word-break: break-word;
+  }
+
+  .sources-list a:hover {
+    text-decoration-color: var(--gold);
+  }
+</style>

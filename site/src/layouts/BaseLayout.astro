@@ -12,12 +12,15 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import type { NavKey } from '../data/navigation';
+import { frenchTypography } from '../lib/typo';
 
 interface Props {
   title: string;
   description?: string;
   /** Lien d'en-tête à marquer comme page courante. */
   current?: NavKey;
+  /** Rubrique d'en-tête parente (aria-current="true"), voir DECISIONS.md point 3. */
+  section?: NavKey;
   /** Page à exclure des moteurs (page interne, préproduction). */
   noindex?: boolean;
   /** Marque le lien de cette page dans le pied de page (pages légales, Contact, À propos, Organisateurs). */
@@ -26,7 +29,15 @@ interface Props {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, current, noindex = false, jsonLd, footerCurrent = false } = Astro.props;
+const {
+  title,
+  description,
+  current,
+  section,
+  noindex = false,
+  jsonLd,
+  footerCurrent = false,
+} = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -46,14 +57,21 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    {jsonLd && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(jsonLd, (_k, v: unknown) =>
+          typeof v === 'string' ? frenchTypography(v) : v,
+        ).replace(/</g, '\\u003c')}
+      />
+    )}
     <slot name="head" />
   </head>
   <body>
     <a href="#contenu" class="skip">
       Aller au contenu
     </a>
-    <Header current={current} />
+    <Header current={current} section={section} />
     <main id="contenu" tabindex="-1">
       <slot />
     </main>

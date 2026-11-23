@@ -1,0 +1,81 @@
+---
+/**
+ * Section « Formats » des pages conférences : quatre colonnes (durée, titre H3, texte).
+ *
+ * Props :
+ * - surTitre : défaut « Formats ».
+ * - titre : H2 (« Quatre façons de la programmer »).
+ * - items : { duree, titre, texte }[].
+ */
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeading from './SectionHeading.astro';
+import type { Format } from '../../data/conferences/types';
+
+interface Props {
+  surTitre?: string;
+  titre: string;
+  items: Format[];
+}
+
+const { surTitre = 'Formats', titre, items } = Astro.props;
+---
+
+<section id="formats" aria-labelledby="titre-formats" class="formats">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <SectionHeading id="titre-formats">{titre}</SectionHeading>
+    <div class="grid">
+      {items.map((f) => (
+        <div class="item m42-reveal">
+          <p class="duration">{f.duree}</p>
+          <h3 class="title">{f.titre}</h3>
+          <p class="text">{f.texte}</p>
+        </div>
+      ))}
+    </div>
+  </Container>
+</section>
+
+<style>
+  .formats {
+    padding: var(--section-y) 0;
+  }
+
+  .grid {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: 32px;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1px solid var(--ink);
+    padding-top: 20px;
+  }
+
+  .duration {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-card);
+    line-height: var(--lh-card);
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--fs-faq);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+</style>

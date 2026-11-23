@@ -1,0 +1,40 @@
+---
+/**
+ * Titre H2 des pages conférences (Cormorant, 18ch max), avec apparition au défilement.
+ * Variante de SectionTitle : celui-ci n'a pas d'option `m42-reveal` ni de marge réglable.
+ *
+ * Props :
+ * - id : identifiant (cible d'aria-labelledby de la section).
+ * - reveal : apparition au défilement (défaut : true).
+ * - flush : sans marge haute (titre placé dans une rangée, comme « Pour qui » et le bandeau Contact).
+ * - class : classes en plus.
+ */
+interface Props {
+  id: string;
+  reveal?: boolean;
+  flush?: boolean;
+  class?: string;
+}
+
+const { id, reveal = true, flush = false, class: className } = Astro.props;
+---
+
+<h2 id={id} class:list={['heading', { 'm42-reveal': reveal, 'heading--flush': flush }, className]}>
+  <slot />
+</h2>
+
+<style>
+  .heading {
+    margin: 24px 0 0;
+    max-width: var(--measure-h2);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .heading--flush {
+    margin: 0;
+  }
+</style>

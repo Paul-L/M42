@@ -1,0 +1,209 @@
+---
+/**
+ * Événements (kit/maquette/Evenements.dc.html) : page « Pour qui » n° 2 (séminaires, salons, congrès).
+ * Contenus : src/data/publics/evenements.ts (futur enregistrement Directus `publics`).
+ * SEO : canonical /evenements/, H1 « Un temps fort sur l'IA, clair et vivant. » + introduction
+ * avec les mots-clés (keynote IA, intervention plénière, conférence IA séminaire / congrès).
+ * JSON-LD : WebPage + BreadcrumbList + Service + FAQPage (questions sans marqueur seulement,
+ * DECISIONS.md point 19 ; components/publics/json-ld.ts). VideoObject : dès que le showreel existe.
+ * En-tête : rubrique « Entreprises » (aria-current="true", prop `section`, DECISIONS.md point 3).
+ * Pas de logique interactive (renderVals() vide) ; la FAQ est en <details> natif.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/Section.astro';
+import ArrowLink from '../../components/ArrowLink.astro';
+import Button from '../../components/Button.astro';
+import Eyebrow from '../../components/Eyebrow.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import PublicHero from '../../components/publics/PublicHero.astro';
+import PublicSectionHead from '../../components/publics/PublicSectionHead.astro';
+import IssueGrid from '../../components/publics/IssueGrid.astro';
+import PublicFormats from '../../components/publics/PublicFormats.astro';
+import KeynoteTimeline from '../../components/publics/KeynoteTimeline.astro';
+import CrossList from '../../components/publics/CrossList.astro';
+import PublicConferenceGrid from '../../components/publics/PublicConferenceGrid.astro';
+import TopicList from '../../components/publics/TopicList.astro';
+import TakeawayColumns from '../../components/publics/TakeawayColumns.astro';
+import StepList from '../../components/publics/StepList.astro';
+import IntervenantsNote from '../../components/publics/IntervenantsNote.astro';
+import PublicFaq from '../../components/publics/PublicFaq.astro';
+import { publicPageJsonLd } from '../../components/publics/json-ld';
+import { evenements as page } from '../../data/publics/evenements';
+
+const { title, description } = page.seo;
+
+const jsonLd = publicPageJsonLd({
+  path: '/evenements/',
+  title,
+  description,
+  crumb: page.hero.crumb,
+  service: {
+    name: "Keynotes et conférences sur l'IA pour séminaires, salons et congrès",
+    serviceType: 'Keynote, conférence et animation interactive',
+    description: `${page.hero.lead} ${page.hero.paragraphs.join(' ')}`,
+    audience: [
+      { '@type': 'Audience', audienceType: "Organisateurs d'événements" },
+      { '@type': 'Audience', audienceType: 'Participants de séminaires, salons et congrès' },
+    ],
+  },
+  faq: page.faq.items,
+});
+---
+
+<BaseLayout title={title} description={description} section="entreprises" jsonLd={jsonLd}>
+  <PublicHero {...page.hero} />
+
+  <!-- Vos enjeux -->
+  <Section id="enjeux" labelledby="titre-enjeux">
+    <PublicSectionHead id="titre-enjeux" eyebrow={page.stakes.eyebrow}>
+      {page.stakes.title}
+    </PublicSectionHead>
+    <IssueGrid items={page.stakes.items} />
+  </Section>
+
+  <!-- Formats -->
+  <Section id="formats" labelledby="titre-formats" tone="sunk">
+    <PublicSectionHead id="titre-formats" eyebrow={page.formats.eyebrow} lead={page.formats.lead}>
+      {page.formats.title}
+    </PublicSectionHead>
+    <PublicFormats items={page.formats.items} footnote={page.formats.note} />
+    <div class="more more--formats">
+      <ArrowLink href={page.formats.link.href}>{page.formats.link.label}</ArrowLink>
+    </div>
+  </Section>
+
+  <!-- Exemple de déroulé (nuit) -->
+  <Section id="deroule" labelledby="titre-deroule" tone="night">
+    <PublicSectionHead id="titre-deroule" eyebrow={page.rundown.eyebrow} lead={page.rundown.lead}>
+      {page.rundown.title}
+    </PublicSectionHead>
+    <KeynoteTimeline
+      sequences={page.rundown.sequences}
+      end={page.rundown.end}
+      legend={page.rundown.legend}
+      note={page.rundown.note}
+      link={page.rundown.link}
+    />
+  </Section>
+
+  <!-- Kit organisateur -->
+  <Section id="organisateurs" labelledby="titre-organisateurs">
+    <Eyebrow class="m42-reveal">{page.kit.eyebrow}</Eyebrow>
+    <div class="kit">
+      <div class="kit-intro m42-reveal">
+        <h2 id="titre-organisateurs" class="kit-title">
+          {page.kit.title}
+        </h2>
+        <p class="kit-lead">{page.kit.lead}</p>
+        <Button href={page.kit.link.href} variant="secondary" class="kit-btn">
+          {page.kit.link.label}
+        </Button>
+      </div>
+      <div class="kit-list m42-reveal">
+        <CrossList items={page.kit.items} rule="strong" />
+      </div>
+    </div>
+  </Section>
+
+  <!-- Conférences -->
+  <Section id="sujets" labelledby="titre-sujets" tone="sunk">
+    <PublicSectionHead
+      id="titre-sujets"
+      eyebrow={page.conferences.eyebrow}
+      lead={page.conferences.lead}
+    >
+      {page.conferences.title}
+    </PublicSectionHead>
+    <PublicConferenceGrid items={page.conferences.items} />
+    <TopicList title={page.conferences.otherTitle} items={page.conferences.others} />
+    <div class="more more--sujets">
+      <ArrowLink href={page.conferences.link.href}>{page.conferences.link.label}</ArrowLink>
+    </div>
+  </Section>
+
+  <!-- Ce que votre public emporte -->
+  <Section id="emportent" labelledby="titre-emportent">
+    <PublicSectionHead
+      id="titre-emportent"
+      eyebrow={page.takeaways.eyebrow}
+      lead={page.takeaways.lead}
+    >
+      {page.takeaways.title}
+    </PublicSectionHead>
+    <TakeawayColumns columns={page.takeaways.groups} />
+  </Section>
+
+  <!-- Comment ça se passe -->
+  <Section id="etapes" labelledby="titre-etapes" tone="sunk">
+    <PublicSectionHead id="titre-etapes" eyebrow={page.steps.eyebrow}>
+      {page.steps.title}
+    </PublicSectionHead>
+    <StepList items={page.steps.items} />
+    <IntervenantsNote {...page.steps.team} />
+  </Section>
+
+  <!-- Questions fréquentes -->
+  <Section id="faq" labelledby="titre-faq">
+    <PublicSectionHead id="titre-faq" eyebrow={page.faq.eyebrow}>
+      {page.faq.title}
+    </PublicSectionHead>
+    <PublicFaq items={page.faq.items} />
+  </Section>
+
+  <CtaBand id="titre-contact" {...page.cta} />
+</BaseLayout>
+
+<style>
+  /* Liens fléchés de fin de section : marge haute de la maquette (16 px / 32 px) */
+  .more--formats {
+    margin-top: var(--s-4);
+  }
+
+  .more--sujets {
+    margin-top: var(--s-6);
+  }
+
+  /* Kit organisateur : titre, chapô et bouton à gauche, liste à droite */
+  .kit {
+    margin-top: var(--s-5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--s-7) var(--s-8);
+  }
+
+  .kit-intro {
+    flex: 1 1 380px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+  }
+
+  .kit-title {
+    margin: 0;
+    max-width: var(--measure-h2);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .kit-lead {
+    margin: 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--fg-2);
+  }
+
+  .kit-intro :global(.kit-btn) {
+    align-self: flex-start;
+  }
+
+  .kit-list {
+    flex: 999 1 520px;
+    min-width: 0;
+  }
+</style>

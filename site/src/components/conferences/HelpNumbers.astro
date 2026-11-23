@@ -1,0 +1,133 @@
+---
+/**
+ * Section nuit « Si c'est arrivé » : numéros et plateformes utiles, en colonnes.
+ * (17Cyber est une plateforme en ligne, pas un numéro : valeur avec lien.)
+ *
+ * Props :
+ * - id : ancre (défaut « bons-numeros ») ; le H2 a l'id « titre-numeros ».
+ * - surTitre, titre : sur-titre et H2.
+ * - items : { type, valeur, href?, texte, taille: 'xl' | 'l', accent?, insecable? }[].
+ */
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeading from './SectionHeading.astro';
+import type { NumeroUtile } from '../../data/conferences/types';
+
+interface Props {
+  id?: string;
+  surTitre: string;
+  titre: string;
+  items: NumeroUtile[];
+}
+
+const { id = 'bons-numeros', surTitre, titre, items } = Astro.props;
+---
+
+<section id={id} class="nums m42-night" aria-labelledby="titre-numeros">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <SectionHeading id="titre-numeros">{titre}</SectionHeading>
+    <div class="grid">
+      {items.map((n) => (
+        <div class="item m42-reveal">
+          <p class="type">{n.type}</p>
+          <p
+            class:list={[
+              'value',
+              `value--${n.taille}`,
+              {
+                'value--accent': n.accent,
+                'value--nowrap': n.insecable,
+                'value--link': n.href,
+              },
+            ]}
+          >
+            {n.href ? (
+              <a href={n.href} rel="noopener">
+                {n.valeur}
+              </a>
+            ) : (
+              n.valeur
+            )}
+          </p>
+          <p class="text">{n.texte}</p>
+        </div>
+      ))}
+    </div>
+  </Container>
+</section>
+
+<style>
+  .nums {
+    background: var(--night);
+    color: var(--on-night);
+    padding: var(--section-y) 0;
+  }
+
+  .grid {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 40px 48px;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1px solid var(--night-line);
+    padding-top: 20px;
+  }
+
+  .type {
+    margin: 0;
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--on-night-3);
+  }
+
+  .value {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+  }
+
+  .value--xl {
+    font-size: var(--fs-figure);
+    line-height: var(--lh-figure);
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .value--l {
+    font-size: clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem);
+    line-height: 1.05;
+  }
+
+  .value--accent {
+    color: var(--gold-night);
+  }
+
+  .value--nowrap {
+    white-space: nowrap;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .value--link {
+    word-break: break-word;
+  }
+
+  .value a {
+    color: var(--on-night);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+  }
+
+  .text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--on-night-2);
+  }
+</style>

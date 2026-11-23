@@ -1,0 +1,109 @@
+---
+/**
+ * Bandeau nuit « Contact » de fin de page conférence.
+ * Variante de CtaBand : ajoute l'apparition au défilement (sur-titre et rangée) et le filet
+ * haut de 1 px (#2E2F35) de la maquette, absents du composant partagé.
+ *
+ * Props :
+ * - titre : H2 (« Programmer « … » dans votre commune… »).
+ * - chapo : texte sous le titre.
+ * - cta : libellé du bouton (défaut « Organiser cette conférence ») ; ctaHref (défaut /contact/).
+ * - surTitre : défaut « Contact ».
+ */
+import Button from '../Button.astro';
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeading from './SectionHeading.astro';
+import { routes } from '../../data/routes';
+
+interface Props {
+  titre: string;
+  chapo: string;
+  cta?: string;
+  ctaHref?: string;
+  surTitre?: string;
+}
+
+const {
+  titre,
+  chapo,
+  cta = 'Organiser cette conférence',
+  ctaHref = routes['Contact.dc.html'],
+  surTitre = 'Contact',
+} = Astro.props;
+---
+
+<section class="cta m42-night" aria-labelledby="titre-contact">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <div class="row m42-reveal">
+      <div class="text">
+        <SectionHeading id="titre-contact" reveal={false} flush>
+          {titre}
+        </SectionHeading>
+        <p class="lead">{chapo}</p>
+      </div>
+      <div class="actions">
+        <Button href={ctaHref}>{cta}</Button>
+        <p class="contact">
+          Clara : <a href="mailto:clara@m42.guide">clara@m42.guide</a>
+          <br />
+          Paul : <a href="mailto:paul@m42.guide">paul@m42.guide</a>
+          <br />
+          [À COMPLÉTER : téléphone]
+        </p>
+      </div>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .cta {
+    background: var(--night);
+    color: var(--on-night);
+    padding: var(--section-y) 0;
+    border-top: 1px solid var(--night-line);
+  }
+
+  .row {
+    margin-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 32px 64px;
+  }
+
+  .text {
+    flex: 1 1 520px;
+    min-width: 0;
+  }
+
+  .lead {
+    margin: 20px 0 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--on-night-2);
+  }
+
+  .actions {
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .contact {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--on-night-2);
+  }
+
+  .contact a {
+    color: var(--on-night);
+    text-underline-offset: 3px;
+  }
+</style>

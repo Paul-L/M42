@@ -1,0 +1,275 @@
+---
+/**
+ * Exemple de déroulé d'une keynote (page Événements, section nuit) : frise minutée décorative
+ * (segments proportionnels à la durée, barre or pour les séquences qui se terminent sur une
+ * règle à retenir, repère final), légende, puis séquences en grille (minutage or, intervenants,
+ * H3, texte, règle à retenir en citation), et une note + lien fléché en pied.
+ * Chaque bloc apparaît au défilement. Couleurs de contexte (variables --fg…) : prévu pour une
+ * section `tone="night"`.
+ *
+ * Props :
+ * - `sequences` : PublicTimelineSequence[] (src/data/publics/types.ts) ; `minutes` (1 à 15)
+ *   fixe la largeur relative du segment (attribut data-min, aucune valeur en style inline).
+ * - `end` : minute du repère final (« 0:45 »).
+ * - `legend` : texte de la légende de la barre or.
+ * - `note` : texte de pied (14 px, encre 3) ; `link` : lien fléché { label, href }.
+ */
+import ArrowLink from '../ArrowLink.astro';
+import type { PublicLink, PublicTimelineSequence } from '../../data/publics/types';
+
+export interface Props {
+  sequences: PublicTimelineSequence[];
+  end: string;
+  legend: string;
+  note?: string;
+  link?: PublicLink;
+}
+
+const { sequences, end, legend, note, link } = Astro.props;
+
+for (const s of sequences) {
+  if (!Number.isInteger(s.minutes) || s.minutes < 1 || s.minutes > 15) {
+    throw new Error(`KeynoteTimeline : durée hors de 1 à 15 min (« ${s.title} »)`);
+  }
+}
+---
+
+<div class="frise m42-reveal" aria-hidden="true">
+  {sequences.map((s) => (
+    <div class="seg" data-min={s.minutes}>
+      <span class="tick">{s.start}</span>
+      <span class:list={['bar', { 'bar--rule': s.highlight }]} />
+    </div>
+  ))}
+  <div class="seg seg--end">
+    <span class="tick">{end}</span>
+    <span class="bar bar--empty" />
+  </div>
+</div>
+<p class="legend m42-reveal">
+  <span aria-hidden="true" class="swatch"></span>
+  {legend}
+</p>
+<ol class="sequences">
+  {sequences.map((s) => (
+    <li class="seq m42-reveal">
+      <p class="meta">
+        <span class="time">
+          {s.start} – {s.end}
+        </span>
+        <span class="speakers">{s.speakers}</span>
+      </p>
+      <h3 class="h3">{s.title}</h3>
+      <p class="text">{s.text}</p>
+      {s.rule && <p class="rule">{s.rule}</p>}
+    </li>
+  ))}
+</ol>
+{(note || link) && (
+  <div class="foot m42-reveal">
+    {note && <p class="note">{note}</p>}
+    {link && <ArrowLink href={link.href}>{link.label}</ArrowLink>}
+  </div>
+)}
+
+<style>
+  .frise {
+    margin-top: var(--s-7);
+    display: flex;
+    gap: 0;
+  }
+
+  .seg {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    border-left: 1px solid var(--fg-3);
+    padding-left: 6px;
+  }
+
+  .seg[data-min='1'] {
+    flex-grow: 1;
+  }
+
+  .seg[data-min='2'] {
+    flex-grow: 2;
+  }
+
+  .seg[data-min='3'] {
+    flex-grow: 3;
+  }
+
+  .seg[data-min='4'] {
+    flex-grow: 4;
+  }
+
+  .seg[data-min='5'] {
+    flex-grow: 5;
+  }
+
+  .seg[data-min='6'] {
+    flex-grow: 6;
+  }
+
+  .seg[data-min='7'] {
+    flex-grow: 7;
+  }
+
+  .seg[data-min='8'] {
+    flex-grow: 8;
+  }
+
+  .seg[data-min='9'] {
+    flex-grow: 9;
+  }
+
+  .seg[data-min='10'] {
+    flex-grow: 10;
+  }
+
+  .seg[data-min='11'] {
+    flex-grow: 11;
+  }
+
+  .seg[data-min='12'] {
+    flex-grow: 12;
+  }
+
+  .seg[data-min='13'] {
+    flex-grow: 13;
+  }
+
+  .seg[data-min='14'] {
+    flex-grow: 14;
+  }
+
+  .seg[data-min='15'] {
+    flex-grow: 15;
+  }
+
+  .seg--end {
+    flex: none;
+  }
+
+  .tick {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg-3);
+  }
+
+  .bar {
+    display: block;
+    height: 10px;
+    background: var(--control-border);
+  }
+
+  .bar--rule {
+    background: var(--gold);
+  }
+
+  .bar--empty {
+    background: none;
+  }
+
+  .legend {
+    margin: var(--s-4) 0 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--fg-3);
+  }
+
+  .swatch {
+    display: inline-block;
+    width: 24px;
+    height: 10px;
+    background: var(--gold);
+  }
+
+  .sequences {
+    list-style: none;
+    margin: var(--s-7) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: 40px var(--s-7);
+  }
+
+  .seq {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 20px;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .meta {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-1) var(--s-4);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .time {
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-text);
+  }
+
+  .speakers {
+    color: var(--fg-3);
+  }
+
+  .h3 {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+    color: var(--fg);
+  }
+
+  .text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--fg-2);
+  }
+
+  .rule {
+    margin: var(--s-1) 0 0;
+    padding-left: var(--s-3);
+    border-left: 2px solid var(--gold);
+    font-size: 15px;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--fg);
+  }
+
+  .foot {
+    margin-top: var(--s-7);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4) var(--s-7);
+  }
+
+  .note {
+    flex: 1 1 420px;
+    min-width: 0;
+    margin: 0;
+    font-size: var(--fs-small);
+    line-height: 1.55;
+    color: var(--fg-3);
+  }
+</style>

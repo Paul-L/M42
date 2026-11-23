@@ -1,0 +1,82 @@
+---
+/**
+ * Bande nuit « Le bon numéro » de la conférence IV : un seul numéro (3018) en grand, H2 en taille H3
+ * et texte à côté. Différente de HelpNumbers (plusieurs numéros en colonnes, sur-titre,
+ * H2 Cormorant) : variante propre à la page. Pas d'apparition au défilement (comme la maquette).
+ *
+ * Props :
+ * - valeur : le numéro (« 3018 »), en or.
+ * - titre : H2 (id « titre-3018 »).
+ * - texte : phrase sous le titre.
+ */
+interface Props {
+  valeur: string;
+  titre: string;
+  texte: string;
+}
+
+const { valeur, titre, texte } = Astro.props;
+---
+
+<section class="num m42-night" aria-labelledby="titre-3018">
+  <div class="inner">
+    <p class="value">{valeur}</p>
+    <div class="body">
+      <h2 id="titre-3018" class="title">
+        {titre}
+      </h2>
+      <p class="text">{texte}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .num {
+    background: var(--night);
+    color: var(--on-night);
+  }
+
+  .inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 64px var(--gutter-x);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px 64px;
+  }
+
+  .value {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-figure);
+    line-height: var(--lh-figure);
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--gold-night);
+  }
+
+  .body {
+    flex: 1 1 420px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .text {
+    margin: 0;
+    max-width: 60ch;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--on-night-2);
+  }
+</style>

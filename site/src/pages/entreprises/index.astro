@@ -2,103 +2,48 @@
 /**
  * Entreprises (kit/maquette/Entreprises.dc.html) : page « Pour qui » n° 1.
  * Contenus : src/data/publics/entreprises.ts (futur enregistrement Directus `publics`).
- * JSON-LD : WebPage + BreadcrumbList + Service + FAQPage (texte identique à la FAQ visible).
+ * JSON-LD : WebPage + BreadcrumbList + Service + FAQPage (questions sans marqueur seulement,
+ * DECISIONS.md point 19 ; components/publics/json-ld.ts).
  * Pas de logique interactive (renderVals() vide) ; la FAQ est en <details> natif.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Section from '../../components/Section.astro';
 import ArrowLink from '../../components/ArrowLink.astro';
-import Faq, { type FaqItem } from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import PublicHero from '../../components/publics/PublicHero.astro';
 import PublicSectionHead from '../../components/publics/PublicSectionHead.astro';
 import IssueGrid from '../../components/publics/IssueGrid.astro';
 import ColorRuleCards from '../../components/publics/ColorRuleCards.astro';
 import RichText from '../../components/publics/RichText.astro';
-import PublicFormatsNoted from '../../components/publics/PublicFormatsNoted.astro';
-import PublicConferenceCard from '../../components/publics/PublicConferenceCard.astro';
-import TopicListTagged from '../../components/publics/TopicListTagged.astro';
+import PublicFormats from '../../components/publics/PublicFormats.astro';
+import PublicConferenceGrid from '../../components/publics/PublicConferenceGrid.astro';
+import TopicList from '../../components/publics/TopicList.astro';
 import TakeawayColumns from '../../components/publics/TakeawayColumns.astro';
 import StepList from '../../components/publics/StepList.astro';
 import IntervenantsNote from '../../components/publics/IntervenantsNote.astro';
+import PublicFaq from '../../components/publics/PublicFaq.astro';
+import { publicPageJsonLd } from '../../components/publics/json-ld';
 import { entreprises as page } from '../../data/publics/entreprises';
-import type { PublicRichText } from '../../data/publics/types';
 
 const { title, description } = page.seo;
 
-// FAQ : la réponse visible (HTML, marqueurs en étiquette) et le texte du JSON-LD sont tirés
-// des mêmes segments.
-const escapeHtml = (s: string) =>
-  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-const segmentsOf = (v: PublicRichText) => (typeof v === 'string' ? [v] : v);
-const toHtml = (v: PublicRichText) =>
-  `<p>${segmentsOf(v)
-    .map((s) =>
-      typeof s === 'string'
-        ? escapeHtml(s)
-        : `<span class="faq-marker">${escapeHtml(s.marker)}</span>`,
-    )
-    .join('')}</p>`;
-const toText = (v: PublicRichText) =>
-  segmentsOf(v)
-    .map((s) => (typeof s === 'string' ? s : s.marker))
-    .join('');
-const faqItems: FaqItem[] = page.faq.items.map((i) => ({
-  question: i.question,
-  answer: toHtml(i.answer),
-}));
-
-const site = 'https://m42.guide';
-const url = `${site}/entreprises/`;
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'WebPage',
-      '@id': `${url}#page`,
-      url,
-      name: title,
-      description,
-      isPartOf: { '@id': `${site}/#site` },
-      about: { '@id': `${site}/#organisation` },
-      breadcrumb: { '@id': `${url}#ariane` },
-      mainEntity: { '@id': `${url}#service` },
-      inLanguage: 'fr-FR',
-    },
-    {
-      '@type': 'BreadcrumbList',
-      '@id': `${url}#ariane`,
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${site}/` },
-        { '@type': 'ListItem', position: 2, name: 'Entreprises' },
-      ],
-    },
-    {
-      '@type': 'Service',
-      '@id': `${url}#service`,
-      name: "Conférences et ateliers de sensibilisation à l'IA pour les entreprises",
-      serviceType: 'Conférence et atelier de sensibilisation',
-      description: `${page.hero.lead} ${page.hero.paragraphs.join(' ')}`,
-      provider: { '@id': `${site}/#organisation` },
-      areaServed: { '@type': 'Country', name: 'France' },
-      availableLanguage: 'fr',
-      audience: [
-        { '@type': 'Audience', audienceType: "Salariés d'entreprise" },
-        { '@type': 'Audience', audienceType: 'Dirigeants et comités de direction' },
-        { '@type': 'Audience', audienceType: 'CSE' },
-      ],
-    },
-    {
-      '@type': 'FAQPage',
-      '@id': `${url}#faq`,
-      mainEntity: page.faq.items.map((i) => ({
-        '@type': 'Question',
-        name: i.question,
-        acceptedAnswer: { '@type': 'Answer', text: toText(i.answer) },
-      })),
-    },
-  ],
-};
+const jsonLd = publicPageJsonLd({
+  path: '/entreprises/',
+  title,
+  description,
+  crumb: page.hero.crumb,
+  service: {
+    name: "Conférences et ateliers de sensibilisation à l'IA pour les entreprises",
+    serviceType: 'Conférence et atelier de sensibilisation',
+    description: `${page.hero.lead} ${page.hero.paragraphs.join(' ')}`,
+    audience: [
+      { '@type': 'Audience', audienceType: "Salariés d'entreprise" },
+      { '@type': 'Audience', audienceType: 'Dirigeants et comités de direction' },
+      { '@type': 'Audience', audienceType: 'CSE' },
+    ],
+  },
+  faq: page.faq.items,
+});
 ---
 
 <BaseLayout title={title} description={description} current="entreprises" jsonLd={jsonLd}>
@@ -128,8 +73,7 @@ const jsonLd = {
     <PublicSectionHead id="titre-formats" eyebrow={page.formats.eyebrow} lead={page.formats.lead}>
       {page.formats.title}
     </PublicSectionHead>
-    <PublicFormatsNoted items={page.formats.items} />
-    <p class="formats-note m42-reveal">{page.formats.note}</p>
+    <PublicFormats items={page.formats.items} footnote={page.formats.note} />
     <div class="more more--formats">
       <ArrowLink href={page.formats.link.href}>{page.formats.link.label}</ArrowLink>
     </div>
@@ -144,20 +88,8 @@ const jsonLd = {
     >
       {page.conferences.title}
     </PublicSectionHead>
-    <div class="cards">
-      {page.conferences.items.map((c) => (
-        <PublicConferenceCard
-          numeral={c.numeral}
-          signature={c.signature}
-          title={c.title}
-          href={c.href}
-          summary={c.summary}
-          forYou={c.forYou}
-          formats={c.formats}
-        />
-      ))}
-    </div>
-    <TopicListTagged
+    <PublicConferenceGrid items={page.conferences.items} />
+    <TopicList
       title={page.conferences.otherTitle}
       items={page.conferences.others}
       note={page.conferences.othersNote}
@@ -181,11 +113,7 @@ const jsonLd = {
       {page.steps.title}
     </PublicSectionHead>
     <StepList items={page.steps.items} />
-    <IntervenantsNote
-      text={page.steps.team.text}
-      linkLabel={page.steps.team.link.label}
-      href={page.steps.team.link.href}
-    />
+    <IntervenantsNote {...page.steps.team} />
   </Section>
 
   <!-- Questions fréquentes -->
@@ -193,9 +121,7 @@ const jsonLd = {
     <PublicSectionHead id="titre-faq" eyebrow={page.faq.eyebrow}>
       {page.faq.title}
     </PublicSectionHead>
-    <div class="faq-wrap m42-reveal">
-      <Faq items={faqItems} />
-    </div>
+    <PublicFaq items={page.faq.items} />
   </Section>
 
   <CtaBand id="titre-contact" {...page.cta} />
@@ -210,14 +136,6 @@ const jsonLd = {
     color: var(--fg-3);
   }
 
-  .formats-note {
-    margin: var(--s-5) 0 0;
-    max-width: var(--measure-text);
-    font-size: 16px;
-    line-height: 1.6;
-    color: var(--fg-2);
-  }
-
   /* Liens fléchés de fin de section : marge haute de la maquette (16 px / 32 px) */
   .more--formats {
     margin-top: var(--s-4);
@@ -225,30 +143,5 @@ const jsonLd = {
 
   .more--sujets {
     margin-top: var(--s-6);
-  }
-
-  .cards {
-    margin-top: var(--s-7);
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
-    gap: var(--s-5);
-  }
-
-  .faq-wrap {
-    margin-top: var(--s-7);
-  }
-
-  /* Marqueur de relecture dans une réponse (HTML injecté) : même rendu que DraftMarker */
-  .faq-wrap :global(.faq-marker) {
-    display: inline-block;
-    margin-left: 6px;
-    padding: 1px 6px;
-    border: 1px dashed var(--control-border);
-    color: var(--fg-3);
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 1.4;
-    white-space: nowrap;
-    vertical-align: 1px;
   }
 </style>

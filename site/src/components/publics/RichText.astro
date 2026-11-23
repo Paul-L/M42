@@ -1,13 +1,15 @@
 ---
 /**
  * Texte avec marqueurs de relecture en ligne (pages « Pour qui ») : rend une chaîne, ou une suite
- * de segments où `{ marker }` devient une étiquette DraftMarker (marqueur au milieu d'une phrase).
+ * de segments où `{ marker }` devient une étiquette en pointillés (classe globale
+ * m42-draft-marker, draft-marker.css). Sert aussi pour un marqueur seul : `[{ marker: '…' }]`.
  * Ne crée aucun élément englobant : à placer dans un <p>, un <span>…
  *
  * Props :
  * - `value` : PublicRichText (src/data/publics/types.ts).
  */
-import DraftMarker from './DraftMarker.astro';
+import './draft-marker.css';
+import { MARKER_CLASS, segmentsOf } from './rich-text';
 import type { PublicRichText } from '../../data/publics/types';
 
 export interface Props {
@@ -15,9 +17,12 @@ export interface Props {
 }
 
 const { value } = Astro.props;
-const segments = typeof value === 'string' ? [value] : value;
 ---
 
-{segments.map((seg) =>
-  typeof seg === 'string' ? <Fragment>{seg}</Fragment> : <DraftMarker>{seg.marker}</DraftMarker>,
+{segmentsOf(value).map((seg) =>
+  typeof seg === 'string' ? (
+    <Fragment>{seg}</Fragment>
+  ) : (
+    <span class={MARKER_CLASS}>{seg.marker}</span>
+  ),
 )}

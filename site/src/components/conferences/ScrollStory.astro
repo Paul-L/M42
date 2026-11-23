@@ -1,0 +1,516 @@
+---
+/**
+ * Animation au défilement des pages conférences (« Démonstration », section nuit).
+ * Technique de la maquette (classe Component, _story / _startScroll) : section haute de
+ * `k` écrans, bloc collant d'un écran, étape courante = progression du défilement × nombre d'étapes.
+ *
+ * Deux présentations :
+ * - « anim » : une étape à la fois (fondu + 16 px), points de progression à gauche ;
+ * - « flat » (à plat) : toutes les étapes en liste ordonnée. C'est le rendu serveur (sans JavaScript),
+ *   le rendu imposé par prefers-reduced-motion, et celui du bouton « Afficher toutes les étapes ».
+ *
+ * L'état est exposé sur la section pour le visuel propre à chaque page :
+ * - data-mode="anim" | "flat"
+ * - data-step="0…n-1" (n-1 en mode à plat, comme dans la maquette)
+ * - évènement « m42:story » sur la section (detail : { step, flat }) pour un visuel piloté en JS.
+ * Le visuel écrit ses styles avec :global([data-story][data-mode='anim'][data-step='2']) .x { … }.
+ *
+ * Props :
+ * - id : ancre de la section (défaut « demonstration »).
+ * - label : nom accessible de la section (aria-label).
+ * - surTitre : sur-titre (« Démonstration · … »).
+ * - etapes : { kicker, titre, texte, repere? }[] (repere : ligne « Repère : … », conférence IV).
+ * - k : hauteur de la section en écrans (_K de la maquette : 3.6, 3.2, 3.8…).
+ * - dots : points de progression à gauche des étapes (défaut : true ; false pour la conférence IV).
+ * - minHeight : hauteur minimale de la zone des étapes en px (300, 320 ou 340).
+ * - visualSize : gabarit du visuel :
+ *     « phone » 300 px (220 px sous 640 px), « phone-narrow » 260 px (240 px),
+ *     « wide » 440 px (pleine largeur sous 640 px).
+ * - reperePrefix : préfixe de la ligne « repere » (défaut « Repère : »).
+ *
+ * Slots :
+ * - visual : le visuel propre à la page (téléphone, conversation, publication…).
+ * - before : bloc entre le sur-titre et la rangée (ex. frise de la journée, conférence IV) ;
+ *   la rangée passe alors à 28 px de marge haute, comme dans la maquette.
+ */
+import Eyebrow from '../Eyebrow.astro';
+import type { EtapeDemonstration } from '../../data/conferences/types';
+
+interface Props {
+  id?: string;
+  label: string;
+  surTitre: string;
+  etapes: EtapeDemonstration[];
+  k?: number;
+  dots?: boolean;
+  minHeight?: 300 | 320 | 340;
+  visualSize?: 'phone' | 'phone-narrow' | 'wide';
+  reperePrefix?: string;
+}
+
+const {
+  id = 'demonstration',
+  label,
+  surTitre,
+  etapes,
+  k = 3.6,
+  dots = true,
+  minHeight = 300,
+  visualSize = 'phone',
+  reperePrefix = 'Repère : ',
+} = Astro.props;
+
+const last = etapes.length - 1;
+const hasBefore = Astro.slots.has('before');
+---
+
+<section
+  id={id}
+  class="story m42-night"
+  aria-label={label}
+  data-story
+  data-k={k}
+  data-mode="flat"
+  data-step={last}
+>
+  <div class="sticky" data-story-sticky>
+    <div class="inner">
+      <Eyebrow>{surTitre}</Eyebrow>
+      {hasBefore && <slot name="before" />}
+      <div class:list={['row', { 'row--after-before': hasBefore }]}>
+        <div class:list={['sv', `sv--${visualSize}`]}>
+          <slot name="visual" />
+        </div>
+        <div class="explain">
+          <div class:list={['anim', { 'anim--dots': dots }]} data-story-anim hidden>
+            {dots && (
+              <div class="dots" aria-hidden="true">
+                {etapes.map(() => (
+                  <div class="dot" data-story-dot />
+                ))}
+              </div>
+            )}
+            <div class:list={['slides', `slides--${minHeight}`]}>
+              {etapes.map((e, i) => (
+                <div
+                  class="slide"
+                  data-story-slide
+                  data-pos={i === 0 ? 'current' : 'future'}
+                  aria-hidden={i === 0 ? 'false' : 'true'}
+                >
+                  <p class="kicker">{e.kicker}</p>
+                  <p class="slide-title">{e.titre}</p>
+                  <p class="slide-text">{e.texte}</p>
+                  {e.repere && (
+                    <p class="slide-rule">
+                      {reperePrefix}
+                      {e.repere}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+          <ol class="flat" data-story-flat>
+            {etapes.map((e) => (
+              <li class="flat-item">
+                <p class="kicker">{e.kicker}</p>
+                <p class="flat-title">{e.titre}</p>
+                <p class="flat-text">{e.texte}</p>
+                {e.repere && (
+                  <p class="flat-rule">
+                    {reperePrefix}
+                    {e.repere}
+                  </p>
+                )}
+              </li>
+            ))}
+          </ol>
+          <button type="button" class="toggle" data-story-toggle hidden>
+            Afficher toutes les étapes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .story {
+    position: relative;
+    background: var(--night);
+    color: var(--on-night);
+  }
+
+  .sticky {
+    position: relative;
+    top: 0;
+    box-sizing: border-box;
+    padding: var(--section-y) 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Mode animé : bloc collant d'un écran (hauteurs posées par l'îlot) */
+  .story[data-mode='anim'] .sticky {
+    position: sticky;
+    padding: 88px 0 32px;
+  }
+
+  @media (max-width: 699.98px) {
+    .story[data-mode='anim'] .sticky {
+      padding: 16px 0 16px;
+    }
+  }
+
+  .inner {
+    width: 100%;
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 var(--gutter-x);
+    box-sizing: border-box;
+  }
+
+  .row {
+    margin-top: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 40px 72px;
+  }
+
+  .row--after-before {
+    margin-top: 28px;
+  }
+
+  /* Visuel */
+  .sv {
+    position: relative;
+    min-width: 0;
+  }
+
+  .sv--phone {
+    flex: 0 1 300px;
+    max-width: 300px;
+  }
+
+  .sv--phone-narrow {
+    flex: 0 1 260px;
+    max-width: 260px;
+  }
+
+  .sv--wide {
+    flex: 0 1 440px;
+    max-width: 440px;
+  }
+
+  @media (max-width: 640px) {
+    .sv--phone {
+      max-width: 220px;
+    }
+
+    .sv--phone-narrow {
+      max-width: 240px;
+    }
+
+    .sv--wide {
+      max-width: 100%;
+    }
+  }
+
+  /* Mobile : animations plus compactes */
+  @media (max-width: 700px) {
+    .sv {
+      zoom: 0.78;
+    }
+  }
+
+  @media (max-width: 700px) and (max-height: 760px) {
+    .sv {
+      zoom: 0.66;
+    }
+  }
+
+  /* Explications */
+  .explain {
+    flex: 1 1 400px;
+    min-width: 0;
+    max-width: 540px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .anim[hidden],
+  .flat[hidden],
+  .toggle[hidden] {
+    display: none;
+  }
+
+  .anim--dots {
+    display: flex;
+    gap: 28px;
+  }
+
+  .dots {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 6px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background-color: var(--night-line);
+    transition: background-color var(--dur-3) var(--ease-out);
+  }
+
+  .dot[data-pos='past'] {
+    background-color: var(--on-night-3);
+  }
+
+  .dot[data-pos='current'] {
+    background-color: var(--gold-night);
+  }
+
+  .slides {
+    position: relative;
+  }
+
+  .anim--dots .slides {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .slides--300 {
+    min-height: 300px;
+  }
+
+  .slides--320 {
+    min-height: 320px;
+  }
+
+  .slides--340 {
+    min-height: 340px;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity var(--dur-3) var(--ease-out),
+      transform var(--dur-3) var(--ease-out);
+  }
+
+  .slide[data-pos='past'] {
+    transform: translateY(-16px);
+  }
+
+  .slide[data-pos='current'] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .kicker {
+    margin: 0;
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--gold-night);
+  }
+
+  .slide-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+    line-height: 1.05;
+  }
+
+  .slide-text {
+    margin: 0;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--on-night-2);
+  }
+
+  .slide-rule {
+    margin: 4px 0 0;
+    padding: 10px 0 0;
+    border-top: 1px solid var(--night-line);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--on-night);
+  }
+
+  /* À plat */
+  .flat {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .flat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 18px 0;
+    border-top: 1px solid var(--night-line);
+  }
+
+  .flat-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-card);
+    line-height: var(--lh-card);
+  }
+
+  .flat-text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--on-night-2);
+  }
+
+  .flat-rule {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--on-night);
+  }
+
+  /* Petit bouton texte */
+  .toggle {
+    align-self: flex-start;
+    min-height: var(--target-min);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--on-night-2);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: color var(--dur-1) var(--ease-out);
+  }
+
+  .toggle:hover {
+    color: var(--on-night);
+    text-decoration-color: var(--gold);
+  }
+</style>
+
+<script>
+  /*
+   * Îlot de l'animation au défilement (logique _story / _startScroll / _onScroll de la maquette).
+   * - vh = hauteur de fenêtre bornée entre 560 et 1 000 px ;
+   * - section : vh × k ; bloc collant : vh ;
+   * - progression p = -top / (hauteur - vh), bornée à [0 ; 0,9999] ; étape = ⌊p × n⌋.
+   * prefers-reduced-motion : rendu à plat, sans bouton (suivi en direct du réglage).
+   */
+  import { frenchTypography } from '../../lib/typo';
+
+  const LABEL_FLAT = frenchTypography('Afficher toutes les étapes');
+  const LABEL_ANIM = frenchTypography("Revenir à l'animation pas à pas");
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-story]')) {
+    const sticky = root.querySelector<HTMLElement>('[data-story-sticky]');
+    const anim = root.querySelector<HTMLElement>('[data-story-anim]');
+    const flatList = root.querySelector<HTMLElement>('[data-story-flat]');
+    const toggle = root.querySelector<HTMLButtonElement>('[data-story-toggle]');
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-story-slide]'));
+    const dots = Array.from(root.querySelectorAll<HTMLElement>('[data-story-dot]'));
+    const n = slides.length;
+    const k = Number(root.dataset.k) || 3.6;
+    if (!sticky || !anim || !flatList || !toggle || n === 0) continue;
+
+    let showAll = false;
+    let vh = 820;
+    let step = 0;
+
+    const isFlat = (): boolean => reduce.matches || showAll;
+
+    const render = (): void => {
+      const flat = isFlat();
+      const s = flat ? n - 1 : Math.min(n - 1, step);
+      root.dataset.mode = flat ? 'flat' : 'anim';
+      root.dataset.step = String(s);
+      anim.hidden = flat;
+      flatList.hidden = !flat;
+      toggle.hidden = reduce.matches;
+      toggle.textContent = flat ? LABEL_ANIM : LABEL_FLAT;
+      root.style.height = flat ? '' : `${Math.round(vh * k)}px`;
+      sticky.style.height = flat ? '' : `${vh}px`;
+      slides.forEach((slide, i) => {
+        slide.dataset.pos = i === s ? 'current' : i < s ? 'past' : 'future';
+        slide.setAttribute('aria-hidden', i === s ? 'false' : 'true');
+      });
+      dots.forEach((dot, i) => {
+        dot.dataset.pos = i === s ? 'current' : i < s ? 'past' : 'future';
+      });
+      root.dispatchEvent(new CustomEvent('m42:story', { detail: { step: s, flat } }));
+    };
+
+    const onScroll = (): void => {
+      if (isFlat()) return;
+      const r = root.getBoundingClientRect();
+      const p = Math.max(0, Math.min(0.9999, -r.top / Math.max(1, r.height - vh)));
+      const next = Math.floor(p * n);
+      if (next !== step) {
+        step = next;
+        render();
+      }
+    };
+
+    const onResize = (): void => {
+      const h = Math.round(Math.max(560, Math.min(window.innerHeight || 820, 1000)));
+      if (h !== vh) {
+        vh = h;
+        render();
+      }
+      onScroll();
+    };
+
+    toggle.addEventListener('click', () => {
+      showAll = !showAll;
+      render();
+      onScroll();
+      // La hauteur de la section change : on garde le bouton (et le focus) à l'écran.
+      toggle.scrollIntoView({ block: 'center' });
+    });
+
+    reduce.addEventListener('change', () => {
+      render();
+      onScroll();
+    });
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+
+    vh = Math.round(Math.max(560, Math.min(window.innerHeight || 820, 1000)));
+    render();
+    onScroll();
+  }
+</script>

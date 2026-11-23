@@ -1,9 +1,11 @@
 ---
 /**
  * Éducation (kit/maquette/Education.dc.html) : établissements scolaires et familles.
+ * Contenus : src/data/publics/education.ts (futur enregistrement Directus `publics`).
  * SEO : canonical /education/, H1 « Apprendre avec l'IA, pas à sa place. » + introduction
  * avec les mots-clés (intervention IA collège / lycée, éducation aux médias).
- * JSON-LD : WebPage + BreadcrumbList + Service + FAQPage (texte identique à la FAQ visible).
+ * JSON-LD : WebPage + BreadcrumbList + Service + FAQPage (questions sans marqueur seulement,
+ * DECISIONS.md point 19 ; components/publics/json-ld.ts).
  * En-tête : « Écoles » marqué comme page courante (DECISIONS.md, point 3).
  * Aucune logique interactive (la classe Component de la maquette est vide) ; la FAQ est en <details>.
  *
@@ -14,217 +16,128 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Section from '../../components/Section.astro';
 import ArrowLink from '../../components/ArrowLink.astro';
-import Faq from '../../components/Faq.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import PublicHero from '../../components/publics/PublicHero.astro';
 import PublicSectionHead from '../../components/publics/PublicSectionHead.astro';
 import IssueGrid from '../../components/publics/IssueGrid.astro';
 import EducationAudiences from '../../components/publics/EducationAudiences.astro';
-import PublicFormatsNoted from '../../components/publics/PublicFormatsNoted.astro';
-import PublicConferenceCard from '../../components/publics/PublicConferenceCard.astro';
+import PublicFormats from '../../components/publics/PublicFormats.astro';
+import PublicConferenceGrid from '../../components/publics/PublicConferenceGrid.astro';
 import TopicList from '../../components/publics/TopicList.astro';
 import TakeawayColumns from '../../components/publics/TakeawayColumns.astro';
 import StepList from '../../components/publics/StepList.astro';
 import IntervenantsNote from '../../components/publics/IntervenantsNote.astro';
-import { routes } from '../../data/routes';
-import {
-  ADAGE_REFERENCE,
-  audiences,
-  conferences,
-  cta,
-  faq,
-  faqPassCulture,
-  faqReviewNote,
-  formats,
-  formatsNote,
-  hero,
-  intervenants,
-  otherSubjects,
-  seo,
-  stakes,
-  steps,
-  takeaways,
-} from '../../data/publics/education';
+import PublicFaq from '../../components/publics/PublicFaq.astro';
+import { publicPageJsonLd } from '../../components/publics/json-ld';
+import { ADAGE_REFERENCE, education as page } from '../../data/publics/education';
 
-const { title, description, url } = seo;
-const site = 'https://m42.guide';
+const { title, description } = page.seo;
 
-const faqItems = ADAGE_REFERENCE ? [...faq, faqPassCulture] : faq;
-const plain = (html: string) => html.replace(/<[^>]+>/g, '');
+const faqItems = ADAGE_REFERENCE ? [...page.faq.items, page.faq.passCulture] : page.faq.items;
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'WebPage',
-      '@id': `${url}#page`,
-      url,
-      name: title,
-      description,
-      isPartOf: { '@id': `${site}/#site` },
-      breadcrumb: { '@id': `${url}#ariane` },
-      mainEntity: { '@id': `${url}#service` },
-      inLanguage: 'fr-FR',
-    },
-    {
-      '@type': 'BreadcrumbList',
-      '@id': `${url}#ariane`,
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${site}/` },
-        { '@type': 'ListItem', position: 2, name: 'Éducation' },
-      ],
-    },
-    {
-      '@type': 'Service',
-      '@id': `${url}#service`,
-      name: "Interventions sur l'IA pour les collèges, les lycées et les parents",
-      serviceType: "Intervention de sensibilisation à l'intelligence artificielle",
-      description: `${hero.paragraphs.join(' ')} Formats : ${formats
-        .map(
-          (f) =>
-            `${f.title.toLowerCase()} (${f.duration.charAt(0).toLowerCase()}${f.duration.slice(1)})`,
-        )
-        .join(', ')}.`,
-      provider: { '@id': `${site}/#organisation` },
-      areaServed: { '@type': 'Country', name: 'France' },
-      availableLanguage: 'fr',
-      audience: [
-        { '@type': 'EducationalAudience', educationalRole: 'student', audienceType: 'Élèves' },
-        { '@type': 'EducationalAudience', educationalRole: 'teacher', audienceType: 'Enseignants' },
-        { '@type': 'EducationalAudience', educationalRole: 'parent', audienceType: 'Parents' },
-      ],
-      about: [
-        { '@type': 'Thing', name: 'Intelligence artificielle' },
-        { '@type': 'Thing', name: 'Éducation aux médias' },
-        { '@type': 'Thing', name: 'Esprit critique' },
-        { '@type': 'Thing', name: 'Cyberharcèlement' },
-      ],
-    },
-    {
-      '@type': 'FAQPage',
-      '@id': `${url}#faq`,
-      mainEntity: faqItems.map((item) => ({
-        '@type': 'Question',
-        name: item.question,
-        acceptedAnswer: { '@type': 'Answer', text: plain(item.answer) },
-      })),
-    },
-  ],
-};
+const jsonLd = publicPageJsonLd({
+  path: '/education/',
+  title,
+  description,
+  crumb: page.hero.crumb,
+  service: {
+    name: "Interventions sur l'IA pour les collèges, les lycées et les parents",
+    serviceType: "Intervention de sensibilisation à l'intelligence artificielle",
+    description: `${page.hero.paragraphs.join(' ')} Formats : ${page.formats.items
+      .map(
+        (f) =>
+          `${f.title.toLowerCase()} (${f.duration.charAt(0).toLowerCase()}${f.duration.slice(1)})`,
+      )
+      .join(', ')}.`,
+    audience: [
+      { '@type': 'EducationalAudience', educationalRole: 'student', audienceType: 'Élèves' },
+      { '@type': 'EducationalAudience', educationalRole: 'teacher', audienceType: 'Enseignants' },
+      { '@type': 'EducationalAudience', educationalRole: 'parent', audienceType: 'Parents' },
+    ],
+    about: [
+      { '@type': 'Thing', name: 'Intelligence artificielle' },
+      { '@type': 'Thing', name: 'Éducation aux médias' },
+      { '@type': 'Thing', name: 'Esprit critique' },
+      { '@type': 'Thing', name: 'Cyberharcèlement' },
+    ],
+  },
+  faq: faqItems,
+});
 ---
 
 <BaseLayout title={title} description={description} current="education" jsonLd={jsonLd}>
-  <PublicHero {...hero} />
+  <PublicHero {...page.hero} />
 
   <Section id="enjeux" labelledby="titre-enjeux">
-    <PublicSectionHead id="titre-enjeux" eyebrow="Vos enjeux">
-      Trois enjeux pour votre établissement
+    <PublicSectionHead id="titre-enjeux" eyebrow={page.stakes.eyebrow}>
+      {page.stakes.title}
     </PublicSectionHead>
-    <IssueGrid items={stakes} />
+    <IssueGrid items={page.stakes.items} />
   </Section>
 
   <Section id="publics" labelledby="titre-publics" tone="sunk">
     <PublicSectionHead
       id="titre-publics"
-      eyebrow="Trois publics, un même langage"
-      lead="Les élèves apprennent la méthode, les enseignants la prolongent en classe, les parents la retrouvent à la maison. Chacun son format, les mêmes règles pour tous."
+      eyebrow={page.audiences.eyebrow}
+      lead={page.audiences.lead}
     >
-      Élèves, enseignants, parents : des repères communs
+      {page.audiences.title}
     </PublicSectionHead>
-    <EducationAudiences items={audiences} />
+    <EducationAudiences items={page.audiences.items} />
   </Section>
 
   <Section id="formats" labelledby="titre-formats">
-    <PublicSectionHead
-      id="titre-formats"
-      eyebrow="Formats"
-      lead="De la classe à l'amphithéâtre, et jusqu'à la soirée des parents."
-    >
-      Un format pour chaque public de l'établissement
+    <PublicSectionHead id="titre-formats" eyebrow={page.formats.eyebrow} lead={page.formats.lead}>
+      {page.formats.title}
     </PublicSectionHead>
-    <PublicFormatsNoted items={formats} />
-    <p class="formats-note m42-reveal">{formatsNote}</p>
+    <PublicFormats items={page.formats.items} footnote={page.formats.note} />
   </Section>
 
   <Section id="sujets" labelledby="titre-sujets" tone="sunk">
     <PublicSectionHead
       id="titre-sujets"
-      eyebrow="Conférences"
-      lead="Deux conférences au cœur de l'éducation aux médias et du numérique en famille."
+      eyebrow={page.conferences.eyebrow}
+      lead={page.conferences.lead}
     >
-      Les conférences pour vos élèves et leurs familles
+      {page.conferences.title}
     </PublicSectionHead>
-    <div class="cards">
-      {conferences.map((c) => (
-        <PublicConferenceCard {...c} />
-      ))}
-    </div>
-    <TopicList title={otherSubjects.title} items={otherSubjects.items} />
-    <div class="all">
-      <ArrowLink href={routes['Conferences.dc.html']}>
-        Voir toutes les conférences et leurs formats
-      </ArrowLink>
+    <PublicConferenceGrid items={page.conferences.items} />
+    <TopicList title={page.conferences.otherTitle} items={page.conferences.others} />
+    <div class="more">
+      <ArrowLink href={page.conferences.link.href}>{page.conferences.link.label}</ArrowLink>
     </div>
   </Section>
 
   <Section id="emportent" labelledby="titre-emportent">
-    <PublicSectionHead id="titre-emportent" eyebrow="Après l'intervention">
-      Ce que chacun emporte
+    <PublicSectionHead id="titre-emportent" eyebrow={page.takeaways.eyebrow}>
+      {page.takeaways.title}
     </PublicSectionHead>
-    <TakeawayColumns columns={takeaways} />
+    <TakeawayColumns columns={page.takeaways.groups} />
   </Section>
 
   <Section id="etapes" labelledby="titre-etapes" tone="sunk">
-    <PublicSectionHead id="titre-etapes" eyebrow="Méthode">
-      Comment ça se passe
+    <PublicSectionHead id="titre-etapes" eyebrow={page.steps.eyebrow}>
+      {page.steps.title}
     </PublicSectionHead>
-    <StepList items={steps} />
-    <IntervenantsNote {...intervenants} />
+    <StepList items={page.steps.items} />
+    <IntervenantsNote {...page.steps.team} />
   </Section>
 
   <Section id="faq" labelledby="titre-faq">
-    <PublicSectionHead id="titre-faq" eyebrow="Questions fréquentes">
-      Questions fréquentes
+    <PublicSectionHead id="titre-faq" eyebrow={page.faq.eyebrow}>
+      {page.faq.title}
     </PublicSectionHead>
-    <div class="faq-wrap m42-reveal">
-      <Faq items={faqItems} />
-    </div>
-    {!ADAGE_REFERENCE && <p class="review-note m42-reveal">{faqReviewNote}</p>}
+    <PublicFaq items={faqItems} />
+    {!ADAGE_REFERENCE && <p class="review-note m42-reveal">{page.faq.reviewNote}</p>}
   </Section>
 
-  <CtaBand
-    id="titre-contact"
-    eyebrow={cta.eyebrow}
-    title={cta.title}
-    lead={cta.lead}
-    ctaLabel={cta.ctaLabel}
-    ctaHref={cta.ctaHref}
-  />
+  <CtaBand id="titre-contact" {...page.cta} />
 </BaseLayout>
 
 <style>
-  .formats-note {
-    margin: var(--s-5) 0 0;
-    max-width: var(--measure-text);
-    font-size: 16px;
-    line-height: 1.6;
-    color: var(--ink-2);
-  }
-
-  .cards {
-    margin-top: var(--s-7);
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
-    gap: var(--s-5);
-  }
-
-  .all {
+  .more {
     margin-top: var(--s-6);
     display: flex;
-  }
-
-  .faq-wrap {
-    margin-top: var(--s-7);
   }
 
   .review-note {

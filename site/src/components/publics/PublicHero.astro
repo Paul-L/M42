@@ -18,22 +18,9 @@ import Breadcrumb from '../Breadcrumb.astro';
 import Button from '../Button.astro';
 import Placeholder from '../Placeholder.astro';
 import { routes } from '../../data/routes';
+import type { PublicHeroData } from '../../data/publics/types';
 
-export interface PublicHeroLink {
-  label: string;
-  href: string;
-}
-
-export interface Props {
-  crumb: string;
-  eyebrow: string;
-  title: string;
-  lead: string;
-  paragraphs: string[];
-  primary: PublicHeroLink;
-  secondary?: PublicHeroLink;
-  photo: string;
-}
+export type Props = PublicHeroData;
 
 const { crumb, eyebrow, title, lead, paragraphs, primary, secondary, photo } = Astro.props;
 ---

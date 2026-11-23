@@ -1,0 +1,91 @@
+---
+/**
+ * Temps fort de la conférence IV : la charte numérique de la famille, à placer dans TempsFort.
+ * Modèle à compléter (rubriques + lignes pointillées), sans fichier à télécharger :
+ * le modèle téléchargeable est encore [À PRODUIRE] (note de TempsFort).
+ * Élément flex de la rangée de TempsFort (flex: 999 1 520px).
+ *
+ * Props :
+ * - titre : « Notre charte numérique ».
+ * - rubriques : intitulés des lignes à compléter.
+ * - signature : ligne de signature (« Signée le ……… par toute la famille. »).
+ */
+interface Props {
+  titre: string;
+  rubriques: string[];
+  signature: string;
+}
+
+const { titre, rubriques, signature } = Astro.props;
+---
+
+<div class="charte m42-reveal">
+  <p class="title">{titre}</p>
+  <div class="rows">
+    {rubriques.map((r) => (
+      <div class="row">
+        <span class="label">{r}</span>
+        <span class="blank" aria-hidden="true" />
+      </div>
+    ))}
+  </div>
+  <p class="sign">{signature}</p>
+</div>
+
+<style>
+  .charte {
+    flex: 999 1 520px;
+    min-width: 0;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: clamp(24px, 3vw, 40px);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .title {
+    margin: 0 0 12px;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-card);
+    line-height: var(--lh-card);
+  }
+
+  .rows {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    border-top: 1px solid var(--ink);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .row:last-child {
+    border-bottom: 0;
+  }
+
+  .label {
+    flex: 1 1 200px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .blank {
+    flex: 2 1 240px;
+    border-bottom: 1px dotted var(--line-strong);
+    min-height: 22px;
+  }
+
+  .sign {
+    margin: 12px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+</style>

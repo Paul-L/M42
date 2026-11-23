@@ -9,10 +9,15 @@
 import { headerContact, headerLinks, type NavKey } from '../data/navigation';
 
 interface Props {
+  /** Lien de la page courante : aria-current="page". */
   current?: NavKey | undefined;
+  /** Rubrique parente de la page (ex. Conférences pour une conférence) : aria-current="true". */
+  section?: NavKey | undefined;
 }
 
-const { current } = Astro.props;
+const { current, section } = Astro.props;
+const ariaCurrent = (key: NavKey) =>
+  current === key ? ('page' as const) : section === key ? ('true' as const) : undefined;
 ---
 
 <header class="hdr">
@@ -49,11 +54,7 @@ const { current } = Astro.props;
     </label>
     <nav id="m42-menu" class="nav" aria-label="Navigation principale">
       {headerLinks.map((link) => (
-        <a
-          href={link.href}
-          class="nav-link"
-          aria-current={current === link.key ? 'page' : undefined}
-        >
+        <a href={link.href} class="nav-link" aria-current={ariaCurrent(link.key)}>
           {link.label}
         </a>
       ))}
@@ -160,7 +161,8 @@ const { current } = Astro.props;
     text-decoration-color: var(--ink);
   }
 
-  .nav-link[aria-current='page'] {
+  .nav-link[aria-current='page'],
+  .nav-link[aria-current='true'] {
     text-decoration-line: underline;
     text-decoration-color: var(--gold);
     text-decoration-thickness: 2px;

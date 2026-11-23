@@ -5,22 +5,23 @@
  *
  * Props :
  * - `text` : texte de l'encadré (« Qui intervient : … »).
- * - `linkLabel` (« Parcours et démarche ») et `href` : lien fléché.
+ * - `link` : lien fléché { label, href } (« Parcours et démarche »).
+ * Les deux props correspondent à PublicTeamNote (src/data/publics/types.ts) : `<IntervenantsNote {...team} />`.
  */
 import ArrowLink from '../ArrowLink.astro';
+import type { PublicLink } from '../../data/publics/types';
 
 export interface Props {
   text: string;
-  linkLabel: string;
-  href: string;
+  link: PublicLink;
 }
 
-const { text, linkLabel, href } = Astro.props;
+const { text, link } = Astro.props;
 ---
 
 <div class="note m42-reveal">
   <p class="text">{text}</p>
-  <ArrowLink href={href}>{linkLabel}</ArrowLink>
+  <ArrowLink href={link.href}>{link.label}</ArrowLink>
 </div>
 
 <style>

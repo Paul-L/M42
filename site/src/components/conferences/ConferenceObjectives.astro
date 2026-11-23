@@ -1,0 +1,108 @@
+---
+/**
+ * Section « Objectifs » des pages conférences : encadré « En clair » (filet or à gauche)
+ * puis les objectifs numérotés 01, 02, 03 en grille.
+ *
+ * Props :
+ * - surTitre : défaut « Objectifs ».
+ * - titre : H2 (« Ce que vos participants sauront faire »…).
+ * - enClair : texte de l'encadré « En clair ».
+ * - items : objectifs (texte).
+ */
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeading from './SectionHeading.astro';
+
+interface Props {
+  surTitre?: string;
+  titre: string;
+  enClair: string;
+  items: string[];
+}
+
+const { surTitre = 'Objectifs', titre, enClair, items } = Astro.props;
+---
+
+<section aria-labelledby="titre-objectifs" class="obj">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <SectionHeading id="titre-objectifs">{titre}</SectionHeading>
+    <div class="clair m42-reveal">
+      <p class="clair-label">En clair</p>
+      <p class="clair-text">{enClair}</p>
+    </div>
+    <ul class="list">
+      {items.map((item, i) => (
+        <li class="item m42-reveal">
+          <span aria-hidden="true" class="num">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <p class="text">{item}</p>
+        </li>
+      ))}
+    </ul>
+  </Container>
+</section>
+
+<style>
+  .obj {
+    padding: var(--section-y) 0;
+  }
+
+  .clair {
+    margin-top: 48px;
+    max-width: 46rem;
+    border-left: 2px solid var(--gold);
+    padding: 4px 0 4px 24px;
+  }
+
+  .clair-label {
+    margin: 0 0 8px;
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .clair-text {
+    margin: 0;
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink);
+  }
+
+  .list {
+    list-style: none;
+    margin: 48px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 32px 48px;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+  }
+
+  .num {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+    color: var(--gold-deep);
+  }
+
+  .text {
+    margin: 0;
+    font-size: var(--fs-faq);
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+</style>

@@ -3,32 +3,19 @@
 
 import { routes } from '../routes';
 import type {
+  PublicCta,
   PublicFaqItem,
+  PublicFlowStep,
   PublicFormat,
+  PublicHeroData,
   PublicLink,
   PublicRecommendedConference,
-  PublicRichText,
   PublicStake,
   PublicStep,
+  PublicTakeawayGroup,
+  PublicTeamNote,
+  PublicTopic,
 } from './types';
-
-/** Sujet de la liste « Pour vos agents et vos services ». */
-export interface CollectivitesTopic {
-  title: string;
-  text: string;
-}
-
-/** Colonne de « Ce que vos participants emportent » (marqueurs en milieu de phrase). */
-export interface CollectivitesTakeawayGroup {
-  title: string;
-  items: PublicRichText[];
-}
-
-/** Étape du schéma « Commander une intervention ». */
-export interface CollectivitesOrderStep {
-  title: string;
-  text: PublicRichText;
-}
 
 export const collectivites = {
   slug: 'collectivites',
@@ -47,11 +34,11 @@ export const collectivites = {
       "Des conférences et des ateliers sur l'intelligence artificielle et les arnaques leur apportent des réponses claires, sans jargon, dans vos salles : CCAS, médiathèques, France Services, mairies.",
       'Habitants, agents en première ligne, élus : chacun son format, les mêmes repères.',
     ],
-    primary: { label: 'Demander un devis', href: routes['Contact.dc.html'] } as PublicLink,
-    secondary: { label: 'Voir comment commander', href: '#commande' } as PublicLink,
+    primary: { label: 'Demander un devis', href: routes['Contact.dc.html'] },
+    secondary: { label: 'Voir comment commander', href: '#commande' },
     photo:
       "[Photo : atelier en médiathèque, un petit groupe d'habitants, téléphone en main, l'intervenante en amorce, 4:5, à produire]",
-  },
+  } satisfies PublicHeroData,
 
   stakes: {
     eyebrow: 'Vos enjeux',
@@ -70,7 +57,7 @@ export const collectivites = {
         title: "Encadrer l'usage de l'IA dans les services",
         text: 'Données des usagers, confidentialité, fiabilité des réponses : les règles doivent être posées avant les habitudes.',
       },
-    ] as PublicStake[],
+    ] satisfies PublicStake[],
   },
 
   formats: {
@@ -92,17 +79,17 @@ export const collectivites = {
       },
       {
         title: "Temps d'information pour les élus",
-        marker: '[À VALIDER : nouveau format]',
+        note: [{ marker: '[À VALIDER : nouveau format]' }],
         duration: '1 h 30 à 2 h',
         participants: 'Conseil municipal ou commission',
       },
-    ] as PublicFormat[],
+    ] satisfies PublicFormat[],
     note: "Salle des fêtes, médiathèque, CCAS, mairie : l'intervention se tient chez vous. Béarn, Pays basque, Landes : sans frais de déplacement. Ailleurs en France, les frais sont indiqués dès le devis.",
     link: {
       label:
         'Vous portez le projet avec une association ou un CCAS ? Les ateliers pour les associations',
       href: routes['Associations.dc.html'],
-    } as PublicLink,
+    } satisfies PublicLink,
   },
 
   conferences: {
@@ -146,22 +133,22 @@ export const collectivites = {
         forYou: 'Une soirée pour les familles, avec la charte numérique de la famille.',
         formats: ['Keynote', 'Conférence', 'Atelier', 'Cycle'],
       },
-    ] as PublicRecommendedConference[],
+    ] satisfies PublicRecommendedConference[],
     otherTitle: 'Pour vos agents et vos services',
     others: [
       {
         title: "Agents d'accueil : repérer et orienter une victime d'arnaque",
-        text: 'Les bons réflexes, les bons numéros.',
+        detail: 'Les bons réflexes, les bons numéros.',
       },
       {
         title: "L'IA dans les services de la collectivité",
-        text: 'Usages utiles, données à protéger, règles communes.',
+        detail: 'Usages utiles, données à protéger, règles communes.',
       },
-    ] as CollectivitesTopic[],
+    ] satisfies PublicTopic[],
     link: {
       label: 'Voir toutes les conférences et leurs formats',
       href: routes['Conferences.dc.html'],
-    } as PublicLink,
+    } satisfies PublicLink,
   },
 
   takeaways: {
@@ -207,7 +194,7 @@ export const collectivites = {
           ["Un bilan après l'intervention ", { marker: '[À PRODUIRE]' }],
         ],
       },
-    ] as CollectivitesTakeawayGroup[],
+    ] satisfies PublicTakeawayGroup[],
   },
 
   steps: {
@@ -226,11 +213,11 @@ export const collectivites = {
         title: "L'intervention et le bilan",
         text: 'Participation, questions posées, suites possibles : de quoi alimenter vos rapports.',
       },
-    ] as PublicStep[],
+    ] satisfies PublicStep[],
     team: {
       text: "Qui intervient : Clara Peron, formatrice d'adultes, et Paul Loustaunau, qui conçoit l'IA au quotidien, animent chaque intervention ensemble.",
-      link: { label: 'Parcours et démarche', href: routes['A-propos.dc.html'] } as PublicLink,
-    },
+      link: { label: 'Parcours et démarche', href: routes['A-propos.dc.html'] },
+    } satisfies PublicTeamNote,
   },
 
   order: {
@@ -255,7 +242,7 @@ export const collectivites = {
           ', paiement par mandat administratif.',
         ],
       },
-    ] as CollectivitesOrderStep[],
+    ] satisfies PublicFlowStep[],
     source:
       "Source : Code de la commande publique, article R2122-8, modifié par le décret n° 2025-1386 du 29 décembre 2025 (applicable depuis le 1er avril 2026) ; seuils confirmés par le Conseil d'État le 19 octobre 2026. Ce schéma simplifié ne remplace pas l'avis de votre service de la commande publique.",
   },
@@ -287,7 +274,7 @@ export const collectivites = {
           " : une affiche et un texte prêt à publier dans le bulletin municipal et sur vos réseaux. Le jour même, le contenu s'adapte au public présent.",
         ],
       },
-    ] as PublicFaqItem[],
+    ] satisfies PublicFaqItem[],
   },
 
   cta: {
@@ -296,5 +283,5 @@ export const collectivites = {
     lead: 'Des formats adaptés aux budgets des collectivités et des associations. Devis gratuit sous 48 h.',
     ctaLabel: 'Demander un devis',
     ctaHref: routes['Contact.dc.html'],
-  },
+  } satisfies PublicCta,
 };

@@ -8,15 +8,10 @@
  * Props :
  * - `items` : { title, format, text } dans l'ordre Élèves, Enseignants, Parents.
  */
-export interface EducationAudience {
-  title: string;
-  /** Format proposé à ce public (13 px, encre 3). */
-  format: string;
-  text: string;
-}
+import type { PublicAudience } from '../../data/publics/types';
 
 export interface Props {
-  items: EducationAudience[];
+  items: PublicAudience[];
 }
 
 const { items } = Astro.props;

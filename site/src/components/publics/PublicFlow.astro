@@ -1,27 +1,27 @@
 ---
 /**
- * Schéma en étapes fléchées des pages « Pour qui » (ex. « Commander une intervention » sur
- * Collectivités) : cartes numérotées reliées par des flèches, liste ARIA (role="list").
- * Les flèches horizontales deviennent verticales sous 640 px. Le schéma apparaît au défilement.
+ * Schéma en étapes fléchées des pages « Pour qui » (« Commander une intervention » sur
+ * Collectivités, « Le relais » sur Associations) : cartes numérotées reliées par des flèches,
+ * liste ARIA (role="list"). Les flèches horizontales deviennent verticales sous 640 px.
+ * Le schéma, puis la note facultative, apparaissent au défilement.
  *
  * Props :
  * - `label` : nom accessible de la liste (« Les trois étapes de la commande »).
- * - `items` : étapes { title, text } ; `text` accepte des marqueurs en ligne (PublicRichText).
+ * - `items` : étapes { title, detail?, text } (PublicFlowStep) ; `detail` est la ligne sous le
+ *   titre (15 px, graisse 500), `text` accepte des marqueurs en ligne (PublicRichText).
+ * - `note` : encadré en pointillés sous le schéma, précédé d'une flèche retour
+ *   (« Au bilan, un temps d'échange… »).
  */
 import RichText from './RichText.astro';
-import type { PublicRichText } from '../../data/publics/types';
-
-export interface PublicFlowStep {
-  title: string;
-  text: PublicRichText;
-}
+import type { PublicFlowStep } from '../../data/publics/types';
 
 export interface Props {
   label: string;
   items: PublicFlowStep[];
+  note?: string;
 }
 
-const { label, items } = Astro.props;
+const { label, items, note } = Astro.props;
 ---
 
 <div class="flow m42-reveal" role="list" aria-label={label}>
@@ -50,6 +50,7 @@ const { label, items } = Astro.props;
           {i + 1}
         </span>
         <h3 class="h3">{item.title}</h3>
+        {item.detail && <p class="detail">{item.detail}</p>}
         <p class="text">
           <RichText value={item.text} />
         </p>
@@ -57,6 +58,27 @@ const { label, items } = Astro.props;
     </>
   ))}
 </div>
+{note && (
+  <div class="note m42-reveal">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      focusable="false"
+      class="note-icon"
+    >
+      <path d="M20 12H4" />
+      <path d="M10 6l-6 6 6 6" />
+    </svg>
+    <span>{note}</span>
+  </div>
+)}
 
 <style>
   .flow {
@@ -96,6 +118,14 @@ const { label, items } = Astro.props;
     letter-spacing: var(--tracking-h3);
   }
 
+  .detail {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--fg-2);
+  }
+
   .text {
     margin: 0;
     font-size: 16px;
@@ -107,6 +137,23 @@ const { label, items } = Astro.props;
     flex: none;
     align-self: center;
     display: inline-flex;
+    color: var(--fg);
+  }
+
+  .note {
+    margin-top: var(--s-5);
+    padding: var(--s-4) 20px;
+    border: 1px dashed var(--control-border);
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--fg-2);
+  }
+
+  .note-icon {
+    flex: none;
     color: var(--fg);
   }
 

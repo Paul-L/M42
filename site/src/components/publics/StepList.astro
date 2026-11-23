@@ -4,15 +4,12 @@
  * (liste ordonnée), grand chiffre Cormorant or, H3, texte. Chaque étape apparaît au défilement.
  *
  * Props :
- * - `items` : { title, text } ; le numéro est calculé.
+ * - `items` : { title, text } (PublicStep) ; le numéro est calculé.
  */
-export interface Step {
-  title: string;
-  text: string;
-}
+import type { PublicStep } from '../../data/publics/types';
 
 export interface Props {
-  items: Step[];
+  items: PublicStep[];
 }
 
 const { items } = Astro.props;

@@ -1,23 +1,24 @@
 ---
 /**
  * Liste « Autres exemples de sujets » des pages « Pour qui » : titre H3, puis une ligne par
- * sujet (intitulé en gras moyen, précision dessous). Le bloc apparaît au défilement.
+ * sujet (intitulé 17 px graisse 500, précision facultative dessous en 15 px, qui garde la graisse
+ * héritée comme dans la maquette), étiquette facultative à droite (« Sur demande »), note
+ * facultative sous la liste. Le bloc apparaît au défilement.
  *
  * Props :
  * - `title` : titre H3 (« Autres exemples de sujets »).
- * - `items` : { title, text }.
+ * - `items` : { title, detail?, tag? } (PublicTopic, src/data/publics/types.ts).
+ * - `note` : texte sous la liste (14 px, encre 3).
  */
-export interface Topic {
-  title: string;
-  text: string;
-}
+import type { PublicTopic } from '../../data/publics/types';
 
 export interface Props {
   title: string;
-  items: Topic[];
+  items: PublicTopic[];
+  note?: string;
 }
 
-const { title, items } = Astro.props;
+const { title, items, note } = Astro.props;
 ---
 
 <div class="topics m42-reveal">
@@ -27,11 +28,13 @@ const { title, items } = Astro.props;
       <li class="row">
         <span class="name">
           {item.title}
-          <span class="text">{item.text}</span>
+          {item.detail && <span class="detail">{item.detail}</span>}
         </span>
+        {item.tag && <span class="tag">{item.tag}</span>}
       </li>
     ))}
   </ul>
+  {note && <p class="note">{note}</p>}
 </div>
 
 <style>
@@ -73,11 +76,30 @@ const { title, items } = Astro.props;
     color: var(--fg);
   }
 
-  .text {
+  .detail {
     display: block;
     margin-top: var(--s-1);
     font-size: 15px;
     line-height: 1.55;
     color: var(--fg-2);
+  }
+
+  .tag {
+    flex: none;
+    padding: 3px 9px;
+    border-radius: var(--radius-tag);
+    border: 1px solid var(--control-border);
+    color: var(--fg-2);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .note {
+    margin: 20px 0 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-small);
+    line-height: 1.55;
+    color: var(--fg-3);
   }
 </style>

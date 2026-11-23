@@ -1,0 +1,18 @@
+/*
+ * Marqueur de relecture en ligne (« [À VALIDER : …] », « [À PRODUIRE] ») des pages « Pour qui » :
+ * petite étiquette en pointillés, insécable, après un texte (marge gauche 6 px).
+ * Classe globale unique, partagée par RichText (rendu Astro) et PublicFaq (HTML des réponses,
+ * passé au composant partagé Faq). Importé par ces deux composants.
+ */
+.m42-draft-marker {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border: 1px dashed var(--control-border);
+  color: var(--fg-3);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  vertical-align: 1px;
+}

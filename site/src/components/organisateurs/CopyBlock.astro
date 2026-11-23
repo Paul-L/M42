@@ -187,6 +187,7 @@ const targetId = `copie-${textKey}`;
    * - Échec : libellé « Sélectionnez le texte », annonce de repli ; le texte est sélectionné pour Ctrl+C / Cmd+C.
    * Retour à l'état initial après 2,5 s ; une seule copie active à la fois.
    */
+  import { frenchTypography } from '../../lib/typo';
 
   const DELAI = 2500;
   const MESSAGE_ECHEC =
@@ -226,7 +227,10 @@ const targetId = `copie-${textKey}`;
       label.textContent =
         etat === 'ok' ? 'Copié' : etat === 'ko' ? 'Sélectionnez le texte' : 'Copier';
     }
-    btn.setAttribute('aria-label', etat === 'ok' ? `Copié : ${nom}` : `Copier ${nom}`);
+    btn.setAttribute(
+      'aria-label',
+      frenchTypography(etat === 'ok' ? `Copié : ${nom}` : `Copier ${nom}`),
+    );
     if (etat) btn.dataset.copyState = etat;
     else delete btn.dataset.copyState;
   }
@@ -275,7 +279,11 @@ const targetId = `copie-${textKey}`;
     if (actif && actif !== btn) afficher(actif, null);
     actif = btn;
     afficher(btn, ok ? 'ok' : 'ko');
-    annoncer(ok ? `Copié dans le presse-papiers : ${btn.dataset.copyNom ?? ''}.` : MESSAGE_ECHEC);
+    annoncer(
+      frenchTypography(
+        ok ? `Copié dans le presse-papiers : ${btn.dataset.copyNom ?? ''}.` : MESSAGE_ECHEC,
+      ),
+    );
 
     window.clearTimeout(minuteur);
     minuteur = window.setTimeout(() => {

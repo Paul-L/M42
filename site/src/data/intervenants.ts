@@ -107,8 +107,8 @@ const liste: Intervenant[] = [
     },
     schema: {
       jobTitle: 'Conférencier, expert en intelligence artificielle et agents IA',
-      description:
-        "17 ans de développement logiciel. Conçoit et déploie des systèmes d'IA en entreprise.",
+      // [À VALIDER] dans la page : pas de description publiée en JSON-LD tant que ce n'est pas validé (DECISIONS.md point 19).
+      // description: "17 ans de développement logiciel. Conçoit et déploie des systèmes d'IA en entreprise.",
       image: `${SITE}/img/paul-loustaunau.jpg`,
       knowsAbout: [
         'intelligence artificielle',

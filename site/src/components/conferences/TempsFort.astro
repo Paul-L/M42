@@ -1,0 +1,92 @@
+---
+/**
+ * Section « Le temps fort » des pages conférences (fond papier clair, filets haut et bas) :
+ * à gauche le titre, le chapô et une note ; à droite le contenu propre à la page (slot) :
+ * jeu « Arnaque ou pas ? », jeu « Vrai ou IA ? », charte, étapes de « L'erreur sûre d'elle »…
+ * Le contenu du slot est un élément flex (ex. `flex: 999 1 520px; min-width: 0`).
+ *
+ * Props :
+ * - id : ancre de la section (« jeu », « temps-fort », « charte »…) ; le H2 reçoit `titre-<id>`.
+ * - surTitre : défaut « Le temps fort ».
+ * - titre, chapo : titre H2 et chapô.
+ * - note : petite note sous le chapô (facultative).
+ * - asideBasis : base flex de la colonne de gauche en px (320, 340 ou 360, selon la page).
+ */
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeading from './SectionHeading.astro';
+
+interface Props {
+  id: string;
+  surTitre?: string;
+  titre: string;
+  chapo: string;
+  note?: string | undefined;
+  asideBasis?: 320 | 340 | 360;
+}
+
+const { id, surTitre = 'Le temps fort', titre, chapo, note, asideBasis = 320 } = Astro.props;
+const headingId = `titre-${id}`;
+---
+
+<section id={id} aria-labelledby={headingId} class="tf">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <div class="row">
+      <div class:list={['aside', `aside--${asideBasis}`]}>
+        <SectionHeading id={headingId}>{titre}</SectionHeading>
+        <p class="lead m42-reveal">{chapo}</p>
+        {note && <p class="note">{note}</p>}
+      </div>
+      <slot />
+    </div>
+  </Container>
+</section>
+
+<style>
+  .tf {
+    padding: var(--section-y) 0;
+    background: var(--paper-raised);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 48px 64px;
+  }
+
+  .aside {
+    min-width: 0;
+  }
+
+  .aside--320 {
+    flex: 1 1 320px;
+  }
+
+  .aside--340 {
+    flex: 1 1 340px;
+  }
+
+  .aside--360 {
+    flex: 1 1 360px;
+  }
+
+  .lead {
+    margin: 20px 0 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .note {
+    margin: 16px 0 0;
+    max-width: 44ch;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+</style>

@@ -1,0 +1,192 @@
+---
+/**
+ * Visuel de l'animation « Anatomie d'un faux SMS » (conférence II), à placer dans le slot
+ * « visual » de ScrollStory. Aucun JavaScript : les surlignages suivent les attributs
+ * data-mode / data-step posés par ScrollStory sur la section.
+ *
+ * Correspondance avec renderVals() de la maquette (6 étapes, 0 à 5) :
+ * - indices 1 à 4 (numéro, urgence, montant, lien) : surlignage or 45 % + anneau or à l'étape k,
+ *   14 % une fois l'étape passée (jusqu'à l'étape 4), 35 % sans anneau en mode à plat ;
+ * - étape 5 (« Le bon réflexe ») : téléphone à 35 % d'opacité, tampon « Arnaque » qui apparaît
+ *   (échelle 1,4 → 1).
+ * Exemple reconstitué : numéro et adresse fictifs.
+ */
+---
+
+<div class="phone fade">
+  <div class="screen">
+    <div class="head">
+      <div class="avatar"></div>
+      <div class="number hl hl-1 fade">+33 7 56 •• •• 12</div>
+      <div class="meta">SMS · aujourd'hui 18:42</div>
+    </div>
+    <div class="body">
+      <div class="bubble">
+        <span class="hl hl-2 fade">Dernier avis : votre colis est bloqué.</span> Réglez{' '}
+        <span class="hl hl-3 fade">1,99 € de frais</span>{' '}
+        <span class="hl hl-2 fade">avant ce soir</span> pour éviter son retour :{' '}
+        <span class="hl hl-4 link fade">colis-suivi.exemple-frais.com/fr</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="stamp fade" aria-hidden="true">
+  <div class="stamp-box">Arnaque</div>
+</div>
+<p class="caption">Exemple reconstitué : numéro et adresse fictifs.</p>
+
+<style>
+  .fade {
+    transition:
+      opacity var(--dur-3) var(--ease-out),
+      transform var(--dur-3) var(--ease-out),
+      background-color var(--dur-3) var(--ease-out),
+      box-shadow var(--dur-3) var(--ease-out);
+  }
+
+  .phone {
+    width: 100%;
+    aspect-ratio: 9 / 17;
+    box-sizing: border-box;
+    border: 1px solid var(--night-line);
+    border-radius: 40px;
+    padding: 12px;
+    background: var(--night-raised);
+    opacity: 1;
+  }
+
+  .screen {
+    height: 100%;
+    border-radius: 28px;
+    background: var(--paper);
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .head {
+    padding: 18px 16px 12px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background: var(--line);
+  }
+
+  .number {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+
+  .meta {
+    font-size: 11px;
+    color: var(--ink-3);
+  }
+
+  .body {
+    padding: 18px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .bubble {
+    align-self: flex-start;
+    max-width: 92%;
+    background: var(--paper-sunk);
+    border-radius: 18px 18px 18px 6px;
+    padding: 12px 14px;
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+
+  .bubble .hl {
+    border-radius: 4px;
+  }
+
+  .link {
+    color: #2f4a7a;
+    text-decoration: underline;
+    word-break: break-all;
+  }
+
+  /* Surlignages : transparents par défaut */
+  .hl {
+    background-color: color-mix(in srgb, var(--gold) 0%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--gold) 0%, transparent);
+  }
+
+  /* À plat : tous les indices surlignés, sans anneau */
+  :global([data-story][data-mode='flat']) .hl {
+    background-color: color-mix(in srgb, var(--gold) 35%, transparent);
+  }
+
+  /* Indice passé (étapes 2 à 4) */
+  :global([data-story][data-mode='anim'][data-step='2']) .hl-1,
+  :global([data-story][data-mode='anim'][data-step='3']) .hl-1,
+  :global([data-story][data-mode='anim'][data-step='3']) .hl-2,
+  :global([data-story][data-mode='anim'][data-step='4']) .hl-1,
+  :global([data-story][data-mode='anim'][data-step='4']) .hl-2,
+  :global([data-story][data-mode='anim'][data-step='4']) .hl-3 {
+    background-color: color-mix(in srgb, var(--gold) 14%, transparent);
+  }
+
+  /* Indice courant */
+  :global([data-story][data-mode='anim'][data-step='1']) .hl-1,
+  :global([data-story][data-mode='anim'][data-step='2']) .hl-2,
+  :global([data-story][data-mode='anim'][data-step='3']) .hl-3,
+  :global([data-story][data-mode='anim'][data-step='4']) .hl-4 {
+    background-color: color-mix(in srgb, var(--gold) 45%, transparent);
+    box-shadow: 0 0 0 2px var(--gold);
+  }
+
+  /* Le bon réflexe : téléphone estompé, tampon « Arnaque » */
+  :global([data-story][data-mode='anim'][data-step='5']) .phone {
+    opacity: 0.35;
+  }
+
+  .stamp {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: rotate(-8deg) scale(1.4);
+    pointer-events: none;
+  }
+
+  :global([data-story][data-mode='anim'][data-step='5']) .stamp {
+    opacity: 1;
+    transform: rotate(-8deg) scale(1);
+  }
+
+  .stamp-box {
+    border: 3px solid var(--gold);
+    color: var(--gold);
+    padding: 10px 18px;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: rgb(14 15 18 / 0.88);
+  }
+
+  .caption {
+    margin: 12px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--on-night-3);
+    text-align: center;
+  }
+</style>

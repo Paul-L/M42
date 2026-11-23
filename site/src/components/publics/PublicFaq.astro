@@ -1,0 +1,36 @@
+---
+/**
+ * FAQ des pages « Pour qui » : enveloppe le composant partagé Faq (<details>, H3) et accepte
+ * des réponses avec marqueurs de relecture en ligne (PublicRichText), rendus en étiquette par la
+ * classe globale m42-draft-marker (draft-marker.css, la même que RichText).
+ * Bloc à 48 px sous le titre de section, apparition au défilement.
+ * Le balisage FAQPage est produit à part (json-ld.ts), sans les réponses à marqueur.
+ *
+ * Props :
+ * - `items` : { question, answer } (PublicFaqItem).
+ */
+import './draft-marker.css';
+import Faq, { type FaqItem } from '../Faq.astro';
+import { richTextToHtml } from './rich-text';
+import type { PublicFaqItem } from '../../data/publics/types';
+
+export interface Props {
+  items: PublicFaqItem[];
+}
+
+const { items } = Astro.props;
+const faqItems: FaqItem[] = items.map((i) => ({
+  question: i.question,
+  answer: richTextToHtml(i.answer),
+}));
+---
+
+<div class="faq-wrap m42-reveal">
+  <Faq items={faqItems} />
+</div>
+
+<style>
+  .faq-wrap {
+    margin-top: var(--s-7);
+  }
+</style>

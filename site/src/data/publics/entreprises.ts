@@ -3,24 +3,20 @@
 
 import { routes } from '../routes';
 import type {
+  PublicColorRuleCard,
+  PublicCta,
   PublicFaqItem,
   PublicFormat,
+  PublicHeroData,
   PublicLink,
-  PublicOtherSubject,
   PublicRecommendedConference,
   PublicRichText,
   PublicStake,
   PublicStep,
   PublicTakeawayGroup,
+  PublicTeamNote,
+  PublicTopic,
 } from './types';
-
-export interface ColorRuleCard {
-  level: 'vert' | 'orange' | 'rouge';
-  label: string;
-  title: string;
-  items: string[];
-  motto: string;
-}
 
 export const entreprises = {
   slug: 'entreprises',
@@ -39,11 +35,11 @@ export const entreprises = {
       "Une conférence ou un atelier de sensibilisation leur donne des règles claires : ce qu'on confie à l'IA, ce qu'on vérifie, ce qui ne sort jamais de l'entreprise.",
       "Et les réflexes pour repérer les nouvelles fraudes, voix clonées et faux fournisseurs, avant qu'elles ne coûtent cher.",
     ],
-    primary: { label: 'Demander une proposition', href: routes['Contact.dc.html'] } as PublicLink,
-    secondary: { label: 'Voir les conférences pour vos équipes', href: '#sujets' } as PublicLink,
+    primary: { label: 'Demander une proposition', href: routes['Contact.dc.html'] },
+    secondary: { label: 'Voir les conférences pour vos équipes', href: '#sujets' },
     photo:
       "[Photo : une équipe en séminaire d'entreprise face à une démonstration à l'écran, intervenants en amorce, 4:5, à produire]",
-  },
+  } satisfies PublicHeroData,
 
   stakes: {
     eyebrow: 'Vos enjeux',
@@ -109,7 +105,7 @@ export const entreprises = {
         ],
         motto: '« Je ne donne pas les clés. »',
       },
-    ] satisfies ColorRuleCard[],
+    ] satisfies PublicColorRuleCard[],
     note: [
       "Exemple indicatif, à adapter à votre entreprise. La trame de charte d'usage de l'IA remise après l'intervention ",
       { marker: '[À PRODUIRE]' },
@@ -134,8 +130,10 @@ export const entreprises = {
       },
       {
         title: 'Session de comité de direction',
-        note: "Décider d'une feuille de route IA sans emballement.",
-        marker: '[À VALIDER : nouveau format]',
+        note: [
+          "Décider d'une feuille de route IA sans emballement. ",
+          { marker: '[À VALIDER : nouveau format]' },
+        ],
         duration: '2 h',
         participants: 'Votre comité de direction',
       },
@@ -147,8 +145,10 @@ export const entreprises = {
       },
       {
         title: 'Journée de sensibilisation des équipes',
-        note: 'Exercices sur vos situations réelles.',
-        marker: '[À VALIDER : nouveau format]',
+        note: [
+          'Exercices sur vos situations réelles. ',
+          { marker: '[À VALIDER : nouveau format]' },
+        ],
         duration: '1 jour ou 2 demi-journées',
         participants: 'Petit groupe [À VALIDER : effectif]',
       },
@@ -163,7 +163,7 @@ export const entreprises = {
       label:
         'Vous organisez un congrès, un salon ou une convention ? Les formats pour les événements',
       href: routes['Evenements.dc.html'],
-    } as PublicLink,
+    } satisfies PublicLink,
   },
 
   conferences: {
@@ -226,13 +226,13 @@ export const entreprises = {
         detail: 'Pour les managers et les ressources humaines.',
         tag: 'Sur demande',
       },
-    ] satisfies PublicOtherSubject[],
+    ] satisfies PublicTopic[],
     othersNote:
       'Les sujets « Sur demande » sont des conférences construites, proposées sur demande : programme envoyé par e-mail.',
     link: {
       label: 'Voir toutes les conférences et leurs formats',
       href: routes['Conferences.dc.html'],
-    } as PublicLink,
+    } satisfies PublicLink,
   },
 
   takeaways: {
@@ -242,30 +242,30 @@ export const entreprises = {
       {
         title: 'Pour chaque participant',
         items: [
-          {
-            text: "Une fiche-réflexe d'une page : bons usages, règles non négociables, signaux d'alerte",
-            marker: '[À PRODUIRE]',
-          },
+          [
+            "Une fiche-réflexe d'une page : bons usages, règles non négociables, signaux d'alerte",
+            { marker: '[À PRODUIRE]' },
+          ],
         ],
       },
       {
         title: "Pour l'entreprise",
         items: [
-          {
-            text: "Une trame de charte d'usage de l'IA, à adapter à votre entreprise",
-            marker: '[À PRODUIRE]',
-          },
-          {
-            text: 'Une procédure anti-fraude simple : vérifier une demande urgente de paiement ou de changement de coordonnées bancaires',
-            marker: '[À PRODUIRE]',
-          },
+          [
+            "Une trame de charte d'usage de l'IA, à adapter à votre entreprise",
+            { marker: '[À PRODUIRE]' },
+          ],
+          [
+            'Une procédure anti-fraude simple : vérifier une demande urgente de paiement ou de changement de coordonnées bancaires',
+            { marker: '[À PRODUIRE]' },
+          ],
         ],
       },
       {
         title: 'Pour les journées de sensibilisation',
         items: [
-          { text: 'Des exercices sur vos situations réelles' },
-          { text: 'Une attestation de présence', marker: '[À PRODUIRE]' },
+          'Des exercices sur vos situations réelles',
+          ['Une attestation de présence', { marker: '[À PRODUIRE]' }],
         ],
       },
     ] satisfies PublicTakeawayGroup[],
@@ -290,8 +290,8 @@ export const entreprises = {
     ] satisfies PublicStep[],
     team: {
       text: "Qui intervient : Clara Peron et Paul Loustaunau, ensemble. Clara porte la pédagogie et le passage à l'action, Paul les démonstrations et les méthodes des équipes professionnelles.",
-      link: { label: 'Parcours et démarche', href: routes['A-propos.dc.html'] } as PublicLink,
-    },
+      link: { label: 'Parcours et démarche', href: routes['A-propos.dc.html'] },
+    } satisfies PublicTeamNote,
   },
 
   faq: {
@@ -330,5 +330,5 @@ export const entreprises = {
     lead: 'Décrivez-nous votre besoin en quelques lignes. Réponse et proposition sous 48 h.',
     ctaLabel: 'Demander une proposition',
     ctaHref: routes['Contact.dc.html'],
-  },
+  } satisfies PublicCta,
 };

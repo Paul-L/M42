@@ -1,0 +1,82 @@
+---
+/**
+ * Bande nuit de chiffres sourcés (« Les arnaques en chiffres »…).
+ *
+ * Props :
+ * - label : nom accessible de la section (aria-label).
+ * - items : { valeur, texte, source, accent? }[] (accent : valeur en or).
+ */
+import type { Chiffre } from '../../data/conferences/types';
+
+interface Props {
+  label: string;
+  items: Chiffre[];
+}
+
+const { label, items } = Astro.props;
+---
+
+<section class="figures m42-night" aria-label={label}>
+  <div class="grid">
+    {items.map((c) => (
+      <div class="item m42-reveal">
+        <p class:list={['value', { 'value--accent': c.accent }]}>{c.valeur}</p>
+        <p class="text">{c.texte}</p>
+        <p class="source">{c.source}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .figures {
+    background: var(--night);
+    color: var(--on-night);
+  }
+
+  .grid {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 64px var(--gutter-x);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 40px 64px;
+    align-items: start;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .value {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-figure);
+    line-height: var(--lh-figure);
+    letter-spacing: -0.01em;
+    font-variant-numeric: lining-nums tabular-nums;
+    white-space: nowrap;
+  }
+
+  .value--accent {
+    color: var(--gold-night);
+  }
+
+  .text {
+    margin: 0;
+    max-width: 32ch;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--on-night-2);
+  }
+
+  .source {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--on-night-3);
+  }
+</style>

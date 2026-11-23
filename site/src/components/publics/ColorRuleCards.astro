@@ -6,12 +6,12 @@
  *
  * Props :
  * - `cards` : { level: 'vert' | 'orange' | 'rouge', label, title, items, motto }
- *   (ColorRuleCard, src/data/publics/entreprises.ts).
+ *   (PublicColorRuleCard, src/data/publics/types.ts).
  */
-import type { ColorRuleCard } from '../../data/publics/entreprises';
+import type { PublicColorRuleCard } from '../../data/publics/types';
 
 export interface Props {
-  cards: ColorRuleCard[];
+  cards: PublicColorRuleCard[];
 }
 
 const { cards } = Astro.props;

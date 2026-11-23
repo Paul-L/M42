@@ -43,7 +43,7 @@ function args() {
 const CSS_STABLE = `
 *,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important;scroll-behavior:auto!important}
 .m42-reveal{opacity:1!important;transform:none!important}
-.m42-hdr{position:relative!important}
+.m42-hdr,header.hdr{position:relative!important}
 `;
 
 async function capturer(page, url, largeur, menu, fichier, masquer) {

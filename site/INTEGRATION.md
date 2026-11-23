@@ -20,6 +20,7 @@ Conventions communes à toutes les pages (phase 2). À lire avant d'intégrer un
 
 - `title` et `description` : ceux du commentaire SEO (pas la balise `<title>` de la maquette).
 - `current` : uniquement si la maquette met `aria-current="page"` sur un lien d'en-tête (voir `DECISIONS.md`, point 3).
+- `section` : rubrique parente marquée `aria-current="true"` (les 4 conférences → `conferences`, Événements → `entreprises`, Associations → `collectivites`).
 - `footerCurrent` : si la maquette met `aria-current="page"` sur le lien de la page dans le pied de page (À propos, Organisateurs, Contact, pages légales).
 - `jsonLd` : celui du commentaire SEO ou de `kit/docs/11_architecture_seo.md`. Jamais de nom d'employeur ni de structure de facturation.
 

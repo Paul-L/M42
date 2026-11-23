@@ -1,0 +1,80 @@
+---
+/**
+ * Section « Les autres conférences » (fond sable) : les cartes du catalogue sauf la conférence
+ * courante, puis le lien vers /conferences/.
+ *
+ * Props :
+ * - current : slug de la conférence affichée (exclue de la liste).
+ * - surTitre : défaut « Catalogue ».
+ * - titre : défaut « Les autres conférences ».
+ */
+import ArrowLink from '../ArrowLink.astro';
+import ConferenceCard from '../ConferenceCard.astro';
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeading from './SectionHeading.astro';
+import SignatureConferenceCard from './SignatureConferenceCard.astro';
+import { catalogue } from '../../data/conferences/catalogue';
+import { routes } from '../../data/routes';
+
+interface Props {
+  current: string;
+  surTitre?: string;
+  titre?: string;
+}
+
+const { current, surTitre = 'Catalogue', titre = 'Les autres conférences' } = Astro.props;
+const autres = catalogue.filter((c) => c.slug !== current);
+---
+
+<section aria-labelledby="titre-autres" class="others">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <SectionHeading id="titre-autres">{titre}</SectionHeading>
+    <div class="grid">
+      {autres.map((c) =>
+        c.signature ? (
+          <SignatureConferenceCard
+            numeral={c.numero}
+            title={c.titre}
+            href={c.href}
+            summary={c.resume}
+            publics={c.publics}
+            formats={c.formats}
+          />
+        ) : (
+          <ConferenceCard
+            numeral={c.numero}
+            title={c.titre}
+            href={c.href}
+            summary={c.resume}
+            publics={c.publics}
+            formats={c.formats}
+            cta="Voir la conférence"
+          />
+        ),
+      )}
+    </div>
+    <ArrowLink href={routes['Conferences.dc.html']} class="all">
+      Toutes les conférences, les formats et le sur-mesure
+    </ArrowLink>
+  </Container>
+</section>
+
+<style>
+  .others {
+    padding: var(--section-y) 0;
+    background: var(--paper-sunk);
+  }
+
+  .grid {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: 24px;
+  }
+
+  .others :global(.all) {
+    margin-top: 32px;
+  }
+</style>

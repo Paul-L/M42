@@ -1,0 +1,429 @@
+---
+/**
+ * Visuel de l'animation « Une journée d'ado » (conférence IV), à placer dans le slot « visual »
+ * de ScrollStory (visualSize="phone-narrow" : 260 px, 240 px sous 640 px). Aucun JavaScript :
+ * l'écran affiché suit l'attribut data-step posé par ScrollStory sur la section.
+ *
+ * Six écrans superposés (sc0 à sc5 de la maquette), un seul visible à la fois, fondu de 320 ms :
+ * 7 h 10 écran verrouillé · 8 h 05 groupe de classe · 17 h 30 devoirs · 19 h 45 mode repas ·
+ * 22 h 40 un inconnu insiste · la charte. En mode à plat (sans JavaScript, mouvement réduit,
+ * « Afficher toutes les étapes »), l'étape est la dernière : la charte est affichée.
+ * Les écrans masqués passent aussi en visibility: hidden (non lus par les lecteurs d'écran).
+ * Journée reconstituée ; prénoms fictifs.
+ */
+---
+
+<div class="phone">
+  <div class="screen">
+    <!-- 7 h 10 : écran verrouillé -->
+    <div class="scr scr-0 lock">
+      <p class="clock">7:10</p>
+      <p class="day">Mardi</p>
+      <div class="notif">
+        <strong>Groupe « 4e B »</strong>
+        <br />
+        23 nouveaux messages
+      </div>
+      <div class="notif">
+        <strong>Vidéos</strong>
+        <br />
+        12 nouvelles vidéos pour vous
+      </div>
+      <div class="notif">
+        <strong>Jeu</strong>
+        <br />
+        Votre série vous attend
+      </div>
+    </div>
+
+    <!-- 8 h 05 : le groupe de classe -->
+    <div class="scr scr-1 app">
+      <div class="app-head">Groupe « 4e B » · 28 membres</div>
+      <div class="chat">
+        <div class="bubble bubble--wide">
+          <span class="who">Léo</span>
+          <span class="photo">[Photo truquée d'un camarade]</span>
+        </div>
+        <div class="bubble">
+          <span class="who">Inès</span> trop drôle
+        </div>
+        <div class="bubble">
+          <span class="who">Tom</span> envoie-la aux 4e A
+        </div>
+        <div class="bubble bubble--me">…</div>
+      </div>
+    </div>
+
+    <!-- 17 h 30 : les devoirs -->
+    <div class="scr scr-2 app">
+      <div class="app-head">Assistant IA</div>
+      <div class="homework">
+        <div class="hw-row">
+          <svg
+            class="icon icon--no"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M6 6l12 12"></path>
+            <path d="M18 6L6 18"></path>
+          </svg>
+          <span class="prompt prompt--no">« Écris ma rédaction sur la Révolution française. »</span>
+        </div>
+        <div class="hw-row">
+          <svg
+            class="icon icon--yes"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M5 12l5 5L19 7"></path>
+          </svg>
+          <span class="prompt prompt--yes">
+            « Pose-moi trois questions pour m'aider à construire mon plan. »
+          </span>
+        </div>
+        <p class="hw-note">La même IA, deux usages opposés.</p>
+      </div>
+    </div>
+
+    <!-- 19 h 45 : le dîner -->
+    <div class="scr scr-3 meal">
+      <svg
+        width="40"
+        height="40"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path>
+      </svg>
+      <p class="meal-title">Mode repas</p>
+      <p class="meal-text">
+        Notifications en pause jusqu'à 20 h 30, sur les téléphones de toute la famille.
+      </p>
+    </div>
+
+    <!-- 22 h 40 : un inconnu insiste -->
+    <div class="scr scr-4 app">
+      <div class="app-head">nouveau_compte_2026</div>
+      <div class="chat">
+        <div class="bubble bubble--wide">Tu es trop sympa, on a plein de points communs.</div>
+        <div class="bubble bubble--wide">Tu m'envoies une photo de toi ? Juste pour moi.</div>
+      </div>
+      <div class="actions">
+        <span class="action action--block">Bloquer</span>
+        <span class="action action--report">Signaler</span>
+      </div>
+    </div>
+
+    <!-- la charte -->
+    <div class="scr scr-5 charter">
+      <p class="charter-title">Notre charte</p>
+      <ul class="charter-list">
+        <li>Le téléphone dort hors de la chambre.</li>
+        <li>On ne transfère pas une image blessante.</li>
+        <li>Je réfléchis d'abord, l'IA ensuite.</li>
+        <li>Pas d'écran à table, pour personne.</li>
+        <li>On peut tout dire, sans être puni.</li>
+      </ul>
+      <p class="charter-sign">Signée par toute la famille</p>
+    </div>
+  </div>
+</div>
+<p class="caption">
+  Journée reconstituée ; prénoms fictifs. Les règles sont des exemples à adapter.
+</p>
+
+<style>
+  .phone {
+    width: 100%;
+    aspect-ratio: 9 / 17;
+    box-sizing: border-box;
+    border: 1px solid var(--night-line);
+    border-radius: 38px;
+    padding: 11px;
+    background: var(--night-raised);
+  }
+
+  .screen {
+    position: relative;
+    height: 100%;
+    border-radius: 27px;
+    background: var(--paper);
+    color: var(--ink);
+    overflow: hidden;
+  }
+
+  /* Écrans superposés : un seul visible (étape courante) */
+  .scr {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity var(--dur-3) var(--ease-out),
+      visibility var(--dur-3) var(--ease-out);
+  }
+
+  :global([data-story][data-step='0']) .scr-0,
+  :global([data-story][data-step='1']) .scr-1,
+  :global([data-story][data-step='2']) .scr-2,
+  :global([data-story][data-step='3']) .scr-3,
+  :global([data-story][data-step='4']) .scr-4,
+  :global([data-story][data-step='5']) .scr-5 {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  /* 7 h 10 : écran verrouillé */
+  .lock {
+    padding: 26px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .clock {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 1;
+    font-variant-numeric: lining-nums;
+  }
+
+  .day {
+    margin: 0 0 8px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+
+  .notif {
+    background: var(--paper-sunk);
+    padding: 8px 10px;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  /* Écrans d'application (groupe, assistant, inconnu) */
+  .app {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .app-head {
+    padding: 16px 14px 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .chat {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+
+  .bubble {
+    align-self: flex-start;
+    background: var(--paper-sunk);
+    padding: 8px 10px;
+  }
+
+  .bubble--wide {
+    max-width: 88%;
+  }
+
+  .bubble--me {
+    align-self: flex-end;
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .who {
+    font-weight: 600;
+  }
+
+  .photo {
+    display: block;
+    margin-top: 6px;
+    padding: 18px 8px;
+    text-align: center;
+    background: var(--line);
+    border: 1px dashed var(--line-strong);
+    color: var(--ink-2);
+    font-size: 11px;
+  }
+
+  /* 17 h 30 : les devoirs */
+  .homework {
+    padding: 14px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+
+  .hw-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .icon {
+    flex: none;
+  }
+
+  .icon--no {
+    color: var(--error);
+  }
+
+  .icon--yes {
+    color: var(--success);
+  }
+
+  .prompt {
+    padding: 8px 10px;
+  }
+
+  .prompt--no {
+    background: var(--paper-sunk);
+    text-decoration: line-through;
+    color: var(--ink-3);
+  }
+
+  .prompt--yes {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .hw-note {
+    margin: 4px 0 0;
+    font-size: 11.5px;
+    color: var(--ink-3);
+  }
+
+  /* 19 h 45 : le dîner */
+  .meal {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    text-align: center;
+    color: var(--ink);
+  }
+
+  .meal-title {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .meal-text {
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--ink-2);
+  }
+
+  /* 22 h 40 : un inconnu insiste */
+  .actions {
+    margin-top: auto;
+    padding: 12px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .action {
+    flex: 1;
+    padding: 8px 0;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .action--block {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .action--report {
+    border: 1px solid var(--ink);
+  }
+
+  /* La charte */
+  .charter {
+    padding: 22px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .charter-title {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.05;
+  }
+
+  .charter-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-size: 12.5px;
+    line-height: 1.4;
+  }
+
+  .charter-list li {
+    padding: 7px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .charter-list li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .charter-sign {
+    font-size: 11px;
+    color: var(--ink-3);
+  }
+
+  .caption {
+    margin: 12px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--on-night-3);
+    text-align: center;
+  }
+</style>

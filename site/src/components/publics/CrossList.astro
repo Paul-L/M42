@@ -1,0 +1,76 @@
+---
+/**
+ * Liste à puces en croix (+) des pages « Pour qui » : une ligne par élément, filets fins entre
+ * les lignes, texte 16 px encre 2, marqueurs de relecture en ligne possibles (RichText).
+ * Utilisée par TakeawayColumns (« Ce que … emporte ») et le kit organisateur (Événements).
+ *
+ * Props :
+ * - `items` : PublicRichText[].
+ * - `rule` : filet au-dessus de la liste, « hairline » (filet fin, défaut) ou « strong »
+ *   (filet encre, comme une ouverture de section).
+ */
+import RichText from './RichText.astro';
+import type { PublicRichText } from '../../data/publics/types';
+
+export interface Props {
+  items: PublicRichText[];
+  rule?: 'hairline' | 'strong';
+}
+
+const { items, rule = 'hairline' } = Astro.props;
+---
+
+<ul class:list={['list', { 'list--strong': rule === 'strong' }]}>
+  {items.map((item) => (
+    <li class="item">
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        aria-hidden="true"
+        focusable="false"
+        class="icon"
+      >
+        <path d="M12 3v18" />
+        <path d="M3 12h18" />
+      </svg>
+      <span>
+        <RichText value={item} />
+      </span>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--hairline);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--fg-2);
+  }
+
+  .list--strong {
+    border-top-color: var(--rule);
+  }
+
+  .item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-3);
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .icon {
+    flex: none;
+    margin-top: 6px;
+    color: var(--fg);
+  }
+</style>

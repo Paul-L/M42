@@ -1,24 +1,32 @@
 ---
 /**
- * Liste des formats des pages « Pour qui », avec précision facultative sous le titre
- * (« Mises en situation sur vos cas réels. »), suivie ou non d'un marqueur de relecture.
- * Même rendu que PublicFormats / FormatList, qui ne prévoient que le marqueur seul.
- * La liste entière apparaît au défilement.
+ * Liste des formats des pages « Pour qui » : une ligne par format (H3, précision facultative
+ * dessous avec marqueurs en ligne possibles, colonnes « Durée » et « Participants »), puis une
+ * note facultative sous la liste (« Sur site, chez vous… »). Liste et note apparaissent au
+ * défilement.
  *
  * Props :
- * - `items` : { title, note?, marker?, duration, participants } (PublicFormat, src/data/publics/types.ts).
+ * - `items` : { title, note?, duration, participants } (PublicFormat, src/data/publics/types.ts) ;
+ *   `note` est un PublicRichText (« Mises en situation… », `[{ marker: '[À VALIDER : …]' }]`).
+ * - `footnote` : paragraphe sous la liste (16 px, encre 2, 68ch).
  * - `durationLabel` (« Durée ») / `participantsLabel` (« Participants ») : intitulés des colonnes.
  */
-import DraftMarker from './DraftMarker.astro';
+import RichText from './RichText.astro';
 import type { PublicFormat } from '../../data/publics/types';
 
 export interface Props {
   items: PublicFormat[];
+  footnote?: string;
   durationLabel?: string;
   participantsLabel?: string;
 }
 
-const { items, durationLabel = 'Durée', participantsLabel = 'Participants' } = Astro.props;
+const {
+  items,
+  footnote,
+  durationLabel = 'Durée',
+  participantsLabel = 'Participants',
+} = Astro.props;
 ---
 
 <ul class="list m42-reveal">
@@ -26,11 +34,9 @@ const { items, durationLabel = 'Durée', participantsLabel = 'Participants' } = 
     <li class="row">
       <div class="name">
         <h3 class="h3">{item.title}</h3>
-        {(item.note || item.marker) && (
+        {item.note && (
           <p class="note">
-            {item.note}
-            {item.note && item.marker && ' '}
-            {item.marker && <DraftMarker>{item.marker}</DraftMarker>}
+            <RichText value={item.note} />
           </p>
         )}
       </div>
@@ -45,6 +51,7 @@ const { items, durationLabel = 'Durée', participantsLabel = 'Participants' } = 
     </li>
   ))}
 </ul>
+{footnote && <p class="footnote m42-reveal">{footnote}</p>}
 
 <style>
   .list {
@@ -111,5 +118,13 @@ const { items, durationLabel = 'Durée', participantsLabel = 'Participants' } = 
     font-weight: 500;
     line-height: 1.4;
     color: var(--fg);
+  }
+
+  .footnote {
+    margin: var(--s-5) 0 0;
+    max-width: var(--measure-text);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--fg-2);
   }
 </style>

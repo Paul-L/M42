@@ -1,0 +1,147 @@
+---
+/**
+ * Section « Programme » des pages conférences : titre et chapô à gauche, blocs numérotés
+ * (titre H3, durée, texte) à droite. Le premier bloc a un filet encre, les suivants un filet clair.
+ *
+ * Props :
+ * - surTitre : « Programme · conférence de 1 h 30 ».
+ * - titre, chapo : H2 et chapô.
+ * - blocs : { titre, duree, texte }[].
+ */
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeading from './SectionHeading.astro';
+import type { BlocProgramme } from '../../data/conferences/types';
+
+interface Props {
+  surTitre: string;
+  titre: string;
+  chapo: string;
+  blocs: BlocProgramme[];
+}
+
+const { surTitre, titre, chapo, blocs } = Astro.props;
+---
+
+<section id="programme" aria-labelledby="titre-programme" class="prog">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <div class="row">
+      <div class="aside">
+        <SectionHeading id="titre-programme">{titre}</SectionHeading>
+        <p class="lead m42-reveal">{chapo}</p>
+      </div>
+      <ol class="list">
+        {blocs.map((b, i) => (
+          <li class="item m42-reveal">
+            <span aria-hidden="true" class="num">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <div class="body">
+              <div class="head">
+                <h3 class="title">{b.titre}</h3>
+                <span class="duration">{b.duree}</span>
+              </div>
+              <p class="text">{b.texte}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .prog {
+    padding: var(--section-y) 0;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px 64px;
+  }
+
+  .aside {
+    flex: 1 1 320px;
+    min-width: 0;
+  }
+
+  .lead {
+    margin: 20px 0 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .list {
+    flex: 999 1 560px;
+    min-width: 0;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .item {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 8px 20px;
+    padding: 24px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .item:first-child {
+    border-top-color: var(--ink);
+  }
+
+  .num {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--gold-deep);
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 16px;
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .duration {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .text {
+    margin: 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--ink-2);
+    hyphens: auto;
+  }
+</style>

@@ -1,0 +1,249 @@
+---
+/**
+ * Section « Pour qui » des pages conférences (fond sable) : titre + chapô en rangée,
+ * cartes cliquables vers les pages publics (lien du titre étendu à la carte),
+ * puis l'encadré « Déclinaison entreprise ».
+ *
+ * Props :
+ * - surTitre : défaut « Pour qui ».
+ * - titre, chapo : H2 et chapô.
+ * - items : { titre, href, texte, declinaison? }[].
+ * - declinaison : { titre, texte, lien } (encadré « Déclinaison entreprise », facultatif).
+ * - declinaisonLabel : sur-titre de l'encadré (défaut « Déclinaison entreprise »).
+ */
+import ArrowLink from '../ArrowLink.astro';
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import SectionHeading from './SectionHeading.astro';
+import type { DeclinaisonEntreprise, Public } from '../../data/conferences/types';
+
+interface Props {
+  surTitre?: string;
+  titre: string;
+  chapo: string;
+  items: Public[];
+  declinaison?: DeclinaisonEntreprise | undefined;
+  declinaisonLabel?: string;
+}
+
+const {
+  surTitre = 'Pour qui',
+  titre,
+  chapo,
+  items,
+  declinaison,
+  declinaisonLabel = 'Déclinaison entreprise',
+} = Astro.props;
+---
+
+<section id="pour-qui" aria-labelledby="titre-pour-qui" class="aud">
+  <Container>
+    <Eyebrow class="m42-reveal">{surTitre}</Eyebrow>
+    <div class="head m42-reveal">
+      <SectionHeading id="titre-pour-qui" reveal={false} flush>
+        {titre}
+      </SectionHeading>
+      <p class="lead">{chapo}</p>
+    </div>
+    <div class="grid">
+      {items.map((p) => (
+        <div class="card m42-reveal">
+          <h3 class="card-title">
+            <a href={p.href} class="stretch">
+              {p.titre}
+            </a>
+            <span class="arrow-i" aria-hidden="true">
+              →
+            </span>
+          </h3>
+          <p class="card-text">{p.texte}</p>
+          {p.declinaison && <p class="card-note">{p.declinaison}</p>}
+        </div>
+      ))}
+    </div>
+    {declinaison && (
+      <div class="decl m42-reveal">
+        <div class="decl-head">
+          <p class="decl-label">{declinaisonLabel}</p>
+          <h3 class="decl-title">{declinaison.titre}</h3>
+        </div>
+        <div class="decl-body">
+          <p class="decl-text">{declinaison.texte}</p>
+          <ArrowLink href={declinaison.lien.href} class="decl-link">
+            {declinaison.lien.label}
+          </ArrowLink>
+        </div>
+      </div>
+    )}
+  </Container>
+</section>
+
+<style>
+  .aud {
+    padding: var(--section-y) 0;
+    background: var(--paper-sunk);
+  }
+
+  .head {
+    margin-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px 64px;
+  }
+
+  .lead {
+    flex: 0 1 52ch;
+    margin: 0;
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .grid {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 0 32px;
+    border-top: 1px solid var(--ink);
+  }
+
+  /* Carte cliquable : bordure basse encre au survol */
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px 0 32px;
+    border-bottom: 1px solid var(--line);
+    transition: border-color var(--dur-2) var(--ease-out);
+  }
+
+  .card:hover {
+    border-color: var(--ink);
+  }
+
+  .card-title {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-card);
+    line-height: var(--lh-card);
+  }
+
+  .stretch {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .stretch::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .stretch:focus-visible {
+    outline: none;
+  }
+
+  .stretch:focus-visible::after {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  .arrow-i {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 400;
+    transition: transform var(--dur-1) var(--ease-out);
+  }
+
+  .card:hover .arrow-i {
+    transform: translateX(3px);
+  }
+
+  .card-text {
+    margin: 0;
+    max-width: 46ch;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  .card-note {
+    margin: 4px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  /* Déclinaison entreprise */
+  .decl {
+    margin-top: 48px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    padding: 32px 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 48px;
+  }
+
+  .decl-head {
+    flex: 1 1 320px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .decl-label {
+    margin: 0;
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .decl-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-card);
+    line-height: var(--lh-card);
+  }
+
+  .decl-body {
+    flex: 2 1 420px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .decl-text {
+    margin: 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--ink-2);
+  }
+
+  .decl-body :global(.decl-link) {
+    align-self: flex-start;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover .arrow-i {
+      transform: none;
+    }
+  }
+</style>
