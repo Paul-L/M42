@@ -1,0 +1,72 @@
+---
+/**
+ * Page introuvable (hors maquette, non indexée) : servie par Caddy pour toute adresse inconnue.
+ * Textes à relire par Clara et Paul (DECISIONS.md, point 48).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Container from '../components/Container.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import ArrowLink from '../components/ArrowLink.astro';
+import { routes } from '../data/routes';
+---
+
+<BaseLayout title="Page introuvable | M42" noindex>
+  <Section labelledby="titre-404">
+    <Container>
+      <div class="box">
+        <Eyebrow>Erreur 404</Eyebrow>
+        <h1 id="titre-404">Cette page n'existe pas, ou plus.</h1>
+        <p class="lead">L'adresse a peut-être changé. Voici par où reprendre.</p>
+        <ul class="liens">
+          <li>
+            <ArrowLink href={routes['Main.dc.html']}>Accueil</ArrowLink>
+          </li>
+          <li>
+            <ArrowLink href={routes['Conferences.dc.html']}>Les conférences</ArrowLink>
+          </li>
+          <li>
+            <ArrowLink href={routes['Reperes.dc.html']}>Les repères</ArrowLink>
+          </li>
+          <li>
+            <ArrowLink href={routes['Contact.dc.html']}>Nous écrire</ArrowLink>
+          </li>
+        </ul>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
+
+<style>
+  .box {
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    font-weight: 500;
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .lead {
+    margin: 0;
+    font-size: var(--fs-lead);
+    line-height: var(--lh-body);
+    color: var(--fg-2);
+  }
+
+  .liens {
+    list-style: none;
+    margin: var(--s-2) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+</style>

@@ -228,7 +228,6 @@ et la liste automatique des marqueurs `[À …]` (régénérée par `node script
 - [ ] `site/src/components/accueil/HomeDuo.astro` : [À VALIDER]
 - [ ] `site/src/components/conferences/ConferenceHero.astro` : [À DÉCIDER]
 - [ ] `site/src/components/conferences/KeyFigures.astro` : [À VÉRIFIER …]
-- [ ] `site/src/components/conferences/desinformation-ia/ChiffresAvecNote.astro` : [À VÉRIFIER …]
 - [ ] `site/src/components/conferences/desinformation-ia/MethodeVerification.astro` : [À COMPLÉTER]
 - [ ] `site/src/components/conferences/desinformation-ia/MethodeVerification.astro` : [À PRODUIRE]
 - [ ] `site/src/components/conferences/parents-ados-ia/CharteFamille.astro` : [À PRODUIRE]
@@ -378,6 +377,6 @@ et la liste automatique des marqueurs `[À …]` (régénérée par `node script
 - [ ] `site/src/pages/reperes/index.astro` : [À DÉCIDER]
 - [ ] `site/src/pages/reperes/index.astro` : [À CHOISIR]
 
-_134 marqueurs uniques dans la maquette, 153 dans le site._
+_134 marqueurs uniques dans la maquette, 152 dans le site._
 
 <!-- END marqueurs -->

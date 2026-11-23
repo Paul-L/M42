@@ -12,8 +12,7 @@
  * Trois comptes au total (limite de la version sans clé).
  */
 import { randomBytes } from 'node:crypto';
-import { join } from 'node:path';
-import { api, ecrireEnv, CMS_URL, SITE_DIR } from './lib.ts';
+import { api, ecrireEnv, fichierEnvSite, CMS_URL } from './lib.ts';
 
 const CONTENUS = [
   'settings',
@@ -171,7 +170,7 @@ if (!build) {
 }
 const token = randomBytes(32).toString('hex');
 await api('PATCH', `/users/${build.id}`, { token, role: roleSite });
-const envSite = join(SITE_DIR, '.env');
+const envSite = fichierEnvSite();
 ecrireEnv(envSite, 'DIRECTUS_URL', CMS_URL);
 ecrireEnv(envSite, 'DIRECTUS_TOKEN', token);
 console.log(`Jeton du build renouvelé et écrit dans ${envSite} (non versionné).`);

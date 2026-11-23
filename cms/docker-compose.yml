@@ -76,7 +76,10 @@ services:
 
       # Adresse du site, lue par les flows (lien de confirmation de la lettre).
       SITE_URL: ${SITE_URL:-http://localhost:4321}
-      FLOWS_ENV_ALLOW_LIST: SITE_URL
+      # Publication automatique (flow « Site : publication ») : vides en local, rien n'est appelé.
+      COOLIFY_DEPLOY_URL: ${COOLIFY_DEPLOY_URL:-}
+      COOLIFY_TOKEN: ${COOLIFY_TOKEN:-}
+      FLOWS_ENV_ALLOW_LIST: SITE_URL,COOLIFY_DEPLOY_URL,COOLIFY_TOKEN
 
   # Boîte de réception de test (développement local uniquement).
   mailpit:

@@ -11,10 +11,12 @@
  * - Flow « Lettre : confirmation » (webhook appelé par /lettre/confirmer/) : marque l'adresse
  *   comme confirmée si le jeton correspond.
  * L'identifiant du webhook de confirmation est écrit dans site/.env (PUBLIC_FLOW_CONFIRMATION).
- * 3 flows sur 5 (le 4e servira au déploiement, phase 5).
+ * - Flow « Site : publication » : après une modification de contenu, attend 60 s sans nouvelle
+ *   modification (anti-rebond), puis appelle le webhook de déploiement de Coolify
+ *   (COOLIFY_DEPLOY_URL, COOLIFY_TOKEN ; rien n'est appelé s'ils sont vides, en local).
+ * 4 flows sur 5.
  */
-import { join } from 'node:path';
-import { api, ecrireEnv, CMS_URL, SITE_DIR } from './lib.ts';
+import { api, ecrireEnv, fichierEnvSite, CMS_URL } from './lib.ts';
 
 const NOTIFIER = ['clara@m42.guide', 'paul@m42.guide'];
 
@@ -361,6 +363,119 @@ await operations(confirmation, [
   },
 ]);
 
-ecrireEnv(join(SITE_DIR, '.env'), 'PUBLIC_DIRECTUS_URL', CMS_URL);
-ecrireEnv(join(SITE_DIR, '.env'), 'PUBLIC_FLOW_CONFIRMATION', confirmation);
+// --- Flow 4 : publication (déploiement du site) ----------------------------------------------
+
+/** Marque la demande de publication (horodatage unique) : seule la dernière déclenchera. */
+const MARQUER = String.raw`
+module.exports = async function () {
+  return { t: Date.now() + '-' + Math.random().toString(36).slice(2, 8) };
+};
+`;
+/** Après l'attente : publier seulement si aucune demande plus récente n'est arrivée. */
+const DECIDER = String.raw`
+module.exports = async function (data) {
+  const lu = Array.isArray(data.relire) ? data.relire[0] : data.relire;
+  const derniere = lu && lu.publication_demandee;
+  const url = data.$env.COOLIFY_DEPLOY_URL || '';
+  return { publier: derniere === data.marquer.t && url !== '', url };
+};
+`;
+const CONTENUS = [
+  'settings',
+  'intervenants',
+  'conferences',
+  'publics',
+  'ressources',
+  'pages',
+  'faq',
+  'sources',
+];
+const publication = await flow('Site : publication', {
+  icon: 'rocket_launch',
+  description:
+    'Après une modification de contenu, attend 60 s sans autre modification, puis reconstruit le site (Coolify).',
+  trigger: 'event',
+  accountability: 'all',
+  options: {
+    type: 'action',
+    scope: ['items.create', 'items.update', 'items.delete'],
+    collections: CONTENUS,
+  },
+});
+await operations(publication, [
+  {
+    key: 'contenu',
+    name: 'Écriture de l’horodatage ?',
+    type: 'condition',
+    // L'écriture de l'horodatage dans les réglages ne doit pas relancer le flow :
+    // si elle est dans la modification, on s'arrête ; sinon (rejet de la condition), on continue.
+    options: { filter: { $trigger: { payload: { publication_demandee: { _nnull: true } } } } },
+    reject: 'marquer',
+  },
+  {
+    key: 'marquer',
+    name: 'Horodater la demande',
+    type: 'exec',
+    options: { code: MARQUER },
+    resolve: 'noter',
+  },
+  {
+    key: 'noter',
+    name: 'Noter la dernière demande',
+    type: 'item-update',
+    options: {
+      collection: 'settings',
+      permissions: '$full',
+      key: ['1'],
+      payload: { publication_demandee: '{{marquer.t}}' },
+    },
+    resolve: 'attendre',
+  },
+  {
+    key: 'attendre',
+    name: 'Attendre 60 s',
+    type: 'sleep',
+    options: { milliseconds: 60000 },
+    resolve: 'relire',
+  },
+  {
+    key: 'relire',
+    name: 'Relire la dernière demande',
+    type: 'item-read',
+    options: {
+      collection: 'settings',
+      permissions: '$full',
+      key: ['1'],
+      query: { fields: ['publication_demandee'] },
+    },
+    resolve: 'decider',
+  },
+  {
+    key: 'decider',
+    name: 'Dernière demande ?',
+    type: 'exec',
+    options: { code: DECIDER },
+    resolve: 'si_publier',
+  },
+  {
+    key: 'si_publier',
+    name: 'Publier ?',
+    type: 'condition',
+    options: { filter: { decider: { publier: { _eq: true } } } },
+    resolve: 'deployer',
+  },
+  {
+    key: 'deployer',
+    name: 'Déployer (Coolify)',
+    type: 'request',
+    options: {
+      method: 'GET',
+      url: '{{decider.url}}',
+      headers: [{ header: 'Authorization', value: 'Bearer {{$env.COOLIFY_TOKEN}}' }],
+    },
+  },
+]);
+
+ecrireEnv(fichierEnvSite(), 'PUBLIC_DIRECTUS_URL', CMS_URL);
+ecrireEnv(fichierEnvSite(), 'PUBLIC_FLOW_CONFIRMATION', confirmation);
 console.log('Flows prêts. URL publique et identifiant du webhook écrits dans site/.env.');

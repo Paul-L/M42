@@ -89,6 +89,18 @@ export async function lire<T = unknown>(chemin: string): Promise<T | null> {
   }
 }
 
+/**
+ * Fichier où écrire les variables du build du site : site/.env pour un Directus local ;
+ * pour une autre instance (CMS_URL distante), cms/.env.<hôte> (non versionné), à recopier
+ * dans les variables de build de Coolify.
+ */
+export function fichierEnvSite(): string {
+  const hote = new URL(CMS_URL).hostname;
+  return hote === 'localhost' || hote === '127.0.0.1'
+    ? join(SITE_DIR, '.env')
+    : join(CMS_DIR, `.env.${hote}`);
+}
+
 /** Écrit (ou remplace) une variable dans un fichier .env sans toucher aux autres lignes. */
 export function ecrireEnv(fichier: string, cle: string, valeur: string): void {
   const lignes = existsSync(fichier) ? readFileSync(fichier, 'utf8').split('\n') : [];

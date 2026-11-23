@@ -4,7 +4,7 @@ Site de M42.guide (Clara Peron & Paul Loustaunau) : conférences, ateliers et re
 
 ```
 site/   Astro (sortie statique)
-cms/    Directus + Postgres (Docker)
+cms/    Directus + Postgres (Docker) ; docker-compose.prod.yml pour Coolify
 kit/    maquette, docs, logos (lecture seule)
 ```
 
@@ -74,4 +74,14 @@ Les demandes de contact et les inscriptions arrivent dans Directus (**Demandes d
 
 ## Déployer
 
-À écrire en phase 5 (Coolify).
+Voir [`DEPLOIEMENT.md`](DEPLOIEMENT.md) : Coolify (Directus, site, préproduction), variables, DNS, publication automatique, sauvegardes et restauration, mise à jour de Directus.
+
+Image du site testable en local (contenu lu dans le Directus local) :
+
+```sh
+cd site
+docker build -t m42-site --build-arg DIRECTUS_URL=http://host.docker.internal:8056 \
+  --build-arg DIRECTUS_TOKEN=… --build-arg PUBLIC_DIRECTUS_URL=http://localhost:8056 \
+  --build-arg PUBLIC_FLOW_CONFIRMATION=… .
+docker run --rm -p 4321:80 -e CMS_ORIGIN=http://localhost:8056 m42-site
+```

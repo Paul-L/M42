@@ -1,0 +1,117 @@
+# Directus + Postgres pour la production (Coolify, « Docker Compose » depuis le dépôt).
+# Domaine : cms.m42.guide sur le service « directus », port 8055 (réglé dans Coolify).
+# Toutes les variables sont saisies dans Coolify (voir DEPLOIEMENT.md) ; aucune valeur secrète ici.
+# Pas de Mailpit : les e-mails partent par le serveur SMTP de production.
+
+services:
+  database:
+    image: postgres:18.7-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:?}
+      POSTGRES_USER: ${DB_USER:?}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_DATABASE}']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  directus:
+    image: directus/directus:12.7.0
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+    expose:
+      - '8055'
+    volumes:
+      - directus_uploads:/directus/uploads
+      - directus_extensions:/directus/extensions
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:8055/server/health || exit 1']
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    environment:
+      SECRET: ${SECRET:?}
+      PUBLIC_URL: https://cms.m42.guide
+
+      DB_CLIENT: pg
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?}
+      LICENSE_KEY: ${LICENSE_KEY:-}
+      TELEMETRY: 'false'
+
+      # Le site (production et préproduction) appelle l'API depuis le navigateur (formulaires).
+      CORS_ENABLED: 'true'
+      CORS_ORIGIN: 'array:https://m42.guide,https://preprod.m42.guide'
+
+      # Limite de débit par adresse IP (Coolify transmet l'adresse réelle via son proxy).
+      RATE_LIMITER_ENABLED: 'true'
+      RATE_LIMITER_STORE: memory
+      RATE_LIMITER_POINTS: ${RATE_LIMITER_POINTS:-600}
+      RATE_LIMITER_DURATION: ${RATE_LIMITER_DURATION:-60}
+      IP_TRUST_PROXY: 'true'
+
+      EMAIL_FROM: ${EMAIL_FROM:-bonjour@m42.guide}
+      EMAIL_TRANSPORT: smtp
+      EMAIL_SMTP_HOST: ${EMAIL_SMTP_HOST:?}
+      EMAIL_SMTP_PORT: ${EMAIL_SMTP_PORT:-587}
+      EMAIL_SMTP_USER: ${EMAIL_SMTP_USER:?}
+      EMAIL_SMTP_PASSWORD: ${EMAIL_SMTP_PASSWORD:?}
+      EMAIL_SMTP_SECURE: ${EMAIL_SMTP_SECURE:-false}
+      EMAIL_SMTP_IGNORE_TLS: 'false'
+
+      SITE_URL: https://m42.guide
+      COOLIFY_DEPLOY_URL: ${COOLIFY_DEPLOY_URL:-}
+      COOLIFY_TOKEN: ${COOLIFY_TOKEN:-}
+      FLOWS_ENV_ALLOW_LIST: SITE_URL,COOLIFY_DEPLOY_URL,COOLIFY_TOKEN
+
+  # Sauvegarde quotidienne : base (pg_dump) et fichiers envoyés, gardées 14 jours dans le volume
+  # « sauvegardes ». Une copie hors du serveur est à prévoir (DEPLOIEMENT.md, « Sauvegardes »).
+  sauvegarde:
+    image: postgres:18.7-alpine
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      PGHOST: database
+      PGDATABASE: ${DB_DATABASE}
+      PGUSER: ${DB_USER}
+      PGPASSWORD: ${DB_PASSWORD}
+      RETENTION_JOURS: ${RETENTION_JOURS:-14}
+      HEURE: ${HEURE_SAUVEGARDE:-03}
+    volumes:
+      - sauvegardes:/sauvegardes
+      - directus_uploads:/uploads:ro
+    entrypoint: ['/bin/sh', '-c']
+    command:
+      - |
+        set -e
+        sauver() {
+          d=$$(date +%Y-%m-%d_%H%M)
+          pg_dump -Fc -f /sauvegardes/base_$$d.dump
+          tar -czf /sauvegardes/fichiers_$$d.tar.gz -C /uploads .
+          find /sauvegardes -type f -mtime +$$RETENTION_JOURS -delete
+          echo "Sauvegarde $$d terminée"
+        }
+        while true; do
+          maintenant=$$(date +%H)
+          if [ "$$maintenant" = "$$HEURE" ]; then sauver; sleep 3700; else sleep 600; fi
+        done
+
+volumes:
+  postgres_data:
+  directus_uploads:
+  directus_extensions:
+  sauvegardes:

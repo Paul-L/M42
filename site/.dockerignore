@@ -1,0 +1,9 @@
+node_modules
+dist
+.astro
+.env
+.env.*
+tests/visual/sorties
+tests/perf/rapports
+test-results
+playwright-report

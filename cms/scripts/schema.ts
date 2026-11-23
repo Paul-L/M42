@@ -448,7 +448,17 @@ const COLLECTIONS: DefCollection[] = [
         },
       ],
     },
-    fields: [id, ...(settingsDoc ? champsDeduits('settings') : []), ...horodatage],
+    fields: [
+      id,
+      ...(settingsDoc ? champsDeduits('settings') : []),
+      {
+        field: 'publication_demandee',
+        type: 'string',
+        meta: { interface: 'input', hidden: true, readonly: true },
+        schema: {},
+      },
+      ...horodatage,
+    ],
   },
   contenu(
     'intervenants',

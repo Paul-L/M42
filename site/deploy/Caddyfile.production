@@ -1,0 +1,12 @@
+# Production : m42.guide (www redirigé). TLS assuré par le proxy de Coolify.
+{
+	admin off
+	auto_https off
+}
+
+:80 {
+	@www host www.m42.guide
+	redir @www https://m42.guide{uri} permanent
+
+	import /etc/caddy/securite.caddy
+}

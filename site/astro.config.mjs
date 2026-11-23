@@ -7,7 +7,8 @@ export default defineConfig({
   site: 'https://m42.guide',
   output: 'static',
   trailingSlash: 'always',
-  build: { format: 'directory' },
+  // CSS toujours en fichiers (aucun <style> dans le HTML) : CSP stricte sans 'unsafe-inline'.
+  build: { format: 'directory', inlineStylesheets: 'never' },
   integrations: [
     sitemap({
       // Pages non indexées : pages internes (/_…) et confirmation de la lettre.

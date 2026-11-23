@@ -1,0 +1,16 @@
+# Préproduction : preprod.m42.guide, protégée par mot de passe et jamais indexée.
+# PREPROD_HASH : empreinte bcrypt du mot de passe (`caddy hash-password`).
+{
+	admin off
+	auto_https off
+}
+
+:80 {
+	header X-Robots-Tag "noindex, nofollow"
+
+	basic_auth {
+		{$PREPROD_USER} {$PREPROD_HASH}
+	}
+
+	import /etc/caddy/securite.caddy
+}

@@ -18,6 +18,8 @@ Versions relevées le 23 novembre 2026 (registre npm, Docker Hub, nodejs.org).
 | tsx | 4.23.15 | 4.23.15 | Lance les scripts TypeScript de `cms/scripts/` (schéma, rôles, seed). |
 | Lighthouse | 13.6.0 (dev) | 13.6.0 | Mesure mobile des 21 pages (`tests/perf/lighthouse.mjs`). |
 | Mailpit | 1.34.0 (`axllent/mailpit:v1.34.0`, local) | 1.34.0 | Boîte de test des e-mails de Directus en local. |
+| Node (image de build) | `node:26.13.1-alpine` | 26.13.1 | Build du site dans Coolify (Node 26 LTS). |
+| Caddy | `caddy:2.11.9-alpine` | 2.11.9 | Sert le site statique : compression, cache, en-têtes de sécurité, 404, redirection www, mot de passe de la préproduction. |
 | PostgreSQL | 18.7 (`postgres:18.7-alpine`) | 19.0 | La 19.0 vient de sortir : on attend une version corrective et la confirmation de compatibilité Directus. |
 
 ## Choix techniques
@@ -43,6 +45,15 @@ Versions relevées le 23 novembre 2026 (registre npm, Docker Hub, nodejs.org).
 - 3 flows sur 5 (`cms/scripts/flows.ts`) : contrôle bloquant (piège, délai, validation, nettoyage), e-mails (notification à Clara et Paul, confirmation de la lettre), webhook de confirmation (double opt-in).
 - Limite de débit Directus (`RATE_LIMITER_*`), e-mails par SMTP (`EMAIL_*`, Mailpit en local).
 - Variables publiques du site : `PUBLIC_DIRECTUS_URL`, `PUBLIC_FLOW_CONFIRMATION` (écrites dans `site/.env` par `npm run cms:flows`).
+
+## Déploiement (phase 5)
+
+- **Site** : image Docker en deux étapes (build Astro depuis Directus, puis Caddy). Le build impose `M42_CONTENU=cms`.
+- **En-têtes** (`site/deploy/securite.caddy`) : CSP stricte sans `unsafe-inline` (aucun script ni style en ligne : `inlineStylesheets: 'never'`, aucun attribut `style`), HSTS, Referrer-Policy, Permissions-Policy, X-Content-Type-Options, X-Frame-Options, COOP ; cache d'un an pour `/_astro/*`, revalidation pour les pages ; compression zstd/gzip.
+- **Préproduction** : même image avec `M42_ENV=preprod` (robots.txt bloquant, `noindex` partout), mot de passe et `X-Robots-Tag` posés par Caddy.
+- **Directus en production** : `cms/docker-compose.prod.yml` (sans Mailpit, SMTP réel, CORS limité au site et à la préproduction) et service de sauvegarde quotidienne (pg_dump + fichiers, 14 jours).
+- **Publication automatique** : flow « Site : publication » (anti-rebond de 60 s) → webhook de déploiement Coolify.
+- Détails pas à pas : `DEPLOIEMENT.md`.
 
 ## Licence Directus
 

@@ -75,6 +75,8 @@ export const CHAMPS_SYSTEME = [
   'user_updated',
   'questions_faq',
   'sources_citees',
+  // Réglages : anti-rebond du déclenchement de la publication (flow « Site : publication »).
+  'publication_demandee',
 ] as const;
 
 export const snake = (k: string): string => k.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`);
