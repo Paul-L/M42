@@ -2,30 +2,7 @@
 // (espaces normales : le middleware ajoute les insécables).
 // Structure prête pour la collection Directus `publics` (un enregistrement par page « Pour qui »).
 
-import { routes } from '../routes';
-import type {
-  PublicAudience,
-  PublicCta,
-  PublicFaqItem,
-  PublicFormat,
-  PublicHeroData,
-  PublicLink,
-  PublicRecommendedConference,
-  PublicStake,
-  PublicStep,
-  PublicTakeawayGroup,
-  PublicTeamNote,
-  PublicTopic,
-} from './types';
-
-/**
- * [SI RÉFÉRENCEMENT ADAGE OBTENU] Question à ajouter à la FAQ (03 D, décision n° 7 de 05).
- * Tant que `ADAGE_REFERENCE` vaut false, la question n'est ni affichée ni balisée (FAQPage),
- * et la note de relecture de la maquette reste visible sous la FAQ.
- * Attention : présenter « Vrai ou IA ? » comme une activité d'analyse et de vérification,
- * pas comme un jeu.
- */
-export const ADAGE_REFERENCE = false;
+import type { PublicPage } from './types';
 
 export const education = {
   slug: 'education',
@@ -33,6 +10,30 @@ export const education = {
     title: 'Intervention IA en collège, lycée et pour les parents | M42',
     description:
       "Apprendre avec l'IA, pas à sa place : interventions pour élèves, enseignants et parents. Devoirs, esprit critique, fausses infos, cyberharcèlement.",
+    service: {
+      name: "Interventions sur l'IA pour les collèges, les lycées et les parents",
+      serviceType: "Intervention de sensibilisation à l'intelligence artificielle",
+      audience: [
+        { educationalRole: 'student', audienceType: 'Élèves' },
+        { educationalRole: 'teacher', audienceType: 'Enseignants' },
+        { educationalRole: 'parent', audienceType: 'Parents' },
+      ],
+      about: [
+        'Intelligence artificielle',
+        'Éducation aux médias',
+        'Esprit critique',
+        'Cyberharcèlement',
+      ],
+    },
+  },
+
+  labels: {
+    home: 'Accueil',
+    forYou: 'Pour vous : ',
+    signature: 'Conférence signature',
+    conferenceCta: 'Voir le programme',
+    duration: 'Durée',
+    participants: 'Participants',
   },
 
   hero: {
@@ -44,11 +45,11 @@ export const education = {
       "Des interventions sur l'intelligence artificielle leur apprennent à s'en servir avec esprit critique : ce qui aide à apprendre, ce qui revient à tricher, comment vérifier une image.",
       "Enseignants et parents reçoivent les mêmes repères, pour tenir un discours commun. Au collège, au lycée et dans l'enseignement supérieur.",
     ],
-    primary: { label: 'Nous contacter', href: routes['Contact.dc.html'] },
+    primary: { label: 'Nous contacter', href: '/contact/' },
     secondary: { label: 'Voir les formats', href: '#formats' },
     photo:
       "[Photo : intervention en classe, élèves en petits groupes devant une image à vérifier, enseignant présent, sans visage d'élève identifiable, 4:5, à produire]",
-  } satisfies PublicHeroData,
+  },
 
   stakes: {
     eyebrow: 'Vos enjeux',
@@ -67,7 +68,7 @@ export const education = {
         text: "En 2025, les demandes d'aide pour cyberharcèlement reçues par Cybermalveillance.gouv.fr ont augmenté de 138 %, tous âges confondus. Élèves, parents et équipes doivent parler le même langage.",
         source: 'Source : Cybermalveillance.gouv.fr, bilan 2025',
       },
-    ] satisfies PublicStake[],
+    ],
   },
 
   /** Bloc propre à la page Éducation : schéma en triangle et trois colonnes. */
@@ -91,7 +92,7 @@ export const education = {
         format: 'Soirée parents de 1 h 30',
         text: "Les devoirs avec l'IA, les réseaux sociaux, le cyberharcèlement : des repères pour parler à la maison le même langage qu'à l'école.",
       },
-    ] satisfies PublicAudience[],
+    ],
   },
 
   formats: {
@@ -121,7 +122,7 @@ export const education = {
         duration: 'Selon le format',
         participants: 'Amphithéâtre ou groupe de TD',
       },
-    ] satisfies PublicFormat[],
+    ],
     note: "Collèges, lycées (y compris professionnels), établissements d'enseignement supérieur.",
   },
 
@@ -133,7 +134,7 @@ export const education = {
       {
         numeral: 'III',
         title: 'Vrai ou faux ?',
-        href: routes['Conf-desinformation-ia.dc.html'],
+        href: '/conferences/desinformation-ia/',
         summary: "Repérer une image truquée, une fausse vidéo ou un faux site d'information.",
         forYou:
           "« Vrai ou IA ? » : une méthode de vérification en 4 étapes, appliquée à de vrais exemples. Une activité d'analyse, pas un simple jeu.",
@@ -142,12 +143,12 @@ export const education = {
       {
         numeral: 'IV',
         title: 'Parents, ados et IA',
-        href: routes['Conf-parents-ados-ia.dc.html'],
+        href: '/conferences/parents-ados-ia/',
         summary: "Devoirs avec l'IA sans tricher, réseaux sociaux, cyberharcèlement.",
         forYou: 'La soirée parents, avec la charte numérique de la famille et le 3018.',
         formats: ['Keynote', 'Conférence', 'Atelier', 'Cycle'],
       },
-    ] satisfies PublicRecommendedConference[],
+    ],
     otherTitle: 'Autres exemples de sujets',
     others: [
       {
@@ -166,11 +167,11 @@ export const education = {
         title: "Supérieur : travailler avec l'IA sans cesser de penser",
         detail: 'Ce que disent les premières études, présentées honnêtement.',
       },
-    ] satisfies PublicTopic[],
+    ],
     link: {
       label: 'Voir toutes les conférences et leurs formats',
-      href: routes['Conferences.dc.html'],
-    } satisfies PublicLink,
+      href: '/conferences/',
+    },
   },
 
   takeaways: {
@@ -202,7 +203,7 @@ export const education = {
           ],
         ],
       },
-    ] satisfies PublicTakeawayGroup[],
+    ],
   },
 
   steps: {
@@ -221,11 +222,11 @@ export const education = {
         title: "L'intervention, puis le prolongement",
         text: "En présence de l'enseignant. Ressources transmises pour poursuivre en classe.",
       },
-    ] satisfies PublicStep[],
+    ],
     team: {
       text: "Qui intervient : Clara Peron, formatrice d'adultes, et Paul Loustaunau, qui conçoit l'IA au quotidien, en lien étroit avec l'équipe pédagogique.",
-      link: { label: 'Parcours et démarche', href: routes['A-propos.dc.html'] },
-    } satisfies PublicTeamNote,
+      link: { label: 'Parcours et démarche', href: '/a-propos/' },
+    },
   },
 
   faq: {
@@ -252,21 +253,29 @@ export const education = {
         answer:
           'Oui, dans les interventions sur les réseaux sociaux et dans la soirée parents : reconnaître les situations, réagir, savoir à qui en parler. Le 3018, numéro national contre le cyberharcèlement, est rappelé à chaque fois.',
       },
-    ] satisfies PublicFaqItem[],
+    ],
     /**
-     * Question pass Culture, publiée seulement si `ADAGE_REFERENCE` vaut true. Le statut du
-     * référencement est un marqueur : tant qu'il reste, la question n'entre pas dans le FAQPage.
+     * [SI RÉFÉRENCEMENT ADAGE OBTENU] Question pass Culture (03 D, décision n° 7 de 05).
+     * `published` passe à true une fois le référencement obtenu ; tant qu'il vaut false, la
+     * question n'est ni affichée ni balisée (FAQPage), et la note de relecture de la maquette reste
+     * visible sous la FAQ. Le statut du référencement est un marqueur : tant qu'il reste, la
+     * question n'entre pas dans le FAQPage.
+     * Attention : présenter « Vrai ou IA ? » comme une activité d'analyse et de vérification,
+     * pas comme un jeu.
      */
-    passCulture: {
-      question: 'Votre intervention peut-elle être financée par le pass Culture ?',
-      answer: [
-        "La part collective du pass Culture finance des actions d'éducation artistique et culturelle, dont l'éducation aux médias et à l'information et la culture scientifique. Elle passe par des intervenants référencés sur ADAGE. ",
-        { marker: '[Statut de notre référencement ADAGE]' },
-        ". Les séances de prévention du cyberharcèlement n'en relèvent pas : elles peuvent être financées par l'établissement ou une association de parents d'élèves.",
-      ],
-    } satisfies PublicFaqItem,
-    reviewNote:
-      'Note de relecture [SI RÉFÉRENCEMENT ADAGE OBTENU] : ajouter ici la question sur le financement par le pass Culture (texte en commentaire dans le code). Sinon, ne rien publier.',
+    pending: {
+      published: false,
+      item: {
+        question: 'Votre intervention peut-elle être financée par le pass Culture ?',
+        answer: [
+          "La part collective du pass Culture finance des actions d'éducation artistique et culturelle, dont l'éducation aux médias et à l'information et la culture scientifique. Elle passe par des intervenants référencés sur ADAGE. ",
+          { marker: '[Statut de notre référencement ADAGE]' },
+          ". Les séances de prévention du cyberharcèlement n'en relèvent pas : elles peuvent être financées par l'établissement ou une association de parents d'élèves.",
+        ],
+      },
+      reviewNote:
+        'Note de relecture [SI RÉFÉRENCEMENT ADAGE OBTENU] : ajouter ici la question sur le financement par le pass Culture (texte en commentaire dans le code). Sinon, ne rien publier.',
+    },
   },
 
   cta: {
@@ -274,6 +283,6 @@ export const education = {
     title: 'Construisons une intervention pour vos élèves',
     lead: 'Dites-nous le niveau, le nombre de classes et le thème. Réponse sous 48 h.',
     ctaLabel: 'Nous contacter',
-    ctaHref: routes['Contact.dc.html'],
-  } satisfies PublicCta,
-};
+    ctaHref: '/contact/',
+  },
+} satisfies PublicPage;

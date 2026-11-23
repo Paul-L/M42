@@ -29,28 +29,11 @@ import { collectivites as page } from '../../data/publics/collectivites';
 
 const { title, description } = page.seo;
 
-const jsonLd = publicPageJsonLd({
-  path: '/collectivites/',
-  title,
-  description,
-  crumb: page.hero.crumb,
-  service: {
-    name: "Conférences et ateliers sur l'IA et les arnaques pour les collectivités",
-    serviceType: 'Conférence et atelier de sensibilisation',
-    description: `${page.hero.lead} ${page.hero.paragraphs.join(' ')} ${page.formats.note}`,
-    audience: [
-      { '@type': 'Audience', audienceType: 'Habitants et grand public' },
-      { '@type': 'Audience', audienceType: 'Agents de collectivités, CCAS et France Services' },
-      { '@type': 'Audience', audienceType: 'Médiathèques' },
-      { '@type': 'Audience', audienceType: 'Élus locaux' },
-    ],
-  },
-  faq: page.faq.items,
-});
+const jsonLd = publicPageJsonLd(page);
 ---
 
 <BaseLayout title={title} description={description} current="collectivites" jsonLd={jsonLd}>
-  <PublicHero {...page.hero} />
+  <PublicHero {...page.hero} homeLabel={page.labels.home} />
 
   <!-- Vos enjeux -->
   <Section id="enjeux" labelledby="titre-enjeux">
@@ -65,7 +48,12 @@ const jsonLd = publicPageJsonLd({
     <PublicSectionHead id="titre-formats" eyebrow={page.formats.eyebrow} lead={page.formats.lead}>
       {page.formats.title}
     </PublicSectionHead>
-    <PublicFormats items={page.formats.items} footnote={page.formats.note} />
+    <PublicFormats
+      items={page.formats.items}
+      footnote={page.formats.note}
+      durationLabel={page.labels.duration}
+      participantsLabel={page.labels.participants}
+    />
     <div class="more more--formats">
       <ArrowLink href={page.formats.link.href}>{page.formats.link.label}</ArrowLink>
     </div>
@@ -80,7 +68,7 @@ const jsonLd = publicPageJsonLd({
     >
       {page.conferences.title}
     </PublicSectionHead>
-    <PublicConferenceGrid items={page.conferences.items} />
+    <PublicConferenceGrid items={page.conferences.items} labels={page.labels} />
     <TopicList title={page.conferences.otherTitle} items={page.conferences.others} />
     <div class="more more--sujets">
       <ArrowLink href={page.conferences.link.href}>{page.conferences.link.label}</ArrowLink>

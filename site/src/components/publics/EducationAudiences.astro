@@ -3,10 +3,11 @@
  * Page Éducation, section « Trois publics, un même langage » : schéma en triangle
  * (Enseignants en haut, Élèves et Parents en bas, étoile or au centre, décoratif) puis
  * trois colonnes (H3, format en petit, texte). Schéma et colonnes apparaissent au défilement.
- * Le schéma est propre à la page Éducation (libellés en dur, comme dans la maquette).
+ * Les libellés du schéma reprennent les titres des colonnes : le deuxième public en haut,
+ * le premier en bas à gauche, le troisième en bas à droite.
  *
  * Props :
- * - `items` : { title, format, text } dans l'ordre Élèves, Enseignants, Parents.
+ * - `items` : trois publics { title, format, text } dans l'ordre Élèves, Enseignants, Parents.
  */
 import type { PublicAudience } from '../../data/publics/types';
 
@@ -15,6 +16,8 @@ export interface Props {
 }
 
 const { items } = Astro.props;
+if (items.length !== 3) throw new Error('EducationAudiences : trois publics attendus');
+const [left, top, right] = items.map((i) => i.title);
 ---
 
 <div class="schema m42-reveal" aria-hidden="true">
@@ -43,13 +46,13 @@ const { items } = Astro.props;
     ></path>
     <g class="labels" font-size="19" font-weight="600" text-anchor="middle">
       <text x="300" y="32">
-        Enseignants
+        {top}
       </text>
       <text x="100" y="224">
-        Élèves
+        {left}
       </text>
       <text x="500" y="224">
-        Parents
+        {right}
       </text>
     </g>
   </svg>

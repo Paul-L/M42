@@ -2,22 +2,7 @@
 // (espaces normales : le middleware ajoute les insécables).
 // Structure prête pour la collection Directus `publics` (un enregistrement par page « Pour qui »).
 
-import { routes } from '../routes';
-import type {
-  PublicCta,
-  PublicFaqItem,
-  PublicFormat,
-  PublicHeroData,
-  PublicLink,
-  PublicRecommendedConference,
-  PublicRichText,
-  PublicStake,
-  PublicStep,
-  PublicTakeawayGroup,
-  PublicTeamNote,
-  PublicTimelineSequence,
-  PublicTopic,
-} from './types';
+import type { PublicPage } from './types';
 
 export const evenements = {
   slug: 'evenements',
@@ -25,6 +10,23 @@ export const evenements = {
     title: 'Keynote et conférence IA pour séminaire, salon ou congrès | M42',
     description:
       "Keynote d'ouverture ou de clôture, conférence à deux voix, animation « Vrai ou IA ? » : un temps fort sur l'IA, clair et vivant, pour votre événement.",
+    service: {
+      name: "Keynotes et conférences sur l'IA pour séminaires, salons et congrès",
+      serviceType: 'Keynote, conférence et animation interactive',
+      audience: [
+        { audienceType: "Organisateurs d'événements" },
+        { audienceType: 'Participants de séminaires, salons et congrès' },
+      ],
+    },
+  },
+
+  labels: {
+    home: 'Accueil',
+    forYou: 'Pour vous : ',
+    signature: 'Conférence signature',
+    conferenceCta: 'Voir le programme',
+    duration: 'Durée',
+    participants: 'Participants',
   },
 
   hero: {
@@ -36,11 +38,11 @@ export const evenements = {
       'Des repères clairs, des démonstrations en direct, un moment qui fait réfléchir la salle, et trois règles à retenir.',
       "Keynote d'ouverture ou de clôture, intervention plénière, conférence à deux voix ou animation « Vrai ou IA ? » : pour votre séminaire, salon ou congrès.",
     ],
-    primary: { label: 'Proposer une date', href: routes['Contact.dc.html'] },
+    primary: { label: 'Proposer une date', href: '/contact/' },
     secondary: { label: 'Voir un déroulé de keynote', href: '#deroule' },
     photo:
       '[Photo : une salle de congrès attentive, scène et écran en arrière-plan, lumière latérale, 4:5, à produire]',
-  } satisfies PublicHeroData,
+  },
 
   stakes: {
     eyebrow: 'Vos enjeux',
@@ -58,7 +60,7 @@ export const evenements = {
         title: 'Pas de mauvaise surprise le jour J',
         text: 'Timing tenu, technique simple, contenu neutre : aucune prise de position politique, aucune promotion commerciale.',
       },
-    ] satisfies PublicStake[],
+    ],
   },
 
   formats: {
@@ -90,13 +92,13 @@ export const evenements = {
         duration: '30 min à 2 h',
         participants: 'En salle ou sur un espace dédié',
       },
-    ] satisfies PublicFormat[],
+    ],
     note: "L'interactivité s'adapte à la taille de la salle. Interventions en français.",
     link: {
       label:
         "Un séminaire interne ou une convention d'entreprise ? Les formats pour les entreprises",
-      href: routes['Entreprises.dc.html'],
-    } satisfies PublicLink,
+      href: '/entreprises/',
+    },
   },
 
   /** Bloc propre à la page Événements : exemple de déroulé d'une keynote (section nuit). */
@@ -161,12 +163,12 @@ export const evenements = {
         title: 'Demain matin',
         text: "Chacun choisit une règle et la note. Les trois règles réunies à l'écran, puis la clôture.",
       },
-    ] satisfies PublicTimelineSequence[],
+    ],
     note: "Questions de la salle : 10 à 15 minutes en option. Déroulé tiré de la version keynote de « L'IA au quotidien » [À VALIDER : titre de la conférence signature].",
     link: {
       label: "Le programme de la conférence « L'IA au quotidien »",
-      href: routes['Conf-ia-au-quotidien.dc.html'],
-    } satisfies PublicLink,
+      href: '/conferences/ia-au-quotidien/',
+    },
   },
 
   /** Bloc propre à la page Événements : kit organisateur. */
@@ -176,8 +178,8 @@ export const evenements = {
     lead: "De quoi construire votre programme, annoncer l'intervention et préparer la régie, sans relances de votre part.",
     link: {
       label: "Accéder à l'espace organisateurs",
-      href: routes['Organisateurs.dc.html'],
-    } satisfies PublicLink,
+      href: '/organisateurs/',
+    },
     items: [
       "Titre et résumé de l'intervention, validés avec vous",
       ['Biographies de 50 et 150 mots ', { marker: '[À PRODUIRE]' }],
@@ -188,7 +190,7 @@ export const evenements = {
         { marker: '[PDF À PRODUIRE]' },
       ],
       ['Vidéo de présentation ', { marker: '[À PRODUIRE]' }],
-    ] satisfies PublicRichText[],
+    ],
   },
 
   conferences: {
@@ -200,7 +202,7 @@ export const evenements = {
         numeral: 'I',
         signature: true,
         title: "L'IA au quotidien",
-        href: routes['Conf-ia-au-quotidien.dc.html'],
+        href: '/conferences/ia-au-quotidien/',
         summary:
           "Ce que l'IA sait faire, ce qu'elle invente, et les méthodes des professionnels pour garder la main.",
         forYou: 'En keynote : 45 minutes, trois règles à retenir et un jeu avec la salle.',
@@ -209,7 +211,7 @@ export const evenements = {
       {
         numeral: 'II',
         title: 'Arnaques et IA',
-        href: routes['Conf-arnaques-ia.dc.html'],
+        href: '/conferences/arnaques-ia/',
         summary:
           "Voix clonées, faux conseillers, faux SMS : reconnaître les arnaques rendues crédibles par l'IA.",
         forYou:
@@ -219,14 +221,14 @@ export const evenements = {
       {
         numeral: 'III',
         title: 'Vrai ou faux ?',
-        href: routes['Conf-desinformation-ia.dc.html'],
+        href: '/conferences/desinformation-ia/',
         summary:
           "Repérer une image truquée, une fausse vidéo ou un faux site d'information, avec une méthode en quatre étapes. Strictement neutre.",
         forYou:
           "L'animation « Vrai ou IA ? » : démêler le vrai du faux à l'heure des images générées.",
         formats: ['Keynote', 'Conférence', 'Atelier', 'Cycle'],
       },
-    ] satisfies PublicRecommendedConference[],
+    ],
     otherTitle: 'Autres exemples de sujets',
     others: [
       { title: "Se repérer dans l'IA : ce qui change vraiment, et ce qui ne change pas" },
@@ -236,11 +238,11 @@ export const evenements = {
         title: "Sur mesure : l'IA dans votre secteur",
         detail: 'Construit à partir de la thématique de votre événement.',
       },
-    ] satisfies PublicTopic[],
+    ],
     link: {
       label: 'Voir toutes les conférences et leurs formats',
-      href: routes['Conferences.dc.html'],
-    } satisfies PublicLink,
+      href: '/conferences/',
+    },
   },
 
   takeaways: {
@@ -261,7 +263,7 @@ export const evenements = {
         title: 'Pour la suite',
         items: ['Captation et diffusion possibles, selon les conditions convenues au contrat'],
       },
-    ] satisfies PublicTakeawayGroup[],
+    ],
   },
 
   steps: {
@@ -280,11 +282,11 @@ export const evenements = {
         title: 'Le jour J',
         text: 'Arrivée en avance, réglages, intervention, échanges avec le public. Ressources transmises ensuite.',
       },
-    ] satisfies PublicStep[],
+    ],
     team: {
       text: "Qui intervient : sur scène, Clara Peron porte l'humain, la pédagogie et le passage à l'action ; Paul Loustaunau, la technique et les démonstrations en direct.",
-      link: { label: 'Parcours et démarche', href: routes['A-propos.dc.html'] },
-    } satisfies PublicTeamNote,
+      link: { label: 'Parcours et démarche', href: '/a-propos/' },
+    },
   },
 
   faq: {
@@ -316,7 +318,7 @@ export const evenements = {
         answer:
           "Oui, captation et diffusion sont possibles. Les conditions (usage, durée, supports de diffusion) sont convenues au contrat, avant l'événement.",
       },
-    ] satisfies PublicFaqItem[],
+    ],
   },
 
   cta: {
@@ -324,6 +326,6 @@ export const evenements = {
     title: 'Vérifions la disponibilité pour votre date',
     lead: 'Indiquez-nous la date, le lieu et le public attendu. Réponse sous 48 h.',
     ctaLabel: 'Proposer une date',
-    ctaHref: routes['Contact.dc.html'],
-  } satisfies PublicCta,
-};
+    ctaHref: '/contact/',
+  },
+} satisfies PublicPage;

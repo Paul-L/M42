@@ -12,6 +12,7 @@
  * - `paragraphs` : paragraphes d'introduction (encre 2).
  * - `primary` / `secondary` : boutons { label, href }.
  * - `photo` : texte de l'emplacement photo (« [Photo : …] »), format 4:5.
+ * - `homeLabel` : premier élément du fil d'Ariane (labels.home de la page ; « Accueil » par défaut).
  */
 import Container from '../Container.astro';
 import Breadcrumb from '../Breadcrumb.astro';
@@ -20,14 +21,24 @@ import Placeholder from '../Placeholder.astro';
 import { routes } from '../../data/routes';
 import type { PublicHeroData } from '../../data/publics/types';
 
-export type Props = PublicHeroData;
+export type Props = PublicHeroData & { homeLabel?: string };
 
-const { crumb, eyebrow, title, lead, paragraphs, primary, secondary, photo } = Astro.props;
+const {
+  crumb,
+  eyebrow,
+  title,
+  lead,
+  paragraphs,
+  primary,
+  secondary,
+  photo,
+  homeLabel = 'Accueil',
+} = Astro.props;
 ---
 
 <section aria-labelledby="titre-page" class="hero">
   <Container class="hero-inner">
-    <Breadcrumb items={[{ label: 'Accueil', href: routes['Main.dc.html'] }, { label: crumb }]} />
+    <Breadcrumb items={[{ label: homeLabel, href: routes['Main.dc.html'] }, { label: crumb }]} />
     <div class="row">
       <div class="text">
         <p class="eyebrow">{eyebrow}</p>

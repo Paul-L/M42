@@ -1,22 +1,7 @@
 // Page « Entreprises » (kit/maquette/Entreprises.dc.html) : textes repris mot pour mot.
 // Structure prête pour la collection Directus `publics` (un enregistrement par page « Pour qui »).
 
-import { routes } from '../routes';
-import type {
-  PublicColorRuleCard,
-  PublicCta,
-  PublicFaqItem,
-  PublicFormat,
-  PublicHeroData,
-  PublicLink,
-  PublicRecommendedConference,
-  PublicRichText,
-  PublicStake,
-  PublicStep,
-  PublicTakeawayGroup,
-  PublicTeamNote,
-  PublicTopic,
-} from './types';
+import type { PublicPage } from './types';
 
 export const entreprises = {
   slug: 'entreprises',
@@ -24,6 +9,24 @@ export const entreprises = {
     title: 'Conférence IA en entreprise et sensibilisation | M42',
     description:
       "Keynote, conférence ou atelier pour sensibiliser vos salariés à l'IA : bons usages, données confidentielles, fraude au président. Devis sous 48 h.",
+    service: {
+      name: "Conférences et ateliers de sensibilisation à l'IA pour les entreprises",
+      serviceType: 'Conférence et atelier de sensibilisation',
+      audience: [
+        { audienceType: "Salariés d'entreprise" },
+        { audienceType: 'Dirigeants et comités de direction' },
+        { audienceType: 'CSE' },
+      ],
+    },
+  },
+
+  labels: {
+    home: 'Accueil',
+    forYou: 'Pour vous : ',
+    signature: 'Conférence signature',
+    conferenceCta: 'Voir le programme',
+    duration: 'Durée',
+    participants: 'Participants',
   },
 
   hero: {
@@ -35,11 +38,11 @@ export const entreprises = {
       "Une conférence ou un atelier de sensibilisation leur donne des règles claires : ce qu'on confie à l'IA, ce qu'on vérifie, ce qui ne sort jamais de l'entreprise.",
       "Et les réflexes pour repérer les nouvelles fraudes, voix clonées et faux fournisseurs, avant qu'elles ne coûtent cher.",
     ],
-    primary: { label: 'Demander une proposition', href: routes['Contact.dc.html'] },
+    primary: { label: 'Demander une proposition', href: '/contact/' },
     secondary: { label: 'Voir les conférences pour vos équipes', href: '#sujets' },
     photo:
       "[Photo : une équipe en séminaire d'entreprise face à une démonstration à l'écran, intervenants en amorce, 4:5, à produire]",
-  } satisfies PublicHeroData,
+  },
 
   stakes: {
     eyebrow: 'Vos enjeux',
@@ -60,7 +63,7 @@ export const entreprises = {
         source:
           "Source : règlement européen sur l'IA, article 4, modifié par le règlement (UE) 2026/1744",
       },
-    ] satisfies PublicStake[],
+    ],
   },
 
   /** Bloc propre à la page Entreprises : règle vert / orange / rouge. */
@@ -105,12 +108,12 @@ export const entreprises = {
         ],
         motto: '« Je ne donne pas les clés. »',
       },
-    ] satisfies PublicColorRuleCard[],
+    ],
     note: [
       "Exemple indicatif, à adapter à votre entreprise. La trame de charte d'usage de l'IA remise après l'intervention ",
       { marker: '[À PRODUIRE]' },
       ' vous aide à fixer vos propres règles.',
-    ] satisfies PublicRichText,
+    ],
   },
 
   formats: {
@@ -157,13 +160,13 @@ export const entreprises = {
         duration: '1 h à 1 h 30',
         participants: 'Selon la salle',
       },
-    ] satisfies PublicFormat[],
+    ],
     note: 'Sur site, chez vous. Visioconférence possible pour les sessions courtes. Interventions en français.',
     link: {
       label:
         'Vous organisez un congrès, un salon ou une convention ? Les formats pour les événements',
-      href: routes['Evenements.dc.html'],
-    } satisfies PublicLink,
+      href: '/evenements/',
+    },
   },
 
   conferences: {
@@ -175,7 +178,7 @@ export const entreprises = {
         numeral: 'I',
         signature: true,
         title: "L'IA au quotidien",
-        href: routes['Conf-ia-au-quotidien.dc.html'],
+        href: '/conferences/ia-au-quotidien/',
         summary:
           "Ce que l'IA sait faire, ce qu'elle invente, et les méthodes des professionnels pour s'en servir sans cesser de réfléchir.",
         forYou:
@@ -185,14 +188,14 @@ export const entreprises = {
       {
         numeral: 'II',
         title: 'Arnaques et IA',
-        href: routes['Conf-arnaques-ia.dc.html'],
+        href: '/conferences/arnaques-ia/',
         summary:
           "Voix clonées, faux conseillers, usurpation de numéro : reconnaître les arnaques rendues crédibles par l'IA, et savoir quoi faire.",
         forYou:
           '« Fraude au président, version 2026 ». Voix clonées, faux fournisseurs, demande urgente de changement de RIB : les réflexes qui protègent.',
         formats: ['Keynote', 'Conférence', 'Atelier', 'Cycle'],
       },
-    ] satisfies PublicRecommendedConference[],
+    ],
     otherTitle: 'Autres exemples de sujets',
     others: [
       {
@@ -226,13 +229,13 @@ export const entreprises = {
         detail: 'Pour les managers et les ressources humaines.',
         tag: 'Sur demande',
       },
-    ] satisfies PublicTopic[],
+    ],
     othersNote:
       'Les sujets « Sur demande » sont des conférences construites, proposées sur demande : programme envoyé par e-mail.',
     link: {
       label: 'Voir toutes les conférences et leurs formats',
-      href: routes['Conferences.dc.html'],
-    } satisfies PublicLink,
+      href: '/conferences/',
+    },
   },
 
   takeaways: {
@@ -268,7 +271,7 @@ export const entreprises = {
           ['Une attestation de présence', { marker: '[À PRODUIRE]' }],
         ],
       },
-    ] satisfies PublicTakeawayGroup[],
+    ],
   },
 
   steps: {
@@ -287,11 +290,11 @@ export const entreprises = {
         title: "L'intervention, puis le suivi",
         text: 'Ressources envoyées après la session. Un point de bilan avec vous.',
       },
-    ] satisfies PublicStep[],
+    ],
     team: {
       text: "Qui intervient : Clara Peron et Paul Loustaunau, ensemble. Clara porte la pédagogie et le passage à l'action, Paul les démonstrations et les méthodes des équipes professionnelles.",
-      link: { label: 'Parcours et démarche', href: routes['A-propos.dc.html'] },
-    } satisfies PublicTeamNote,
+      link: { label: 'Parcours et démarche', href: '/a-propos/' },
+    },
   },
 
   faq: {
@@ -321,7 +324,7 @@ export const entreprises = {
         answer:
           "Oui, pour les sessions courtes : keynote, conférence, format CSE. Les ateliers se déroulent sur site, chez vous : les mises en situation y fonctionnent mieux. Basés dans le Sud-Ouest, nous intervenons partout en France ; les frais de déplacement et d'hébergement sont indiqués dès le devis.",
       },
-    ] satisfies PublicFaqItem[],
+    ],
   },
 
   cta: {
@@ -329,6 +332,6 @@ export const entreprises = {
     title: 'Préparons votre séminaire ou votre sensibilisation',
     lead: 'Décrivez-nous votre besoin en quelques lignes. Réponse et proposition sous 48 h.',
     ctaLabel: 'Demander une proposition',
-    ctaHref: routes['Contact.dc.html'],
-  } satisfies PublicCta,
-};
+    ctaHref: '/contact/',
+  },
+} satisfies PublicPage;

@@ -10,8 +10,8 @@
  * Aucune logique interactive (la classe Component de la maquette est vide) ; la FAQ est en <details>.
  *
  * [SI RÉFÉRENCEMENT ADAGE OBTENU] : question pass Culture prête dans src/data/publics/education.ts
- * (interrupteur ADAGE_REFERENCE). Tant qu'il vaut false, elle n'est ni affichée ni balisée, et la
- * note de relecture de la maquette reste visible.
+ * (champ faq.pending, interrupteur `published`). Tant qu'il vaut false, elle n'est ni affichée ni
+ * balisée, et la note de relecture de la maquette reste visible.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Section from '../../components/Section.astro';
@@ -28,40 +28,18 @@ import TakeawayColumns from '../../components/publics/TakeawayColumns.astro';
 import StepList from '../../components/publics/StepList.astro';
 import IntervenantsNote from '../../components/publics/IntervenantsNote.astro';
 import PublicFaq from '../../components/publics/PublicFaq.astro';
-import { publicPageJsonLd } from '../../components/publics/json-ld';
-import { ADAGE_REFERENCE, education as page } from '../../data/publics/education';
+import { publicPageJsonLd, visibleFaqItems } from '../../components/publics/json-ld';
+import { education as page } from '../../data/publics/education';
 
 const { title, description } = page.seo;
+const { pending } = page.faq;
+const faqItems = visibleFaqItems(page);
 
-const faqItems = ADAGE_REFERENCE ? [...page.faq.items, page.faq.passCulture] : page.faq.items;
-
-const jsonLd = publicPageJsonLd({
-  path: '/education/',
-  title,
-  description,
-  crumb: page.hero.crumb,
-  service: {
-    name: "Interventions sur l'IA pour les collèges, les lycées et les parents",
-    serviceType: "Intervention de sensibilisation à l'intelligence artificielle",
-    description: [page.hero.lead, ...page.hero.paragraphs].join(' '),
-    audience: [
-      { '@type': 'EducationalAudience', educationalRole: 'student', audienceType: 'Élèves' },
-      { '@type': 'EducationalAudience', educationalRole: 'teacher', audienceType: 'Enseignants' },
-      { '@type': 'EducationalAudience', educationalRole: 'parent', audienceType: 'Parents' },
-    ],
-    about: [
-      { '@type': 'Thing', name: 'Intelligence artificielle' },
-      { '@type': 'Thing', name: 'Éducation aux médias' },
-      { '@type': 'Thing', name: 'Esprit critique' },
-      { '@type': 'Thing', name: 'Cyberharcèlement' },
-    ],
-  },
-  faq: faqItems,
-});
+const jsonLd = publicPageJsonLd(page);
 ---
 
 <BaseLayout title={title} description={description} current="education" jsonLd={jsonLd}>
-  <PublicHero {...page.hero} />
+  <PublicHero {...page.hero} homeLabel={page.labels.home} />
 
   <Section id="enjeux" labelledby="titre-enjeux">
     <PublicSectionHead id="titre-enjeux" eyebrow={page.stakes.eyebrow}>
@@ -85,7 +63,12 @@ const jsonLd = publicPageJsonLd({
     <PublicSectionHead id="titre-formats" eyebrow={page.formats.eyebrow} lead={page.formats.lead}>
       {page.formats.title}
     </PublicSectionHead>
-    <PublicFormats items={page.formats.items} footnote={page.formats.note} />
+    <PublicFormats
+      items={page.formats.items}
+      footnote={page.formats.note}
+      durationLabel={page.labels.duration}
+      participantsLabel={page.labels.participants}
+    />
   </Section>
 
   <Section id="sujets" labelledby="titre-sujets" tone="sunk">
@@ -96,7 +79,7 @@ const jsonLd = publicPageJsonLd({
     >
       {page.conferences.title}
     </PublicSectionHead>
-    <PublicConferenceGrid items={page.conferences.items} />
+    <PublicConferenceGrid items={page.conferences.items} labels={page.labels} />
     <TopicList title={page.conferences.otherTitle} items={page.conferences.others} />
     <div class="more">
       <ArrowLink href={page.conferences.link.href}>{page.conferences.link.label}</ArrowLink>
@@ -123,7 +106,7 @@ const jsonLd = publicPageJsonLd({
       {page.faq.title}
     </PublicSectionHead>
     <PublicFaq items={faqItems} />
-    {!ADAGE_REFERENCE && <p class="review-note m42-reveal">{page.faq.reviewNote}</p>}
+    {!pending.published && <p class="review-note m42-reveal">{pending.reviewNote}</p>}
   </Section>
 
   <CtaBand id="titre-contact" {...page.cta} />

@@ -144,3 +144,121 @@ export interface PublicTimelineSequence {
   /** Règle à retenir (citation sous le texte). */
   rule?: string;
 }
+
+/* Page complète : un enregistrement Directus `publics`, sérialisable en JSON (chaînes, nombres,
+   booléens, tableaux, objets ; ni fonction, ni image importée, ni valeur calculée depuis un autre
+   module). Les sections propres à une page sont facultatives. */
+
+/** Ouverture de section (composant PublicSectionHead) : sur-titre, H2, chapô facultatif. */
+export interface PublicSectionIntro {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+}
+
+/** Public visé (JSON-LD du Service) : `Audience`, ou `EducationalAudience` si `educationalRole`. */
+export interface PublicServiceAudience {
+  audienceType: string;
+  /** Rôle schema.org (student, teacher, parent). */
+  educationalRole?: string;
+}
+
+/** Service décrit par le JSON-LD de la page ; sa description reprend le texte de l'en-tête. */
+export interface PublicServiceSeo {
+  name: string;
+  serviceType: string;
+  audience: PublicServiceAudience[];
+  /** Sujets traités (`Thing`), dans l'ordre. */
+  about?: string[];
+  /** Ajoute la note sous les formats à la description (zone sans frais de déplacement). */
+  descriptionWithFormatsNote?: boolean;
+}
+
+export interface PublicSeo {
+  /** Balise title et meta description (commentaire SEO de la maquette). */
+  title: string;
+  description: string;
+  service: PublicServiceSeo;
+}
+
+/** Intitulés d'interface des pages « Pour qui » (repris tels quels de la maquette). */
+export interface PublicLabels {
+  /** Premier élément du fil d'Ariane (« Accueil »), repris dans le JSON-LD. */
+  home: string;
+  /** Début de la ligne propre au public sur les cartes de conférence (« Pour vous : »). */
+  forYou: string;
+  /** Mention de la conférence signature (étoile or). */
+  signature: string;
+  /** Faux lien en bas des cartes de conférence (« Voir le programme »). */
+  conferenceCta: string;
+  /** Intitulés des colonnes de la liste des formats. */
+  duration: string;
+  participants: string;
+}
+
+/** Schéma en étapes fléchées (composant PublicFlow). */
+export interface PublicFlowSection extends PublicSectionIntro {
+  /** Nom accessible de la liste. */
+  label: string;
+  items: PublicFlowStep[];
+  /** Encadré sous le schéma. */
+  note?: string;
+}
+
+/**
+ * Question de FAQ suspendue à une condition (page Éducation : [SI RÉFÉRENCEMENT ADAGE OBTENU]).
+ * Tant que `published` vaut false, la question n'est ni affichée ni balisée (FAQPage), et la note
+ * de relecture reste visible sous la FAQ.
+ */
+export interface PublicPendingFaqItem {
+  published: boolean;
+  item: PublicFaqItem;
+  reviewNote: string;
+}
+
+/** Une page « Pour qui » entière (un enregistrement de la collection `publics`). */
+export interface PublicPage {
+  /** Segment d'URL : la page est servie sous `/<slug>/`. */
+  slug: string;
+  seo: PublicSeo;
+  labels: PublicLabels;
+  hero: PublicHeroData;
+  stakes: PublicSectionIntro & { items: PublicStake[] };
+  /** Entreprises : règle vert / orange / rouge. */
+  colorRule?: PublicSectionIntro & { cards: PublicColorRuleCard[]; note: PublicRichText };
+  /** Éducation : « Trois publics, un même langage » (ordre Élèves, Enseignants, Parents). */
+  audiences?: PublicSectionIntro & { items: PublicAudience[] };
+  /** Associations : schéma « Le relais ». */
+  relay?: PublicFlowSection;
+  formats: PublicSectionIntro & {
+    items: PublicFormat[];
+    /** Paragraphe sous la liste. */
+    note?: string;
+    link?: PublicLink;
+  };
+  /** Événements : exemple de déroulé d'une keynote (section nuit). */
+  rundown?: PublicSectionIntro & {
+    /** Minute du repère final de la frise. */
+    end: string;
+    legend: string;
+    sequences: PublicTimelineSequence[];
+    note?: string;
+    link?: PublicLink;
+  };
+  /** Événements : kit organisateur. */
+  kit?: PublicSectionIntro & { link: PublicLink; items: PublicRichText[] };
+  conferences: PublicSectionIntro & {
+    items: PublicRecommendedConference[];
+    otherTitle: string;
+    others: PublicTopic[];
+    /** Note sous « Autres exemples de sujets ». */
+    othersNote?: string;
+    link: PublicLink;
+  };
+  takeaways: PublicSectionIntro & { groups: PublicTakeawayGroup[] };
+  steps: PublicSectionIntro & { items: PublicStep[]; team: PublicTeamNote };
+  /** Collectivités : « Commander une intervention » et sa source. */
+  order?: PublicFlowSection & { source: string };
+  faq: PublicSectionIntro & { items: PublicFaqItem[]; pending?: PublicPendingFaqItem };
+  cta: PublicCta;
+}

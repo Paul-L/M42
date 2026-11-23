@@ -1,21 +1,7 @@
 // Page « Collectivités » (kit/maquette/Collectivites.dc.html) : textes repris mot pour mot.
 // Structure prête pour la collection Directus `publics` (un enregistrement par page « Pour qui »).
 
-import { routes } from '../routes';
-import type {
-  PublicCta,
-  PublicFaqItem,
-  PublicFlowStep,
-  PublicFormat,
-  PublicHeroData,
-  PublicLink,
-  PublicRecommendedConference,
-  PublicStake,
-  PublicStep,
-  PublicTakeawayGroup,
-  PublicTeamNote,
-  PublicTopic,
-} from './types';
+import type { PublicPage } from './types';
 
 export const collectivites = {
   slug: 'collectivites',
@@ -23,6 +9,26 @@ export const collectivites = {
     title: 'Conférences IA pour collectivités et médiathèques | M42',
     description:
       'Arnaques, fausses infos, IA au quotidien : des conférences et ateliers pour vos habitants, vos agents et vos élus. CCAS, médiathèques, France Services.',
+    service: {
+      name: "Conférences et ateliers sur l'IA et les arnaques pour les collectivités",
+      serviceType: 'Conférence et atelier de sensibilisation',
+      audience: [
+        { audienceType: 'Habitants et grand public' },
+        { audienceType: 'Agents de collectivités, CCAS et France Services' },
+        { audienceType: 'Médiathèques' },
+        { audienceType: 'Élus locaux' },
+      ],
+      descriptionWithFormatsNote: true,
+    },
+  },
+
+  labels: {
+    home: 'Accueil',
+    forYou: 'Pour vous : ',
+    signature: 'Conférence signature',
+    conferenceCta: 'Voir le programme',
+    duration: 'Durée',
+    participants: 'Participants',
   },
 
   hero: {
@@ -34,11 +40,11 @@ export const collectivites = {
       "Des conférences et des ateliers sur l'intelligence artificielle et les arnaques leur apportent des réponses claires, sans jargon, dans vos salles : CCAS, médiathèques, France Services, mairies.",
       'Habitants, agents en première ligne, élus : chacun son format, les mêmes repères.',
     ],
-    primary: { label: 'Demander un devis', href: routes['Contact.dc.html'] },
+    primary: { label: 'Demander un devis', href: '/contact/' },
     secondary: { label: 'Voir comment commander', href: '#commande' },
     photo:
       "[Photo : atelier en médiathèque, un petit groupe d'habitants, téléphone en main, l'intervenante en amorce, 4:5, à produire]",
-  } satisfies PublicHeroData,
+  },
 
   stakes: {
     eyebrow: 'Vos enjeux',
@@ -57,7 +63,7 @@ export const collectivites = {
         title: "Encadrer l'usage de l'IA dans les services",
         text: 'Données des usagers, confidentialité, fiabilité des réponses : les règles doivent être posées avant les habitudes.',
       },
-    ] satisfies PublicStake[],
+    ],
   },
 
   formats: {
@@ -83,13 +89,13 @@ export const collectivites = {
         duration: '1 h 30 à 2 h',
         participants: 'Conseil municipal ou commission',
       },
-    ] satisfies PublicFormat[],
+    ],
     note: "Salle des fêtes, médiathèque, CCAS, mairie : l'intervention se tient chez vous. Béarn, Pays basque, Landes : sans frais de déplacement. Ailleurs en France, les frais sont indiqués dès le devis.",
     link: {
       label:
         'Vous portez le projet avec une association ou un CCAS ? Les ateliers pour les associations',
-      href: routes['Associations.dc.html'],
-    } satisfies PublicLink,
+      href: '/associations/',
+    },
   },
 
   conferences: {
@@ -101,7 +107,7 @@ export const collectivites = {
       {
         numeral: 'II',
         title: 'Arnaques et IA',
-        href: routes['Conf-arnaques-ia.dc.html'],
+        href: '/conferences/arnaques-ia/',
         summary: 'Voix clonées, faux conseillers, faux SMS : les reconnaître et réagir.',
         forYou: '« Arnaques 2026 », avec le jeu « Arnaque ou pas ? » et la fiche des bons numéros.',
         formats: ['Keynote', 'Conférence', 'Atelier', 'Cycle'],
@@ -109,7 +115,7 @@ export const collectivites = {
       {
         numeral: 'III',
         title: 'Vrai ou faux ?',
-        href: routes['Conf-desinformation-ia.dc.html'],
+        href: '/conferences/desinformation-ia/',
         summary:
           "Repérer les fausses images, vidéos et faux sites d'information, avec une méthode en quatre étapes.",
         forYou: 'Neutralité politique stricte : des mécanismes, jamais des opinions.',
@@ -119,7 +125,7 @@ export const collectivites = {
         numeral: 'I',
         signature: true,
         title: "L'IA au quotidien",
-        href: routes['Conf-ia-au-quotidien.dc.html'],
+        href: '/conferences/ia-au-quotidien/',
         summary: "Ce qu'elle sait faire, ce qu'elle invente, comment bien s'en servir.",
         forYou: 'Une conférence grand public, idéale en médiathèque ou en France Services.',
         formats: ['Keynote', 'Conférence', 'Atelier', 'Cycle'],
@@ -127,13 +133,13 @@ export const collectivites = {
       {
         numeral: 'IV',
         title: 'Parents, ados et IA',
-        href: routes['Conf-parents-ados-ia.dc.html'],
+        href: '/conferences/parents-ados-ia/',
         summary:
           'Devoirs, réseaux sociaux, cyberharcèlement : des repères clairs pour les familles.',
         forYou: 'Une soirée pour les familles, avec la charte numérique de la famille.',
         formats: ['Keynote', 'Conférence', 'Atelier', 'Cycle'],
       },
-    ] satisfies PublicRecommendedConference[],
+    ],
     otherTitle: 'Pour vos agents et vos services',
     others: [
       {
@@ -144,11 +150,11 @@ export const collectivites = {
         title: "L'IA dans les services de la collectivité",
         detail: 'Usages utiles, données à protéger, règles communes.',
       },
-    ] satisfies PublicTopic[],
+    ],
     link: {
       label: 'Voir toutes les conférences et leurs formats',
-      href: routes['Conferences.dc.html'],
-    } satisfies PublicLink,
+      href: '/conferences/',
+    },
   },
 
   takeaways: {
@@ -194,7 +200,7 @@ export const collectivites = {
           ["Un bilan après l'intervention ", { marker: '[À PRODUIRE]' }],
         ],
       },
-    ] satisfies PublicTakeawayGroup[],
+    ],
   },
 
   steps: {
@@ -213,11 +219,11 @@ export const collectivites = {
         title: "L'intervention et le bilan",
         text: 'Participation, questions posées, suites possibles : de quoi alimenter vos rapports.',
       },
-    ] satisfies PublicStep[],
+    ],
     team: {
       text: "Qui intervient : Clara Peron, formatrice d'adultes, et Paul Loustaunau, qui conçoit l'IA au quotidien, animent chaque intervention ensemble.",
-      link: { label: 'Parcours et démarche', href: routes['A-propos.dc.html'] },
-    } satisfies PublicTeamNote,
+      link: { label: 'Parcours et démarche', href: '/a-propos/' },
+    },
   },
 
   order: {
@@ -242,7 +248,7 @@ export const collectivites = {
           ', paiement par mandat administratif.',
         ],
       },
-    ] satisfies PublicFlowStep[],
+    ],
     source:
       "Source : Code de la commande publique, article R2122-8, modifié par le décret n° 2025-1386 du 29 décembre 2025 (applicable depuis le 1er avril 2026) ; seuils confirmés par le Conseil d'État le 19 octobre 2026. Ce schéma simplifié ne remplace pas l'avis de votre service de la commande publique.",
   },
@@ -274,7 +280,7 @@ export const collectivites = {
           " : une affiche et un texte prêt à publier dans le bulletin municipal et sur vos réseaux. Le jour même, le contenu s'adapte au public présent.",
         ],
       },
-    ] satisfies PublicFaqItem[],
+    ],
   },
 
   cta: {
@@ -282,6 +288,6 @@ export const collectivites = {
     title: 'Organisons une conférence dans votre commune',
     lead: 'Des formats adaptés aux budgets des collectivités et des associations. Devis gratuit sous 48 h.',
     ctaLabel: 'Demander un devis',
-    ctaHref: routes['Contact.dc.html'],
-  } satisfies PublicCta,
-};
+    ctaHref: '/contact/',
+  },
+} satisfies PublicPage;
