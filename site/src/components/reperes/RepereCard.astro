@@ -6,7 +6,7 @@
  * - bientot : carte en pointillés, non cliquable, pastille « Bientôt » et marqueur [À PRODUIRE].
  * `data-publics` sert au filtrage par l'îlot de RepereLibrary.
  */
-import { pourLabel, type Repere } from '../../data/reperes';
+import { bibliotheque, pourLabel, type Repere } from '../../data/reperes';
 
 interface Props {
   repere: Repere;
@@ -36,12 +36,12 @@ const publics = repere.publics.join(' ');
   <article class="soon" data-repere data-publics={publics}>
     <div class="soon-top">
       <p class="type type--soon">{repere.type}</p>
-      <span class="badge">Bientôt</span>
+      <span class="badge">{bibliotheque.bientot.badge}</span>
     </div>
     <h3 class="title">{repere.titre}</h3>
     <p class="desc desc--soon">{repere.description}</p>
     <p class="pour">{pour}</p>
-    <p class="todo">[À PRODUIRE]</p>
+    <p class="todo">{bibliotheque.bientot.marqueur}</p>
   </article>
 )}
 

@@ -10,16 +10,22 @@
 import Container from '../Container.astro';
 import Eyebrow from '../Eyebrow.astro';
 import RepereCard from './RepereCard.astro';
-import { repereFilters, reperesBientot, reperesDisponibles, resumeLabel } from '../../data/reperes';
+import {
+  bibliotheque as b,
+  repereFilters,
+  reperesBientot,
+  reperesDisponibles,
+  resumeLabel,
+} from '../../data/reperes';
 
 const resume = resumeLabel('tous', reperesDisponibles.length, reperesBientot.length);
 ---
 
 <section id="bibliotheque" aria-labelledby="dispo-t" class="library" data-reperes>
   <Container>
-    <Eyebrow>La bibliothèque</Eyebrow>
+    <Eyebrow>{b.surTitre}</Eyebrow>
     <h2 id="dispo-t" class="h2">
-      Disponibles maintenant
+      {b.titre}
     </h2>
     <div role="group" aria-labelledby="filtre-t" class="filters">
       <p id="filtre-t" class="filters-label">
@@ -47,12 +53,9 @@ const resume = resumeLabel('tous', reperesDisponibles.length, reperesBientot.len
     {reperesBientot.length > 0 && (
       <div class="soon-block" data-bientot>
         <h2 id="bientot-t" class="h2-soon">
-          En préparation
+          {b.bientot.titre}
         </h2>
-        <p class="soon-lead">
-          Ces repères sont en cours d'écriture et de vérification. Pour être prévenu de leur sortie,
-          inscrivez-vous à la lettre ci-dessous.
-        </p>
+        <p class="soon-lead" set:html={b.bientot.chapo} />
         <div class="grid">
           {reperesBientot.map((r) => (
             <RepereCard repere={r} />

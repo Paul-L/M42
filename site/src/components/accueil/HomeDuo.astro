@@ -6,10 +6,11 @@
  */
 import ArrowLink from '../ArrowLink.astro';
 import Container from '../Container.astro';
+import { duo } from '../../data/accueil';
 import { intervenants } from '../../data/intervenants';
-import { routes } from '../../data/routes';
 
 const [clara, paul] = intervenants;
+const t = duo.texte;
 ---
 
 <section id="duo" aria-labelledby="titre-duo" class="duo">
@@ -17,16 +18,18 @@ const [clara, paul] = intervenants;
     <div class="row m42-reveal">
       <div class="text">
         <h2 id="titre-duo" class="label">
-          Qui intervient
+          {duo.titre}
         </h2>
         <p class="body">
-          Les interventions M42 sont conçues et animées par <strong>{clara?.nom}</strong>,
-          formatrice d'adultes, et <strong>{paul?.nom}</strong>, qui conçoit et déploie des systèmes
-          d'IA en entreprise [À VALIDER]. La pédagogie de l'une, la pratique de l'autre.
+          <Fragment set:html={t.avant} />
+          <strong>{clara?.nom}</strong>
+          <Fragment set:html={t.apresClara} />
+          <strong>{paul?.nom}</strong>
+          <Fragment set:html={t.apresPaul} />
         </p>
       </div>
       <div class="link">
-        <ArrowLink href={routes['A-propos.dc.html']}>Parcours et démarche</ArrowLink>
+        <ArrowLink href={duo.lien.href}>{duo.lien.label}</ArrowLink>
       </div>
     </div>
   </Container>

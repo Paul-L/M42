@@ -1,12 +1,31 @@
-// Contenus de la page Repères (kit/maquette/Reperes.dc.html) : bibliothèque des repères et filtres.
-// Forme prévue pour la collection Directus `ressources` (phase 3) : un enregistrement par repère,
-// avec type, publics, statut (disponible / bientôt) et lien.
+// Contenus de la page Repères (kit/maquette/Reperes.dc.html) : en-tête, bibliothèque des repères,
+// lettre mensuelle, « Pour aller plus loin ». Texte exact de la maquette, marqueurs [À …] conservés.
+//
+// Trois parties :
+// 1. Interface : micro-texte et logique des filtres (îlot de RepereLibrary) et du formulaire de la
+//    lettre. Reste dans le code.
+// 2. Contenus : données sérialisables en JSON (chaînes, nombres, booléens, tableaux, objets simples).
+//    Les repères (`reperes`) sont prévus pour la collection Directus `ressources` : un
+//    enregistrement par repère, objets plats (href et cta absents pour les repères « bientôt »).
+// 3. Valeurs calculées : repères disponibles et « bientôt », dérivés de `reperes`.
+//
+// Attention : l'îlot de RepereLibrary importe ce module, et le bundle client garde tout ce qui lit
+// `routes[…]` (lecture de propriété non éliminée). Les liens des contenus de page sont donc des
+// clés de src/data/routes.ts (`page`), résolues au rendu ; l'ordre des parties 1 à 3 et la forme
+// de `reperes` ne doivent pas changer sans accepter un nouveau bundle client.
 //
 // [À DÉCIDER] 12_growth_satellites 4.8 dit « pas de « bientôt » en ligne ». Les cartes « Bientôt »
 // sont là pour la relecture : les masquer à la mise en ligne (AFFICHER_BIENTOT = false),
 // ou les garder sans date annoncée.
+//
+// Les champs notés « HTML » sont rendus tels quels (set:html), comme l'était le texte écrit
+// en dur dans le gabarit (apostrophes non échappées).
 
-import { routes } from './routes';
+import { routes, type MaquetteFile } from './routes';
+
+/* ------------------------------------------------------------------------------------------ */
+/* Types                                                                                      */
+/* ------------------------------------------------------------------------------------------ */
 
 /** Publics des filtres (clés de la maquette). */
 export type RepereAudience = 'vous' | 'equipes' | 'habitants' | 'eleves';
@@ -31,8 +50,18 @@ export interface Repere {
   cta?: string;
 }
 
+/** Lien interne : libellé et page cible (clé de src/data/routes.ts). */
+export interface LienPage {
+  label: string;
+  page: MaquetteFile;
+}
+
 /** Affiche le bloc « En préparation » (voir le [À DÉCIDER] en tête de fichier). */
 export const AFFICHER_BIENTOT = true;
+
+/* ------------------------------------------------------------------------------------------ */
+/* 1. Interface (filtres de la bibliothèque, formulaire de la lettre) : reste dans le code      */
+/* ------------------------------------------------------------------------------------------ */
 
 /** Boutons de filtre, dans l'ordre de la maquette. */
 export const repereFilters: { key: RepereFilter; label: string }[] = [
@@ -69,6 +98,58 @@ export function resumeLabel(filter: RepereFilter, disponibles: number, bientot: 
   return `${nom} : ${disponibles}${n}, ${bientot} en préparation.`;
 }
 
+/** Profils de la lettre mensuelle (« Vous êtes », facultatif). */
+export const lettreProfils: { value: string; label: string }[] = [
+  { value: 'particulier', label: 'Un particulier' },
+  { value: 'entreprise', label: 'Une entreprise' },
+  { value: 'collectivite', label: 'Une collectivité' },
+  { value: 'etablissement', label: 'Un établissement scolaire' },
+  { value: 'association', label: 'Une association' },
+];
+
+/* ------------------------------------------------------------------------------------------ */
+/* 2. Contenus                                                                                */
+/* ------------------------------------------------------------------------------------------ */
+
+/** Title et meta description (commentaire SEO de la maquette). */
+export const seo = {
+  title: "Repères gratuits sur l'IA : tests, méthodes et fiches pratiques | M42.guide",
+  description:
+    "Reconnaître une arnaque, vérifier une image, poser des règles d'usage de l'IA : des outils gratuits et sans inscription, pour vous, vos équipes, vos habitants ou vos élèves.",
+};
+
+/** Fil d'Ariane (repris dans le BreadcrumbList du JSON-LD). La page courante n'a pas de lien. */
+export const ariane: { label: string; page?: MaquetteFile }[] = [
+  { label: 'Accueil', page: 'Main.dc.html' },
+  { label: 'Repères' },
+];
+
+export const entete = {
+  surTitre: 'Outils gratuits · Sans inscription',
+  /** HTML. */
+  titre: "Repères pour garder la main sur l'IA",
+  chapo:
+    'Des tests, des méthodes et des fiches à utiliser tout de suite : pour vous, pour vos équipes, pour les habitants de votre commune ou pour vos élèves. Chacun se lit ou se fait en quelques minutes, gratuitement.',
+};
+
+export const bibliotheque = {
+  surTitre: 'La bibliothèque',
+  titre: 'Disponibles maintenant',
+  /** Nom de la liste des repères disponibles dans le JSON-LD (ItemList). */
+  listeNom: 'Repères disponibles',
+  bientot: {
+    titre: 'En préparation',
+    /** HTML. */
+    chapo:
+      "Ces repères sont en cours d'écriture et de vérification. Pour être prévenu de leur sortie, inscrivez-vous à la lettre ci-dessous.",
+    /** Pastille des cartes « bientôt ». */
+    badge: 'Bientôt',
+    /** Marqueur affiché sur les cartes « bientôt ». */
+    marqueur: '[À PRODUIRE]',
+  },
+};
+
+/** Repères (future collection Directus `ressources`), dans l'ordre d'affichage. */
 export const reperes: Repere[] = [
   {
     id: 'arnaque-ou-pas',
@@ -171,14 +252,54 @@ export const reperes: Repere[] = [
   },
 ];
 
+/** Lettre mensuelle (section #lettre). Libellés du formulaire et messages : dans LettreSignup. */
+export const lettre: {
+  surTitre: string;
+  titre: string;
+  chapo: string;
+  points: string[];
+  nom: string;
+  mention: { texte: string; lien: LienPage };
+} = {
+  surTitre: 'Une fois par mois',
+  titre: 'Recevoir les nouveaux repères',
+  chapo: 'Chaque nouveau repère, dès sa sortie, et une lettre courte qui se lit en trois minutes.',
+  /** Ce que contient la lettre (numérotés 01 à 04 au rendu). */
+  points: [
+    'Un chiffre sourcé, expliqué en trois phrases.',
+    "Une arnaque, une fausse image ou une erreur d'IA, décortiquée.",
+    'Une règle à appliquer dans la semaine.',
+    'Une ressource utile : un nouveau repère, ou un outil public (Cybermalveillance.gouv.fr, CNIL).',
+  ],
+  nom: 'Nom de la lettre : « Repères » [À VALIDER]',
+  /** Mention sous le bouton : texte, puis lien vers la politique de confidentialité et un point. */
+  mention: {
+    texte:
+      'Une lettre par mois, désinscription en un clic dans chaque envoi. Votre adresse sert uniquement à vous envoyer cette lettre. Responsable : [À COMPLÉTER : entité éditrice]. Détails et droits :',
+    lien: { label: 'Politique de confidentialité', page: 'Confidentialite.dc.html' },
+  },
+};
+
+/** Bandeau « Pour aller plus loin » (fin de page). Auteurs : « {avant} <a>{lien}</a>. » */
+export const plusLoin: {
+  label: string;
+  texte: string;
+  lien: LienPage;
+  auteurs: { avant: string; lien: LienPage };
+} = {
+  /** Nom accessible de la section. */
+  label: 'Pour aller plus loin',
+  texte: 'Pour aller plus loin avec un groupe :',
+  lien: { label: 'les conférences', page: 'Conferences.dc.html' },
+  auteurs: {
+    avant: 'Repères écrits et vérifiés par',
+    lien: { label: 'Clara Peron et Paul Loustaunau', page: 'A-propos.dc.html' },
+  },
+};
+
+/* ------------------------------------------------------------------------------------------ */
+/* 3. Valeurs calculées (pas du contenu)                                                      */
+/* ------------------------------------------------------------------------------------------ */
+
 export const reperesDisponibles = reperes.filter((r) => r.statut === 'disponible');
 export const reperesBientot = AFFICHER_BIENTOT ? reperes.filter((r) => r.statut === 'bientot') : [];
-
-/** Profils de la lettre mensuelle (« Vous êtes », facultatif). */
-export const lettreProfils: { value: string; label: string }[] = [
-  { value: 'particulier', label: 'Un particulier' },
-  { value: 'entreprise', label: 'Une entreprise' },
-  { value: 'collectivite', label: 'Une collectivité' },
-  { value: 'etablissement', label: 'Un établissement scolaire' },
-  { value: 'association', label: 'Une association' },
-];

@@ -7,21 +7,18 @@
  */
 import Container from '../Container.astro';
 import Eyebrow from '../Eyebrow.astro';
-import { reperes } from '../../data/accueil';
-import { routes } from '../../data/routes';
+import { reperes, reperesTexte as t } from '../../data/accueil';
 ---
 
 <section id="reperes" aria-labelledby="titre-reperes" class="reperes">
   <Container>
-    <Eyebrow class="m42-reveal">Repères</Eyebrow>
+    <Eyebrow class="m42-reveal">{t.surTitre}</Eyebrow>
     <div class="row m42-reveal">
-      <h2 id="titre-reperes" class="title">
-        À utiliser dès aujourd'hui
-      </h2>
+      <h2 id="titre-reperes" class="title" set:html={t.titre} />
       <p class="lead">
-        Des outils gratuits, simples et vérifiés, pour vous, vos équipes ou vos habitants.{' '}
-        <a href={routes['Reperes.dc.html']} class="more">
-          Tous les repères{' '}
+        {t.chapo}{' '}
+        <a href={t.lien.href} class="more">
+          {t.lien.label}{' '}
           <span class="arrow-i" aria-hidden="true">
             →
           </span>

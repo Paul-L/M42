@@ -23,11 +23,13 @@ import { contactTexte as t } from '../../data/accueil';
     <div class="actions">
       <Button href={t.cta.href}>{t.cta.label}</Button>
       <p class="contact">
-        Clara : <a href="mailto:clara@m42.guide">clara@m42.guide</a>
-        <br />
-        Paul : <a href="mailto:paul@m42.guide">paul@m42.guide</a>
-        <br />
-        [À COMPLÉTER : téléphone]
+        {t.contacts.map((c) => (
+          <>
+            {c.nom} : <a href={`mailto:${c.email}`}>{c.email}</a>
+            <br />
+          </>
+        ))}
+        {t.telephone}
       </p>
     </div>
   </div>
