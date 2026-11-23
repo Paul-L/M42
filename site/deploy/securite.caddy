@@ -1,14 +1,15 @@
 # En-têtes communs (production et préproduction).
+# FRAME_ANCESTORS : qui peut afficher le site dans un cadre ('none' ; en préproduction,
+# https://cms.m42.guide pour l'aperçu dans Directus).
 encode zstd gzip
 
 header {
 	# CSP stricte : aucun script ni style en ligne (Astro : inlineStylesheets « never », aucun attribut style).
-	Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' {$CMS_ORIGIN}; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
+	Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' {$CMS_ORIGIN}; form-action 'self'; frame-ancestors {$FRAME_ANCESTORS:'none'}; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
 	Strict-Transport-Security "max-age=31536000; includeSubDomains"
 	Referrer-Policy "strict-origin-when-cross-origin"
 	Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
 	X-Content-Type-Options "nosniff"
-	X-Frame-Options "DENY"
 	Cross-Origin-Opener-Policy "same-origin"
 	-Server
 }

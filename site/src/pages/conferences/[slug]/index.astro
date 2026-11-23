@@ -9,7 +9,7 @@ import IaAuQuotidien from '../../../components/conferences/pages/IaAuQuotidien.a
 import ArnaquesIa from '../../../components/conferences/pages/ArnaquesIa.astro';
 import DesinformationIa from '../../../components/conferences/pages/DesinformationIa.astro';
 import ParentsAdosIa from '../../../components/conferences/pages/ParentsAdosIa.astro';
-import { conferences } from '../../../lib/cms/contenu';
+import { conference, conferences } from '../../../lib/cms/contenu';
 import type { ConferenceComplete } from '../../../lib/cms/registre';
 
 export async function getStaticPaths() {
@@ -28,7 +28,9 @@ const GABARITS = {
   'parents-ados-ia': ParentsAdosIa,
 } as const;
 
-const { conf } = Astro.props as { conf: ConferenceComplete };
+// Relu par slug (et non pris dans les props) : en aperçu, le serveur de développement garde
+// le résultat de getStaticPaths en cache ; au build, la lecture est déjà en cache.
+const conf: ConferenceComplete = await conference(Astro.params.slug!);
 const Gabarit = GABARITS[conf.slug as keyof typeof GABARITS];
 ---
 

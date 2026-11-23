@@ -9,7 +9,7 @@ import Evenements from '../../components/publics/pages/Evenements.astro';
 import Collectivites from '../../components/publics/pages/Collectivites.astro';
 import Education from '../../components/publics/pages/Education.astro';
 import Associations from '../../components/publics/pages/Associations.astro';
-import { publics } from '../../lib/cms/contenu';
+import { publicPage, publics } from '../../lib/cms/contenu';
 
 export async function getStaticPaths() {
   const gabarits = ['entreprises', 'evenements', 'collectivites', 'education', 'associations'];
@@ -28,7 +28,8 @@ const GABARITS = {
   associations: Associations,
 } as const;
 
-const { page } = Astro.props;
+// Relu par slug : voir conferences/[slug] (aperçu).
+const page = await publicPage(Astro.params.public as 'entreprises');
 const Gabarit = GABARITS[page.slug as keyof typeof GABARITS];
 ---
 

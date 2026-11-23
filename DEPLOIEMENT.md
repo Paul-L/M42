@@ -58,6 +58,7 @@ Depuis `site/` sur un poste de développement :
 ```sh
 export CMS_URL=https://cms.m42.guide ADMIN_EMAIL=… ADMIN_PASSWORD=…
 npm run cms:schema && npm run cms:seed && npm run cms:roles && npm run cms:flows
+SITE_APERCU=https://preprod.m42.guide npm run cms:apparence   # logo, couleurs, menus, aperçu
 ```
 
 Les variables du build du site (jeton du compte « build », URL publique, identifiant du webhook de confirmation) sont écrites dans `cms/.env.cms.m42.guide` (non versionné) : les recopier à l'étape 4, puis supprimer ce fichier.
@@ -99,7 +100,10 @@ Même procédure que l'étape 4, avec :
 - domaine `https://preprod.m42.guide` ;
 - `M42_ENV` = `preprod` (build) : robots.txt bloque tout, chaque page est en `noindex`, Caddy ajoute `X-Robots-Tag: noindex` ;
 - `PREPROD_USER` (exécution) : identifiant ; `PREPROD_HASH` (exécution, cocher « Is Literal ») : empreinte du mot de passe, à produire avec
-  `docker run --rm caddy:2.11.9-alpine caddy hash-password --plaintext '<mot de passe>'`.
+  `docker run --rm caddy:2.11.9-alpine caddy hash-password --plaintext '<mot de passe>'` ;
+- `FRAME_ANCESTORS` (exécution) = `https://cms.m42.guide` : Directus peut afficher la préproduction à côté du formulaire (aperçu). Le site de production reste interdit d'affichage dans un cadre.
+
+L'aperçu de Directus montre la préproduction, qui est à jour après chaque déploiement. Pour un aperçu instantané (brouillons compris), utiliser `npm run apercu` en local (voir README).
 
 ## 7. Sauvegardes
 

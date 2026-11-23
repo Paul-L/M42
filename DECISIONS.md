@@ -71,3 +71,10 @@ Choix faits quand la maquette ou les consignes laissaient une ambiguïté (optio
 52. **Sauvegardes** sur le VPS (service `sauvegarde`, 14 jours). Copie hors du serveur `[À DÉCIDER]` : ressource payante, à valider.
 53. **Mise en place du contenu en production** par les scripts (`cms:schema`, `cms:seed`, `cms:roles`, `cms:flows` avec `CMS_URL`), lancés depuis un poste : les jetons pour Coolify sont écrits dans `cms/.env.<hôte>` (non versionné), jamais dans `site/.env`.
 54. **Page 404** (hors maquette, non indexée) servie par Caddy ; textes à relire (point 48).
+
+## Interface d'édition (Directus)
+
+55. **Plus de JSON à saisir** : le contenu est mis à plat dans Directus (un champ par texte, sections repliables, listes répétables, listes imbriquées). Restent en JSON 5 champs aux structures irrégulières (réponse et message du visuel de démonstration, note de la règle de couleurs et un exemple de kit sur « Pour qui », date du guide) ; ils portent une note d'avertissement. Migration faite par `cms:schema -- --nettoyer` puis `cms:seed -- --remplacer` (contenu local identique au contenu initial). Build Directus toujours identique octet pour octet au build local.
+56. **Pages dans une seule collection** (et non une collection par page) : champs préfixés et section « Contenu : <page> » visible seulement pour la page ouverte. Garde 13 collections libres sur 25.
+57. **Aperçu** : en local, `npm run apercu` (serveur de développement relisant Directus à chaque page, brouillons compris ; refusé pour un build) ; en ligne, la préproduction (à jour après chaque déploiement). Un aperçu instantané en ligne demanderait un service de rendu à la demande (Astro en mode serveur) protégé par mot de passe : à décider. L'édition directement sur la page (Visual Editor de Directus) demanderait d'annoter chaque texte du site : possible plus tard, sur la même base.
+58. **Directus : propriétaire du projet et licence** : Directus demande l'adresse du responsable du projet et l'acceptation de sa licence (fenêtre au premier accès administrateur). C'est à Paul de le faire ; je ne l'ai pas rempli.

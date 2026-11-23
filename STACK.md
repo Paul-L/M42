@@ -33,7 +33,7 @@ Versions relevées le 23 novembre 2026 (registre npm, Docker Hub, nodejs.org).
 ## Contenu : Directus au build (phase 3)
 
 - **Schéma en code** : `cms/scripts/schema.ts` crée ou complète les collections (idempotent) et exporte le snapshot versionné `cms/schema/snapshot.json`. 10 collections sur 25 : `settings` (singleton), `intervenants`, `conferences`, `publics`, `ressources`, `pages`, `faq`, `sources`, `demandes_contact`, `inscriptions_lettre`. Aucun flow.
-- **Modèle** (`site/src/lib/cms/modele.ts`) : chaque page ou élément est un objet de contenu sérialisable en JSON. Conférences, « Pour qui », intervenants, repères, réglages : un champ Directus par section (clé de premier niveau, camelCase → snake_case), type et interface déduits du contenu (texte, nombre, booléen, étiquettes, liste répétable, JSON). Pages (accueil, À propos, satellites, légales…) : un champ `contenu` JSON. Les FAQ et les sources sont des collections reliées (M2O vers la conférence, la page « Pour qui » ou la page). La conversion est réversible.
+- **Modèle** (`site/src/lib/cms/modele.ts`, `forme.ts`, `plat.ts`) : chaque page ou élément est un objet de contenu sérialisable en JSON, mis « à plat » dans Directus : un champ par texte (chemin `a__b__c`), une section repliable par objet de premier niveau, une liste répétable par liste (listes imbriquées comprises), JSON seulement pour les rares structures irrégulières (5 champs). Les pages partagent la collection `pages` : champs préfixés par page, affichés seulement pour elle (conditions). Forme déduite du contenu initial ; conversion réversible (build Directus identique au build local). Les FAQ et les sources sont des collections reliées.
 - **Seed** (`cms/scripts/seed.ts`) : remplit Directus depuis `site/src/data` (contenu de la maquette) ; ne touche pas aux éléments déjà présents, sauf `--remplacer`.
 - **Rôles** (`cms/scripts/roles.ts`) : Administrateur (Paul), Éditeur (Clara), Site (build, lecture seule, jeton statique écrit dans `site/.env`). 3 comptes.
 - **Lecture au build** (`site/src/lib/cms/contenu.ts`) : `M42_CONTENU=cms` (Directus, défaut si `DIRECTUS_URL` est défini) ou `local` (`src/data`). Seuls les contenus publiés sont lus ; `getStaticPaths` génère les conférences, les pages « Pour qui » et les satellites publiés.
@@ -54,6 +54,12 @@ Versions relevées le 23 novembre 2026 (registre npm, Docker Hub, nodejs.org).
 - **Directus en production** : `cms/docker-compose.prod.yml` (sans Mailpit, SMTP réel, CORS limité au site et à la préproduction) et service de sauvegarde quotidienne (pg_dump + fichiers, 14 jours).
 - **Publication automatique** : flow « Site : publication » (anti-rebond de 60 s) → webhook de déploiement Coolify.
 - Détails pas à pas : `DEPLOIEMENT.md`.
+
+## Interface Directus (`cms/scripts/apparence.ts`)
+
+- Identité M42 : logo, encre / papier / or, titres en Cormorant (police servie par Directus), page de connexion, favicon, interface en français.
+- Dossiers « Site » et « Formulaires », colonnes utiles dans chaque liste, menus déroulants pour les valeurs connues.
+- Aperçu à côté du formulaire (Live Preview) : `npm run apercu` en local (instantané, brouillons compris), préproduction en ligne (`CONTENT_SECURITY_POLICY_DIRECTIVES__FRAME_SRC` côté Directus, `FRAME_ANCESTORS` côté préproduction).
 
 ## Licence Directus
 

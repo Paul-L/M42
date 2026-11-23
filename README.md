@@ -27,6 +27,7 @@ npm run cms:schema   # collections, champs, relations ; met à jour cms/schema/s
 npm run cms:seed     # contenu de la maquette (src/data) → Directus
 npm run cms:roles    # rôles Éditeur et Site (build), comptes Clara et build, jeton dans site/.env
 npm run cms:flows    # formulaires publics et flows (contrôle, e-mails, confirmation de la lettre)
+npm run cms:apparence  # logo, couleurs, police, menus « Site » / « Formulaires », colonnes, aperçu
 ```
 
 E-mails en local : http://localhost:8025 (Mailpit).
@@ -52,7 +53,8 @@ Page de démonstration des composants : http://localhost:4321/_kit/ (non indexé
 | `npm run preview` | sert `dist/` |
 | `npm run lint` / `npm run format:check` | ESLint / Prettier |
 | `npm run verif` | build, lint, format, règles, axe-core, cibles tactiles, liens internes, SEO |
-| `npm run cms:schema` / `cms:seed` / `cms:roles` | schéma, contenu initial, rôles et comptes Directus |
+| `npm run apercu` | site en aperçu instantané (Directus relu à chaque page, brouillons compris) |
+| `npm run cms:schema` / `cms:seed` / `cms:roles` / `cms:flows` / `cms:apparence` | schéma, contenu initial, rôles et comptes Directus |
 | `node scripts/comparer-dist.mjs <réf> dist` | compare deux builds octet pour octet |
 | `npm run test:formulaires` | formulaires de bout en bout (site servi sur :4321, Directus, Mailpit) |
 | `node tests/perf/lighthouse.mjs` | Lighthouse mobile sur toutes les pages → `tests/perf/RESULTATS.md` |
@@ -61,12 +63,15 @@ Page de démonstration des composants : http://localhost:4321/_kit/ (non indexé
 
 ## Publier un contenu
 
-1. Se connecter à Directus (Clara : compte Éditeur).
-2. Modifier un texte : **Conférences**, **Pour qui**, **Pages**, **Intervenants**, **Repères**, **FAQ**, **Sources** ou **Réglages du site**. Dans les champs JSON (sections, contenu des pages), ne modifier que les textes entre guillemets, sans toucher aux clés.
-3. Statut : **Publié** pour mettre en ligne, **Brouillon** pour retirer. Une conférence, une page « Pour qui » ou une page satellite en brouillon n'est pas générée ; une question de FAQ ou une source en brouillon est masquée. Si une page retirée est citée ailleurs (liens dans d'autres pages), `/verif` le signale : corriger ces liens aussi.
-4. Relancer le build du site (local : `npm run build` ; production : phase 5, déclenchement depuis Coolify).
+1. Se connecter à Directus (Clara : compte Éditeur). Tout est dans le dossier **Site** : Pages, Conférences, Pour qui, Repères, Intervenants, FAQ, Sources, Réglages du site.
+2. Ouvrir l'élément : chaque texte de la page a son champ, rangé par section repliable (En-tête, Programme, Formats…). Les listes (blocs du programme, formats, étapes…) se complètent avec **Ajouter**, se réordonnent par glisser-déposer et se suppriment avec la corbeille. Les rares champs « Structure particulière » sont en JSON : n'y modifier que les textes entre guillemets. Les textes notés « HTML » gardent leurs balises (`<em>`, `<a>`).
+3. **Aperçu** (icône en forme d'œil, en haut) : la page s'affiche à côté du formulaire et se recharge à chaque enregistrement.
+4. Statut : **Publié** pour mettre en ligne, **Brouillon** pour retirer. Une conférence, une page « Pour qui » ou une page satellite en brouillon n'est pas générée ; une question de FAQ ou une source en brouillon est masquée. Si une page retirée est citée ailleurs (liens dans d'autres pages), `/verif` le signale : corriger ces liens aussi.
+5. Le site se reconstruit seul 60 s après la dernière modification (flow « Site : publication », en production).
 
 Les pages à adresse fixe (accueil, Conférences, À propos, Organisateurs, Contact, Repères, pages légales) ne peuvent pas passer en brouillon : le build s'arrête avec un message.
+
+**Aperçu instantané en local** : `npm run apercu` (dans `site/`) lance le site sur http://localhost:4321 en relisant Directus à chaque page, brouillons compris ; l'aperçu de Directus l'affiche à côté du formulaire. Ce mode est refusé pour un build publié.
 
 ## Formulaires reçus
 

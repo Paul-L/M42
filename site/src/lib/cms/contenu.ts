@@ -10,6 +10,7 @@
  */
 import { createDirectus, readItems, readSingleton, rest, staticToken } from '@directus/sdk';
 import { documents as registre } from './registre';
+import { plan } from './plat';
 import {
   PARENT,
   depuisEnregistrement,
@@ -23,6 +24,15 @@ const env = (k: string): string | undefined =>
   (import.meta.env?.[k] as string | undefined) ?? process.env[k];
 
 const URL_CMS = env('DIRECTUS_URL');
+/**
+ * Aperçu local (`npm run apercu`, serveur de développement) : contenu relu dans Directus à chaque
+ * page, brouillons compris. Jamais pour un build publié.
+ */
+const APERCU = env('M42_APERCU') === '1';
+if (APERCU && import.meta.env.PROD)
+  throw new Error(
+    '[contenu] M42_APERCU est réservé au serveur de développement (brouillons visibles).',
+  );
 export const SOURCE: 'cms' | 'local' =
   (env('M42_CONTENU') as 'cms' | 'local' | undefined) ?? (URL_CMS ? 'cms' : 'local');
 
@@ -48,7 +58,8 @@ async function chargerCms(): Promise<Contenus> {
     throw new Error('M42_CONTENU=cms : DIRECTUS_URL et DIRECTUS_TOKEN sont requis.');
   const client = createDirectus(URL_CMS).with(staticToken(token)).with(rest());
   const publies = {
-    filter: { status: { _eq: 'published' } },
+    // Aperçu (M42_APERCU) : brouillons compris, pour les voir avant de les publier.
+    filter: { status: { _in: APERCU ? ['published', 'draft'] : ['published'] } },
     sort: ['sort', 'id'],
     limit: -1,
   } as const;
@@ -85,9 +96,17 @@ async function chargerCms(): Promise<Contenus> {
         >(
           x: T[],
         ) => (parent ? x.filter((r) => r[parent] === l.id) : []);
+        const { forme, champs } = plan(collection, collection === 'pages' ? l.slug : undefined);
         return {
           slug: l.slug,
-          contenu: depuisEnregistrement(def, l, deCeParent(faq), deCeParent(sources)),
+          contenu: depuisEnregistrement(
+            def,
+            forme,
+            champs,
+            l,
+            deCeParent(faq),
+            deCeParent(sources),
+          ),
         };
       }),
     );
@@ -98,7 +117,17 @@ async function chargerCms(): Promise<Contenus> {
   >;
   const defSettings = registre.find((d) => d.collection === 'settings')!;
   resultat.set('settings', [
-    { slug: defSettings.slug, contenu: depuisEnregistrement(defSettings, settings, [], []) },
+    {
+      slug: defSettings.slug,
+      contenu: depuisEnregistrement(
+        defSettings,
+        plan('settings').forme,
+        plan('settings').champs,
+        settings,
+        [],
+        [],
+      ),
+    },
   ]);
   return resultat;
 }
@@ -114,6 +143,8 @@ async function chargerLocal(): Promise<Contenus> {
 }
 
 function tout(): Promise<Contenus> {
+  // Aperçu : relu à chaque page, pour voir tout de suite une modification enregistrée.
+  if (APERCU) return chargerCms();
   if (!cache) {
     if (SOURCE === 'local' && !URL_CMS && !env('M42_CONTENU'))
       console.warn('[contenu] DIRECTUS_URL absent : contenu lu dans src/data (M42_CONTENU=local).');

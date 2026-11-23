@@ -20,7 +20,9 @@
     "cms:roles": "tsx ../cms/scripts/roles.ts",
     "cms:seed": "tsx ../cms/scripts/seed.ts",
     "cms:flows": "tsx ../cms/scripts/flows.ts",
-    "test:formulaires": "node tests/e2e/formulaires.mjs"
+    "test:formulaires": "node tests/e2e/formulaires.mjs",
+    "cms:apparence": "tsx ../cms/scripts/apparence.ts",
+    "apercu": "M42_APERCU=1 M42_CONTENU=cms astro dev --port 4321"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.6",

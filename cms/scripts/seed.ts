@@ -12,6 +12,7 @@
 import { api } from './lib.ts';
 import { documents } from '../../site/src/lib/cms/registre.ts';
 import { PARENT, versEnregistrement } from '../../site/src/lib/cms/modele.ts';
+import { plan } from '../../site/src/lib/cms/plat.ts';
 
 const remplacer = process.argv.includes('--remplacer');
 let crees = 0;
@@ -21,7 +22,8 @@ let gardes = 0;
 const rang = new Map<string, number>();
 
 for (const doc of documents) {
-  const { champs, faq, sources } = versEnregistrement(doc);
+  const { champs: plats } = plan(doc.collection, doc.collection === 'pages' ? doc.slug : undefined);
+  const { champs, faq, sources } = versEnregistrement(doc, plats);
   const n = (rang.get(doc.collection) ?? 0) + 1;
   rang.set(doc.collection, n);
 
@@ -52,7 +54,8 @@ for (const doc of documents) {
 
   const parent = PARENT[doc.collection];
   if (existant && parent) {
-    for (const enfant of ['faq', 'sources']) {
+    // Pas de sources pour les pages « Pour qui » (pas de relation sources.public).
+    for (const enfant of parent === 'public' ? ['faq'] : ['faq', 'sources']) {
       const f = encodeURIComponent(JSON.stringify({ [parent]: { _eq: existant.id } }));
       const lignes = await api<{ id: number }[]>(
         'GET',

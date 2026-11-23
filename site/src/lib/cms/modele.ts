@@ -3,14 +3,15 @@
  * (schéma, seed) : collections, conversion objet de contenu ↔ enregistrement Directus.
  *
  * Principe : chaque page ou élément du site est un objet de contenu sérialisable en JSON
- * (src/data/**). Dans Directus :
- * - forme « champs » (conferences, publics, intervenants, ressources, settings) :
- *   un champ par clé de premier niveau (camelCase → snake_case) ;
- * - forme « bloc » (pages) : `titre` (libellé pour l'interface) + `contenu` (JSON de la page) ;
- * - les questions de FAQ et les sources sont sorties dans les collections `faq` et `sources`,
- *   reliées à leur conférence, page « Pour qui » ou page, avec leur emplacement d'origine.
+ * (src/data/**). Dans Directus, il est mis « à plat » (forme.ts) : un champ par texte, une section
+ * repliable par objet de premier niveau, une liste répétable par liste. Les pages (forme « bloc »)
+ * partagent la collection `pages` : leurs champs portent un préfixe propre à chaque page et ne
+ * s'affichent que pour elle. Les questions de FAQ et les sources sont sorties dans les collections
+ * `faq` et `sources`, reliées à leur parent, avec leur emplacement d'origine.
  * La conversion est réversible : depuisEnregistrement(versEnregistrement(x)) redonne x.
  */
+
+import { decoder, encoder, type ChampPlat, type Forme } from './forme';
 
 export type Statut = 'published' | 'draft';
 
@@ -79,10 +80,6 @@ export const CHAMPS_SYSTEME = [
   'publication_demandee',
 ] as const;
 
-export const snake = (k: string): string => k.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`);
-export const camel = (k: string): string =>
-  k.replace(/_([a-z0-9])/g, (_, c: string) => c.toUpperCase());
-
 export interface LigneFaq {
   status: Statut;
   sort: number;
@@ -142,8 +139,15 @@ const versSegments = (t: string): string | Segment[] => {
     .map((s) => (MARQUEUR.test(s) ? { marker: s } : s));
 };
 
-/** Objet de contenu → enregistrement Directus (+ lignes de FAQ et de sources). */
-export function versEnregistrement(doc: Document): Enregistrement {
+export interface Extrait {
+  /** Contenu sans les FAQ, les sources ni la clé d'identifiant. */
+  contenu: Record<string, unknown>;
+  faq: LigneFaq[];
+  sources: LigneSource[];
+}
+
+/** Sépare d'un objet de contenu ses FAQ, ses sources et sa clé d'identifiant. */
+export function extraire(doc: Document): Extrait {
   const contenu = structuredClone(doc.contenu);
   const faq: LigneFaq[] = [];
   const sources: LigneSource[] = [];
@@ -187,45 +191,40 @@ export function versEnregistrement(doc: Document): Enregistrement {
     retirerChemin(contenu, e.chemin);
   }
 
+  if (doc.cle) {
+    if (contenu[doc.cle] !== doc.slug)
+      throw new Error(`${doc.slug} : ${doc.cle} = ${String(contenu[doc.cle])} ≠ slug`);
+    delete contenu[doc.cle];
+  }
+  return { contenu, faq, sources };
+}
+
+/** Objet de contenu → enregistrement Directus (champs à plat + lignes de FAQ et de sources). */
+export function versEnregistrement(doc: Document, champsPlats: ChampPlat[]): Enregistrement {
+  const { contenu, faq, sources } = extraire(doc);
   const champs: Record<string, unknown> = { slug: doc.slug, status: 'published' };
-  if (FORME[doc.collection] === 'bloc') {
-    champs.titre_admin = doc.titre ?? doc.slug;
-    champs.contenu = contenu;
-  } else {
-    for (const [k, v] of Object.entries(contenu)) {
-      if (k === doc.cle) {
-        if (v !== doc.slug) throw new Error(`${doc.slug} : ${k} = ${String(v)} ≠ slug`);
-        continue;
-      }
-      const f = snake(k);
-      if ((CHAMPS_SYSTEME as readonly string[]).includes(f))
-        throw new Error(`${doc.slug} : clé réservée ${k}`);
-      if (camel(f) !== k) throw new Error(`${doc.slug} : clé ${k} non réversible`);
-      champs[f] = v;
-    }
+  if (FORME[doc.collection] === 'bloc') champs.titre_admin = doc.titre ?? doc.slug;
+  for (const [k, v] of Object.entries(encoder(contenu, champsPlats))) {
+    if ((CHAMPS_SYSTEME as readonly string[]).includes(k))
+      throw new Error(`${doc.slug} : champ réservé ${k}`);
+    champs[k] = v;
   }
   return { champs, faq, sources };
 }
 
 /** Enregistrement Directus (+ FAQ et sources publiées, déjà triées) → objet de contenu. */
 export function depuisEnregistrement(
-  doc: Pick<Document, 'collection' | 'cle' | 'faq' | 'sources'>,
-  champs: Record<string, unknown>,
+  doc: Pick<Document, 'cle' | 'faq' | 'sources'>,
+  forme: Forme,
+  champsPlats: ChampPlat[],
+  valeurs: Record<string, unknown>,
   faq: LigneFaq[],
   sources: LigneSource[],
 ): Record<string, unknown> {
-  let contenu: Record<string, unknown>;
-  if (FORME[doc.collection] === 'bloc') {
-    contenu = structuredClone((champs.contenu ?? {}) as Record<string, unknown>);
-  } else {
-    contenu = {};
-    if (doc.cle) contenu[doc.cle] = champs.slug;
-    for (const [f, v] of Object.entries(champs)) {
-      if ((CHAMPS_SYSTEME as readonly string[]).includes(f) || v === null || v === undefined)
-        continue;
-      contenu[camel(f)] = v;
-    }
-  }
+  const decode = decoder(valeurs, forme, champsPlats);
+  const contenu: Record<string, unknown> = doc.cle
+    ? { [doc.cle]: valeurs.slug, ...decode }
+    : decode;
 
   for (const e of doc.faq ?? []) {
     const lignes = faq.filter((l) => l.emplacement === e.chemin.join('.'));

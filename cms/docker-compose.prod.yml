@@ -77,6 +77,9 @@ services:
       EMAIL_SMTP_SECURE: ${EMAIL_SMTP_SECURE:-false}
       EMAIL_SMTP_IGNORE_TLS: 'false'
 
+      # Aperçu du site à côté du formulaire : la préproduction (qui autorise cms.m42.guide à l'afficher).
+      CONTENT_SECURITY_POLICY_DIRECTIVES__FRAME_SRC: "array:'self',https://preprod.m42.guide"
+
       SITE_URL: https://m42.guide
       COOLIFY_DEPLOY_URL: ${COOLIFY_DEPLOY_URL:-}
       COOLIFY_TOKEN: ${COOLIFY_TOKEN:-}

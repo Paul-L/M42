@@ -76,6 +76,9 @@ services:
 
       # Adresse du site, lue par les flows (lien de confirmation de la lettre).
       SITE_URL: ${SITE_URL:-http://localhost:4321}
+      # Aperçu du site à côté du formulaire (Live Preview) : adresse autorisée dans l'interface.
+      CONTENT_SECURITY_POLICY_DIRECTIVES__FRAME_SRC: ${APERCU_FRAME_SRC:-array:'self',http://localhost:4321}
+
       # Publication automatique (flow « Site : publication ») : vides en local, rien n'est appelé.
       COOLIFY_DEPLOY_URL: ${COOLIFY_DEPLOY_URL:-}
       COOLIFY_TOKEN: ${COOLIFY_TOKEN:-}

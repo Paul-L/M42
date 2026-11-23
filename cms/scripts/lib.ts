@@ -112,3 +112,21 @@ export function ecrireEnv(fichier: string, cle: string, valeur: string): void {
   }
   writeFileSync(fichier, lignes.join('\n'));
 }
+
+/** Envoie un fichier dans Directus (ou renvoie celui qui porte déjà ce titre). */
+export async function televerser(fichier: string, titre: string, type: string): Promise<string> {
+  const q = encodeURIComponent(JSON.stringify({ title: { _eq: titre } }));
+  const deja = await api<{ id: string }[]>('GET', `/files?filter=${q}&fields=id&limit=1`);
+  if (deja[0]) return deja[0].id;
+  if (!jeton) await connecter();
+  const form = new FormData();
+  form.append('title', titre);
+  form.append('file', new Blob([readFileSync(fichier)], { type }), fichier.split('/').pop());
+  const r = await requete(`${CMS_URL}/files`, {
+    method: 'POST',
+    headers: { authorization: `Bearer ${jeton}` },
+    body: form,
+  });
+  if (!r.ok) throw new ErreurApi(`POST /files : ${r.status}`, r.status);
+  return ((await r.json()) as { data: { id: string } }).data.id;
+}

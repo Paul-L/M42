@@ -30,7 +30,9 @@ const GABARITS = {
   'arnaque-ou-pas': ArnaqueOuPas,
 } as const;
 
-const { slug, page } = Astro.props;
+// Relu par slug : voir conferences/[slug] (aperçu).
+const { slug } = Astro.props;
+const page = await lirePage(slug);
 const Gabarit = GABARITS[slug as keyof typeof GABARITS];
 ---
 

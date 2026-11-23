@@ -8,5 +8,7 @@
 	@www host www.m42.guide
 	redir @www https://m42.guide{uri} permanent
 
+	header X-Frame-Options "DENY"
+
 	import /etc/caddy/securite.caddy
 }
