@@ -4,7 +4,7 @@
  * (numéro en or, H3, texte suivi d'un lien facultatif).
  *
  * Props :
- * - surTitre : défaut « Sur scène ».
+ * - surTitre : sur-titre (« Sur scène »).
  * - titre : H2.
  * - items : { numero, titre, texte, lien? }[] (le lien est suivi d'un point, comme la maquette).
  */
@@ -14,12 +14,12 @@ import SectionHeading from '../conferences/SectionHeading.astro';
 import type { PointDeroulement } from '../../data/conferences-index';
 
 interface Props {
-  surTitre?: string;
+  surTitre: string;
   titre: string;
   items: PointDeroulement[];
 }
 
-const { surTitre = 'Sur scène', titre, items } = Astro.props;
+const { surTitre, titre, items } = Astro.props;
 ---
 
 <section id="deroulement" aria-labelledby="titre-deroulement" class="how">

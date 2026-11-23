@@ -13,10 +13,11 @@
  * - formats : ligne des formats (« Keynote 45 min à 1 h · … »).
  * - cta : libellé de l'appel (décoratif, aria-hidden).
  * - badge : mention de la conférence signature.
- * - programmeLabel : sur-titre de la colonne programme (défaut « Au programme »).
+ * - programmeLabel : sur-titre de la colonne programme (défaut : catalogueSection.programmeLabel).
+ * - publicsLabel : nom accessible de la liste des publics (défaut : catalogueSection.publicsLabel).
  */
 import AudienceTag from '../AudienceTag.astro';
-import type { CarteIndex } from '../../data/conferences-index';
+import { catalogueSection, type CarteIndex } from '../../data/conferences-index';
 
 interface Props {
   carte: CarteIndex;
@@ -24,9 +25,17 @@ interface Props {
   cta: string;
   badge: string;
   programmeLabel?: string;
+  publicsLabel?: string;
 }
 
-const { carte, formats, cta, badge, programmeLabel = 'Au programme' } = Astro.props;
+const {
+  carte,
+  formats,
+  cta,
+  badge,
+  programmeLabel = catalogueSection.programmeLabel,
+  publicsLabel = catalogueSection.publicsLabel,
+} = Astro.props;
 ---
 
 <article id={`conf-${carte.slug}`} class="card m42-reveal">
@@ -56,7 +65,7 @@ const { carte, formats, cta, badge, programmeLabel = 'Au programme' } = Astro.pr
     </h3>
     <p class="hook">{carte.accroche}</p>
     <p class="promise">{carte.promesse}</p>
-    <ul aria-label="Publics" class="publics">
+    <ul aria-label={publicsLabel} class="publics">
       {carte.publics.map((p) => (
         <AudienceTag as="li">{p}</AudienceTag>
       ))}

@@ -6,17 +6,17 @@
  * Aucune animation d'entrée (au-dessus de la ligne de flottaison).
  *
  * Props :
+ * - ariane : fil d'Ariane (dernier élément = page courante).
  * - surTitre, titre : H1 (sur-titre dans le H1, sans filet).
  * - chapo : texte sous le H1.
  * - ctaPrincipal, ctaSecondaire : boutons.
  * - nav : { label (nom accessible), surTitre, items: { numero?, label, note?, href }[] }.
  *   Sans `numero`, la ligne affiche « + » (Sur mesure).
  */
-import Breadcrumb from '../Breadcrumb.astro';
+import Breadcrumb, { type Crumb } from '../Breadcrumb.astro';
 import Button from '../Button.astro';
 import Container from '../Container.astro';
 import Eyebrow from '../Eyebrow.astro';
-import { routes } from '../../data/routes';
 import type { Lien } from '../../data/conferences/types';
 
 export interface LigneCoupDoeil {
@@ -28,6 +28,7 @@ export interface LigneCoupDoeil {
 }
 
 interface Props {
+  ariane: Crumb[];
   surTitre: string;
   titre: string;
   chapo: string;
@@ -36,14 +37,12 @@ interface Props {
   nav: { label: string; surTitre: string; items: LigneCoupDoeil[] };
 }
 
-const { surTitre, titre, chapo, ctaPrincipal, ctaSecondaire, nav } = Astro.props;
+const { ariane, surTitre, titre, chapo, ctaPrincipal, ctaSecondaire, nav } = Astro.props;
 ---
 
 <section aria-labelledby="titre-page" class="hero">
   <Container>
-    <Breadcrumb
-      items={[{ label: 'Accueil', href: routes['Main.dc.html'] }, { label: 'Conférences' }]}
-    />
+    <Breadcrumb items={ariane} />
     <div class="row">
       <div class="main">
         <h1 id="titre-page" class="h1">

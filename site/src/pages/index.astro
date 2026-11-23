@@ -20,12 +20,11 @@ import HomeDuo from '../components/accueil/HomeDuo.astro';
 import HomeOrganizers from '../components/accueil/HomeOrganizers.astro';
 import HomeCta from '../components/accueil/HomeCta.astro';
 import { assertNoMarker } from '../components/publics/json-ld';
-import { chiffres, citationChiffres } from '../data/accueil';
+import { chiffres, chiffresLabel, citationChiffres, organisation, seo } from '../data/accueil';
 import { intervenants, personId, personSchema } from '../data/intervenants';
 
-const title = "Se repérer dans l'IA : conférences, ateliers et repères | M42";
-const description =
-  "Conférences, ateliers et outils gratuits pour comprendre l'IA, déjouer ses pièges et garder l'esprit critique. Entreprises, événements, collectivités, écoles.";
+const { title, description } = seo;
+const o = organisation;
 
 const SITE = 'https://m42.guide';
 const url = `${SITE}/`;
@@ -38,39 +37,30 @@ const jsonLd = {
     {
       '@type': 'Organization',
       '@id': orgId,
-      name: 'M42',
-      alternateName: 'M42.guide',
+      name: o.nom,
+      alternateName: o.nomAlternatif,
       url,
-      // Le PNG 512 px de l'exemple SEO n'existe pas encore : logo horizontal du kit (publié).
-      logo: `${SITE}/logos/M42_logo_horizontal_couleur_2000.png`,
-      slogan: "Se repérer dans l'IA.",
-      description:
-        "Conférences, keynotes et ateliers sur l'intelligence artificielle pour les entreprises, les événements, les collectivités, les établissements scolaires et les associations.",
-      email: 'clara@m42.guide',
-      areaServed: { '@type': 'Country', name: 'France' },
+      logo: `${SITE}${o.logo}`,
+      slogan: o.slogan,
+      description: o.description,
+      email: o.email,
+      areaServed: { '@type': 'Country', name: o.zone },
       address: {
         '@type': 'PostalAddress',
-        addressLocality: 'Salies-de-Béarn',
-        addressRegion: 'Nouvelle-Aquitaine',
-        addressCountry: 'FR',
+        addressLocality: o.adresse.localite,
+        addressRegion: o.adresse.region,
+        addressCountry: o.adresse.pays,
       },
       founder: intervenants.map((i) => ({ '@id': personId(i.slug) })),
-      knowsAbout: [
-        'intelligence artificielle',
-        'IA générative',
-        'arnaques et fraudes',
-        'désinformation',
-        'éducation aux médias',
-        'parentalité numérique',
-      ],
-      knowsLanguage: 'fr',
+      knowsAbout: o.domaines,
+      knowsLanguage: o.langue,
     },
     {
       '@type': 'WebSite',
       '@id': siteId,
       url,
-      name: 'M42',
-      alternateName: 'M42.guide',
+      name: o.nom,
+      alternateName: o.nomAlternatif,
       inLanguage: 'fr-FR',
       publisher: { '@id': orgId },
     },
@@ -92,7 +82,7 @@ assertNoMarker(jsonLd, 'accueil');
 
 <BaseLayout title={title} description={description} jsonLd={jsonLd}>
   <HomeHero />
-  <HomeFigures label="L'IA en chiffres" items={chiffres} quote={citationChiffres} />
+  <HomeFigures label={chiffresLabel} items={chiffres} quote={citationChiffres} />
   <HomePrinciples />
   <HomeReperes />
   <HomeConferences />

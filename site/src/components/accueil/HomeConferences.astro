@@ -28,7 +28,7 @@ const t = catalogueTexte;
         summary: c.resume,
         publics: c.publics,
         formats: c.formats,
-        cta: 'Voir le programme',
+        cta: t.ctaCarte,
       };
       return c.signature ? <SignatureConferenceCard {...props} /> : <ConferenceCard {...props} />;
     })}

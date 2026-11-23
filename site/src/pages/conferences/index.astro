@@ -18,9 +18,9 @@ import ConferenceAudiences from '../../components/conferences/ConferenceAudience
 import ConferenceFaq from '../../components/conferences/ConferenceFaq.astro';
 import ConferenceCta from '../../components/conferences/ConferenceCta.astro';
 import {
+  ariane,
   cartes,
   catalogueSection,
-  conferencesIndexJsonLd,
   contact,
   deroulement,
   faq,
@@ -31,25 +31,74 @@ import {
   seo,
   surMesure,
 } from '../../data/conferences-index';
+import { routes } from '../../data/routes';
 
 const coupDoeil = [
   ...cartes.map((c) => ({
     numero: c.numero,
     label: c.titre,
-    note: c.signature ? '· signature' : undefined,
+    note: c.signature ? hero.coupDoeil.noteSignature : undefined,
     href: `#conf-${c.slug}`,
   })),
   hero.coupDoeil.surMesure,
 ];
+
+/*
+ * JSON-LD (commentaire SEO de la maquette) : CollectionPage (sous-type de WebPage) + BreadcrumbList
+ * + ItemList des 4 Service, référencés par leur @id (déclarés en entier sur chaque page conférence).
+ * Aucun nom d'employeur ni structure de facturation ; aucun marqueur [À …].
+ */
+const SITE = 'https://m42.guide';
+const URL_PAGE = `${SITE}${routes['Conferences.dc.html']}`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      '@id': `${URL_PAGE}#page`,
+      url: URL_PAGE,
+      name: seo.title,
+      description: seo.description,
+      isPartOf: { '@id': `${SITE}/#site` },
+      breadcrumb: { '@id': `${URL_PAGE}#ariane` },
+      mainEntity: { '@id': `${URL_PAGE}#conferences` },
+      inLanguage: 'fr-FR',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${URL_PAGE}#ariane`,
+      itemListElement: ariane.map((a, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: a.label,
+        ...(a.href ? { item: new URL(a.href, SITE).href } : {}),
+      })),
+    },
+    {
+      '@type': 'ItemList',
+      '@id': `${URL_PAGE}#conferences`,
+      name: catalogueSection.titre,
+      numberOfItems: cartes.length,
+      itemListOrder: 'https://schema.org/ItemListOrderAscending',
+      itemListElement: cartes.map((c, i) => {
+        const url = new URL(c.href, SITE).href;
+        return {
+          '@type': 'ListItem',
+          position: i + 1,
+          name: c.titre,
+          url,
+          item: { '@id': `${url}#service` },
+        };
+      }),
+    },
+  ],
+};
 ---
 
-<BaseLayout
-  title={seo.title}
-  description={seo.description}
-  current="conferences"
-  jsonLd={conferencesIndexJsonLd()}
->
+<BaseLayout title={seo.title} description={seo.description} current="conferences" jsonLd={jsonLd}>
   <IndexHero
+    ariane={ariane}
     surTitre={hero.surTitre}
     titre={hero.titre}
     chapo={hero.chapo}
@@ -69,6 +118,7 @@ const coupDoeil = [
   />
 
   <FormatsOverview
+    surTitre={formats.surTitre}
     titre={formats.titre}
     chapo={formats.chapo}
     items={formats.items}

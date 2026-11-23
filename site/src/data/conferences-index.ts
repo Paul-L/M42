@@ -6,33 +6,20 @@
 // Les cartes « riches » de cette page demandent des champs absents de catalogue.ts : accroche,
 // promesse, publics propres à l'index, formats détaillés, programme minuté, lignes de détail.
 // Ils sont ici, rangés par slug, en attendant d'être consolidés dans le type Conference.
+//
+// Deux parties :
+// 1. Contenus : données sérialisables en JSON (chaînes, nombres, tableaux, objets simples).
+// 2. Valeurs calculées (en fin de fichier) : les cartes, qui croisent le catalogue commun et les
+//    détails de cette page. Elles ne sont pas du contenu et ne dupliquent pas le catalogue.
+// Le JSON-LD est construit dans la page (src/pages/conferences/index.astro).
 
 import { catalogue } from './conferences/catalogue';
 import { routes } from './routes';
 import type { CarteConference, Format, Lien, Public, QuestionFaq } from './conferences/types';
 
-export const SITE = 'https://m42.guide';
-export const URL_PAGE = `${SITE}${routes['Conferences.dc.html']}`;
-
-export const seo = {
-  title: "Conférences sur l'intelligence artificielle | M42",
-  description:
-    "Quatre conférences sur l'IA, du keynote de 45 min à l'atelier de 2 h : usages, arnaques, fausses infos, parents et ados. Ou une intervention sur mesure.",
-};
-
-export const hero = {
-  surTitre: "Conférences sur l'intelligence artificielle",
-  titre: "L'IA expliquée à votre public",
-  chapo:
-    "Votre public utilise déjà l'IA, ou s'en méfie. Quatre conférences pour lui donner des repères, de la plénière d'un congrès à la salle du conseil municipal. Chacune existe en keynote, en conférence, en atelier ou en cycle. Pour tout autre sujet lié à l'IA, une intervention sur mesure est possible.",
-  ctaPrincipal: { label: 'Parler de votre événement', href: routes['Contact.dc.html'] },
-  ctaSecondaire: { label: 'Comparer les formats', href: '#formats' },
-  coupDoeil: {
-    label: "Les conférences en un coup d'œil",
-    surTitre: "En un coup d'œil",
-    surMesure: { label: 'Sur mesure', href: '#sur-mesure' },
-  },
-};
+/* ------------------------------------------------------------------------------------------ */
+/* Types                                                                                      */
+/* ------------------------------------------------------------------------------------------ */
 
 /** Ligne de programme minutée (« Au programme »). */
 export interface LigneProgramme {
@@ -58,16 +45,52 @@ export interface DetailConference {
 /** Carte complète : identité (catalogue.ts) + détails de l'index. */
 export type CarteIndex = CarteConference & DetailConference;
 
-const FORMATS_DETAILLES = [
-  'Keynote 45 min à 1 h',
-  'Conférence 1 h 30',
-  'Atelier 2 h',
-  'Cycle de 4 rendez-vous',
+/** Point de « Comment ça se passe » : texte, puis lien facultatif suivi d'un point. */
+export interface PointDeroulement {
+  numero: string;
+  titre: string;
+  texte: string;
+  lien?: Lien;
+}
+
+/* ------------------------------------------------------------------------------------------ */
+/* 1. Contenus                                                                                */
+/* ------------------------------------------------------------------------------------------ */
+
+export const seo = {
+  title: "Conférences sur l'intelligence artificielle | M42",
+  description:
+    "Quatre conférences sur l'IA, du keynote de 45 min à l'atelier de 2 h : usages, arnaques, fausses infos, parents et ados. Ou une intervention sur mesure.",
+};
+
+/** Fil d'Ariane (repris dans le BreadcrumbList du JSON-LD). La page courante n'a pas de lien. */
+export const ariane: { label: string; href?: string }[] = [
+  { label: 'Accueil', href: routes['Main.dc.html'] },
+  { label: 'Conférences' },
 ];
 
-export const formatsDetailles = FORMATS_DETAILLES.join(' · ');
+export const hero = {
+  surTitre: "Conférences sur l'intelligence artificielle",
+  titre: "L'IA expliquée à votre public",
+  chapo:
+    "Votre public utilise déjà l'IA, ou s'en méfie. Quatre conférences pour lui donner des repères, de la plénière d'un congrès à la salle du conseil municipal. Chacune existe en keynote, en conférence, en atelier ou en cycle. Pour tout autre sujet lié à l'IA, une intervention sur mesure est possible.",
+  ctaPrincipal: { label: 'Parler de votre événement', href: routes['Contact.dc.html'] },
+  ctaSecondaire: { label: 'Comparer les formats', href: '#formats' },
+  coupDoeil: {
+    label: "Les conférences en un coup d'œil",
+    surTitre: "En un coup d'œil",
+    /** Mention après le titre de la conférence signature. */
+    noteSignature: '· signature',
+    surMesure: { label: 'Sur mesure', href: '#sur-mesure' },
+  },
+};
 
-const details: Record<string, DetailConference> = {
+/** Ligne des formats, commune aux quatre cartes. */
+export const formatsDetailles =
+  'Keynote 45 min à 1 h · Conférence 1 h 30 · Atelier 2 h · Cycle de 4 rendez-vous';
+
+/** Détails des cartes, rangés par slug de conférence (identité : conferences/catalogue.ts). */
+export const detailsConferences: Record<string, DetailConference> = {
   'ia-au-quotidien': {
     accroche: "Ce qu'elle sait faire, ce qu'elle invente, et comment garder la tête aux commandes.",
     promesse:
@@ -159,13 +182,6 @@ const details: Record<string, DetailConference> = {
   },
 };
 
-/** Les quatre cartes, dans l'ordre du catalogue (I à IV). */
-export const cartes: CarteIndex[] = catalogue.map((c) => {
-  const d = details[c.slug];
-  if (!d) throw new Error(`conferences-index : détails manquants pour « ${c.slug} »`);
-  return { ...c, ...d };
-});
-
 export const catalogueSection = {
   surTitre: 'Catalogue',
   titre: 'Quatre conférences, un même fil',
@@ -173,9 +189,14 @@ export const catalogueSection = {
     "Comprendre ce que fait l'IA, s'en servir avec méthode, et garder la main. Chaque conférence part du quotidien de votre public.",
   ctaCarte: 'Voir le programme complet',
   badgeSignature: 'Conférence signature',
+  /** Sur-titre de la colonne programme des cartes. */
+  programmeLabel: 'Au programme',
+  /** Nom accessible de la liste des publics d'une carte. */
+  publicsLabel: 'Publics',
 };
 
 export const formats: {
+  surTitre: string;
   titre: string;
   chapo: string;
   items: Format[];
@@ -185,6 +206,7 @@ export const formats: {
     lignes: { evenement: string; format: Lien | string }[];
   };
 } = {
+  surTitre: 'Formats',
   titre: 'Quatre formats pour chaque conférence',
   chapo:
     "De la plénière d'un congrès à l'atelier de quinze personnes. Interventions en français, partout en France, en présentiel ou à distance.",
@@ -238,14 +260,6 @@ export const formats: {
     ],
   },
 };
-
-/** Point de « Comment ça se passe » : texte, puis lien facultatif suivi d'un point. */
-export interface PointDeroulement {
-  numero: string;
-  titre: string;
-  texte: string;
-  lien?: Lien;
-}
 
 export const deroulement: { surTitre: string; titre: string; items: PointDeroulement[] } = {
   surTitre: 'Sur scène',
@@ -366,51 +380,16 @@ export const contact = {
   cta: 'Organiser une intervention',
 };
 
+/* ------------------------------------------------------------------------------------------ */
+/* 2. Valeurs calculées (pas du contenu)                                                      */
+/* ------------------------------------------------------------------------------------------ */
+
 /**
- * JSON-LD (commentaire SEO de la maquette) : CollectionPage (sous-type de WebPage) + BreadcrumbList
- * + ItemList des 4 Service, référencés par leur @id (déclarés en entier sur chaque page conférence).
- * Aucun nom d'employeur ni structure de facturation ; aucun marqueur [À …].
+ * Les quatre cartes, dans l'ordre du catalogue (I à IV) : identité du catalogue commun
+ * (conferences/catalogue.ts) + détails de cette page (detailsConferences).
  */
-export function conferencesIndexJsonLd(): Record<string, unknown> {
-  return {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'CollectionPage',
-        '@id': `${URL_PAGE}#page`,
-        url: URL_PAGE,
-        name: seo.title,
-        description: seo.description,
-        isPartOf: { '@id': `${SITE}/#site` },
-        breadcrumb: { '@id': `${URL_PAGE}#ariane` },
-        mainEntity: { '@id': `${URL_PAGE}#conferences` },
-        inLanguage: 'fr-FR',
-      },
-      {
-        '@type': 'BreadcrumbList',
-        '@id': `${URL_PAGE}#ariane`,
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${SITE}/` },
-          { '@type': 'ListItem', position: 2, name: 'Conférences' },
-        ],
-      },
-      {
-        '@type': 'ItemList',
-        '@id': `${URL_PAGE}#conferences`,
-        name: catalogueSection.titre,
-        numberOfItems: cartes.length,
-        itemListOrder: 'https://schema.org/ItemListOrderAscending',
-        itemListElement: cartes.map((c, i) => {
-          const url = new URL(c.href, SITE).href;
-          return {
-            '@type': 'ListItem',
-            position: i + 1,
-            name: c.titre,
-            url,
-            item: { '@id': `${url}#service` },
-          };
-        }),
-      },
-    ],
-  };
-}
+export const cartes: CarteIndex[] = catalogue.map((c) => {
+  const d = detailsConferences[c.slug];
+  if (!d) throw new Error(`conferences-index : détails manquants pour « ${c.slug} »`);
+  return { ...c, ...d };
+});

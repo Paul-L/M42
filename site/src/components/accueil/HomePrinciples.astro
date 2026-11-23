@@ -6,13 +6,13 @@
 import Container from '../Container.astro';
 import Eyebrow from '../Eyebrow.astro';
 import SectionHeading from '../conferences/SectionHeading.astro';
-import { principes } from '../../data/accueil';
+import { principes, principesTexte as t } from '../../data/accueil';
 ---
 
 <section aria-labelledby="titre-pourquoi" class="principles">
   <Container>
-    <Eyebrow class="m42-reveal">Notre approche</Eyebrow>
-    <SectionHeading id="titre-pourquoi">Trois principes pour se repérer</SectionHeading>
+    <Eyebrow class="m42-reveal">{t.surTitre}</Eyebrow>
+    <SectionHeading id="titre-pourquoi">{t.titre}</SectionHeading>
     <div class="grid">
       {principes.map((p) => (
         <div class="item m42-reveal">

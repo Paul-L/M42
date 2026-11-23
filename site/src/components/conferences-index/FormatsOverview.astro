@@ -6,7 +6,7 @@
  * et le tableau de choix.
  *
  * Props :
- * - surTitre : défaut « Formats ».
+ * - surTitre : sur-titre (« Formats »).
  * - titre, chapo : H2 et chapô.
  * - items : { duree, titre, texte }[].
  * - choix : { titre, colonnes, lignes: { evenement, format (texte ou lien) }[] }.
@@ -17,7 +17,7 @@ import SectionHeading from '../conferences/SectionHeading.astro';
 import type { Format, Lien } from '../../data/conferences/types';
 
 interface Props {
-  surTitre?: string;
+  surTitre: string;
   titre: string;
   chapo: string;
   items: Format[];
@@ -28,7 +28,7 @@ interface Props {
   };
 }
 
-const { surTitre = 'Formats', titre, chapo, items, choix } = Astro.props;
+const { surTitre, titre, chapo, items, choix } = Astro.props;
 ---
 
 <section id="formats" aria-labelledby="titre-formats" class="formats">

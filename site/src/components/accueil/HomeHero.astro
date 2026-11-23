@@ -18,7 +18,9 @@ import { hero } from '../../data/accueil';
           {hero.surTitre}
         </Eyebrow>
         <span class="h1-main">
-          Se repérer dans l'<em>IA</em>.
+          <Fragment set:html={hero.titre.avant} />
+          <em>{hero.titre.accent}</em>
+          {hero.titre.apres}
         </span>
       </h1>
       <p class="lead">{hero.chapo}</p>

@@ -11,30 +11,21 @@
 import Container from '../Container.astro';
 import Eyebrow from '../Eyebrow.astro';
 import Button from '../Button.astro';
+import { lettre as l, lettreProfils } from '../../data/reperes';
 import { routes } from '../../data/routes';
-import { lettreProfils } from '../../data/reperes';
-
-const points = [
-  'Un chiffre sourcé, expliqué en trois phrases.',
-  "Une arnaque, une fausse image ou une erreur d'IA, décortiquée.",
-  'Une règle à appliquer dans la semaine.',
-  'Une ressource utile : un nouveau repère, ou un outil public (Cybermalveillance.gouv.fr, CNIL).',
-];
 ---
 
 <section id="lettre" aria-labelledby="lettre-t" class="lettre" data-lettre>
   <Container>
-    <Eyebrow class="lettre-eyebrow">Une fois par mois</Eyebrow>
+    <Eyebrow class="lettre-eyebrow">{l.surTitre}</Eyebrow>
     <div class="row">
       <div class="text">
         <h2 id="lettre-t" class="h2">
-          Recevoir les nouveaux repères
+          {l.titre}
         </h2>
-        <p class="lead">
-          Chaque nouveau repère, dès sa sortie, et une lettre courte qui se lit en trois minutes.
-        </p>
+        <p class="lead">{l.chapo}</p>
         <ul class="points">
-          {points.map((p, i) => (
+          {l.points.map((p, i) => (
             <li>
               <span aria-hidden="true" class="num">
                 {String(i + 1).padStart(2, '0')}
@@ -43,7 +34,7 @@ const points = [
             </li>
           ))}
         </ul>
-        <p class="name">Nom de la lettre : « Repères » [À VALIDER]</p>
+        <p class="name">{l.nom}</p>
       </div>
 
       <div class="box">
@@ -132,10 +123,7 @@ const points = [
                 Recevoir les nouveaux repères
               </Button>
               <p class="rgpd">
-                Une lettre par mois, désinscription en un clic dans chaque envoi. Votre adresse sert
-                uniquement à vous envoyer cette lettre. Responsable : [À COMPLÉTER : entité
-                éditrice]. Détails et droits :{' '}
-                <a href={routes['Confidentialite.dc.html']}>Politique de confidentialité</a>.
+                {l.mention.texte} <a href={routes[l.mention.lien.page]}>{l.mention.lien.label}</a>.
               </p>
             </div>
           </form>
