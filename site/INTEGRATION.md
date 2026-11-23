@@ -49,3 +49,14 @@ Conventions communes à toutes les pages (phase 2). À lire avant d'intégrer un
 - `npx astro check` : zéro erreur.
 - Build dans un dossier à part pour ne pas gêner les autres intégrations : `npx astro build --outDir <dossier temporaire>`.
 - Pas de `npm install` sans le signaler.
+
+## Phase 3 : sortir le texte des pages (préparation Directus)
+
+But : tout le texte d'une page vit dans son module de données, prêt à être chargé dans Directus. La page `.astro` ne garde que la structure.
+
+- Un module par page : le module existant (`src/data/<page>.ts`, `src/data/<famille>/<page>.ts`) ou un nouveau au même endroit.
+- Va dans le module : SEO (`seo: { title, description }`), fil d'Ariane, sur-titres, titres, paragraphes, listes, libellés et liens des boutons, textes des emplacements photo, `alt` et `aria-label` porteurs de contenu, valeurs du JSON-LD qui viennent du texte.
+- Reste dans le code : la structure, les classes, le micro-texte d'interface des composants partagés (en-tête, pied de page, libellés de formulaire, messages d'erreur, « Copier »), la construction du JSON-LD (qui lit ses valeurs dans le module).
+- Exports de contenu = **données sérialisables en JSON** : chaînes, nombres, booléens, tableaux, objets simples. Pas de fonction, pas d'import d'image ou de composant, pas de valeur calculée depuis un autre module (garder ces calculs dans la page ou dans une fonction à part, hors des exports de contenu). `routes['X.dc.html']` est permis (c'est une chaîne).
+- Texte en ligne avec balises (`<em>`, `<a>`, `<strong>`) : reprendre la façon de faire déjà en place dans la famille (chaîne HTML rendue avec `set:html`, ou segments). Le HTML produit doit rester **identique**.
+- Contrôle obligatoire : `npm run build` puis `node scripts/comparer-dist.mjs <build de référence> dist` doit répondre « aucun écart ». Plus `npx eslint` et `npx prettier --check` sur les fichiers touchés.
