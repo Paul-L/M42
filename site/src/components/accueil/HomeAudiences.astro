@@ -6,7 +6,9 @@
 import Button from '../Button.astro';
 import Section from '../Section.astro';
 import PublicSectionHead from '../publics/PublicSectionHead.astro';
-import { publics, publicsTexte } from '../../data/accueil';
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { publics, publicsTexte } = await lirePage('accueil');
 
 const t = publicsTexte;
 ---

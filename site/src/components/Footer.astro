@@ -4,6 +4,7 @@
  * Le symbole est repris tel quel du gabarit (version simplifiée du logo validé).
  */
 import { footerColumns } from '../data/navigation';
+import { catalogue, reglages } from '../lib/cms/contenu';
 
 interface Props {
   /** Chemin de la page courante : son lien reçoit aria-current (comme dans la maquette). */
@@ -11,6 +12,13 @@ interface Props {
 }
 
 const { current } = Astro.props;
+const { baseline } = await reglages();
+// Liens vers une conférence en brouillon : retirés (la page n'existe pas).
+const publiees = new Set((await catalogue()).map((c) => c.href));
+const colonnes = footerColumns.map((col) => ({
+  ...col,
+  links: col.links.filter((l) => !/^\/conferences\/[^/]+\/$/.test(l.href) || publiees.has(l.href)),
+}));
 ---
 
 <footer class="ftr m42-night">
@@ -36,10 +44,10 @@ const { current } = Astro.props;
           <span class="logo-m42">M42</span> <span class="logo-guide">Guide</span>
           <span class="sr-only">, retour à l'accueil</span>
         </a>
-        <p class="baseline">Se repérer dans l'IA.</p>
+        <p class="baseline" set:html={baseline} />
       </div>
       <nav aria-label="Plan du site" class="ftr-nav">
-        {footerColumns.map((col) => (
+        {colonnes.map((col) => (
           <div>
             <p class="col-title">{col.title}</p>
             <ul class="col-list">

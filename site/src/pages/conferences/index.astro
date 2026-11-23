@@ -17,9 +17,13 @@ import CustomTalk from '../../components/conferences-index/CustomTalk.astro';
 import ConferenceAudiences from '../../components/conferences/ConferenceAudiences.astro';
 import ConferenceFaq from '../../components/conferences/ConferenceFaq.astro';
 import ConferenceCta from '../../components/conferences/ConferenceCta.astro';
-import {
+
+import { routes } from '../../data/routes';
+import { catalogue as lireCatalogue, page as lirePage } from '../../lib/cms/contenu';
+
+const {
   ariane,
-  cartes,
+  detailsConferences: _details,
   catalogueSection,
   contact,
   deroulement,
@@ -30,8 +34,12 @@ import {
   pourQui,
   seo,
   surMesure,
-} from '../../data/conferences-index';
-import { routes } from '../../data/routes';
+} = await lirePage('conferences');
+const cartes = (await lireCatalogue()).map((c) => {
+  const d = _details[c.slug as keyof typeof _details];
+  if (!d) throw new Error(`détails manquants : ${c.slug}`);
+  return { ...c, ...d };
+});
 
 const coupDoeil = [
   ...cartes.map((c) => ({

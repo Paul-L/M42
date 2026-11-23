@@ -10,6 +10,7 @@
  * - cta : libellé du bouton (défaut « Organiser cette conférence ») ; ctaHref (défaut /contact/).
  * - surTitre : défaut « Contact ».
  */
+import { reglages } from '../../lib/cms/contenu';
 import Button from '../Button.astro';
 import Container from '../Container.astro';
 import Eyebrow from '../Eyebrow.astro';
@@ -31,6 +32,7 @@ const {
   ctaHref = routes['Contact.dc.html'],
   surTitre = 'Contact',
 } = Astro.props;
+const { contacts, telephone } = await reglages();
 ---
 
 <section class="cta m42-night" aria-labelledby="titre-contact">
@@ -46,11 +48,13 @@ const {
       <div class="actions">
         <Button href={ctaHref}>{cta}</Button>
         <p class="contact">
-          Clara : <a href="mailto:clara@m42.guide">clara@m42.guide</a>
-          <br />
-          Paul : <a href="mailto:paul@m42.guide">paul@m42.guide</a>
-          <br />
-          [À COMPLÉTER : téléphone]
+          {contacts.map((c) => (
+            <>
+              {c.prenom} : <a href={`mailto:${c.email}`}>{c.email}</a>
+              <br />
+            </>
+          ))}
+          {telephone}
         </p>
       </div>
     </div>

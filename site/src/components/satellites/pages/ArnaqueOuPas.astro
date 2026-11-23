@@ -20,7 +20,9 @@ import SatFaq from '../../../components/satellites/SatFaq.astro';
 import SatLinkList from '../../../components/satellites/SatLinkList.astro';
 import SatCta from '../../../components/satellites/SatCta.astro';
 import { satellitePageJsonLd } from '../../../data/satellites/json-ld';
-import { page } from '../../../data/outils/arnaque-ou-pas';
+import type { Pages } from '../../../lib/cms/registre';
+
+const { page } = Astro.props as { page: Pages['arnaque-ou-pas'] };
 
 const { seo, crumbs, hero, test, rules, numbers, capture, faq, related, sources, cta } = page;
 // Le texte de la maquette était écrit en dur au début du slot : on garde son retrait pour un HTML

@@ -9,14 +9,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import LegalProse from '../../components/legal/LegalProse.astro';
 import LegalBlocks from '../../components/legal/LegalBlocks.astro';
-import {
-  breadcrumb,
-  enBref,
-  intro,
-  proseLabel,
-  sections,
-  seo,
-} from '../../data/legal/confidentialite';
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { breadcrumb, enBref, intro, proseLabel, sections, seo } = await lirePage('confidentialite');
 
 const pageUrl = new URL('/confidentialite/', Astro.site).href;
 const homeUrl = new URL('/', Astro.site).href;

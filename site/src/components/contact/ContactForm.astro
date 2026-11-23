@@ -9,14 +9,10 @@ import Button from '../Button.astro';
 import ArrowLink from '../ArrowLink.astro';
 import ContactField from './ContactField.astro';
 import { routes } from '../../data/routes';
-import {
-  structureTypes,
-  themes,
-  formats,
-  participants,
-  budgets,
-  rgpdNotice,
-} from '../../data/contact';
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { structureTypes, themes, formats, participants, budgets, rgpdNotice } =
+  await lirePage('contact');
 ---
 
 <div class="contact-form" data-contact-form>

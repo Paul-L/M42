@@ -9,23 +9,25 @@
  * Pas de logique interactive (renderVals() vide) ; la FAQ est en <details> natif.
  * Mots-clés : jamais « formation des élus » (on parle de sensibilisation, de temps d'information).
  */
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Section from '../../components/Section.astro';
-import ArrowLink from '../../components/ArrowLink.astro';
-import CtaBand from '../../components/CtaBand.astro';
-import PublicHero from '../../components/publics/PublicHero.astro';
-import PublicSectionHead from '../../components/publics/PublicSectionHead.astro';
-import IssueGrid from '../../components/publics/IssueGrid.astro';
-import PublicFormats from '../../components/publics/PublicFormats.astro';
-import PublicConferenceGrid from '../../components/publics/PublicConferenceGrid.astro';
-import TopicList from '../../components/publics/TopicList.astro';
-import TakeawayColumns from '../../components/publics/TakeawayColumns.astro';
-import StepList from '../../components/publics/StepList.astro';
-import IntervenantsNote from '../../components/publics/IntervenantsNote.astro';
-import PublicFlow from '../../components/publics/PublicFlow.astro';
-import PublicFaq from '../../components/publics/PublicFaq.astro';
-import { publicPageJsonLd } from '../../components/publics/json-ld';
-import { collectivites as page } from '../../data/publics/collectivites';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Section from '../../../components/Section.astro';
+import ArrowLink from '../../../components/ArrowLink.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import PublicHero from '../../../components/publics/PublicHero.astro';
+import PublicSectionHead from '../../../components/publics/PublicSectionHead.astro';
+import IssueGrid from '../../../components/publics/IssueGrid.astro';
+import PublicFormats from '../../../components/publics/PublicFormats.astro';
+import PublicConferenceGrid from '../../../components/publics/PublicConferenceGrid.astro';
+import TopicList from '../../../components/publics/TopicList.astro';
+import TakeawayColumns from '../../../components/publics/TakeawayColumns.astro';
+import StepList from '../../../components/publics/StepList.astro';
+import IntervenantsNote from '../../../components/publics/IntervenantsNote.astro';
+import PublicFlow from '../../../components/publics/PublicFlow.astro';
+import PublicFaq from '../../../components/publics/PublicFaq.astro';
+import { publicPageJsonLd } from '../../../components/publics/json-ld';
+import type { PublicsParSlug } from '../../../lib/cms/registre';
+
+const { page } = Astro.props as { page: PublicsParSlug['collectivites'] };
 
 const { title, description } = page.seo;
 

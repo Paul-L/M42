@@ -8,7 +8,9 @@
 import Eyebrow from '../Eyebrow.astro';
 import Placeholder from '../Placeholder.astro';
 import type { Intervenant } from '../../data/intervenants';
-import { duo } from '../../data/a-propos';
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { duo } = await lirePage('a-propos');
 
 interface Props {
   person: Intervenant;

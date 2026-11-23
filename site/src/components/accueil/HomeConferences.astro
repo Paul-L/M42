@@ -9,7 +9,13 @@ import ConferenceCard from '../ConferenceCard.astro';
 import Section from '../Section.astro';
 import SignatureConferenceCard from '../conferences/SignatureConferenceCard.astro';
 import PublicSectionHead from '../publics/PublicSectionHead.astro';
-import { catalogueTexte, conferences } from '../../data/accueil';
+import { catalogue as lireCatalogue, page as lirePage } from '../../lib/cms/contenu';
+
+const { catalogueTexte, resumesAccueil: _resumesAccueil } = await lirePage('accueil');
+const conferences = (await lireCatalogue()).map((c) => ({
+  ...c,
+  resume: _resumesAccueil[c.slug as keyof typeof _resumesAccueil] ?? c.resume,
+}));
 
 const t = catalogueTexte;
 ---

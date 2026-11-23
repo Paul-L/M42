@@ -1,0 +1,6 @@
+{
+  "name": "m42-cms-scripts",
+  "private": true,
+  "type": "module",
+  "description": "Scripts Directus (schéma, rôles, seed), lancés depuis site/ : npm run cms:schema | cms:roles | cms:seed."
+}

@@ -1,6 +1,8 @@
 ---
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { aside, nextSteps } = await lirePage('contact');
 /** Colonne « Coordonnées et étapes » de la page Contact (maquette Contact.dc.html). */
-import { aside, nextSteps } from '../../data/contact';
 ---
 
 <aside aria-label={aside.label} class="aside">

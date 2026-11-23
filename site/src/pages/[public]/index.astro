@@ -1,0 +1,35 @@
+---
+/**
+ * Pages « Pour qui » (/entreprises/, /evenements/, /collectivites/, /education/, /associations/),
+ * générées depuis les pages publiées (Directus `publics`, ou src/data en mode local).
+ * Une page en brouillon n'est pas générée ; une page publiée sans gabarit arrête le build.
+ */
+import Entreprises from '../../components/publics/pages/Entreprises.astro';
+import Evenements from '../../components/publics/pages/Evenements.astro';
+import Collectivites from '../../components/publics/pages/Collectivites.astro';
+import Education from '../../components/publics/pages/Education.astro';
+import Associations from '../../components/publics/pages/Associations.astro';
+import { publics } from '../../lib/cms/contenu';
+
+export async function getStaticPaths() {
+  const gabarits = ['entreprises', 'evenements', 'collectivites', 'education', 'associations'];
+  return (await publics()).map((page) => {
+    if (!gabarits.includes(page.slug))
+      throw new Error(`Page « Pour qui » « ${page.slug} » publiée sans gabarit.`);
+    return { params: { public: page.slug }, props: { page } };
+  });
+}
+
+const GABARITS = {
+  entreprises: Entreprises,
+  evenements: Evenements,
+  collectivites: Collectivites,
+  education: Education,
+  associations: Associations,
+} as const;
+
+const { page } = Astro.props;
+const Gabarit = GABARITS[page.slug as keyof typeof GABARITS];
+---
+
+<Gabarit page={page as never} />

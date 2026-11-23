@@ -20,8 +20,12 @@ import HomeDuo from '../components/accueil/HomeDuo.astro';
 import HomeOrganizers from '../components/accueil/HomeOrganizers.astro';
 import HomeCta from '../components/accueil/HomeCta.astro';
 import { assertNoMarker } from '../components/publics/json-ld';
-import { chiffres, chiffresLabel, citationChiffres, organisation, seo } from '../data/accueil';
-import { intervenants, personId, personSchema } from '../data/intervenants';
+
+import { personId, personSchema } from '../data/intervenants';
+import { intervenants as lireIntervenants, page as lirePage } from '../lib/cms/contenu';
+
+const { chiffres, chiffresLabel, citationChiffres, organisation, seo } = await lirePage('accueil');
+const intervenants = await lireIntervenants();
 
 const { title, description } = seo;
 const o = organisation;

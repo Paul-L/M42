@@ -25,7 +25,9 @@ import SatLinkList from '../../../components/satellites/SatLinkList.astro';
 import SatSources from '../../../components/satellites/SatSources.astro';
 import SatCta from '../../../components/satellites/SatCta.astro';
 import { satelliteArticleJsonLdOf } from '../../../data/satellites/json-ld';
-import { page } from '../../../data/satellites/sensibiliser-equipes-ia';
+import type { Pages } from '../../../lib/cms/registre';
+
+const { page } = Astro.props as { page: Pages['sensibiliser-equipes-ia'] };
 
 const { seo, crumbs, hero, toc, sections, sources, cta } = page;
 const { byline } = hero;

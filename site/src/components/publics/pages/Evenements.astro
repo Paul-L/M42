@@ -9,26 +9,28 @@
  * En-tête : rubrique « Entreprises » (aria-current="true", prop `section`, DECISIONS.md point 3).
  * Pas de logique interactive (renderVals() vide) ; la FAQ est en <details> natif.
  */
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Section from '../../components/Section.astro';
-import ArrowLink from '../../components/ArrowLink.astro';
-import Button from '../../components/Button.astro';
-import Eyebrow from '../../components/Eyebrow.astro';
-import CtaBand from '../../components/CtaBand.astro';
-import PublicHero from '../../components/publics/PublicHero.astro';
-import PublicSectionHead from '../../components/publics/PublicSectionHead.astro';
-import IssueGrid from '../../components/publics/IssueGrid.astro';
-import PublicFormats from '../../components/publics/PublicFormats.astro';
-import KeynoteTimeline from '../../components/publics/KeynoteTimeline.astro';
-import CrossList from '../../components/publics/CrossList.astro';
-import PublicConferenceGrid from '../../components/publics/PublicConferenceGrid.astro';
-import TopicList from '../../components/publics/TopicList.astro';
-import TakeawayColumns from '../../components/publics/TakeawayColumns.astro';
-import StepList from '../../components/publics/StepList.astro';
-import IntervenantsNote from '../../components/publics/IntervenantsNote.astro';
-import PublicFaq from '../../components/publics/PublicFaq.astro';
-import { publicPageJsonLd } from '../../components/publics/json-ld';
-import { evenements as page } from '../../data/publics/evenements';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Section from '../../../components/Section.astro';
+import ArrowLink from '../../../components/ArrowLink.astro';
+import Button from '../../../components/Button.astro';
+import Eyebrow from '../../../components/Eyebrow.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import PublicHero from '../../../components/publics/PublicHero.astro';
+import PublicSectionHead from '../../../components/publics/PublicSectionHead.astro';
+import IssueGrid from '../../../components/publics/IssueGrid.astro';
+import PublicFormats from '../../../components/publics/PublicFormats.astro';
+import KeynoteTimeline from '../../../components/publics/KeynoteTimeline.astro';
+import CrossList from '../../../components/publics/CrossList.astro';
+import PublicConferenceGrid from '../../../components/publics/PublicConferenceGrid.astro';
+import TopicList from '../../../components/publics/TopicList.astro';
+import TakeawayColumns from '../../../components/publics/TakeawayColumns.astro';
+import StepList from '../../../components/publics/StepList.astro';
+import IntervenantsNote from '../../../components/publics/IntervenantsNote.astro';
+import PublicFaq from '../../../components/publics/PublicFaq.astro';
+import { publicPageJsonLd } from '../../../components/publics/json-ld';
+import type { PublicsParSlug } from '../../../lib/cms/registre';
+
+const { page } = Astro.props as { page: PublicsParSlug['evenements'] };
 
 const { title, description } = page.seo;
 

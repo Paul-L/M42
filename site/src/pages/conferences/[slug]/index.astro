@@ -1,0 +1,35 @@
+---
+/**
+ * Pages conférences (/conferences/<slug>/), générées depuis les conférences publiées
+ * (Directus `conferences`, ou src/data en mode local). Une conférence en brouillon n'a pas de page.
+ * Chaque conférence a son gabarit (components/conferences/pages/) : une conférence publiée sans
+ * gabarit arrête le build avec un message clair (il faut d'abord créer sa mise en page).
+ */
+import IaAuQuotidien from '../../../components/conferences/pages/IaAuQuotidien.astro';
+import ArnaquesIa from '../../../components/conferences/pages/ArnaquesIa.astro';
+import DesinformationIa from '../../../components/conferences/pages/DesinformationIa.astro';
+import ParentsAdosIa from '../../../components/conferences/pages/ParentsAdosIa.astro';
+import { conferences } from '../../../lib/cms/contenu';
+import type { ConferenceComplete } from '../../../lib/cms/registre';
+
+export async function getStaticPaths() {
+  const gabarits = ['ia-au-quotidien', 'arnaques-ia', 'desinformation-ia', 'parents-ados-ia'];
+  return (await conferences()).map((conf) => {
+    if (!gabarits.includes(conf.slug))
+      throw new Error(`Conférence « ${conf.slug} » publiée sans gabarit de page.`);
+    return { params: { slug: conf.slug }, props: { conf } };
+  });
+}
+
+const GABARITS = {
+  'ia-au-quotidien': IaAuQuotidien,
+  'arnaques-ia': ArnaquesIa,
+  'desinformation-ia': DesinformationIa,
+  'parents-ados-ia': ParentsAdosIa,
+} as const;
+
+const { conf } = Astro.props as { conf: ConferenceComplete };
+const Gabarit = GABARITS[conf.slug as keyof typeof GABARITS];
+---
+
+<Gabarit conf={conf} />

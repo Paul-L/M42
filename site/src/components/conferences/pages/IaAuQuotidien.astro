@@ -1,31 +1,35 @@
 ---
 /**
- * Conférence III « Vrai ou faux ? » (kit/maquette/Conf-desinformation-ia.dc.html).
- * Contenus : src/data/conferences/desinformation-ia.ts. JSON-LD : WebPage + BreadcrumbList + Service
+ * Conférence I « L'IA au quotidien », conférence signature
+ * (kit/maquette/Conf-ia-au-quotidien.dc.html).
+ * Contenus : src/data/conferences/ia-au-quotidien.ts. JSON-LD : WebPage + BreadcrumbList + Service
  * + FAQPage (src/data/conferences/jsonld.ts).
- * Îlots : animation au défilement « Une image qui circule » (ScrollStory + visuel PublicationVirale),
- * jeu « Vrai ou IA ? » (VraiOuIaGame). FAQ en <details> sans JavaScript.
+ * Îlot : animation au défilement « L'erreur sûre d'elle » (ScrollStory + visuel ErreurSure).
+ * FAQ en <details> sans JavaScript.
  *
- * Neutralité politique stricte : textes de la maquette à l'identique (Storm-1516, Viginum).
- * Rubrique « Conférences » marquée aria-current="true" (section), comme dans la maquette.
+ * Pas de `current` : la rubrique « Conférences » est marquée par `section` (DECISIONS.md, point 3).
  */
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ConferenceHero from '../../../components/conferences/ConferenceHero.astro';
 import ScrollStory from '../../../components/conferences/ScrollStory.astro';
-import PublicationVirale from '../../../components/conferences/visuels/PublicationVirale.astro';
+import ErreurSure from '../../../components/conferences/visuels/ErreurSure.astro';
 import ConferenceObjectives from '../../../components/conferences/ConferenceObjectives.astro';
-import KeyFigures from '../../../components/conferences/KeyFigures.astro';
 import ConferenceProgram from '../../../components/conferences/ConferenceProgram.astro';
 import TempsFort from '../../../components/conferences/TempsFort.astro';
-import VraiOuIaGame from '../../../components/conferences/desinformation-ia/VraiOuIaGame.astro';
-import MethodeVerification from '../../../components/conferences/desinformation-ia/MethodeVerification.astro';
 import ConferenceFormats from '../../../components/conferences/ConferenceFormats.astro';
 import ConferenceAudiences from '../../../components/conferences/ConferenceAudiences.astro';
 import ConferenceFaq from '../../../components/conferences/ConferenceFaq.astro';
 import OtherConferences from '../../../components/conferences/OtherConferences.astro';
 import ConferenceCta from '../../../components/conferences/ConferenceCta.astro';
-import { desinformationIa as conf } from '../../../data/conferences/desinformation-ia';
+import SignatureMention from '../../../components/conferences/ia-au-quotidien/SignatureMention.astro';
+import TempsFortEtapes from '../../../components/conferences/ia-au-quotidien/TempsFortEtapes.astro';
+import MethodesPros from '../../../components/conferences/ia-au-quotidien/MethodesPros.astro';
+import VersionKeynote from '../../../components/conferences/ia-au-quotidien/VersionKeynote.astro';
+
 import { conferenceJsonLd } from '../../../data/conferences/jsonld';
+import type { ConferenceComplete } from '../../../lib/cms/registre';
+
+const { conf } = Astro.props as { conf: ConferenceComplete };
 
 const visuel = conf.demonstration.visuel;
 ---
@@ -39,7 +43,6 @@ const visuel = conf.demonstration.visuel;
   <ConferenceHero
     titre={conf.titre}
     surTitre={conf.surTitre}
-    noteTitre={conf.noteTitre}
     sousTitre={conf.sousTitre}
     promesse={conf.promesse}
     ctaSecondaire={conf.ctaSecondaire}
@@ -47,28 +50,8 @@ const visuel = conf.demonstration.visuel;
     fiche={conf.fiche}
     subtitleMax={28}
   >
-    {conf.mentionEnTete && (
-      <p slot="after-actions" class="neutre">
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-          focusable="false"
-          class="neutre-i"
-        >
-          <path d="M12 3v18"></path>
-          <path d="M5 7h14"></path>
-          <path d="M5 7l-3 7h6z"></path>
-          <path d="M19 7l-3 7h6z"></path>
-        </svg>
-        {conf.mentionEnTete}
-      </p>
+    {conf.mentionSignature && (
+      <SignatureMention slot="before-title" label={conf.mentionSignature} />
     )}
   </ConferenceHero>
 
@@ -77,10 +60,9 @@ const visuel = conf.demonstration.visuel;
     surTitre={conf.demonstration.surTitre}
     etapes={conf.demonstration.etapes}
     k={conf.demonstration.k}
-    minHeight={320}
     visualSize="wide"
   >
-    {visuel?.type === 'publication-virale' && <PublicationVirale slot="visual" visuel={visuel} />}
+    {visuel?.type === 'erreur-sure' && <ErreurSure slot="visual" visuel={visuel} />}
   </ScrollStory>
 
   <ConferenceObjectives
@@ -88,10 +70,6 @@ const visuel = conf.demonstration.visuel;
     enClair={conf.enClair}
     items={conf.objectifs.items}
   />
-
-  {conf.chiffres && (
-    <KeyFigures label={conf.chiffres.label} items={conf.chiffres.items} note={conf.chiffres.note} />
-  )}
 
   <ConferenceProgram
     surTitre={conf.programme.surTitre}
@@ -105,17 +83,31 @@ const visuel = conf.demonstration.visuel;
     titre={conf.tempsFort.titre}
     chapo={conf.tempsFort.chapo}
     note={conf.tempsFort.note}
+    notePosition={conf.tempsFort.notePosition}
+    asideBasis={360}
   >
-    {conf.jeu && <VraiOuIaGame exemples={conf.jeu} />}
+    {conf.tempsFortEtapes && <TempsFortEtapes etapes={conf.tempsFortEtapes} />}
   </TempsFort>
 
-  {conf.methode && (
-    <MethodeVerification
-      surTitre={conf.methode.surTitre}
-      titre={conf.methode.titre}
-      etapes={conf.methode.etapes}
-      note={conf.methode.note}
-      regle={conf.methode.regle}
+  {conf.methodes && (
+    <MethodesPros
+      surTitre={conf.methodes.surTitre}
+      titre={conf.methodes.titre}
+      chapo={conf.methodes.chapo}
+      colonnes={conf.methodes.colonnes}
+      items={conf.methodes.items}
+    />
+  )}
+
+  {conf.keynote && (
+    <VersionKeynote
+      surTitre={conf.keynote.surTitre}
+      titre={conf.keynote.titre}
+      chapo={conf.keynote.chapo}
+      note={conf.keynote.note}
+      deroule={conf.keynote.deroule}
+      regles={conf.keynote.regles}
+      lien={conf.keynote.lien}
     />
   )}
 
@@ -134,21 +126,3 @@ const visuel = conf.demonstration.visuel;
 
   <ConferenceCta titre={conf.contact.titre} chapo={conf.contact.chapo} cta={conf.contact.cta} />
 </BaseLayout>
-
-<style>
-  /* Mention « Strictement neutre » sous les boutons (slot after-actions de ConferenceHero). */
-  .neutre {
-    margin: 0;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: var(--fs-small);
-    line-height: var(--lh-small);
-    color: var(--ink-2);
-  }
-
-  .neutre-i {
-    flex: none;
-    color: var(--ink);
-  }
-</style>

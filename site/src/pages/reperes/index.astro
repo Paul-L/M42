@@ -17,15 +17,12 @@ import Eyebrow from '../../components/Eyebrow.astro';
 import ArrowLink from '../../components/ArrowLink.astro';
 import RepereLibrary from '../../components/reperes/RepereLibrary.astro';
 import LettreSignup from '../../components/reperes/LettreSignup.astro';
-import {
-  ariane,
-  bibliotheque,
-  entete,
-  plusLoin,
-  reperesDisponibles,
-  seo,
-} from '../../data/reperes';
+
 import { routes } from '../../data/routes';
+import { page as lirePage, ressources as lireRessources } from '../../lib/cms/contenu';
+
+const reperesDisponibles = (await lireRessources()).filter((r) => r.statut === 'disponible');
+const { ariane, bibliotheque, entete, plusLoin, seo } = await lirePage('reperes');
 
 const { title, description } = seo;
 /** Fil d'Ariane avec ses URL (les liens du module sont des clés de routes). */

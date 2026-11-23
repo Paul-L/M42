@@ -1,31 +1,34 @@
 ---
 /**
- * Conférence II « Arnaques 2026 » (kit/maquette/Conf-arnaques-ia.dc.html).
- * Contenus : src/data/conferences/arnaques-ia.ts. JSON-LD : WebPage + BreadcrumbList + Service
+ * Conférence III « Vrai ou faux ? » (kit/maquette/Conf-desinformation-ia.dc.html).
+ * Contenus : src/data/conferences/desinformation-ia.ts. JSON-LD : WebPage + BreadcrumbList + Service
  * + FAQPage (src/data/conferences/jsonld.ts).
- * Îlots : animation au défilement « Anatomie d'un faux SMS » (ScrollStory + visuel FauxSms),
- * jeu « Arnaque ou pas ? » (ArnaqueOuPasGame). FAQ en <details> sans JavaScript.
+ * Îlots : animation au défilement « Une image qui circule » (ScrollStory + visuel PublicationVirale),
+ * jeu « Vrai ou IA ? » (VraiOuIaGame). FAQ en <details> sans JavaScript.
  *
- * Pas de `current` (DECISIONS.md, point 3). La maquette met pourtant aria-current="true"
- * (rubrique, soulignement or) sur « Conférences » : option absente de l'en-tête partagé.
+ * Neutralité politique stricte : textes de la maquette à l'identique (Storm-1516, Viginum).
+ * Rubrique « Conférences » marquée aria-current="true" (section), comme dans la maquette.
  */
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ConferenceHero from '../../../components/conferences/ConferenceHero.astro';
 import ScrollStory from '../../../components/conferences/ScrollStory.astro';
-import FauxSms from '../../../components/conferences/visuels/FauxSms.astro';
+import PublicationVirale from '../../../components/conferences/visuels/PublicationVirale.astro';
 import ConferenceObjectives from '../../../components/conferences/ConferenceObjectives.astro';
 import KeyFigures from '../../../components/conferences/KeyFigures.astro';
 import ConferenceProgram from '../../../components/conferences/ConferenceProgram.astro';
 import TempsFort from '../../../components/conferences/TempsFort.astro';
-import ArnaqueOuPasGame from '../../../components/conferences/ArnaqueOuPasGame.astro';
+import VraiOuIaGame from '../../../components/conferences/desinformation-ia/VraiOuIaGame.astro';
+import MethodeVerification from '../../../components/conferences/desinformation-ia/MethodeVerification.astro';
 import ConferenceFormats from '../../../components/conferences/ConferenceFormats.astro';
 import ConferenceAudiences from '../../../components/conferences/ConferenceAudiences.astro';
-import HelpNumbers from '../../../components/conferences/HelpNumbers.astro';
 import ConferenceFaq from '../../../components/conferences/ConferenceFaq.astro';
 import OtherConferences from '../../../components/conferences/OtherConferences.astro';
 import ConferenceCta from '../../../components/conferences/ConferenceCta.astro';
-import { arnaquesIa as conf } from '../../../data/conferences/arnaques-ia';
+
 import { conferenceJsonLd } from '../../../data/conferences/jsonld';
+import type { ConferenceComplete } from '../../../lib/cms/registre';
+
+const { conf } = Astro.props as { conf: ConferenceComplete };
 
 const visuel = conf.demonstration.visuel;
 ---
@@ -45,16 +48,42 @@ const visuel = conf.demonstration.visuel;
     ctaSecondaire={conf.ctaSecondaire}
     miseAJour={conf.miseAJour}
     fiche={conf.fiche}
-  />
+    subtitleMax={28}
+  >
+    {conf.mentionEnTete && (
+      <p slot="after-actions" class="neutre">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          focusable="false"
+          class="neutre-i"
+        >
+          <path d="M12 3v18"></path>
+          <path d="M5 7h14"></path>
+          <path d="M5 7l-3 7h6z"></path>
+          <path d="M19 7l-3 7h6z"></path>
+        </svg>
+        {conf.mentionEnTete}
+      </p>
+    )}
+  </ConferenceHero>
 
   <ScrollStory
     label={conf.demonstration.label}
     surTitre={conf.demonstration.surTitre}
     etapes={conf.demonstration.etapes}
     k={conf.demonstration.k}
-    visualSize="phone"
+    minHeight={320}
+    visualSize="wide"
   >
-    {visuel?.type === 'faux-sms' && <FauxSms slot="visual" visuel={visuel} />}
+    {visuel?.type === 'publication-virale' && <PublicationVirale slot="visual" visuel={visuel} />}
   </ScrollStory>
 
   <ConferenceObjectives
@@ -63,7 +92,9 @@ const visuel = conf.demonstration.visuel;
     items={conf.objectifs.items}
   />
 
-  {conf.chiffres && <KeyFigures label={conf.chiffres.label} items={conf.chiffres.items} />}
+  {conf.chiffres && (
+    <KeyFigures label={conf.chiffres.label} items={conf.chiffres.items} note={conf.chiffres.note} />
+  )}
 
   <ConferenceProgram
     surTitre={conf.programme.surTitre}
@@ -78,8 +109,18 @@ const visuel = conf.demonstration.visuel;
     chapo={conf.tempsFort.chapo}
     note={conf.tempsFort.note}
   >
-    {conf.jeu && <ArnaqueOuPasGame messages={conf.jeu} />}
+    {conf.jeu && <VraiOuIaGame exemples={conf.jeu} />}
   </TempsFort>
+
+  {conf.methode && (
+    <MethodeVerification
+      surTitre={conf.methode.surTitre}
+      titre={conf.methode.titre}
+      etapes={conf.methode.etapes}
+      note={conf.methode.note}
+      regle={conf.methode.regle}
+    />
+  )}
 
   <ConferenceFormats titre={conf.formats.titre} items={conf.formats.items} />
 
@@ -90,17 +131,27 @@ const visuel = conf.demonstration.visuel;
     declinaison={conf.declinaisonEntreprise}
   />
 
-  {conf.numeros && (
-    <HelpNumbers
-      surTitre={conf.numeros.surTitre}
-      titre={conf.numeros.titre}
-      items={conf.numeros.items}
-    />
-  )}
-
   <ConferenceFaq titre={conf.faq.titre} items={conf.faq.items} sources={conf.faq.sources} />
 
   <OtherConferences current={conf.slug} />
 
   <ConferenceCta titre={conf.contact.titre} chapo={conf.contact.chapo} cta={conf.contact.cta} />
 </BaseLayout>
+
+<style>
+  /* Mention « Strictement neutre » sous les boutons (slot after-actions de ConferenceHero). */
+  .neutre {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    color: var(--ink-2);
+  }
+
+  .neutre-i {
+    flex: none;
+    color: var(--ink);
+  }
+</style>

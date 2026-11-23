@@ -17,7 +17,10 @@
  * - publicsLabel : nom accessible de la liste des publics (défaut : catalogueSection.publicsLabel).
  */
 import AudienceTag from '../AudienceTag.astro';
-import { catalogueSection, type CarteIndex } from '../../data/conferences-index';
+import { type CarteIndex } from '../../data/conferences-index';
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { catalogueSection } = await lirePage('conferences');
 
 interface Props {
   carte: CarteIndex;

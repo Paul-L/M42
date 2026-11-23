@@ -13,27 +13,29 @@
  * /conferences/ia-au-quotidien/ (11_architecture_seo, 1.3) : pas de page dédiée. Les sujets du
  * tableau (Garder la main, Déléguer sans abdiquer…) n'ont pas de page en v1 : pas de lien.
  */
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Placeholder from '../../components/Placeholder.astro';
-import SatHero from '../../components/satellites/SatHero.astro';
-import SatBody from '../../components/satellites/SatBody.astro';
-import SatSection from '../../components/satellites/SatSection.astro';
-import SatText from '../../components/satellites/SatText.astro';
-import SatFigures from '../../components/satellites/SatFigures.astro';
-import SatBox from '../../components/satellites/SatBox.astro';
-import SatPullQuote from '../../components/satellites/SatPullQuote.astro';
-import SatNumbered from '../../components/satellites/SatNumbered.astro';
-import SatNote from '../../components/satellites/SatNote.astro';
-import SatMore from '../../components/satellites/SatMore.astro';
-import SatTable from '../../components/satellites/SatTable.astro';
-import SatDefList from '../../components/satellites/SatDefList.astro';
-import SatDraftBlock from '../../components/satellites/SatDraftBlock.astro';
-import SatFaq from '../../components/satellites/SatFaq.astro';
-import SatLinkList from '../../components/satellites/SatLinkList.astro';
-import SatSources from '../../components/satellites/SatSources.astro';
-import SatCta from '../../components/satellites/SatCta.astro';
-import { satellitePageJsonLdOf } from '../../data/satellites/json-ld';
-import { page } from '../../data/satellites/seminaire-entreprise';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Placeholder from '../../../components/Placeholder.astro';
+import SatHero from '../../../components/satellites/SatHero.astro';
+import SatBody from '../../../components/satellites/SatBody.astro';
+import SatSection from '../../../components/satellites/SatSection.astro';
+import SatText from '../../../components/satellites/SatText.astro';
+import SatFigures from '../../../components/satellites/SatFigures.astro';
+import SatBox from '../../../components/satellites/SatBox.astro';
+import SatPullQuote from '../../../components/satellites/SatPullQuote.astro';
+import SatNumbered from '../../../components/satellites/SatNumbered.astro';
+import SatNote from '../../../components/satellites/SatNote.astro';
+import SatMore from '../../../components/satellites/SatMore.astro';
+import SatTable from '../../../components/satellites/SatTable.astro';
+import SatDefList from '../../../components/satellites/SatDefList.astro';
+import SatDraftBlock from '../../../components/satellites/SatDraftBlock.astro';
+import SatFaq from '../../../components/satellites/SatFaq.astro';
+import SatLinkList from '../../../components/satellites/SatLinkList.astro';
+import SatSources from '../../../components/satellites/SatSources.astro';
+import SatCta from '../../../components/satellites/SatCta.astro';
+import { satellitePageJsonLdOf } from '../../../data/satellites/json-ld';
+import type { Pages } from '../../../lib/cms/registre';
+
+const { page } = Astro.props as { page: Pages['conference-ia-seminaire-entreprise'] };
 
 const { seo, crumbs, hero, toc, sections, sources, cta } = page;
 const jsonLd = satellitePageJsonLdOf(page);

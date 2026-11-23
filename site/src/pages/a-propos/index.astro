@@ -20,8 +20,11 @@ import IntervenantProfile from '../../components/a-propos/IntervenantProfile.ast
 import AboutCta from '../../components/a-propos/AboutCta.astro';
 import { routes } from '../../data/routes';
 import { slotText } from '../../lib/slot-text';
-import { intervenants, personId, personSchema } from '../../data/intervenants';
-import {
+import { personId, personSchema } from '../../data/intervenants';
+import { intervenants as lireIntervenants, page as lirePage } from '../../lib/cms/contenu';
+
+const intervenants = await lireIntervenants();
+const {
   approach,
   approachSection,
   cta,
@@ -34,7 +37,7 @@ import {
   principles,
   principlesSection,
   seo,
-} from '../../data/a-propos';
+} = await lirePage('a-propos');
 
 const url = 'https://m42.guide/a-propos/';
 const jsonLd = {

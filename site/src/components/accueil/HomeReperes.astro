@@ -7,7 +7,9 @@
  */
 import Container from '../Container.astro';
 import Eyebrow from '../Eyebrow.astro';
-import { reperes, reperesTexte as t } from '../../data/accueil';
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { reperes, reperesTexte: t } = await lirePage('accueil');
 ---
 
 <section id="reperes" aria-labelledby="titre-reperes" class="reperes">

@@ -6,7 +6,10 @@
  * - bientot : carte en pointillés, non cliquable, pastille « Bientôt » et marqueur [À PRODUIRE].
  * `data-publics` sert au filtrage par l'îlot de RepereLibrary.
  */
-import { bibliotheque, pourLabel, type Repere } from '../../data/reperes';
+import { pourLabel, type Repere } from '../../data/reperes';
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { bibliotheque } = await lirePage('reperes');
 
 interface Props {
   repere: Repere;

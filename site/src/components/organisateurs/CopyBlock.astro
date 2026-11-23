@@ -6,7 +6,10 @@
  * zone de statut de la page ([data-copy-status]) ; repli si l'API presse-papiers est indisponible.
  * Sans JavaScript, le bouton reste masqué (il ne servirait à rien).
  */
-import { copyTexts, wordCount, type CopyKey } from '../../data/organisateurs';
+import { wordCount, type CopyKey } from '../../data/organisateurs';
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { copyTexts } = await lirePage('organisateurs');
 
 interface Props {
   /** Clé du texte dans src/data/organisateurs.ts. */

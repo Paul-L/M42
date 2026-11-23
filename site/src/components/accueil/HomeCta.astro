@@ -8,7 +8,9 @@ import Button from '../Button.astro';
 import Eyebrow from '../Eyebrow.astro';
 import Section from '../Section.astro';
 import SectionHeading from '../conferences/SectionHeading.astro';
-import { contactTexte as t } from '../../data/accueil';
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { contactTexte: t } = await lirePage('accueil');
 ---
 
 <Section tone="night" labelledby="titre-contact">

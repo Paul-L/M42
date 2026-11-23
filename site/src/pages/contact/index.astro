@@ -15,7 +15,9 @@ import ContactForm from '../../components/contact/ContactForm.astro';
 import ContactAside from '../../components/contact/ContactAside.astro';
 import { routes } from '../../data/routes';
 import { slotText } from '../../lib/slot-text';
-import { contactFaq, faqSection, formSection, hero, seo } from '../../data/contact';
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { contactFaq, faqSection, formSection, hero, seo } = await lirePage('contact');
 
 const url = 'https://m42.guide/contact/';
 const jsonLd = {

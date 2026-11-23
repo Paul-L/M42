@@ -1,33 +1,34 @@
 ---
 /**
- * Conférence IV « Parents, ados et IA » (kit/maquette/Conf-parents-ados-ia.dc.html).
- * Contenus : src/data/conferences/parents-ados-ia.ts. JSON-LD : WebPage + BreadcrumbList + Service
+ * Conférence II « Arnaques 2026 » (kit/maquette/Conf-arnaques-ia.dc.html).
+ * Contenus : src/data/conferences/arnaques-ia.ts. JSON-LD : WebPage + BreadcrumbList + Service
  * + FAQPage (src/data/conferences/jsonld.ts).
- * Îlot : animation au défilement « Une journée d'ado » (ScrollStory + frise FriseJournee
- * dans le slot « before » + visuel TelephoneAdo). Temps fort : la charte numérique de la famille
- * (CharteFamille, sans fichier à télécharger). Bande « 3018 » : BonNumero.
- * FAQ en <details> sans JavaScript.
+ * Îlots : animation au défilement « Anatomie d'un faux SMS » (ScrollStory + visuel FauxSms),
+ * jeu « Arnaque ou pas ? » (ArnaqueOuPasGame). FAQ en <details> sans JavaScript.
  *
- * Rubrique « Conférences » marquée par `section` (DECISIONS.md, point 3).
+ * Pas de `current` (DECISIONS.md, point 3). La maquette met pourtant aria-current="true"
+ * (rubrique, soulignement or) sur « Conférences » : option absente de l'en-tête partagé.
  */
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ConferenceHero from '../../../components/conferences/ConferenceHero.astro';
 import ScrollStory from '../../../components/conferences/ScrollStory.astro';
-import FriseJournee from '../../../components/conferences/visuels/FriseJournee.astro';
-import TelephoneAdo from '../../../components/conferences/visuels/TelephoneAdo.astro';
+import FauxSms from '../../../components/conferences/visuels/FauxSms.astro';
 import ConferenceObjectives from '../../../components/conferences/ConferenceObjectives.astro';
 import KeyFigures from '../../../components/conferences/KeyFigures.astro';
 import ConferenceProgram from '../../../components/conferences/ConferenceProgram.astro';
 import TempsFort from '../../../components/conferences/TempsFort.astro';
-import CharteFamille from '../../../components/conferences/parents-ados-ia/CharteFamille.astro';
-import BonNumero from '../../../components/conferences/parents-ados-ia/BonNumero.astro';
+import ArnaqueOuPasGame from '../../../components/conferences/ArnaqueOuPasGame.astro';
 import ConferenceFormats from '../../../components/conferences/ConferenceFormats.astro';
 import ConferenceAudiences from '../../../components/conferences/ConferenceAudiences.astro';
+import HelpNumbers from '../../../components/conferences/HelpNumbers.astro';
 import ConferenceFaq from '../../../components/conferences/ConferenceFaq.astro';
 import OtherConferences from '../../../components/conferences/OtherConferences.astro';
 import ConferenceCta from '../../../components/conferences/ConferenceCta.astro';
-import { parentsAdosIa as conf } from '../../../data/conferences/parents-ados-ia';
+
 import { conferenceJsonLd } from '../../../data/conferences/jsonld';
+import type { ConferenceComplete } from '../../../lib/cms/registre';
+
+const { conf } = Astro.props as { conf: ConferenceComplete };
 
 const visuel = conf.demonstration.visuel;
 ---
@@ -47,7 +48,6 @@ const visuel = conf.demonstration.visuel;
     ctaSecondaire={conf.ctaSecondaire}
     miseAJour={conf.miseAJour}
     fiche={conf.fiche}
-    subtitleMax={28}
   />
 
   <ScrollStory
@@ -55,12 +55,9 @@ const visuel = conf.demonstration.visuel;
     surTitre={conf.demonstration.surTitre}
     etapes={conf.demonstration.etapes}
     k={conf.demonstration.k}
-    dots={false}
-    minHeight={340}
-    visualSize="phone-narrow"
+    visualSize="phone"
   >
-    {conf.frise && <FriseJournee slot="before" heures={conf.frise} />}
-    {visuel?.type === 'telephone-ado' && <TelephoneAdo slot="visual" visuel={visuel} />}
+    {visuel?.type === 'faux-sms' && <FauxSms slot="visual" visuel={visuel} />}
   </ScrollStory>
 
   <ConferenceObjectives
@@ -83,24 +80,9 @@ const visuel = conf.demonstration.visuel;
     titre={conf.tempsFort.titre}
     chapo={conf.tempsFort.chapo}
     note={conf.tempsFort.note}
-    asideBasis={340}
   >
-    {conf.charte && (
-      <CharteFamille
-        titre={conf.charte.titre}
-        rubriques={conf.charte.rubriques}
-        signature={conf.charte.signature}
-      />
-    )}
+    {conf.jeu && <ArnaqueOuPasGame messages={conf.jeu} />}
   </TempsFort>
-
-  {conf.bonNumero && (
-    <BonNumero
-      valeur={conf.bonNumero.valeur}
-      titre={conf.bonNumero.titre}
-      texte={conf.bonNumero.texte}
-    />
-  )}
 
   <ConferenceFormats titre={conf.formats.titre} items={conf.formats.items} />
 
@@ -110,6 +92,14 @@ const visuel = conf.demonstration.visuel;
     items={conf.publics.items}
     declinaison={conf.declinaisonEntreprise}
   />
+
+  {conf.numeros && (
+    <HelpNumbers
+      surTitre={conf.numeros.surTitre}
+      titre={conf.numeros.titre}
+      items={conf.numeros.items}
+    />
+  )}
 
   <ConferenceFaq titre={conf.faq.titre} items={conf.faq.items} sources={conf.faq.sources} />
 

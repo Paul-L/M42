@@ -13,23 +13,25 @@
  * (champ faq.pending, interrupteur `published`). Tant qu'il vaut false, elle n'est ni affichée ni
  * balisée, et la note de relecture de la maquette reste visible.
  */
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Section from '../../components/Section.astro';
-import ArrowLink from '../../components/ArrowLink.astro';
-import CtaBand from '../../components/CtaBand.astro';
-import PublicHero from '../../components/publics/PublicHero.astro';
-import PublicSectionHead from '../../components/publics/PublicSectionHead.astro';
-import IssueGrid from '../../components/publics/IssueGrid.astro';
-import EducationAudiences from '../../components/publics/EducationAudiences.astro';
-import PublicFormats from '../../components/publics/PublicFormats.astro';
-import PublicConferenceGrid from '../../components/publics/PublicConferenceGrid.astro';
-import TopicList from '../../components/publics/TopicList.astro';
-import TakeawayColumns from '../../components/publics/TakeawayColumns.astro';
-import StepList from '../../components/publics/StepList.astro';
-import IntervenantsNote from '../../components/publics/IntervenantsNote.astro';
-import PublicFaq from '../../components/publics/PublicFaq.astro';
-import { publicPageJsonLd, visibleFaqItems } from '../../components/publics/json-ld';
-import { education as page } from '../../data/publics/education';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Section from '../../../components/Section.astro';
+import ArrowLink from '../../../components/ArrowLink.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import PublicHero from '../../../components/publics/PublicHero.astro';
+import PublicSectionHead from '../../../components/publics/PublicSectionHead.astro';
+import IssueGrid from '../../../components/publics/IssueGrid.astro';
+import EducationAudiences from '../../../components/publics/EducationAudiences.astro';
+import PublicFormats from '../../../components/publics/PublicFormats.astro';
+import PublicConferenceGrid from '../../../components/publics/PublicConferenceGrid.astro';
+import TopicList from '../../../components/publics/TopicList.astro';
+import TakeawayColumns from '../../../components/publics/TakeawayColumns.astro';
+import StepList from '../../../components/publics/StepList.astro';
+import IntervenantsNote from '../../../components/publics/IntervenantsNote.astro';
+import PublicFaq from '../../../components/publics/PublicFaq.astro';
+import { publicPageJsonLd, visibleFaqItems } from '../../../components/publics/json-ld';
+import type { PublicsParSlug } from '../../../lib/cms/registre';
+
+const { page } = Astro.props as { page: PublicsParSlug['education'] };
 
 const { title, description } = page.seo;
 const { pending } = page.faq;

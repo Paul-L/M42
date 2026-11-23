@@ -17,7 +17,9 @@ import SplitHead from '../../components/organisateurs/SplitHead.astro';
 import CopyBlock from '../../components/organisateurs/CopyBlock.astro';
 import { routes } from '../../data/routes';
 import { slotText } from '../../lib/slot-text';
-import {
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const {
   annonceSection,
   biosSection,
   hero,
@@ -31,7 +33,7 @@ import {
   seo,
   techSheet,
   techSheetSection,
-} from '../../data/organisateurs';
+} = await lirePage('organisateurs');
 
 const url = 'https://m42.guide/organisateurs/';
 const jsonLd = {

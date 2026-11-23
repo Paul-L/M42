@@ -14,8 +14,11 @@ import Container from '../Container.astro';
 import Eyebrow from '../Eyebrow.astro';
 import SectionHeading from './SectionHeading.astro';
 import SignatureConferenceCard from './SignatureConferenceCard.astro';
-import { catalogue } from '../../data/conferences/catalogue';
+
 import { routes } from '../../data/routes';
+import { catalogue as lireCatalogue } from '../../lib/cms/contenu';
+
+const catalogue = await lireCatalogue();
 
 interface Props {
   current: string;

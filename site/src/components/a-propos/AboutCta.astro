@@ -9,7 +9,9 @@ import Button from '../Button.astro';
 import Eyebrow from '../Eyebrow.astro';
 import ArrowLink from '../ArrowLink.astro';
 import Section from '../Section.astro';
-import { cta } from '../../data/a-propos';
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { cta } = await lirePage('a-propos');
 
 interface Props {
   id: string;

@@ -60,3 +60,9 @@ But : tout le texte d'une page vit dans son module de données, prêt à être c
 - Exports de contenu = **données sérialisables en JSON** : chaînes, nombres, booléens, tableaux, objets simples. Pas de fonction, pas d'import d'image ou de composant, pas de valeur calculée depuis un autre module (garder ces calculs dans la page ou dans une fonction à part, hors des exports de contenu). `routes['X.dc.html']` est permis (c'est une chaîne).
 - Texte en ligne avec balises (`<em>`, `<a>`, `<strong>`) : reprendre la façon de faire déjà en place dans la famille (chaîne HTML rendue avec `set:html`, ou segments). Le HTML produit doit rester **identique**.
 - Contrôle obligatoire : `npm run build` puis `node scripts/comparer-dist.mjs <build de référence> dist` doit répondre « aucun écart ». Plus `npx eslint` et `npx prettier --check` sur les fichiers touchés.
+
+## Lire le contenu (depuis la phase 3)
+
+- Pages et composants lisent le contenu par `src/lib/cms/contenu.ts` (`page('accueil')`, `conference(slug)`, `publicPage(slug)`, `catalogue()`, `intervenants()`, `ressources()`, `reglages()`), jamais en important `src/data` directement (sauf types et fonctions utilitaires).
+- `src/data` = contenu initial (seed et mode `M42_CONTENU=local`). Un nouveau contenu s'ajoute dans `src/data`, se déclare dans `src/lib/cms/registre.ts`, puis `npm run cms:schema` et `npm run cms:seed`.
+- Conférences, pages « Pour qui » et satellites : gabarit dans `components/<famille>/pages/`, route dynamique dans `src/pages/` (`getStaticPaths`).

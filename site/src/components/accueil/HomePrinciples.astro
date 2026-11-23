@@ -6,7 +6,9 @@
 import Container from '../Container.astro';
 import Eyebrow from '../Eyebrow.astro';
 import SectionHeading from '../conferences/SectionHeading.astro';
-import { principes, principesTexte as t } from '../../data/accueil';
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { principes, principesTexte: t } = await lirePage('accueil');
 ---
 
 <section aria-labelledby="titre-pourquoi" class="principles">

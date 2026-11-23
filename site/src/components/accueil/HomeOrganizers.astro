@@ -8,7 +8,9 @@ import Eyebrow from '../Eyebrow.astro';
 import Placeholder from '../Placeholder.astro';
 import Section from '../Section.astro';
 import SectionHeading from '../conferences/SectionHeading.astro';
-import { kitOrganisateur as k } from '../../data/accueil';
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { kitOrganisateur: k } = await lirePage('accueil');
 ---
 
 <Section id="organisateurs" labelledby="titre-organisateurs">

@@ -6,8 +6,10 @@
  */
 import ArrowLink from '../ArrowLink.astro';
 import Container from '../Container.astro';
-import { duo } from '../../data/accueil';
-import { intervenants } from '../../data/intervenants';
+import { intervenants as lireIntervenants, page as lirePage } from '../../lib/cms/contenu';
+
+const { duo } = await lirePage('accueil');
+const intervenants = await lireIntervenants();
 
 const [clara, paul] = intervenants;
 const t = duo.texte;

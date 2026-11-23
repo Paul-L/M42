@@ -1,32 +1,36 @@
 ---
 /**
- * Conférence I « L'IA au quotidien », conférence signature
- * (kit/maquette/Conf-ia-au-quotidien.dc.html).
- * Contenus : src/data/conferences/ia-au-quotidien.ts. JSON-LD : WebPage + BreadcrumbList + Service
+ * Conférence IV « Parents, ados et IA » (kit/maquette/Conf-parents-ados-ia.dc.html).
+ * Contenus : src/data/conferences/parents-ados-ia.ts. JSON-LD : WebPage + BreadcrumbList + Service
  * + FAQPage (src/data/conferences/jsonld.ts).
- * Îlot : animation au défilement « L'erreur sûre d'elle » (ScrollStory + visuel ErreurSure).
+ * Îlot : animation au défilement « Une journée d'ado » (ScrollStory + frise FriseJournee
+ * dans le slot « before » + visuel TelephoneAdo). Temps fort : la charte numérique de la famille
+ * (CharteFamille, sans fichier à télécharger). Bande « 3018 » : BonNumero.
  * FAQ en <details> sans JavaScript.
  *
- * Pas de `current` : la rubrique « Conférences » est marquée par `section` (DECISIONS.md, point 3).
+ * Rubrique « Conférences » marquée par `section` (DECISIONS.md, point 3).
  */
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ConferenceHero from '../../../components/conferences/ConferenceHero.astro';
 import ScrollStory from '../../../components/conferences/ScrollStory.astro';
-import ErreurSure from '../../../components/conferences/visuels/ErreurSure.astro';
+import FriseJournee from '../../../components/conferences/visuels/FriseJournee.astro';
+import TelephoneAdo from '../../../components/conferences/visuels/TelephoneAdo.astro';
 import ConferenceObjectives from '../../../components/conferences/ConferenceObjectives.astro';
+import KeyFigures from '../../../components/conferences/KeyFigures.astro';
 import ConferenceProgram from '../../../components/conferences/ConferenceProgram.astro';
 import TempsFort from '../../../components/conferences/TempsFort.astro';
+import CharteFamille from '../../../components/conferences/parents-ados-ia/CharteFamille.astro';
+import BonNumero from '../../../components/conferences/parents-ados-ia/BonNumero.astro';
 import ConferenceFormats from '../../../components/conferences/ConferenceFormats.astro';
 import ConferenceAudiences from '../../../components/conferences/ConferenceAudiences.astro';
 import ConferenceFaq from '../../../components/conferences/ConferenceFaq.astro';
 import OtherConferences from '../../../components/conferences/OtherConferences.astro';
 import ConferenceCta from '../../../components/conferences/ConferenceCta.astro';
-import SignatureMention from '../../../components/conferences/ia-au-quotidien/SignatureMention.astro';
-import TempsFortEtapes from '../../../components/conferences/ia-au-quotidien/TempsFortEtapes.astro';
-import MethodesPros from '../../../components/conferences/ia-au-quotidien/MethodesPros.astro';
-import VersionKeynote from '../../../components/conferences/ia-au-quotidien/VersionKeynote.astro';
-import { iaAuQuotidien as conf } from '../../../data/conferences/ia-au-quotidien';
+
 import { conferenceJsonLd } from '../../../data/conferences/jsonld';
+import type { ConferenceComplete } from '../../../lib/cms/registre';
+
+const { conf } = Astro.props as { conf: ConferenceComplete };
 
 const visuel = conf.demonstration.visuel;
 ---
@@ -40,26 +44,26 @@ const visuel = conf.demonstration.visuel;
   <ConferenceHero
     titre={conf.titre}
     surTitre={conf.surTitre}
+    noteTitre={conf.noteTitre}
     sousTitre={conf.sousTitre}
     promesse={conf.promesse}
     ctaSecondaire={conf.ctaSecondaire}
     miseAJour={conf.miseAJour}
     fiche={conf.fiche}
     subtitleMax={28}
-  >
-    {conf.mentionSignature && (
-      <SignatureMention slot="before-title" label={conf.mentionSignature} />
-    )}
-  </ConferenceHero>
+  />
 
   <ScrollStory
     label={conf.demonstration.label}
     surTitre={conf.demonstration.surTitre}
     etapes={conf.demonstration.etapes}
     k={conf.demonstration.k}
-    visualSize="wide"
+    dots={false}
+    minHeight={340}
+    visualSize="phone-narrow"
   >
-    {visuel?.type === 'erreur-sure' && <ErreurSure slot="visual" visuel={visuel} />}
+    {conf.frise && <FriseJournee slot="before" heures={conf.frise} />}
+    {visuel?.type === 'telephone-ado' && <TelephoneAdo slot="visual" visuel={visuel} />}
   </ScrollStory>
 
   <ConferenceObjectives
@@ -67,6 +71,8 @@ const visuel = conf.demonstration.visuel;
     enClair={conf.enClair}
     items={conf.objectifs.items}
   />
+
+  {conf.chiffres && <KeyFigures label={conf.chiffres.label} items={conf.chiffres.items} />}
 
   <ConferenceProgram
     surTitre={conf.programme.surTitre}
@@ -80,31 +86,22 @@ const visuel = conf.demonstration.visuel;
     titre={conf.tempsFort.titre}
     chapo={conf.tempsFort.chapo}
     note={conf.tempsFort.note}
-    notePosition={conf.tempsFort.notePosition}
-    asideBasis={360}
+    asideBasis={340}
   >
-    {conf.tempsFortEtapes && <TempsFortEtapes etapes={conf.tempsFortEtapes} />}
+    {conf.charte && (
+      <CharteFamille
+        titre={conf.charte.titre}
+        rubriques={conf.charte.rubriques}
+        signature={conf.charte.signature}
+      />
+    )}
   </TempsFort>
 
-  {conf.methodes && (
-    <MethodesPros
-      surTitre={conf.methodes.surTitre}
-      titre={conf.methodes.titre}
-      chapo={conf.methodes.chapo}
-      colonnes={conf.methodes.colonnes}
-      items={conf.methodes.items}
-    />
-  )}
-
-  {conf.keynote && (
-    <VersionKeynote
-      surTitre={conf.keynote.surTitre}
-      titre={conf.keynote.titre}
-      chapo={conf.keynote.chapo}
-      note={conf.keynote.note}
-      deroule={conf.keynote.deroule}
-      regles={conf.keynote.regles}
-      lien={conf.keynote.lien}
+  {conf.bonNumero && (
+    <BonNumero
+      valeur={conf.bonNumero.valeur}
+      titre={conf.bonNumero.titre}
+      texte={conf.bonNumero.texte}
     />
   )}
 

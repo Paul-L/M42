@@ -139,33 +139,20 @@ report(
 );
 
 // ---------- 3. Liens internes ----------
-// Les liens vers des pages du plan (site/src/data/routes.ts) pas encore intégrées
-// sont signalés « à venir » ; tout autre lien manquant est une erreur.
-const planned = new Set(
-  [...readFileSync(join(site, 'src', 'data', 'routes.ts'), 'utf8').matchAll(/: '(\/[^']*)'/g)].map(
-    (m) => m[1],
-  ),
-);
-const upcoming = new Set();
+// Toutes les pages du plan sont intégrées : tout lien vers une page absente est une erreur
+// (cas typique : une conférence passée en brouillon dans Directus mais encore citée ailleurs).
 const broken = [];
 for (const file of walk(dist).filter((p) => p.endsWith('.html'))) {
   const html = readFileSync(file, 'utf8');
   for (const [, href] of html.matchAll(/(?:href|src)="(\/[^"#?]*)/g)) {
     let p = join(dist, decodeURIComponent(href));
     if (existsSync(p) && statSync(p).isDirectory()) p = join(p, 'index.html');
-    if (existsSync(p)) continue;
-    if (planned.has(href)) upcoming.add(href);
-    else broken.push(`${relative(dist, file)} → ${href}`);
+    if (!existsSync(p)) broken.push(`${relative(dist, file)} → ${href}`);
   }
 }
 server.close();
 const uniqueBroken = [...new Set(broken)];
-report(
-  'Liens internes',
-  uniqueBroken.length === 0,
-  (uniqueBroken.join(', ') || 'aucun lien cassé') +
-    (upcoming.size ? ` ; ${upcoming.size} page(s) du plan pas encore intégrée(s)` : ''),
-);
+report('Liens internes', uniqueBroken.length === 0, uniqueBroken.join(', ') || 'aucun lien cassé');
 
 // ---------- Rapport ----------
 console.log('\n| Contrôle | Résultat | Détail |\n|---|---|---|');

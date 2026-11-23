@@ -14,6 +14,8 @@ Versions relevées le 23 novembre 2026 (registre npm, Docker Hub, nodejs.org).
 | ESLint | 10.15.0 + eslint-plugin-astro 3.2.1 + typescript-eslint 8.73.0 | idem | `eslint-plugin-jsx-a11y` (6.10.2) n'est pas compatible ESLint 10 : l'accessibilité est contrôlée par axe-core. |
 | Playwright | @playwright/test 1.65.1 + @axe-core/playwright 4.14.0 | idem | Captures comparatives et audit d'accessibilité. |
 | Directus | 12.7.0 (image `directus/directus:12.7.0`) | 12.7.0 | CMS. |
+| @directus/sdk | 27.2.0 | 27.2.0 | Lecture de Directus au build (jeton statique en lecture seule). |
+| tsx | 4.23.15 | 4.23.15 | Lance les scripts TypeScript de `cms/scripts/` (schéma, rôles, seed). |
 | PostgreSQL | 18.7 (`postgres:18.7-alpine`) | 19.0 | La 19.0 vient de sortir : on attend une version corrective et la confirmation de compatibilité Directus. |
 
 ## Choix techniques
@@ -24,9 +26,18 @@ Versions relevées le 23 novembre 2026 (registre npm, Docker Hub, nodejs.org).
 - **Menu mobile sans JavaScript** (case à cocher + label), comme la maquette.
 - **Directus + Postgres en Docker** : volumes nommés pour la base, les fichiers et les extensions. Schéma prévu pour tenir dans la version sans clé (≤ 25 collections, ≤ 5 flows, 3 comptes).
 
+## Contenu : Directus au build (phase 3)
+
+- **Schéma en code** : `cms/scripts/schema.ts` crée ou complète les collections (idempotent) et exporte le snapshot versionné `cms/schema/snapshot.json`. 10 collections sur 25 : `settings` (singleton), `intervenants`, `conferences`, `publics`, `ressources`, `pages`, `faq`, `sources`, `demandes_contact`, `inscriptions_lettre`. Aucun flow.
+- **Modèle** (`site/src/lib/cms/modele.ts`) : chaque page ou élément est un objet de contenu sérialisable en JSON. Conférences, « Pour qui », intervenants, repères, réglages : un champ Directus par section (clé de premier niveau, camelCase → snake_case), type et interface déduits du contenu (texte, nombre, booléen, étiquettes, liste répétable, JSON). Pages (accueil, À propos, satellites, légales…) : un champ `contenu` JSON. Les FAQ et les sources sont des collections reliées (M2O vers la conférence, la page « Pour qui » ou la page). La conversion est réversible.
+- **Seed** (`cms/scripts/seed.ts`) : remplit Directus depuis `site/src/data` (contenu de la maquette) ; ne touche pas aux éléments déjà présents, sauf `--remplacer`.
+- **Rôles** (`cms/scripts/roles.ts`) : Administrateur (Paul), Éditeur (Clara), Site (build, lecture seule, jeton statique écrit dans `site/.env`). 3 comptes.
+- **Lecture au build** (`site/src/lib/cms/contenu.ts`) : `M42_CONTENU=cms` (Directus, défaut si `DIRECTUS_URL` est défini) ou `local` (`src/data`). Seuls les contenus publiés sont lus ; `getStaticPaths` génère les conférences, les pages « Pour qui » et les satellites publiés.
+- **Contrôle d'équivalence** : `node scripts/comparer-dist.mjs <build A> <build B>` compare deux builds octet pour octet. Le build depuis Directus est identique au build depuis `src/data`.
+
 ## Licence Directus
 
-Depuis la v12, Directus est gratuit en production avec la clé « Open Innovation Grant » (structure < 5 M$ de CA et < 50 salariés). Sans clé : version de base (3 comptes, 25 collections, 5 flows).
+Depuis la v12, Directus est gratuit en production avec la clé « Open Innovation Grant » (structure < 5 M$ de CA et < 50 salariés). Sans clé : version de base (3 comptes, 25 collections, 5 flows), et pas de règle personnalisée dans les permissions (filtre, champs restreints) : le compte du build lit toutes les lignes, le filtre « publiés » est fait par les requêtes du site.
 **Où mettre la clé** : variable `LICENSE_KEY` dans `cms/.env` en local, et dans les variables d'environnement du service Directus sur Coolify en production. Redémarrer Directus après l'avoir ajoutée.
 
 ## Ports locaux

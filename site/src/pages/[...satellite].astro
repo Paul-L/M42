@@ -1,0 +1,37 @@
+---
+/**
+ * Pages satellites (conférence séminaire, experts-comptables, guide, outil « Arnaque ou pas ? »),
+ * générées depuis les pages publiées de Directus `pages` qui ont une adresse dans
+ * CHEMINS_SATELLITES (src/lib/cms/registre.ts). Une page en brouillon n'est pas générée.
+ */
+import SeminaireEntreprise from '../components/satellites/pages/SeminaireEntreprise.astro';
+import ExpertsComptables from '../components/satellites/pages/ExpertsComptables.astro';
+import SensibiliserEquipesIa from '../components/satellites/pages/SensibiliserEquipesIa.astro';
+import ArnaqueOuPas from '../components/satellites/pages/ArnaqueOuPas.astro';
+import { page as lirePage, slugs } from '../lib/cms/contenu';
+import { CHEMINS_SATELLITES, type SlugPage } from '../lib/cms/registre';
+
+export async function getStaticPaths() {
+  const publies = new Set(await slugs('pages'));
+  const satellites = (Object.keys(CHEMINS_SATELLITES) as SlugPage[]).filter((s) => publies.has(s));
+  return Promise.all(
+    satellites.map(async (slug) => ({
+      // « /guides/sensibiliser-equipes-ia/ » → « guides/sensibiliser-equipes-ia »
+      params: { satellite: CHEMINS_SATELLITES[slug]!.replace(/^\/|\/$/g, '') },
+      props: { slug, page: await lirePage(slug) },
+    })),
+  );
+}
+
+const GABARITS = {
+  'conference-ia-seminaire-entreprise': SeminaireEntreprise,
+  'conference-ia-experts-comptables': ExpertsComptables,
+  'sensibiliser-equipes-ia': SensibiliserEquipesIa,
+  'arnaque-ou-pas': ArnaqueOuPas,
+} as const;
+
+const { slug, page } = Astro.props;
+const Gabarit = GABARITS[slug as keyof typeof GABARITS];
+---
+
+<Gabarit page={page as never} />

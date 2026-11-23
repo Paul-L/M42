@@ -10,13 +10,14 @@
 import Container from '../Container.astro';
 import Eyebrow from '../Eyebrow.astro';
 import RepereCard from './RepereCard.astro';
-import {
-  bibliotheque as b,
-  repereFilters,
-  reperesBientot,
-  reperesDisponibles,
-  resumeLabel,
-} from '../../data/reperes';
+import { repereFilters, resumeLabel } from '../../data/reperes';
+import { page as lirePage, ressources as lireRessources } from '../../lib/cms/contenu';
+
+const { bibliotheque: b, afficherBientot: _afficherBientot } = await lirePage('reperes');
+const reperesBientot = !_afficherBientot
+  ? []
+  : (await lireRessources()).filter((r) => r.statut === 'bientot');
+const reperesDisponibles = (await lireRessources()).filter((r) => r.statut === 'disponible');
 
 const resume = resumeLabel('tous', reperesDisponibles.length, reperesBientot.length);
 ---

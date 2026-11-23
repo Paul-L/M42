@@ -10,14 +10,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import LegalProse from '../../components/legal/LegalProse.astro';
 import LegalBlocks from '../../components/legal/LegalBlocks.astro';
-import {
-  breadcrumb,
-  decide,
-  intro,
-  proseLabel,
-  sections,
-  seo,
-} from '../../data/legal/mentions-legales';
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { breadcrumb, decide, intro, proseLabel, sections, seo } = await lirePage('mentions-legales');
 
 const url = 'https://m42.guide/mentions-legales/';
 

@@ -11,8 +11,11 @@
 import Container from '../Container.astro';
 import Eyebrow from '../Eyebrow.astro';
 import Button from '../Button.astro';
-import { lettre as l, lettreProfils } from '../../data/reperes';
+import { lettreProfils } from '../../data/reperes';
 import { routes } from '../../data/routes';
+import { page as lirePage } from '../../lib/cms/contenu';
+
+const { lettre: l } = await lirePage('reperes');
 ---
 
 <section id="lettre" aria-labelledby="lettre-t" class="lettre" data-lettre>
