@@ -1,0 +1,27 @@
+---
+/**
+ * Tag de public : non cliquable, pas de code couleur par public.
+ * `as="li"` à l'intérieur d'une liste (cartes de conférence).
+ */
+interface Props {
+  as?: 'span' | 'li';
+}
+const { as: Tag = 'span' } = Astro.props;
+---
+
+<Tag class="tag">
+  <slot />
+</Tag>
+
+<style>
+  .tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: var(--radius-tag);
+    background: var(--paper-sunk);
+    color: var(--ink-2);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+</style>

@@ -1,0 +1,35 @@
+M42.guide — fichiers du logo (version « Carte du ciel »)
+
+DOSSIERS
+- svg/ : fichiers vectoriels, à utiliser en priorité (site, impression, graphiste).
+- pdf/ : mêmes fichiers en PDF vectoriel (imprimeur, Word, PowerPoint).
+- png/ : images prêtes à l'emploi (2000 px de large, fond transparent ; icônes en 512 px ; favicon en 32, 64 et 180 px).
+
+VERSIONS
+- logo_horizontal : symbole + M42 + GUIDE (version principale).
+- logo_horizontal_baseline : avec « Se repérer dans l'IA. ».
+- logo_vertical : symbole au-dessus du nom.
+- symbole : le cercle seul.
+- icone_app : pour les réseaux sociaux et les applis (fond encre ou papier).
+- favicon : M simplifié pour l'onglet du navigateur.
+- Chaque version existe en « couleur » (encre + or), « noir » (tout en noir, pour photocopie et tampon) et « blanc » (pour fonds sombres).
+
+COULEURS
+- Encre  #0E0F12
+- Papier #F2EEE6
+- Or     #B08D57
+- Pierre #8A8478
+
+TYPOGRAPHIES (gratuites, licence SIL Open Font License, usage commercial autorisé)
+- Cormorant SemiBold : nom « M42 » et titres. Chiffres « alignés » (le 4 ne descend pas sous la ligne).
+- Inter Regular : « GUIDE » et textes.
+Dans les fichiers, le texte est converti en tracés : aucune police n'est nécessaire pour les ouvrir.
+
+RÈGLES SIMPLES
+- Laisser autour du logo une marge au moins égale à la hauteur du « 4 ».
+- Ne pas déformer, ne pas changer les couleurs, ne pas ajouter d'ombre.
+- En dessous de 120 px de large, utiliser l'icône ou le symbole seul plutôt que le logo complet.
+
+NOTE POUR UN GRAPHISTE
+Les traits fins du symbole (cercle, lignes du M) sont des contours vectoriels (« strokes »).
+Pour un marquage, une broderie ou une gravure, les vectoriser en formes pleines (« vectoriser le contour » dans Illustrator).

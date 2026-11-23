@@ -1,0 +1,167 @@
+/*
+ * M42.guide — feuille globale
+ * Traduction du <helmet> de kit/maquette/22_gabarit.html : base, focus, lien d'évitement,
+ * apparition au défilement, mouvement réduit. Les styles propres à chaque composant
+ * sont dans le composant (styles scopés Astro).
+ *
+ * Note : pas de « box-sizing: border-box » global. La maquette garde le modèle par défaut
+ * (le conteneur fait 1240 px de contenu + ses marges) ; les composants qui en ont besoin
+ * le déclarent eux-mêmes, comme dans le gabarit.
+ */
+
+@import './tokens.css';
+
+@layer base, utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  a {
+    color: var(--ink);
+  }
+
+  ::selection {
+    background: var(--paper-sunk);
+    color: var(--ink);
+  }
+
+  img,
+  svg,
+  video,
+  canvas {
+    max-width: 100%;
+  }
+
+  img {
+    height: auto;
+  }
+
+  /* Focus visible : encre sur clair, or clair sur nuit */
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  .m42-night :focus-visible {
+    outline-color: var(--gold-light);
+  }
+
+  /* Coupures de mots (gabarit, bloc mobile) */
+  p,
+  li,
+  dd,
+  dt,
+  td,
+  th,
+  h1,
+  h2,
+  h3,
+  summary,
+  label {
+    overflow-wrap: break-word;
+  }
+
+  a[href^='mailto:'] {
+    overflow-wrap: anywhere;
+  }
+
+  /* Contenu principal : cible du lien d'évitement */
+  main:focus {
+    outline: none;
+  }
+
+  /* Section « nuit » : fond encre, texte papier */
+  .m42-night {
+    background: var(--night);
+    color: var(--on-night);
+  }
+}
+
+@layer utilities {
+  /* Masqué visuellement, lu par les lecteurs d'écran */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Apparition au défilement : opacité + 8 px, natif, sans JavaScript.
+     Sans prise en charge, le contenu est simplement visible.
+     Jamais au-dessus de la ligne de flottaison. */
+  @keyframes m42-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    .m42-reveal {
+      animation: m42-in var(--ease-out) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+  }
+
+  .m42-still .m42-reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Mouvement réduit : aucune translation, fondus à 0 ms */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0ms !important;
+  }
+
+  .m42-reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@layer utilities {
+  /* Texte courant : 60 à 70 caractères par ligne, aligné à gauche, jamais justifié */
+  .m42-text {
+    margin: 16px 0 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--fg-2);
+    hyphens: auto;
+  }
+}

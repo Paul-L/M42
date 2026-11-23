@@ -1,0 +1,848 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Arnaques 2026 · M42</title>
+<!-- SEO: /conferences/arnaques-ia/ | title: Conférence arnaques et IA : voix clonées, faux SMS | M42 | meta: Voix clonées, faux conseillers, usurpation de numéro : reconnaître les arnaques rendues crédibles par l'IA et savoir quoi faire. Seniors, CCAS, salariés. | canonical: https://m42.guide/conferences/arnaques-ia/ | JSON-LD : WebPage + BreadcrumbList + Service (+ FAQPage facultatif, réponses identiques) (11_architecture_seo.md, § 3.3, exemple 2) | H1 : « Arnaques 2026 » [À DÉCIDER : titre daté ou intemporel ; l'URL ne change jamais] | Reprend ThemeArnaques.dc.html (animation « Anatomie d'un faux SMS », jeu « Arnaque ou pas ? »), corrections 04/05 : 17Cyber = plateforme en ligne, pas un numéro ; 33700 non revérifié (05) ; sous-titre « à temps » proposé par 05. -->
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+/* Base */
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:#F2EEE6;color:#0E0F12;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:#0E0F12}
+::selection{background:#E8E2D7;color:#0E0F12}
+
+/* Focus visible : encre sur clair, or clair sur nuit */
+:focus-visible{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night :focus-visible{outline-color:#C9A46A}
+
+/* Lien d'évitement */
+.m42-skip{position:absolute;left:16px;top:-200px;z-index:100}
+.m42-skip:focus{top:12px}
+
+/* En-tête : collant à partir de 960 px ; filet bas qui apparaît au défilement */
+@media (min-width:960px){.m42-hdr{position:sticky;top:0;z-index:50}}
+@keyframes m42-hdr{from{border-bottom-color:rgba(215,208,195,0)}to{border-bottom-color:#D7D0C3}}
+@supports (animation-timeline: scroll()){
+  .m42-hdr{animation:m42-hdr cubic-bezier(.22,1,.36,1) both;animation-timeline:scroll();animation-range:0px 96px}
+}
+
+/* Navigation : survol souligné encre 1 px, page active soulignée or 2 px */
+.m42-nav{text-decoration:none;text-underline-offset:8px;text-decoration-thickness:1px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-nav:hover{text-decoration-line:underline;text-decoration-color:#0E0F12}
+.m42-nav[aria-current="page"]{text-decoration-line:underline;text-decoration-color:#B08D57;text-decoration-thickness:2px}
+
+/* Boutons */
+.m42-btn,.m42-btn2,.m42-btn2n{transition:background-color 120ms cubic-bezier(.22,1,.36,1),color 120ms cubic-bezier(.22,1,.36,1),border-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-btn:hover{background-color:#B08D57!important;color:#0E0F12!important}
+.m42-btn2:hover{background-color:rgba(14,15,18,.06)!important}
+.m42-btn2n:hover{background-color:rgba(242,238,230,.08)!important;border-color:#C9A46A!important}
+.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:translateY(1px)}
+
+/* Lien fléché */
+.m42-arrow,.m42-cta{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-arrow-i{display:inline-block;transition:transform 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover .m42-arrow-i{transform:translateX(3px)}
+
+/* Carte cliquable : le lien du titre s'étend à toute la carte (pas de <a> englobant) */
+.m42-card{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover{border-color:#0E0F12!important}
+.m42-night .m42-card:hover{border-color:#F2EEE6!important}
+.m42-bar{transform:scaleX(.18);transform-origin:left;transition:transform 320ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover .m42-bar,.m42-card:focus-within .m42-bar{transform:scaleX(1)}
+.m42-card:hover .m42-arrow-i{transform:translateX(3px)}
+.m42-card:hover .m42-cta{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-stretch{text-decoration:none}
+.m42-stretch::after{content:"";position:absolute;inset:0;z-index:1}
+.m42-stretch:focus-visible{outline:none}
+.m42-stretch:focus-visible::after{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night .m42-stretch:focus-visible::after{outline-color:#C9A46A}
+
+/* Liens du pied de page */
+.m42-fl{text-decoration:none;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-fl:hover{text-decoration-line:underline;text-decoration-color:#B08D57;color:#F2EEE6!important}
+
+/* Fil d'Ariane : complet au-dessus de 640 px, parent seul en dessous */
+.m42-bc-full{display:flex}
+.m42-bc-short{display:none}
+@media (max-width:639px){.m42-bc-full{display:none}.m42-bc-short{display:inline-flex}}
+
+/* FAQ */
+.m42-faq summary{list-style:none;cursor:pointer}
+.m42-faq summary::-webkit-details-marker{display:none}
+.m42-faq-i{transition:transform 200ms cubic-bezier(.65,0,.35,1)}
+.m42-faq[open] .m42-faq-i{transform:rotate(45deg)}
+.m42-faq summary:hover h3{text-decoration:underline;text-decoration-color:#B08D57;text-underline-offset:4px}
+
+/* Champs de formulaire */
+.m42-field{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-field:not([aria-invalid="true"]):hover{border-color:#0E0F12!important}
+.m42-field:focus{outline:2px solid #0E0F12;outline-offset:-2px}
+
+/* Petit bouton texte (ex. pause d'animation) */
+.m42-txtbtn{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-txtbtn:hover{color:#0E0F12!important;text-decoration-color:#B08D57}
+
+/* Apparition au défilement : opacité + 8 px, natif, sans JavaScript.
+   Sans prise en charge, le contenu est simplement visible. Jamais au-dessus de la ligne de flottaison. */
+@keyframes m42-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@supports (animation-timeline: view()){
+  .m42-reveal{animation:m42-in cubic-bezier(.22,1,.36,1) both;animation-timeline:view();animation-range:entry 0% entry 45%}
+}
+.m42-still .m42-reveal{animation:none!important;opacity:1!important;transform:none!important}
+
+/* Mouvement réduit : aucune translation, fondus à 0 ms */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:0ms!important;animation-delay:0ms!important;transition-duration:0ms!important}
+  .m42-reveal,.m42-hdr{animation:none!important;opacity:1!important;transform:none!important}
+  .m42-arrow:hover .m42-arrow-i,.m42-card:hover .m42-arrow-i,.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:none!important}
+}
+/* Pages Conférences : rubrique active pour les sous-pages, transitions des animations au défilement */
+.m42-nav[aria-current="true"]{text-decoration-line:underline;text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-night .m42-txtbtn:hover{color:#F2EEE6!important}
+.m42-fade{transition:opacity 320ms cubic-bezier(.22,1,.36,1),transform 320ms cubic-bezier(.22,1,.36,1),background-color 320ms cubic-bezier(.22,1,.36,1),box-shadow 320ms cubic-bezier(.22,1,.36,1),border-color 320ms cubic-bezier(.22,1,.36,1),color 320ms cubic-bezier(.22,1,.36,1)}
+.m42-move{transition:left 320ms cubic-bezier(.65,0,.35,1)}
+.m42-choice{transition:background-color 120ms cubic-bezier(.22,1,.36,1),color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-choice:hover{background-color:rgba(14,15,18,.06)!important}
+.m42-src a{color:#3A3731;text-underline-offset:3px;word-break:break-word}
+.m42-src a:hover{text-decoration-color:#B08D57}
+@media (max-width:640px){.m42-sv{max-width:220px!important}}
+</style>
+<style>
+/* --- Mobile : menu repliable, symbole d'accueil, coupures de mots --- */
+.m42-menu-t{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.m42-burger{display:none}
+p,li,dd,dt,td,th,h1,h2,h3,summary,label{overflow-wrap:break-word}
+a[href^="mailto:"]{overflow-wrap:anywhere}
+@media (max-width: 959px){
+  .m42-burger{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;border:1px solid #0E0F12;color:#0E0F12;background:transparent;font-family:Inter,system-ui,sans-serif;font-size:15px;font-weight:500;cursor:pointer;user-select:none}
+  .m42-menu-t:focus-visible + .m42-burger{outline:2px solid #7A5C30;outline-offset:2px}
+  .m42-burger .m42-b-close{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-open{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-close{display:inline}
+  header nav[aria-label="Navigation principale"]{display:none !important;width:100%;flex-direction:column !important;align-items:stretch !important;gap:0 !important;padding:4px 0 20px}
+  .m42-menu-t:checked ~ nav[aria-label="Navigation principale"]{display:flex !important}
+  header nav[aria-label="Navigation principale"] a{display:flex !important;align-items:center;min-height:52px;padding:0 !important;border-bottom:1px solid #D7D0C3;font-size:17px !important}
+  header nav[aria-label="Navigation principale"] a.m42-btn{justify-content:center;margin-top:20px;border-bottom:0;min-height:52px;padding:0 20px !important}
+  canvas[data-m42-sky]{max-width:300px !important;margin:0 auto}
+}
+@media (max-width: 480px){
+  canvas[data-m42-sky]{max-width:240px !important}
+}
+</style>
+<style>
+/* --- Mobile : animations au défilement plus compactes --- */
+@media (max-width: 700px){
+  .m42-sv{zoom:.78}
+}
+@media (max-width: 700px) and (max-height: 760px){
+  .m42-sv{zoom:.66}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="font-family: Inter, system-ui, sans-serif; color: #0E0F12; background: #F2EEE6; min-height: 100vh">
+
+  <a href="#contenu" class="m42-skip" style="background: #0E0F12; color: #F2EEE6; padding: 12px 18px; font-size: 15px; font-weight: 500; text-decoration: none">Aller au contenu</a>
+
+  <!-- En-tête / navigation (gabarit 22) -->
+  <header class="m42-hdr" style="background: rgba(242, 238, 230, 0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid #D7D0C3">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 14px clamp(1rem, 4vw, 3rem); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px">
+      <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; color: #0E0F12; text-decoration: none; min-height: 44px">
+        <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+        <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+      </a>
+      <input type="checkbox" id="m42-menu-t" class="m42-menu-t" aria-controls="m42-menu" aria-label="Ouvrir ou fermer le menu">
+      <label for="m42-menu-t" class="m42-burger"><span class="m42-b-open">Menu</span><span class="m42-b-close">Fermer</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></label>
+      <nav id="m42-menu" aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; font-size: 14px; font-weight: 500; line-height: 1.3">
+        <a href="Conferences.dc.html" aria-current="true" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Conférences</a>
+        <a href="Entreprises.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Entreprises</a>
+        <a href="Collectivites.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Collectivités</a>
+        <a href="Education.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Écoles</a>
+        <a href="Reperes.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Repères</a>
+        <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; background: #0E0F12; color: #F2EEE6; text-decoration: none; font-size: 14px; font-weight: 500">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu" tabindex="-1" style="outline: none">
+
+    <!-- En-tête du thème : aucune animation d'entrée sur le H1 et le chapô -->
+    <section aria-labelledby="titre-page" style="padding: clamp(2.5rem, 4vw, 3.5rem) 0 clamp(4rem, 7vw, 6rem); border-bottom: 1px solid #D7D0C3">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <nav aria-label="Fil d'Ariane" style="margin-bottom: 32px; font-size: 13px; line-height: 1.5; color: #5F5A50">
+          <ol class="m42-bc-full" style="list-style: none; margin: 0; padding: 0; flex-wrap: wrap; align-items: center; gap: 4px 8px">
+            <li><a href="Main.dc.html" style="color: #5F5A50; text-underline-offset: 3px">Accueil</a></li>
+            <li><span aria-hidden="true" style="margin-right: 8px">/</span><a href="Conferences.dc.html" style="color: #5F5A50; text-underline-offset: 3px">Conférences</a></li>
+            <li><span aria-hidden="true" style="margin-right: 8px">/</span><span aria-current="page" style="color: #0E0F12; font-weight: 500">Arnaques 2026</span></li>
+          </ol>
+          <a href="Conferences.dc.html" class="m42-bc-short m42-arrow" style="align-items: center; gap: 6px; min-height: 44px; color: #0E0F12; font-weight: 500"><span aria-hidden="true">←</span>Conférences</a>
+        </nav>
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 48px 64px">
+          <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
+            <h1 id="titre-page" style="margin: 0; display: flex; flex-direction: column; gap: 20px; font-weight: 400">
+              <span style="font-family: Inter, system-ui, sans-serif; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Conférence II · Arnaques et intelligence artificielle</span>
+              <span style="max-width: 14ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 1.6rem + 6vw, 6.5rem); line-height: 0.95; letter-spacing: -0.02em; color: #0E0F12">Arnaques 2026</span>
+            </h1>
+            <p style="margin: 0; align-self: flex-start; padding: 6px 10px; border: 1px dashed #857E71; font-size: 13px; line-height: 1.5; color: #5F5A50">[À DÉCIDER : titre daté « Arnaques 2026 », renommé chaque 1er janvier, ou titre intemporel « Arnaques et IA »]</p>
+            <p style="margin: 0; max-width: 26ch; font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem); line-height: 1.2; color: #3A3731">Voix clonées, faux conseillers, faux SMS : reconnaître le piège à temps.</p>
+            <p style="margin: 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Vous repartez avec des règles simples, décidées à l'avance, qui vous protègent, même face à une arnaque très bien imitée.</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 16px">
+              <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 14px 24px; box-sizing: border-box; background: #0E0F12; color: #F2EEE6; font-size: 16px; font-weight: 500; line-height: 1.2; text-decoration: none">Programmer cette conférence</a>
+              <a href="#demonstration" class="m42-btn2" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 13px 23px; box-sizing: border-box; background: transparent; border: 1px solid #0E0F12; color: #0E0F12; font-size: 16px; font-weight: 500; line-height: 1.2; text-decoration: none">Voir l'anatomie d'un faux SMS</a>
+            </div>
+            <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #5F5A50">Par <a href="A-propos.dc.html" style="color: #3A3731; text-underline-offset: 3px">Clara Peron et Paul Loustaunau</a> · Mise à jour : [À COMPLÉTER : date]</p>
+          </div>
+          <dl style="flex: 1 1 300px; min-width: 0; margin: 0; border-top: 1px solid #0E0F12">
+            <div style="padding: 14px 0; border-bottom: 1px solid #D7D0C3"><dt style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Pour qui</dt><dd style="margin: 6px 0 0; font-size: 16px; line-height: 1.5">Seniors et aidants, habitants, associations, salariés</dd></div>
+            <div style="padding: 14px 0; border-bottom: 1px solid #D7D0C3"><dt style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Formats</dt><dd style="margin: 6px 0 0; font-size: 16px; line-height: 1.5">Keynote 45 min à 1 h · Conférence 1 h 30 · Atelier 2 h · Cycle de 4 rendez-vous</dd></div>
+            <div style="padding: 14px 0; border-bottom: 1px solid #D7D0C3"><dt style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Participants</dt><dd style="margin: 6px 0 0; font-size: 16px; line-height: 1.5">Selon la salle · 15 en atelier</dd></div>
+            <div style="padding: 14px 0; border-bottom: 1px solid #D7D0C3"><dt style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Où</dt><dd style="margin: 6px 0 0; font-size: 16px; line-height: 1.5">Partout en France, en présentiel ou à distance · en français</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- Animation au défilement : anatomie d'un faux SMS (reprise de ThemeArnaques) -->
+    <section id="demonstration" data-m42-story="1" class="m42-night" aria-label="Démonstration : anatomie d'un faux SMS" style="position: relative; height: {{storyH}}; background: #0E0F12; color: #F2EEE6">
+      <div style="position: {{stickyPos}}; top: 0; height: {{stickyH}}; box-sizing: border-box; padding: {{stickyPad}}; overflow: hidden; display: flex; flex-direction: column; justify-content: center">
+        <div style="width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem); box-sizing: border-box">
+          <div style="border-top: 1px solid #F2EEE6; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Démonstration · Anatomie d'un faux SMS</div>
+          <div style="margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 40px 72px">
+
+            <!-- le téléphone -->
+            <div class="m42-sv" style="flex: 0 1 300px; min-width: 0; max-width: 300px; position: relative">
+              <div class="m42-fade" style="width: 100%; aspect-ratio: 9 / 17; box-sizing: border-box; border: 1px solid #2E2F35; border-radius: 40px; padding: 12px; background: #17181C; opacity: {{phoneO}}">
+                <div style="height: 100%; border-radius: 28px; background: #F2EEE6; color: #0E0F12; display: flex; flex-direction: column; overflow: hidden">
+                  <div style="padding: 18px 16px 12px; border-bottom: 1px solid #D7D0C3; display: flex; flex-direction: column; align-items: center; gap: 6px">
+                    <div style="width: 40px; height: 40px; border-radius: 20px; background: #D7D0C3"></div>
+                    <div class="m42-fade" style="font-size: 14px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background-color: {{h1}}; box-shadow: 0 0 0 2px {{r1}}">+33 7 56 •• •• 12</div>
+                    <div style="font-size: 11px; color: #5F5A50">SMS · aujourd'hui 18:42</div>
+                  </div>
+                  <div style="padding: 18px 14px; display: flex; flex-direction: column; gap: 10px">
+                    <div style="align-self: flex-start; max-width: 92%; background: #E8E2D7; border-radius: 18px 18px 18px 6px; padding: 12px 14px; font-size: 14.5px; line-height: 1.5">
+                      <span class="m42-fade" style="border-radius: 4px; background-color: {{h2}}; box-shadow: 0 0 0 2px {{r2}}">Dernier avis : votre colis est bloqué.</span>
+                      Réglez <span class="m42-fade" style="border-radius: 4px; background-color: {{h3}}; box-shadow: 0 0 0 2px {{r3}}">1,99 € de frais</span> <span class="m42-fade" style="border-radius: 4px; background-color: {{h2}}; box-shadow: 0 0 0 2px {{r2}}">avant ce soir</span> pour éviter son retour :
+                      <span class="m42-fade" style="border-radius: 4px; color: #2F4A7A; text-decoration: underline; word-break: break-all; background-color: {{h4}}; box-shadow: 0 0 0 2px {{r4}}">colis-suivi.exemple-frais.com/fr</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="m42-fade" aria-hidden="true" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: {{stampO}}; transform: rotate(-8deg) scale({{stampS}}); pointer-events: none">
+                <div style="border: 3px solid {{or}}; color: {{or}}; padding: 10px 18px; font-size: 22px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; background: rgba(14, 15, 18, 0.88)">Arnaque</div>
+              </div>
+              <p style="margin: 12px 0 0; font-size: 12px; line-height: 1.5; color: #9A9488; text-align: center">Exemple reconstitué : numéro et adresse fictifs.</p>
+            </div>
+
+            <!-- les explications -->
+            <div style="flex: 1 1 400px; min-width: 0; max-width: 540px; display: flex; flex-direction: column; gap: 24px">
+              <sc-if value="{{animated}}" hint-placeholder-val="{{true}}">
+                <div style="display: flex; gap: 28px">
+                  <div aria-hidden="true" style="display: flex; flex-direction: column; gap: 10px; padding-top: 6px">
+                    <sc-for list="{{dots}}" as="d" hint-placeholder-count="6">
+                      <div class="m42-fade" style="width: 8px; height: 8px; border-radius: 4px; background-color: {{d.c}}"></div>
+                    </sc-for>
+                  </div>
+                  <div style="position: relative; flex: 1; min-width: 0; min-height: 300px">
+                    <sc-for list="{{steps}}" as="s" hint-placeholder-count="6">
+                      <div class="m42-fade" aria-hidden="{{s.hid}}" style="position: absolute; inset: 0; display: flex; flex-direction: column; gap: 14px; opacity: {{s.o}}; transform: translateY({{s.y}}px)">
+                        <p style="margin: 0; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: {{s.gold}}">{{s.kicker}}</p>
+                        <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2rem, 1.5rem + 2vw, 3rem); line-height: 1.05">{{s.title}}</p>
+                        <p style="margin: 0; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #CFC8BB">{{s.text}}</p>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{flat}}" hint-placeholder-val="{{false}}">
+                <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+                  <sc-for list="{{steps}}" as="s" hint-placeholder-count="6">
+                    <li style="display: flex; flex-direction: column; gap: 8px; padding: 18px 0; border-top: 1px solid #2E2F35">
+                      <p style="margin: 0; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: {{s.gold}}">{{s.kicker}}</p>
+                      <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05">{{s.title}}</p>
+                      <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #CFC8BB">{{s.text}}</p>
+                    </li>
+                  </sc-for>
+                </ol>
+              </sc-if>
+              <sc-if value="{{canToggle}}" hint-placeholder-val="{{true}}">
+                <button type="button" onClick="{{toggleStory}}" class="m42-txtbtn" style="align-self: flex-start; min-height: 44px; padding: 0; border: 0; background: transparent; color: #CFC8BB; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer">{{toggleLabel}}</button>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- En clair + objectifs -->
+    <section aria-labelledby="titre-objectifs" style="padding: clamp(4rem, 9vw, 8rem) 0">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+      <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Objectifs</div>
+      <h2 id="titre-objectifs" class="m42-reveal" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Ce que vos participants sauront faire</h2>
+      <div class="m42-reveal" style="margin-top: 48px; max-width: 46rem; border-left: 2px solid {{or}}; padding: 4px 0 4px 24px">
+        <p style="margin: 0 0 8px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">En clair</p>
+        <p style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #0E0F12">Une voix familière ou un numéro affiché ne prouvent plus l'identité de l'appelant : l'IA permet d'imiter une voix, et des escrocs usurpent des numéros. La règle : raccrocher et rappeler sur un numéro que vous connaissez.</p>
+      </div>
+      <ul style="list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 32px 48px">
+        
+        <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #D7D0C3; padding-top: 24px">
+          <span aria-hidden="true" style="font-size: 13px; font-weight: 500; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; color: #7A5C30">01</span>
+          <p style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 500; line-height: 1.45; color: #0E0F12">À la fin, vous saurez reconnaître les quatre ressorts communs à presque toutes les arnaques : urgence, autorité, émotion, secret.</p>
+        </li>
+        <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #D7D0C3; padding-top: 24px">
+          <span aria-hidden="true" style="font-size: 13px; font-weight: 500; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; color: #7A5C30">02</span>
+          <p style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 500; line-height: 1.45; color: #0E0F12">À la fin, vous saurez pourquoi un numéro affiché ou une voix familière ne prouvent plus rien.</p>
+        </li>
+        <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #D7D0C3; padding-top: 24px">
+          <span aria-hidden="true" style="font-size: 13px; font-weight: 500; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; color: #7A5C30">03</span>
+          <p style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 500; line-height: 1.45; color: #0E0F12">À la fin, vous saurez quoi faire, et qui appeler, dans les dix minutes qui suivent un doute.</p>
+        </li>
+      </ul>
+    </div>
+    </section>
+
+    <!-- Chiffres sourcés -->
+    <section class="m42-night" aria-label="Les arnaques en chiffres" style="background: #0E0F12; color: #F2EEE6">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 64px clamp(1rem, 4vw, 3rem); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 40px 64px; align-items: start">
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 2rem + 4vw, 5rem); line-height: 1; letter-spacing: -0.01em; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap">504 810</p>
+          <p style="margin: 0; max-width: 32ch; font-size: 16px; line-height: 1.5; color: #CFC8BB">demandes d'assistance traitées par Cybermalveillance.gouv.fr en 2025, soit 20 % de plus en un an.</p>
+          <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #9A9488">Source : Cybermalveillance.gouv.fr, rapport d'activité 2025 (mars 2026)</p>
+        </div>
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 2rem + 4vw, 5rem); line-height: 1; letter-spacing: -0.01em; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; color: {{or}}">+517 %</p>
+          <p style="margin: 0; max-width: 32ch; font-size: 16px; line-height: 1.5; color: #CFC8BB">de demandes liées à l'usurpation de numéro. Une hausse très forte, sur un volume encore réduit (environ 7 000 demandes).</p>
+          <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #9A9488">Source : Cybermalveillance.gouv.fr, rapport d'activité 2025 (mars 2026)</p>
+        </div>
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 2rem + 4vw, 5rem); line-height: 1; letter-spacing: -0.01em; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap">41,6 %</p>
+          <p style="margin: 0; max-width: 32ch; font-size: 16px; line-height: 1.5; color: #CFC8BB">du montant de la fraude aux moyens de paiement vient de la fraude par manipulation : 516 millions d'euros en 2025.</p>
+          <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #9A9488">Source : Banque de France, Observatoire de la sécurité des moyens de paiement, rapport 2025 (septembre 2026)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Programme -->
+    <section id="programme" aria-labelledby="titre-programme" style="padding: clamp(4rem, 9vw, 8rem) 0">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+      <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Programme · conférence de 1 h 30</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 48px 64px">
+        <div style="flex: 1 1 320px; min-width: 0">
+          <h2 id="titre-programme" class="m42-reveal" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Ce que l'on voit ensemble</h2>
+          <p class="m42-reveal" style="margin: 20px 0 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Des exemples réels, des démonstrations en direct, et des réflexes simples à retenir.</p>
+        </div>
+        <ol style="flex: 999 1 560px; min-width: 0; margin: 24px 0 0; padding: 0; list-style: none; border-bottom: 1px solid #D7D0C3">
+          
+          <li class="m42-reveal" style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px 20px; padding: 24px 0; border-top: 1px solid #0E0F12">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 32px; line-height: 1; color: #7A5C30; font-variant-numeric: lining-nums tabular-nums">01</span>
+            <div style="min-width: 0; display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px">
+                <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Le paysage 2026</h3>
+                <span style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #5F5A50; font-variant-numeric: tabular-nums">10 min</span>
+              </div>
+              <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Ce que disent les chiffres officiels : Cybermalveillance.gouv.fr (plus de 500 000 demandes d'assistance en 2025, +517 % pour l'usurpation de numéro) ; Banque de France (la fraude par manipulation dépasse 40 % du montant de la fraude aux moyens de paiement en 2025).</p>
+            </div>
+          </li>
+          <li class="m42-reveal" style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px 20px; padding: 24px 0; border-top: 1px solid #D7D0C3">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 32px; line-height: 1; color: #7A5C30; font-variant-numeric: lining-nums tabular-nums">02</span>
+            <div style="min-width: 0; display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px">
+                <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Anatomie d'une arnaque</h3>
+                <span style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #5F5A50; font-variant-numeric: tabular-nums">20 min</span>
+              </div>
+              <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Faux conseiller bancaire, faux SMS de livraison ou d'amende, usurpation de numéro, arnaque sentimentale. Démonstration : comment l'IA rend un message crédible en quelques secondes.</p>
+            </div>
+          </li>
+          <li class="m42-reveal" style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px 20px; padding: 24px 0; border-top: 1px solid #D7D0C3">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 32px; line-height: 1; color: #7A5C30; font-variant-numeric: lining-nums tabular-nums">03</span>
+            <div style="min-width: 0; display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px">
+                <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Le jeu « Arnaque ou pas ? »</h3>
+                <span style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #5F5A50; font-variant-numeric: tabular-nums">20 min</span>
+              </div>
+              <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Messages réels anonymisés et messages légitimes. La salle vote. On décortique chaque indice.</p>
+            </div>
+          </li>
+          <li class="m42-reveal" style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px 20px; padding: 24px 0; border-top: 1px solid #D7D0C3">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 32px; line-height: 1; color: #7A5C30; font-variant-numeric: lining-nums tabular-nums">04</span>
+            <div style="min-width: 0; display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px">
+                <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Mes règles non négociables</h3>
+                <span style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #5F5A50; font-variant-numeric: tabular-nums">20 min</span>
+              </div>
+              <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Jamais de code par téléphone. Jamais de paiement dans l'urgence. Je raccroche et je rappelle sur un numéro que je connais. Un mot de passe familial contre les voix clonées.</p>
+            </div>
+          </li>
+          <li class="m42-reveal" style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px 20px; padding: 24px 0; border-top: 1px solid #D7D0C3">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 32px; line-height: 1; color: #7A5C30; font-variant-numeric: lining-nums tabular-nums">05</span>
+            <div style="min-width: 0; display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px">
+                <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Si c'est arrivé</h3>
+                <span style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #5F5A50; font-variant-numeric: tabular-nums">10 min</span>
+              </div>
+              <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Les bons réflexes et les bons numéros : 33700 pour signaler un SMS frauduleux, la plateforme 17cyber.gouv.fr pour être aidé en ligne, Info Escroqueries au 0 805 805 817. Parler sans honte. Questions.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+    </section>
+
+    <!-- Temps fort : le jeu -->
+    <section id="jeu" aria-labelledby="titre-jeu" style="padding: clamp(4rem, 9vw, 8rem) 0; background: #F8F6F1; border-top: 1px solid #D7D0C3; border-bottom: 1px solid #D7D0C3">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+      <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Le temps fort</div>
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px 64px">
+        <div style="flex: 1 1 320px; min-width: 0">
+          <h2 id="titre-jeu" class="m42-reveal" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Le jeu « Arnaque ou pas ? »</h2>
+          <p class="m42-reveal" style="margin: 20px 0 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Pendant la conférence, la salle vote sur de vrais exemples anonymisés. Essayez avec quatre messages.</p>
+          <p style="margin: 16px 0 0; max-width: 44ch; font-size: 14px; line-height: 1.5; color: #5F5A50">Messages reconstitués pour la démonstration ; noms et numéros fictifs.</p>
+        </div>
+        <div class="m42-reveal" style="flex: 999 1 520px; min-width: 0; background: #F2EEE6; border: 1px solid #D7D0C3; padding: clamp(24px, 3vw, 40px); display: flex; flex-direction: column; gap: 20px">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">
+            <span>{{q.from}}</span><span>Message {{q.num}} sur {{q.total}}</span>
+          </div>
+          <p style="margin: 0; font-family: Cormorant, serif; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); font-weight: 500; line-height: 1.25">{{q.text}}</p>
+          <sc-if value="{{q.open}}" hint-placeholder-val="{{true}}">
+            <div role="group" aria-label="Votre réponse" style="display: flex; flex-wrap: wrap; gap: 12px">
+              <button type="button" onClick="{{q.pickA}}" class="m42-btn" style="min-height: 48px; padding: 14px 24px; border: 0; border-radius: 0; background: #0E0F12; color: #F2EEE6; font-family: inherit; font-size: 16px; font-weight: 500; cursor: pointer">Arnaque</button>
+              <button type="button" onClick="{{q.pickF}}" class="m42-btn2" style="min-height: 48px; padding: 13px 23px; border: 1px solid #0E0F12; border-radius: 0; background: transparent; color: #0E0F12; font-family: inherit; font-size: 16px; font-weight: 500; cursor: pointer">Fiable</button>
+            </div>
+          </sc-if>
+          <div aria-live="polite">
+            <sc-if value="{{q.done}}" hint-placeholder-val="{{false}}">
+              <div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #D7D0C3; padding-top: 20px">
+                <p style="margin: 0; font-weight: 600; font-size: 17px; line-height: 1.4; color: {{q.verdictColor}}">{{q.verdict}}</p>
+                <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">{{q.explain}}</p>
+                <sc-if value="{{q.last}}" hint-placeholder-val="{{false}}">
+                  <p style="margin: 0; font-size: 15px; font-weight: 500; line-height: 1.5; color: #0E0F12">{{q.score}}</p>
+                </sc-if>
+                <button type="button" onClick="{{q.next}}" class="m42-txtbtn" style="align-self: flex-start; min-height: 44px; padding: 0; border: 0; background: transparent; color: #0E0F12; font-family: inherit; font-size: 16px; font-weight: 500; cursor: pointer">{{q.nextLabel}}</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </div>
+    </section>
+
+    <!-- Formats -->
+    <section id="formats" aria-labelledby="titre-formats" style="padding: clamp(4rem, 9vw, 8rem) 0">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+      <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Formats</div>
+      <h2 id="titre-formats" class="m42-reveal" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Quatre façons de la programmer</h2>
+      <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 32px">
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #0E0F12; padding-top: 20px">
+          <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05">45 min à 1 h</p>
+          <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.3">Keynote ou intervention plénière</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Le paysage 2026, l'anatomie d'une arnaque en version courte, les règles non négociables, et cinq messages du jeu avec la salle.</p>
+        </div>
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #0E0F12; padding-top: 20px">
+          <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05">1 h 30</p>
+          <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.3">Conférence</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Le programme complet en cinq parties, avec un temps d'échange. Jauge selon la salle [À VALIDER : jauge maximale testée].</p>
+        </div>
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #0E0F12; padding-top: 20px">
+          <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05">2 h</p>
+          <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.3">Atelier pratique</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">15 personnes. Chacun écrit ses règles non négociables et son « mot de passe familial ». Jeux de rôle d'appels frauduleux.</p>
+        </div>
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #0E0F12; padding-top: 20px">
+          <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05">4 rendez-vous</p>
+          <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.3">Cycle</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Le programme réparti sur quatre séances, pour un groupe stable (club, résidence, association) [À VALIDER : rythme et déroulé].</p>
+        </div>
+      </div>
+    </div>
+    </section>
+
+    <!-- Pour qui -->
+    <section id="pour-qui" aria-labelledby="titre-pour-qui" style="padding: clamp(4rem, 9vw, 8rem) 0; background: #E8E2D7">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+      <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Pour qui</div>
+      <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+        <h2 id="titre-pour-qui" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Une même base, adaptée à chaque public</h2>
+        <p style="flex: 0 1 52ch; margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Seniors et aidants, CCAS et communes, associations, banques et assurances pour leurs clients, salariés.</p>
+      </div>
+      <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 0 32px; border-top: 1px solid #0E0F12">
+        <div class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 10px; padding: 28px 0 32px; border-bottom: 1px solid #D7D0C3">
+          <h3 style="margin: 0; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Collectivites.dc.html" class="m42-stretch" style="color: #0E0F12">Communes &amp; CCAS</a><span class="m42-arrow-i" aria-hidden="true" style="font-family: Inter, system-ui, sans-serif; font-size: 20px; font-weight: 400">→</span></h3>
+          <p style="margin: 0; max-width: 46ch; font-size: 16px; line-height: 1.6; color: #3A3731">Une soirée pour les habitants ou un rendez-vous seniors l'après-midi, avec les bons numéros à emporter.</p>
+        </div>
+        <div class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 10px; padding: 28px 0 32px; border-bottom: 1px solid #D7D0C3">
+          <h3 style="margin: 0; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Associations.dc.html" class="m42-stretch" style="color: #0E0F12">Associations &amp; aidants</a><span class="m42-arrow-i" aria-hidden="true" style="font-family: Inter, system-ui, sans-serif; font-size: 20px; font-weight: 400">→</span></h3>
+          <p style="margin: 0; max-width: 46ch; font-size: 16px; line-height: 1.6; color: #3A3731">En atelier, téléphone en main, en petit groupe et à son rythme. Et pour les aidants : protéger un parent âgé sans l'infantiliser.</p>
+        </div>
+        <div class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 10px; padding: 28px 0 32px; border-bottom: 1px solid #D7D0C3">
+          <h3 style="margin: 0; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Entreprises.dc.html" class="m42-stretch" style="color: #0E0F12">Entreprises &amp; CSE</a><span class="m42-arrow-i" aria-hidden="true" style="font-family: Inter, system-ui, sans-serif; font-size: 20px; font-weight: 400">→</span></h3>
+          <p style="margin: 0; max-width: 46ch; font-size: 16px; line-height: 1.6; color: #3A3731">Pour la comptabilité, la paie, les achats et les assistants de direction.</p>
+          <p style="margin: 4px 0 0; font-size: 14px; line-height: 1.5; color: #5F5A50">Déclinaison : « Fraude au président, version 2026 »</p>
+        </div>
+      </div>
+      <div class="m42-reveal" style="margin-top: 48px; background: #F8F6F1; border: 1px solid #D7D0C3; padding: 32px 28px; display: flex; flex-wrap: wrap; gap: 24px 48px">
+        <div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Déclinaison entreprise</p>
+          <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05">Fraude au président, version 2026</h3>
+        </div>
+        <div style="flex: 2 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Faux dirigeant, faux fournisseur, changement de coordonnées bancaires (IBAN), voix ou vidéo imitant un responsable. On construit ensemble la procédure : double validation, rappel sur un numéro connu, délai de vérification.</p>
+          <a href="Entreprises.dc.html" class="m42-arrow" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #0E0F12; font-size: 16px; font-weight: 500">Sensibiliser vos équipes à la fraude au président <span class="m42-arrow-i" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+    </section>
+
+    <!-- Les bons numéros (17Cyber : plateforme en ligne, pas un numéro) -->
+    <section id="bons-numeros" class="m42-night" aria-labelledby="titre-numeros" style="background: #0E0F12; color: #F2EEE6; padding: clamp(4rem, 9vw, 8rem) 0">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+      <div class="m42-reveal" style="border-top: 1px solid #F2EEE6; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Si c'est arrivé</div>
+      <h2 id="titre-numeros" class="m42-reveal" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Chacun repart avec les bons numéros</h2>
+      <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 40px 48px">
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #2E2F35; padding-top: 20px">
+          <p style="margin: 0; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Numéro · SMS</p>
+          <p style="margin: 0; font-family: Cormorant, serif; font-size: clamp(3rem, 2rem + 4vw, 5rem); font-weight: 600; line-height: 1; font-variant-numeric: lining-nums tabular-nums; color: {{or}}">33700</p>
+          <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #CFC8BB">Pour signaler un SMS ou un appel frauduleux : on lui transfère le message, puis on le supprime.</p>
+        </div>
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #2E2F35; padding-top: 20px">
+          <p style="margin: 0; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Plateforme en ligne</p>
+          <p style="margin: 0; font-family: Cormorant, serif; font-size: clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem); font-weight: 600; line-height: 1.05; word-break: break-word"><a href="https://17cyber.gouv.fr" rel="noopener" style="color: #F2EEE6; text-decoration-thickness: 1px; text-underline-offset: 6px">17cyber.gouv.fr</a></p>
+          <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #CFC8BB">Pour être aidé en ligne en cas d'arnaque : diagnostic, conseils et mise en relation. Ce n'est pas un numéro de téléphone.</p>
+        </div>
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #2E2F35; padding-top: 20px">
+          <p style="margin: 0; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Numéro · appel gratuit</p>
+          <p style="margin: 0; font-family: Cormorant, serif; font-size: clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem); font-weight: 600; line-height: 1.05; white-space: nowrap; font-variant-numeric: lining-nums tabular-nums">0 805 805 817</p>
+          <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #CFC8BB">Info Escroqueries : pour s'informer et être conseillé.</p>
+        </div>
+      </div>
+    </div>
+    </section>
+
+    <!-- Questions fréquentes + sources -->
+    <section id="questions" aria-labelledby="titre-faq" style="padding: clamp(4rem, 9vw, 8rem) 0">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+      <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Questions fréquentes</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 48px 64px">
+        <div style="flex: 1 1 300px; min-width: 0">
+          <h2 id="titre-faq" class="m42-reveal" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Avant de programmer cette conférence</h2>
+        </div>
+        <div style="flex: 999 1 560px; min-width: 0; margin-top: 24px; border-top: 1px solid #0E0F12">
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Cette conférence convient-elle à un public de seniors peu à l'aise avec le numérique ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731"><p style="margin: 0">Oui. Elle ne demande aucun prérequis : pas besoin de savoir se servir d'un smartphone pour la suivre. Les exemples viennent du quotidien (SMS de colis, appel d'un faux conseiller, message d'un faux proche), le vocabulaire reste simple, et chacun repart avec les bons numéros. En atelier, on travaille téléphone en main, en petit groupe et à son rythme.</p></div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Qu'est-ce qu'une voix clonée ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731"><p style="margin: 0">C'est une imitation de la voix d'une personne, produite par une IA à partir d'enregistrements, par exemple une vidéo publiée en ligne. Un escroc peut s'en servir pour se faire passer pour un proche ou un responsable. La parade est simple : raccrocher, rappeler la personne sur un numéro que l'on connaît, et convenir en famille d'un mot de passe que seul un vrai proche connaît.</p></div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Peut-on l'adapter à nos salariés ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731"><p style="margin: 0">Oui. La version « Fraude au président, version 2026 » s'adresse aux services comptabilité, paie et achats, et aux assistants de direction : faux dirigeant, faux fournisseur, changement de coordonnées bancaires, voix ou vidéo imitant un responsable. La procédure se construit avec vos équipes, simplement : double validation, rappel sur un numéro connu, délai de vérification.</p></div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">La police ou la gendarmerie proposent déjà des interventions : qu'apporte cette conférence en plus ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731"><p style="margin: 0">Leurs interventions sont précieuses, et à recommander. Cette conférence est complémentaire : comprendre comment l'IA rend les arnaques plus crédibles (voix, messages, faux sites), s'entraîner avec le jeu « Arnaque ou pas ? », et écrire ses propres règles, décidées à froid. Les deux se combinent très bien, par exemple dans un cycle de rendez-vous.</p></div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Avec quoi les participants repartent-ils ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731"><p style="margin: 0">Avec leurs règles non négociables, décidées à l'avance, et les bons numéros : le 33700 pour signaler un SMS frauduleux, la plateforme 17cyber.gouv.fr pour être aidé en ligne, Info Escroqueries au 0 805 805 817. Une fiche « 10 réflexes » à garder chez soi est en préparation [À PRODUIRE].</p></div>
+          </details>
+          <div style="margin-top: 56px">
+            <h3 id="sources" style="margin: 0 0 8px; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Sources</h3>
+            <ul class="m42-src" style="list-style: none; margin: 0; padding: 0; border-bottom: 1px solid #D7D0C3">
+              <li style="padding: 14px 0; border-top: 1px solid #D7D0C3; font-size: 14px; line-height: 1.55; color: #3A3731">Cybermalveillance.gouv.fr, <em>Rapport d'activité 2025</em> (communiqué de presse), mars 2026.<br><a href="https://www.cybermalveillance.gouv.fr/medias/2026/03/CP-RA2026.pdf" rel="noopener">https://www.cybermalveillance.gouv.fr/medias/2026/03/CP-RA2026.pdf</a></li>
+              <li style="padding: 14px 0; border-top: 1px solid #D7D0C3; font-size: 14px; line-height: 1.55; color: #3A3731">Banque de France, <em>Rapport de l'Observatoire de la sécurité des moyens de paiement 2025</em>, septembre 2026.<br><a href="https://www.banque-france.fr/fr/publications-et-statistiques/publications/rapport-de-lobservatoire-de-la-securite-des-moyens-de-paiement-2025" rel="noopener">https://www.banque-france.fr/fr/publications-et-statistiques/publications/rapport-de-lobservatoire-de-la-securite-des-moyens-de-paiement-2025</a></li>
+              <li style="padding: 14px 0; border-top: 1px solid #D7D0C3; font-size: 14px; line-height: 1.55; color: #3A3731">Europol, <em>Internet Organised Crime Threat Assessment (IOCTA) 2026</em> : l'IA générative rend les messages frauduleux plus convaincants et personnalisés.<br><a href="https://www.europol.europa.eu/cms/sites/default/files/documents/IOCTA-2026.pdf" rel="noopener">https://www.europol.europa.eu/cms/sites/default/files/documents/IOCTA-2026.pdf</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    </section>
+
+    <section aria-labelledby="titre-autres" style="padding: clamp(4rem, 9vw, 8rem) 0; background: #E8E2D7">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+    <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Catalogue</div>
+    <h2 id="titre-autres" class="m42-reveal" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Les autres conférences</h2>
+    <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px">
+    <article class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 16px; padding: 32px 28px; background: #F8F6F1; border: 1px solid #D7D0C3">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px"><span style="display: inline-flex; align-items: center; gap: 12px"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">I</span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 1 C13 10 14 11 23 12 C14 13 13 14 12 23 C11 14 10 13 1 12 C10 11 11 10 12 1 Z" fill="{{or}}"></path></svg><span style="font-size: 13px; font-weight: 500; line-height: 1.4; color: #5F5A50">Conférence signature</span></span><ul aria-label="Publics" style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px"><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Entreprises</li><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Événements</li><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Collectivités</li></ul></div>
+      <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Conf-ia-au-quotidien.dc.html" class="m42-stretch" style="color: #0E0F12">L'IA au quotidien</a></h3>
+      <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Comprendre ce que l'IA sait faire, repérer quand elle invente, et adopter les méthodes des professionnels pour s'en servir sans cesser de réfléchir.</p>
+      <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Keynote · Conférence · Atelier · Cycle</p>
+      <span class="m42-cta" aria-hidden="true" style="margin-top: auto; padding-top: 8px; font-size: 15px; font-weight: 500; color: #0E0F12">Voir la conférence <span class="m42-arrow-i">→</span></span>
+      <span class="m42-bar" aria-hidden="true" style="position: absolute; left: -1px; right: -1px; bottom: -1px; height: 2px; background: {{or}}"></span>
+    </article>
+    <article class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 16px; padding: 32px 28px; background: #F8F6F1; border: 1px solid #D7D0C3">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">III</span><ul aria-label="Publics" style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px"><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Écoles &amp; familles</li><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Collectivités</li><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Événements</li></ul></div>
+      <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Conf-desinformation-ia.dc.html" class="m42-stretch" style="color: #0E0F12">Vrai ou faux ?</a></h3>
+      <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Repérer une image truquée, une fausse vidéo ou un faux site d'information grâce à une méthode simple en quatre étapes. Une conférence strictement neutre.</p>
+      <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Keynote · Conférence · Atelier · Cycle</p>
+      <span class="m42-cta" aria-hidden="true" style="margin-top: auto; padding-top: 8px; font-size: 15px; font-weight: 500; color: #0E0F12">Voir la conférence <span class="m42-arrow-i">→</span></span>
+      <span class="m42-bar" aria-hidden="true" style="position: absolute; left: -1px; right: -1px; bottom: -1px; height: 2px; background: {{or}}"></span>
+    </article>
+    <article class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 16px; padding: 32px 28px; background: #F8F6F1; border: 1px solid #D7D0C3">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">IV</span><ul aria-label="Publics" style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px"><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Écoles &amp; familles</li><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Associations</li><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Collectivités</li></ul></div>
+      <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Conf-parents-ados-ia.dc.html" class="m42-stretch" style="color: #0E0F12">Parents, ados et IA</a></h3>
+      <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Des repères clairs sur les devoirs, les réseaux sociaux et le cyberharcèlement, et une charte numérique à construire en famille.</p>
+      <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Keynote · Conférence · Atelier · Cycle</p>
+      <span class="m42-cta" aria-hidden="true" style="margin-top: auto; padding-top: 8px; font-size: 15px; font-weight: 500; color: #0E0F12">Voir la conférence <span class="m42-arrow-i">→</span></span>
+      <span class="m42-bar" aria-hidden="true" style="position: absolute; left: -1px; right: -1px; bottom: -1px; height: 2px; background: {{or}}"></span>
+    </article>
+    </div>
+    <a href="Conferences.dc.html" class="m42-arrow" style="margin-top: 32px; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #0E0F12; font-size: 16px; font-weight: 500">Toutes les conférences, les formats et le sur-mesure <span class="m42-arrow-i" aria-hidden="true">→</span></a>
+    </div>
+    </section>
+
+    <section class="m42-night" aria-labelledby="titre-contact" style="background: #0E0F12; color: #F2EEE6; padding: clamp(4rem, 9vw, 8rem) 0; border-top: 1px solid #2E2F35">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #F2EEE6; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Contact</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px 64px">
+          <div style="flex: 1 1 520px; min-width: 0">
+            <h2 id="titre-contact" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Programmer « Arnaques 2026 » dans votre commune ou votre entreprise</h2>
+            <p style="margin: 20px 0 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #CFC8BB">Dites-nous qui sera dans la salle, quand, et le format qui vous intéresse. Nous vous répondons sous 48 h.</p>
+          </div>
+          <div style="flex: 0 1 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 16px">
+            <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 14px 24px; box-sizing: border-box; background: #F2EEE6; color: #0E0F12; font-size: 16px; font-weight: 500; line-height: 1.2; text-decoration: none">Organiser cette conférence</a>
+            <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #CFC8BB">Clara : <a href="mailto:clara@m42.guide" style="color: #F2EEE6; text-underline-offset: 3px">clara@m42.guide</a><br>Paul : <a href="mailto:paul@m42.guide" style="color: #F2EEE6; text-underline-offset: 3px">paul@m42.guide</a><br>[À COMPLÉTER : téléphone]</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pied de page (gabarit 22) -->
+  <footer class="m42-night" style="background: #0E0F12; color: #CFC8BB; border-top: 1px solid #2E2F35">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 64px clamp(1rem, 4vw, 3rem) 32px">
+      <div style="display: flex; flex-wrap: wrap; gap: 48px 64px">
+        <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 16px">
+          <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; color: #F2EEE6; text-decoration: none; min-height: 44px">
+            <svg width="40" height="40" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <circle cx="50" cy="50" r="46" fill="none" stroke="#F2EEE6" stroke-width="2.4"></circle>
+              <polyline points="27,71 27,29 50,55 73,29 73,71" fill="none" stroke="#F2EEE6" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"></polyline>
+              <path d="M50 46 C51 54 51 54 59 55 C51 56 51 56 50 64 C49 56 49 56 41 55 C49 54 49 54 50 46 Z" fill="{{or}}"></path>
+            </svg>
+            <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+            <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+          </a>
+          <p style="margin: 0; font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1.2; color: #F2EEE6">Se repérer dans l'IA.</p>
+        </div>
+        <nav aria-label="Plan du site" style="flex: 3 1 560px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 32px 24px">
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Conférences</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Conf-ia-au-quotidien.dc.html" class="m42-fl" style="color: #CFC8BB">L'IA au quotidien</a></li>
+              <li><a href="Conf-arnaques-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Arnaques et IA</a></li>
+              <li><a href="Conf-desinformation-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Vrai ou faux ?</a></li>
+              <li><a href="Conf-parents-ados-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Parents, ados et IA</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Pour qui</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Entreprises.dc.html" class="m42-fl" style="color: #CFC8BB">Entreprises</a></li>
+              <li><a href="Evenements.dc.html" class="m42-fl" style="color: #CFC8BB">Événements &amp; congrès</a></li>
+              <li><a href="Collectivites.dc.html" class="m42-fl" style="color: #CFC8BB">Collectivités</a></li>
+              <li><a href="Education.dc.html" class="m42-fl" style="color: #CFC8BB">Écoles &amp; familles</a></li>
+              <li><a href="Associations.dc.html" class="m42-fl" style="color: #CFC8BB">Associations</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">M42</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Reperes.dc.html" class="m42-fl" style="color: #CFC8BB">Repères</a></li>
+              <li><a href="A-propos.dc.html" class="m42-fl" style="color: #CFC8BB">À propos</a></li>
+              <li><a href="Organisateurs.dc.html" class="m42-fl" style="color: #CFC8BB">Espace organisateurs</a></li>
+              <li><a href="Contact.dc.html" class="m42-fl" style="color: #CFC8BB">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Légal</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Mentions-legales.dc.html" class="m42-fl" style="color: #CFC8BB">Mentions légales</a></li>
+              <li><a href="Confidentialite.dc.html" class="m42-fl" style="color: #CFC8BB">Confidentialité</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div style="margin-top: 56px; padding-top: 24px; border-top: 1px solid #2E2F35; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 13px; line-height: 1.5; color: #9A9488">
+        <span>Partout en France, en présentiel ou à distance</span>
+        <span>© 2026 M42.guide</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"or":{"editor":"color","default":"#B08D57","options":["#B08D57","#C9A227","#D4AF37"]},"animations":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":11600}}'>
+class Component extends DCLogic {
+  get _N() { return 6; }
+  get _K() { return 3.6; }
+
+  // ---- Animation au défilement (technique de ThemeArnaques) ----
+  // Section haute + bloc sticky de hauteur vh ; progression calculée au défilement de window.
+  // prefers-reduced-motion, réglage « animations » à faux ou bouton « Afficher toutes les étapes » : tout à plat.
+  _isStill() {
+    const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return this.props.animations === false || reduce;
+  }
+  _story() {
+    if (!this._tg) this._tg = () => this.setState({ flat: !(this.state && this.state.flat) });
+    const st = this.state || {};
+    const still = this._isStill();
+    const flat = still || !!st.flat;
+    const vh = st.vh || 820;
+    const n = this._N;
+    const step = flat ? n - 1 : Math.min(n - 1, st.step ?? 0);
+    return {
+      step: step,
+      flat: flat,
+      vals: {
+        or: this.props.or ?? '#B08D57',
+        rootClass: still ? 'm42-still' : 'm42-anim',
+        animated: !flat,
+        flat: flat,
+        canToggle: !still,
+        toggleLabel: flat ? "Revenir à l'animation pas à pas" : 'Afficher toutes les étapes',
+        toggleStory: this._tg,
+        storyH: flat ? 'auto' : Math.round(vh * this._K) + 'px',
+        stickyPos: flat ? 'relative' : 'sticky',
+        stickyH: flat ? 'auto' : vh + 'px',
+        stickyPad: flat ? 'clamp(4rem, 9vw, 8rem) 0' : ((typeof window !== 'undefined' && window.innerWidth < 700) ? '16px 0 16px' : '88px 0 32px')
+      }
+    };
+  }
+  _mapSteps(list, step, gold) {
+    return list.map((s, i) => Object.assign({}, s, {
+      n: i + 1,
+      o: i === step ? 1 : 0,
+      y: i === step ? 0 : (i < step ? -16 : 16),
+      hid: i === step ? 'false' : 'true',
+      gold: gold
+    }));
+  }
+  _dots(n, step, gold) {
+    const out = [];
+    for (let i = 0; i < n; i++) out.push({ c: i === step ? gold : (i < step ? '#9A9488' : '#2E2F35') });
+    return out;
+  }
+  componentDidMount() { this._n = 0; this._find(); }
+  componentWillUnmount() { clearTimeout(this._t); this._stopScroll(); }
+  componentDidUpdate(prev) {
+    if (prev.animations !== this.props.animations && this.sec) { this._stopScroll(); this._startScroll(); }
+  }
+  _find() {
+    const sec = document.querySelector('[data-m42-story]');
+    if (!sec) { if (this._n++ < 50) this._t = setTimeout(() => this._find(), 100); return; }
+    this.sec = sec;
+    this._startScroll();
+  }
+  _stopScroll() {
+    if (this._onScroll) { window.removeEventListener('scroll', this._onScroll); window.removeEventListener('resize', this._onResize); }
+  }
+  _startScroll() {
+    this._onResize = () => {
+      const vh = Math.round(Math.max(560, Math.min(window.innerHeight || 820, 1000)));
+      if (!this.state || this.state.vh !== vh) this.setState({ vh: vh });
+      this._onScroll();
+    };
+    this._onScroll = () => {
+      if (this._isStill() || (this.state && this.state.flat)) return;
+      const r = this.sec.getBoundingClientRect(), vh = (this.state && this.state.vh) || 820;
+      const p = Math.max(0, Math.min(0.9999, -r.top / Math.max(1, r.height - vh)));
+      const step = Math.floor(p * this._N);
+      if (!this.state || this.state.step !== step) this.setState({ step: step });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('resize', this._onResize);
+    this._onResize();
+  }
+
+  renderVals() {
+    const S = this._story();
+    const gold = S.vals.or;
+    const step = S.step, flat = S.flat;
+    const st = this.state || {};
+
+    // Anatomie du faux SMS
+    const STEPS = [
+      { kicker: 'Exemple', title: 'Un SMS comme on en reçoit tous.', text: 'Rien d\'alarmant à première vue. Regardons-le de plus près, détail par détail.' },
+      { kicker: 'Indice 1 · L\'expéditeur', title: 'Un numéro inconnu.', text: 'Un service de livraison n\'écrit pas depuis un numéro de portable. Et un nom connu, ou même un numéro connu, peut aussi être imité.' },
+      { kicker: 'Indice 2 · L\'urgence', title: '« Dernier avis », « avant ce soir ».', text: 'L\'urgence est là pour vous empêcher de réfléchir. C\'est le premier signal d\'alerte.' },
+      { kicker: 'Indice 3 · Le petit montant', title: '1,99 €, ce n\'est rien…', text: '… sauf que l\'escroc ne veut pas vos 1,99 € : il veut votre numéro de carte bancaire.' },
+      { kicker: 'Indice 4 · Le lien', title: 'Une adresse qui imite.', text: 'Elle ressemble à un vrai site, mais un détail cloche. Dans le doute, on ne clique jamais.' },
+      { kicker: 'Le bon réflexe', title: 'Je ne clique pas. Je transfère au 33700.', text: 'Puis je supprime le message. Pour suivre un colis, je passe par le site ou l\'application que je connais déjà.' }
+    ];
+    const hi = (k) => {
+      if (flat) return 'rgba(176,141,87,.35)';
+      if (step === k) return 'rgba(176,141,87,.45)';
+      if (step > k && step < 5) return 'rgba(176,141,87,.14)';
+      return 'rgba(176,141,87,0)';
+    };
+    const ring = (k) => (!flat && step === k) ? gold : 'rgba(176,141,87,0)';
+
+    // Jeu « Arnaque ou pas ? »
+    const QS = [
+      { from: 'Appel · « votre conseiller bancaire »', text: '« Une opération suspecte est en cours sur votre compte. Pour la bloquer, donnez-moi le code que vous allez recevoir par SMS. »', scam: true, explain: 'Votre banque ne vous demandera jamais un code reçu par SMS. Raccrochez, puis rappelez le numéro inscrit au dos de votre carte.' },
+      { from: 'SMS · Mairie', text: 'Collecte des encombrants jeudi matin dans votre quartier. Sortez-les la veille au soir. Aucune réponse nécessaire.', scam: false, explain: 'Pas de lien, pas d\'argent, pas d\'urgence : rien ne vous est demandé. Un message peut être fiable !' },
+      { from: 'Messagerie · numéro inconnu', text: '« Coucou c\'est moi, j\'ai cassé mon téléphone, voici mon nouveau numéro. Tu peux me dépanner de 300 € ? C\'est urgent. »', scam: true, explain: 'Le faux proche : nouveau numéro, argent, urgence. Appelez votre proche sur son ancien numéro avant toute chose.' },
+      { from: 'E-mail · « votre fournisseur »', text: '« Nous changeons de banque. Merci d\'utiliser désormais le RIB ci-joint pour le règlement de la facture en attente. »', scam: true, explain: 'Le faux fournisseur : un changement de coordonnées bancaires annoncé par e-mail. On vérifie toujours en rappelant le fournisseur sur un numéro déjà connu, jamais celui du message.' }
+    ];
+    const qi = st.qi ?? 0, ans = st.ans ?? null, score = st.score ?? 0;
+    const Q = QS[qi];
+    const right = ans !== null && ((ans === 'a') === Q.scam);
+    const last = qi === QS.length - 1;
+    const pick = (a) => () => {
+      const ok = (a === 'a') === Q.scam;
+      this.setState({ ans: a, score: score + (ok ? 1 : 0) });
+    };
+    if (!this._picks || this._picks.qi !== qi || this._picks.score !== score) this._picks = { qi: qi, score: score, a: pick('a'), f: pick('f') };
+    const q = {
+      from: Q.from, text: Q.text, num: qi + 1, total: QS.length,
+      open: ans === null, done: ans !== null, last: last && ans !== null,
+      pickA: this._picks.a,
+      pickF: this._picks.f,
+      verdict: (right ? 'Bien vu. ' : 'Raté. ') + (Q.scam ? 'C\'est une arnaque.' : 'Ce message est fiable.'),
+      verdictColor: right ? '#2E6A4E' : '#9B3328',
+      explain: Q.explain,
+      score: 'Votre score : ' + score + ' sur ' + QS.length + '. En conférence, la salle vote à main levée, puis on décortique chaque indice.',
+      nextLabel: last ? 'Recommencer' : 'Message suivant →',
+      next: () => this.setState(last ? { qi: 0, ans: null, score: 0 } : { qi: qi + 1, ans: null })
+    };
+
+    return Object.assign(S.vals, {
+      steps: this._mapSteps(STEPS, step, gold),
+      dots: this._dots(STEPS.length, step, gold),
+      q: q,
+      h1: hi(1), r1: ring(1), h2: hi(2), r2: ring(2), h3: hi(3), r3: ring(3), h4: hi(4), r4: ring(4),
+      phoneO: step === 5 && !flat ? 0.35 : 1,
+      stampO: step === 5 && !flat ? 1 : 0,
+      stampS: step === 5 && !flat ? 1 : 1.4
+    });
+  }
+}
+</script>
+</body>
+</html>

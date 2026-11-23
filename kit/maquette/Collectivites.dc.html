@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Collectivités · M42</title>
+<!-- SEO: /collectivites/ | title: Conférences IA pour collectivités et médiathèques | M42 | meta: Arnaques, fausses infos, IA au quotidien : des conférences et ateliers pour vos habitants, vos agents et vos élus. CCAS, médiathèques, France Services. | canonical: https://m42.guide/collectivites/ | H1 : titre de 03 C + phrase d'introduction avec les mots-clés | JSON-LD : WebPage + BreadcrumbList + Service (areaServed : France ; zone sans frais citée dans le texte) + FAQPage | Mots-clés : conférence IA collectivité, conférence IA médiathèque, conférence arnaques seniors, sensibilisation des élus à l'IA (jamais « formation des élus ») -->
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+/* Base */
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:#F2EEE6;color:#0E0F12;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:#0E0F12}
+::selection{background:#E8E2D7;color:#0E0F12}
+
+/* Focus visible : encre sur clair, or clair sur nuit */
+:focus-visible{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night :focus-visible{outline-color:#C9A46A}
+
+/* Lien d'évitement */
+.m42-skip{position:absolute;left:16px;top:-200px;z-index:100}
+.m42-skip:focus{top:12px}
+
+/* En-tête : collant à partir de 960 px ; filet bas qui apparaît au défilement */
+@media (min-width:960px){.m42-hdr{position:sticky;top:0;z-index:50}}
+@keyframes m42-hdr{from{border-bottom-color:rgba(215,208,195,0)}to{border-bottom-color:#D7D0C3}}
+@supports (animation-timeline: scroll()){
+  .m42-hdr{animation:m42-hdr cubic-bezier(.22,1,.36,1) both;animation-timeline:scroll();animation-range:0px 96px}
+}
+
+/* Navigation : survol souligné encre 1 px, page active soulignée or 2 px */
+.m42-nav{text-decoration:none;text-underline-offset:8px;text-decoration-thickness:1px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-nav:hover{text-decoration-line:underline;text-decoration-color:#0E0F12}
+.m42-nav[aria-current="page"]{text-decoration-line:underline;text-decoration-color:#B08D57;text-decoration-thickness:2px}
+
+/* Boutons */
+.m42-btn,.m42-btn2,.m42-btn2n{transition:background-color 120ms cubic-bezier(.22,1,.36,1),color 120ms cubic-bezier(.22,1,.36,1),border-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-btn:hover{background-color:#B08D57!important;color:#0E0F12!important}
+.m42-btn2:hover{background-color:rgba(14,15,18,.06)!important}
+.m42-btn2n:hover{background-color:rgba(242,238,230,.08)!important;border-color:#C9A46A!important}
+.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:translateY(1px)}
+
+/* Lien fléché */
+.m42-arrow,.m42-cta{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-arrow-i{display:inline-block;transition:transform 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover .m42-arrow-i{transform:translateX(3px)}
+
+/* Carte cliquable : le lien du titre s'étend à toute la carte (pas de <a> englobant) */
+.m42-card{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover{border-color:#0E0F12!important}
+.m42-night .m42-card:hover{border-color:#F2EEE6!important}
+.m42-bar{transform:scaleX(.18);transform-origin:left;transition:transform 320ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover .m42-bar,.m42-card:focus-within .m42-bar{transform:scaleX(1)}
+.m42-card:hover .m42-arrow-i{transform:translateX(3px)}
+.m42-card:hover .m42-cta{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-stretch{text-decoration:none}
+.m42-stretch::after{content:"";position:absolute;inset:0;z-index:1}
+.m42-stretch:focus-visible{outline:none}
+.m42-stretch:focus-visible::after{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night .m42-stretch:focus-visible::after{outline-color:#C9A46A}
+
+/* Liens du pied de page */
+.m42-fl{text-decoration:none;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-fl:hover{text-decoration-line:underline;text-decoration-color:#B08D57;color:#F2EEE6!important}
+
+/* Fil d'Ariane : complet au-dessus de 640 px, parent seul en dessous */
+.m42-bc-full{display:flex}
+.m42-bc-short{display:none}
+@media (max-width:639px){.m42-bc-full{display:none}.m42-bc-short{display:inline-flex}}
+
+/* FAQ */
+.m42-faq summary{list-style:none;cursor:pointer}
+.m42-faq summary::-webkit-details-marker{display:none}
+.m42-faq-i{transition:transform 200ms cubic-bezier(.65,0,.35,1)}
+.m42-faq[open] .m42-faq-i{transform:rotate(45deg)}
+.m42-faq summary:hover h3{text-decoration:underline;text-decoration-color:#B08D57;text-underline-offset:4px}
+
+/* Champs de formulaire */
+.m42-field{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-field:not([aria-invalid="true"]):hover{border-color:#0E0F12!important}
+.m42-field:focus{outline:2px solid #0E0F12;outline-offset:-2px}
+
+/* Petit bouton texte (ex. pause d'animation) */
+.m42-txtbtn{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-txtbtn:hover{color:#0E0F12!important;text-decoration-color:#B08D57}
+
+/* Apparition au défilement : opacité + 8 px, natif, sans JavaScript.
+   Sans prise en charge, le contenu est simplement visible. Jamais au-dessus de la ligne de flottaison. */
+@keyframes m42-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@supports (animation-timeline: view()){
+  .m42-reveal{animation:m42-in cubic-bezier(.22,1,.36,1) both;animation-timeline:view();animation-range:entry 0% entry 45%}
+}
+.m42-still .m42-reveal{animation:none!important;opacity:1!important;transform:none!important}
+
+/* Pages « Pour qui » : rubrique courante du menu (page sœur), soulignement or comme la page active */
+.m42-nav[aria-current="true"]{text-decoration-line:underline;text-decoration-color:#B08D57;text-decoration-thickness:2px}
+/* Schémas : les flèches horizontales deviennent verticales sous 640 px */
+@media (max-width:639px){.m42-flow-arrow{transform:rotate(90deg)}}
+
+/* Mouvement réduit : aucune translation, fondus à 0 ms */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:0ms!important;animation-delay:0ms!important;transition-duration:0ms!important}
+  .m42-reveal,.m42-hdr{animation:none!important;opacity:1!important;transform:none!important}
+  .m42-arrow:hover .m42-arrow-i,.m42-card:hover .m42-arrow-i,.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:none!important}
+}
+</style>
+<style>
+/* --- Mobile : menu repliable, symbole d'accueil, coupures de mots --- */
+.m42-menu-t{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.m42-burger{display:none}
+p,li,dd,dt,td,th,h1,h2,h3,summary,label{overflow-wrap:break-word}
+a[href^="mailto:"]{overflow-wrap:anywhere}
+@media (max-width: 959px){
+  .m42-burger{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;border:1px solid #0E0F12;color:#0E0F12;background:transparent;font-family:Inter,system-ui,sans-serif;font-size:15px;font-weight:500;cursor:pointer;user-select:none}
+  .m42-menu-t:focus-visible + .m42-burger{outline:2px solid #7A5C30;outline-offset:2px}
+  .m42-burger .m42-b-close{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-open{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-close{display:inline}
+  header nav[aria-label="Navigation principale"]{display:none !important;width:100%;flex-direction:column !important;align-items:stretch !important;gap:0 !important;padding:4px 0 20px}
+  .m42-menu-t:checked ~ nav[aria-label="Navigation principale"]{display:flex !important}
+  header nav[aria-label="Navigation principale"] a{display:flex !important;align-items:center;min-height:52px;padding:0 !important;border-bottom:1px solid #D7D0C3;font-size:17px !important}
+  header nav[aria-label="Navigation principale"] a.m42-btn{justify-content:center;margin-top:20px;border-bottom:0;min-height:52px;padding:0 20px !important}
+  canvas[data-m42-sky]{max-width:300px !important;margin:0 auto}
+}
+@media (max-width: 480px){
+  canvas[data-m42-sky]{max-width:240px !important}
+}
+</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0E0F12; background: #F2EEE6; min-height: 100vh">
+
+  <a href="#contenu" class="m42-skip" style="background: #0E0F12; color: #F2EEE6; padding: 12px 18px; font-size: 15px; font-weight: 500; text-decoration: none">Aller au contenu</a>
+
+  <header class="m42-hdr" style="background: rgba(242, 238, 230, 0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid #D7D0C3">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 14px clamp(1rem, 4vw, 3rem); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px">
+      <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; color: #0E0F12; text-decoration: none; min-height: 44px">
+        <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+        <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+      </a>
+      <input type="checkbox" id="m42-menu-t" class="m42-menu-t" aria-controls="m42-menu" aria-label="Ouvrir ou fermer le menu">
+      <label for="m42-menu-t" class="m42-burger"><span class="m42-b-open">Menu</span><span class="m42-b-close">Fermer</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></label>
+      <nav id="m42-menu" aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; font-size: 14px; font-weight: 500; line-height: 1.3">
+        <a href="Conferences.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Conférences</a>
+        <a href="Entreprises.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Entreprises</a>
+        <a href="Collectivites.dc.html" class="m42-nav" aria-current="page" style="color: #0E0F12; padding: 10px 0">Collectivités</a>
+        <a href="Education.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Écoles</a>
+        <a href="Reperes.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Repères</a>
+        <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; background: #0E0F12; color: #F2EEE6; text-decoration: none; font-size: 14px; font-weight: 500">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu" tabindex="-1" style="outline: none">
+
+    <section aria-labelledby="titre-page">
+      <div style="max-width: 1240px; margin: 0 auto; padding: clamp(2rem, 4vw, 3rem) clamp(1rem, 4vw, 3rem) clamp(4rem, 7vw, 6rem)">
+        <nav aria-label="Fil d'Ariane" style="margin-bottom: 40px; font-size: 13px; line-height: 1.5; color: #5F5A50">
+          <ol class="m42-bc-full" style="list-style: none; margin: 0; padding: 0; flex-wrap: wrap; align-items: center; gap: 4px 8px">
+            <li><a href="Main.dc.html" style="color: #5F5A50; text-underline-offset: 3px">Accueil</a></li>
+            <li><span aria-hidden="true" style="margin-right: 8px">/</span><span aria-current="page" style="color: #0E0F12; font-weight: 500">Collectivités</span></li>
+          </ol>
+          <a href="Main.dc.html" class="m42-bc-short m42-arrow" style="align-items: center; gap: 6px; min-height: 44px; color: #0E0F12; font-weight: 500"><span aria-hidden="true">←</span>Accueil</a>
+        </nav>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 48px 64px">
+          <div style="flex: 999 1 540px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+            <p style="margin: 0; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Collectivités, élus &amp; agents</p>
+            <h1 id="titre-page" style="margin: 0; max-width: 16ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 1.6rem + 6vw, 6.5rem); line-height: 0.95; letter-spacing: -0.02em; color: #0E0F12">Accompagner vos habitants et vos équipes face à l'IA.</h1>
+            <p style="margin: 8px 0 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #0E0F12">Arnaques, fausses informations, démarches en ligne : vos habitants s'interrogent. Vos agents aussi.</p>
+            <div style="display: flex; flex-direction: column; gap: 12px">
+              <p style="margin: 0; max-width: 56ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Des conférences et des ateliers sur l'intelligence artificielle et les arnaques leur apportent des réponses claires, sans jargon, dans vos salles : CCAS, médiathèques, France Services, mairies.</p>
+              <p style="margin: 0; max-width: 56ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Habitants, agents en première ligne, élus : chacun son format, les mêmes repères.</p>
+            </div>
+            <div style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 16px">
+              <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 14px 24px; box-sizing: border-box; background: #0E0F12; color: #F2EEE6; font-size: 16px; font-weight: 500; line-height: 1.2; text-decoration: none">Demander un devis</a>
+              <a href="#commande" class="m42-btn2" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 13px 23px; box-sizing: border-box; background: transparent; border: 1px solid #0E0F12; color: #0E0F12; font-size: 16px; font-weight: 500; line-height: 1.2; text-decoration: none">Voir comment commander</a>
+            </div>
+          </div>
+          <div style="flex: 1 1 340px; min-width: 0; aspect-ratio: 4 / 5; max-height: 560px; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; text-align: center; background: #E8E2D7; border: 1px dashed #857E71; color: #5F5A50; font-size: 13px; line-height: 1.5">[Photo : atelier en médiathèque, un petit groupe d'habitants, téléphone en main, l'intervenante en amorce, 4:5, à produire]</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="enjeux" aria-labelledby="titre-enjeux" style="padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Vos enjeux</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-enjeux" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Trois priorités pour votre territoire</h2>
+        </div>
+        <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 40px 48px">
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #D7D0C3; padding-top: 24px">
+            <span aria-hidden="true" style="font-size: 13px; font-weight: 500; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; color: #7A5C30">01</span>
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Protéger les habitants, en particulier les plus fragiles</h3>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Faux conseillers, faux SMS, numéros usurpés. En 2025, les demandes d'assistance liées à l'usurpation de numéro ont bondi de 517 %.</p>
+            <p style="margin: 4px 0 0; font-size: 12px; line-height: 1.5; color: #5F5A50">Source : Cybermalveillance.gouv.fr, bilan 2025</p>
+          </div>
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #D7D0C3; padding-top: 24px">
+            <span aria-hidden="true" style="font-size: 13px; font-weight: 500; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; color: #7A5C30">02</span>
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Outiller les agents en première ligne</h3>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Accueil de mairie, CCAS, France Services, médiathèques : ce sont eux qui reçoivent les victimes et les questions.</p>
+          </div>
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #D7D0C3; padding-top: 24px">
+            <span aria-hidden="true" style="font-size: 13px; font-weight: 500; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; color: #7A5C30">03</span>
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Encadrer l'usage de l'IA dans les services</h3>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Données des usagers, confidentialité, fiabilité des réponses : les règles doivent être posées avant les habitudes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="formats" aria-labelledby="titre-formats" style="background: #E8E2D7; padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Formats</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-formats" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Un format pour chaque public</h2>
+          <p style="flex: 0 1 52ch; margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Pour les habitants, les agents ou les élus : un format pour chaque public, dans vos salles.</p>
+        </div>
+        <ul class="m42-reveal" style="list-style: none; margin: 48px 0 0; padding: 0; border-top: 1px solid #0E0F12">
+          <li style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 32px; padding: 24px 0; border-bottom: 1px solid #D7D0C3">
+            <div style="flex: 2 1 320px; min-width: 0">
+              <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Conférence grand public</h3>
+            </div>
+            <div style="flex: 1 1 170px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Durée</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">1 h 30</span>
+            </div>
+            <div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Participants</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">Selon la salle</span>
+            </div>
+          </li>
+          <li style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 32px; padding: 24px 0; border-bottom: 1px solid #D7D0C3">
+            <div style="flex: 2 1 320px; min-width: 0">
+              <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Atelier pratique</h3>
+            </div>
+            <div style="flex: 1 1 170px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Durée</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">2 h</span>
+            </div>
+            <div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Participants</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">15 personnes maximum</span>
+            </div>
+          </li>
+          <li style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 32px; padding: 24px 0; border-bottom: 1px solid #D7D0C3">
+            <div style="flex: 2 1 320px; min-width: 0">
+              <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Cycle de 4 rendez-vous</h3>
+            </div>
+            <div style="flex: 1 1 170px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Durée</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">4 séances, rythme à définir</span>
+            </div>
+            <div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Participants</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">Un groupe stable</span>
+            </div>
+          </li>
+          <li style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 32px; padding: 24px 0; border-bottom: 1px solid #D7D0C3">
+            <div style="flex: 2 1 320px; min-width: 0">
+              <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Session pour les agents</h3>
+            </div>
+            <div style="flex: 1 1 170px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Durée</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">2 h à 1 jour</span>
+            </div>
+            <div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Participants</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">Une équipe ou un service</span>
+            </div>
+          </li>
+          <li style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 32px; padding: 24px 0; border-bottom: 1px solid #D7D0C3">
+            <div style="flex: 2 1 320px; min-width: 0">
+              <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Temps d'information pour les élus</h3>
+              <p style="margin: 6px 0 0; font-size: 14px; line-height: 1.5; color: #5F5A50"><span style="display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px dashed #857E71; color: #5F5A50; font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; vertical-align: 1px">[À VALIDER : nouveau format]</span></p>
+            </div>
+            <div style="flex: 1 1 170px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Durée</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">1 h 30 à 2 h</span>
+            </div>
+            <div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Participants</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">Conseil municipal ou commission</span>
+            </div>
+          </li>
+        </ul>
+        <p class="m42-reveal" style="margin: 24px 0 0; max-width: 68ch; font-size: 16px; line-height: 1.6; color: #3A3731">Salle des fêtes, médiathèque, CCAS, mairie : l'intervention se tient chez vous. Béarn, Pays basque, Landes : sans frais de déplacement. Ailleurs en France, les frais sont indiqués dès le devis.</p>
+        <a href="Associations.dc.html" class="m42-arrow" style="margin-top: 16px; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #0E0F12; font-size: 16px; font-weight: 500">Vous portez le projet avec une association ou un CCAS ? Les ateliers pour les associations <span class="m42-arrow-i" aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section id="sujets" aria-labelledby="titre-sujets" style="padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Conférences</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-sujets" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Les conférences pour vos habitants</h2>
+          <p style="flex: 0 1 52ch; margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Quatre conférences pensées pour le grand public. Chacune existe en conférence, en atelier ou en cycle.</p>
+        </div>
+        <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 24px">
+          <article class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 16px; padding: 32px 28px; background: #F8F6F1; border: 1px solid #D7D0C3">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+              <span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">II</span>
+            </div>
+            <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Conf-arnaques-ia.dc.html" class="m42-stretch" style="color: #0E0F12">Arnaques et IA</a></h3>
+            <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Voix clonées, faux conseillers, faux SMS : les reconnaître et réagir.</p>
+            <p style="margin: 0; padding: 14px 0 0; border-top: 1px solid #D7D0C3; font-size: 15px; line-height: 1.55; color: #0E0F12"><span style="font-weight: 600">Pour vous : </span>« Arnaques 2026 », avec le jeu « Arnaque ou pas ? » et la fiche des bons numéros.</p>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Keynote · Conférence · Atelier · Cycle</p>
+            <span class="m42-cta" aria-hidden="true" style="margin-top: auto; padding-top: 8px; font-size: 15px; font-weight: 500; color: #0E0F12">Voir le programme <span class="m42-arrow-i">→</span></span>
+            <span class="m42-bar" aria-hidden="true" style="position: absolute; left: -1px; right: -1px; bottom: -1px; height: 2px; background: #B08D57"></span>
+          </article>
+          <article class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 16px; padding: 32px 28px; background: #F8F6F1; border: 1px solid #D7D0C3">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+              <span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">III</span>
+            </div>
+            <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Conf-desinformation-ia.dc.html" class="m42-stretch" style="color: #0E0F12">Vrai ou faux ?</a></h3>
+            <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Repérer les fausses images, vidéos et faux sites d'information, avec une méthode en quatre étapes.</p>
+            <p style="margin: 0; padding: 14px 0 0; border-top: 1px solid #D7D0C3; font-size: 15px; line-height: 1.55; color: #0E0F12"><span style="font-weight: 600">Pour vous : </span>Neutralité politique stricte : des mécanismes, jamais des opinions.</p>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Keynote · Conférence · Atelier · Cycle</p>
+            <span class="m42-cta" aria-hidden="true" style="margin-top: auto; padding-top: 8px; font-size: 15px; font-weight: 500; color: #0E0F12">Voir le programme <span class="m42-arrow-i">→</span></span>
+            <span class="m42-bar" aria-hidden="true" style="position: absolute; left: -1px; right: -1px; bottom: -1px; height: 2px; background: #B08D57"></span>
+          </article>
+          <article class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 16px; padding: 32px 28px; background: #F8F6F1; border: 1px solid #D7D0C3">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+              <span style="display: inline-flex; align-items: center; gap: 12px">
+                <span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">I</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 1 C13 10 14 11 23 12 C14 13 13 14 12 23 C11 14 10 13 1 12 C10 11 11 10 12 1 Z" fill="#B08D57"></path></svg>
+                <span style="font-size: 13px; font-weight: 500; line-height: 1.4; color: #5F5A50">Conférence signature</span>
+              </span>
+            </div>
+            <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Conf-ia-au-quotidien.dc.html" class="m42-stretch" style="color: #0E0F12">L'IA au quotidien</a></h3>
+            <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Ce qu'elle sait faire, ce qu'elle invente, comment bien s'en servir.</p>
+            <p style="margin: 0; padding: 14px 0 0; border-top: 1px solid #D7D0C3; font-size: 15px; line-height: 1.55; color: #0E0F12"><span style="font-weight: 600">Pour vous : </span>Une conférence grand public, idéale en médiathèque ou en France Services.</p>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Keynote · Conférence · Atelier · Cycle</p>
+            <span class="m42-cta" aria-hidden="true" style="margin-top: auto; padding-top: 8px; font-size: 15px; font-weight: 500; color: #0E0F12">Voir le programme <span class="m42-arrow-i">→</span></span>
+            <span class="m42-bar" aria-hidden="true" style="position: absolute; left: -1px; right: -1px; bottom: -1px; height: 2px; background: #B08D57"></span>
+          </article>
+          <article class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 16px; padding: 32px 28px; background: #F8F6F1; border: 1px solid #D7D0C3">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+              <span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">IV</span>
+            </div>
+            <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Conf-parents-ados-ia.dc.html" class="m42-stretch" style="color: #0E0F12">Parents, ados et IA</a></h3>
+            <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Devoirs, réseaux sociaux, cyberharcèlement : des repères clairs pour les familles.</p>
+            <p style="margin: 0; padding: 14px 0 0; border-top: 1px solid #D7D0C3; font-size: 15px; line-height: 1.55; color: #0E0F12"><span style="font-weight: 600">Pour vous : </span>Une soirée pour les familles, avec la charte numérique de la famille.</p>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Keynote · Conférence · Atelier · Cycle</p>
+            <span class="m42-cta" aria-hidden="true" style="margin-top: auto; padding-top: 8px; font-size: 15px; font-weight: 500; color: #0E0F12">Voir le programme <span class="m42-arrow-i">→</span></span>
+            <span class="m42-bar" aria-hidden="true" style="position: absolute; left: -1px; right: -1px; bottom: -1px; height: 2px; background: #B08D57"></span>
+          </article>
+        </div>
+        <div class="m42-reveal" style="margin-top: 64px">
+          <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Pour vos agents et vos services</h3>
+          <ul style="list-style: none; margin: 24px 0 0; padding: 0; border-top: 1px solid #0E0F12">
+            <li style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <span style="flex: 1 1 420px; min-width: 0; font-size: 17px; font-weight: 500; line-height: 1.45; color: #0E0F12">Agents d'accueil : repérer et orienter une victime d'arnaque<span style="display: block; margin-top: 4px; font-size: 15px; line-height: 1.55; color: #3A3731">Les bons réflexes, les bons numéros.</span></span>
+            </li>
+            <li style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <span style="flex: 1 1 420px; min-width: 0; font-size: 17px; font-weight: 500; line-height: 1.45; color: #0E0F12">L'IA dans les services de la collectivité<span style="display: block; margin-top: 4px; font-size: 15px; line-height: 1.55; color: #3A3731">Usages utiles, données à protéger, règles communes.</span></span>
+            </li>
+          </ul>
+        </div>
+        <a href="Conferences.dc.html" class="m42-arrow" style="margin-top: 32px; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #0E0F12; font-size: 16px; font-weight: 500">Voir toutes les conférences et leurs formats <span class="m42-arrow-i" aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section id="emportent" aria-labelledby="titre-emportent" style="background: #E8E2D7; padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Après l'intervention</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-emportent" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Ce que vos participants emportent</h2>
+        </div>
+        <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 40px 32px">
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px">
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Habitants</h3>
+            <ul style="list-style: none; margin: 0; padding: 0; border-top: 1px solid #D7D0C3; font-size: 16px; line-height: 1.55; color: #3A3731">
+              <li style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #D7D0C3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false" style="flex: none; margin-top: 6px"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>La fiche des bons numéros <span style="display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px dashed #857E71; color: #5F5A50; font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; vertical-align: 1px">[À PRODUIRE]</span> : 33700 pour signaler un SMS frauduleux, 17Cyber.gouv.fr, Info Escroqueries au 0 805 805 817</span></li>
+              <li style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #D7D0C3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false" style="flex: none; margin-top: 6px"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>Les règles non négociables <span style="display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px dashed #857E71; color: #5F5A50; font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; vertical-align: 1px">[À PRODUIRE]</span></span></li>
+            </ul>
+          </div>
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px">
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Agents</h3>
+            <ul style="list-style: none; margin: 0; padding: 0; border-top: 1px solid #D7D0C3; font-size: 16px; line-height: 1.55; color: #3A3731">
+              <li style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #D7D0C3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false" style="flex: none; margin-top: 6px"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>Une fiche pratique « accueillir et orienter une victime » <span style="display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px dashed #857E71; color: #5F5A50; font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; vertical-align: 1px">[À PRODUIRE]</span></span></li>
+            </ul>
+          </div>
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px">
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Élus</h3>
+            <ul style="list-style: none; margin: 0; padding: 0; border-top: 1px solid #D7D0C3; font-size: 16px; line-height: 1.55; color: #3A3731">
+              <li style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #D7D0C3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false" style="flex: none; margin-top: 6px"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>Une synthèse des enjeux et des pistes d'action pour la collectivité <span style="display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px dashed #857E71; color: #5F5A50; font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; vertical-align: 1px">[À PRODUIRE]</span></span></li>
+            </ul>
+          </div>
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px">
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Pour vous</h3>
+            <ul style="list-style: none; margin: 0; padding: 0; border-top: 1px solid #D7D0C3; font-size: 16px; line-height: 1.55; color: #3A3731">
+              <li style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #D7D0C3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false" style="flex: none; margin-top: 6px"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>Un kit de communication : affiche, texte pour le bulletin municipal et les réseaux <span style="display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px dashed #857E71; color: #5F5A50; font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; vertical-align: 1px">[À PRODUIRE]</span></span></li>
+              <li style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #D7D0C3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false" style="flex: none; margin-top: 6px"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>Un bilan après l'intervention <span style="display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px dashed #857E71; color: #5F5A50; font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; vertical-align: 1px">[À PRODUIRE]</span></span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="etapes" aria-labelledby="titre-etapes" style="padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Méthode</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-etapes" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Comment ça se passe</h2>
+        </div>
+        <ol style="list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 40px 48px">
+          <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 1px solid #0E0F12">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 48px; line-height: 1; font-variant-numeric: lining-nums tabular-nums; color: #7A5C30">1</span>
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Un premier échange</h3>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Avec l'élu, la direction ou le service concerné : public visé, lieu, date.</p>
+          </li>
+          <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 1px solid #0E0F12">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 48px; line-height: 1; font-variant-numeric: lining-nums tabular-nums; color: #7A5C30">2</span>
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Un devis gratuit sous 48 h</h3>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Puis le kit de communication pour annoncer l'événement.</p>
+          </li>
+          <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 1px solid #0E0F12">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 48px; line-height: 1; font-variant-numeric: lining-nums tabular-nums; color: #7A5C30">3</span>
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">L'intervention et le bilan</h3>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Participation, questions posées, suites possibles : de quoi alimenter vos rapports.</p>
+          </li>
+        </ol>
+        <div class="m42-reveal" style="margin-top: 56px; padding: 24px 28px; background: #F8F6F1; border: 1px solid #D7D0C3; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px">
+          <p style="flex: 1 1 420px; min-width: 0; margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Qui intervient : Clara Peron, formatrice d'adultes, et Paul Loustaunau, qui conçoit l'IA au quotidien, animent chaque intervention ensemble.</p>
+          <a href="A-propos.dc.html" class="m42-arrow" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #0E0F12; font-size: 16px; font-weight: 500">Parcours et démarche <span class="m42-arrow-i" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="commande" aria-labelledby="titre-commande" style="background: #E8E2D7; padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Commande publique</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-commande" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Commander une intervention, simplement</h2>
+          <p style="flex: 0 1 52ch; margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Pour une conférence ou un atelier, un devis suffit le plus souvent. Le parcours tient en trois étapes.</p>
+        </div>
+        <div class="m42-reveal" role="list" aria-label="Les trois étapes de la commande" style="margin-top: 48px; display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center; gap: 16px">
+          <div role="listitem" style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 28px; background: #F8F6F1; border: 1px solid #D7D0C3">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 40px; line-height: 1; font-variant-numeric: lining-nums tabular-nums; color: #7A5C30">1</span>
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Estimer le besoin</h3>
+            <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">On additionne les prestations similaires prévues sur l'année, pas intervention par intervention.</p>
+          </div>
+          <span class="m42-flow-arrow" aria-hidden="true" style="flex: none; align-self: center; display: inline-flex">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4 12h16"></path><path d="M14 6l6 6-6 6"></path></svg>
+          </span>
+          <div role="listitem" style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 28px; background: #F8F6F1; border: 1px solid #D7D0C3">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 40px; line-height: 1; font-variant-numeric: lining-nums tabular-nums; color: #7A5C30">2</span>
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Demander un devis</h3>
+            <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Sous 60 000 € HT, un achat de services peut être conclu sans publicité ni mise en concurrence préalables. Trois règles : une offre pertinente, un bon usage de l'argent public, ne pas toujours retenir le même prestataire.</p>
+          </div>
+          <span class="m42-flow-arrow" aria-hidden="true" style="flex: none; align-self: center; display: inline-flex">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4 12h16"></path><path d="M14 6l6 6-6 6"></path></svg>
+          </span>
+          <div role="listitem" style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 28px; background: #F8F6F1; border: 1px solid #D7D0C3">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 40px; line-height: 1; font-variant-numeric: lining-nums tabular-nums; color: #7A5C30">3</span>
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Commander et régler</h3>
+            <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Devis signé ou bon de commande, selon vos règles internes. Facture électronique déposée sur Chorus Pro <span style="display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px dashed #857E71; color: #5F5A50; font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; vertical-align: 1px">[À VALIDER : compte Chorus Pro]</span>, paiement par mandat administratif.</p>
+          </div>
+        </div>
+        <p class="m42-reveal" style="margin: 24px 0 0; max-width: 80ch; font-size: 13px; line-height: 1.55; color: #5F5A50">Source : Code de la commande publique, article R2122-8, modifié par le décret n° 2025-1386 du 29 décembre 2025 (applicable depuis le 1er avril 2026) ; seuils confirmés par le Conseil d'État le 19 octobre 2026. Ce schéma simplifié ne remplace pas l'avis de votre service de la commande publique.</p>
+      </div>
+    </section>
+
+    <section id="faq" aria-labelledby="titre-faq" style="padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Questions fréquentes</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-faq" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Questions fréquentes</h2>
+        </div>
+        <div class="m42-reveal" style="margin-top: 48px; max-width: 52rem; border-top: 1px solid #0E0F12">
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Faut-il lancer une consultation pour une conférence ou un atelier ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+              </span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">
+              <p style="margin: 0">En général, non. Depuis le 1er avril 2026, un achat de services dont la valeur estimée est inférieure à 60 000 € HT peut être conclu sans publicité ni mise en concurrence préalables. La collectivité doit simplement choisir une offre pertinente, bien utiliser l'argent public et ne pas toujours retenir le même prestataire. Un devis suffit le plus souvent, selon vos règles internes.</p>
+            </div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Une intervention auprès des élus est-elle possible ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+              </span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">
+              <p style="margin: 0">Oui : un temps d'information pour les élus, en conseil municipal ou en commission (1 h 30 à 2 h) : enjeux de l'IA pour la collectivité, arnaques visant les habitants, usages dans les services. Ce n'est pas une formation des élus au sens du droit des collectivités, réservée aux organismes agréés.</p>
+            </div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Les conférences sont-elles neutres politiquement ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+              </span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">
+              <p style="margin: 0">Oui, strictement. Elles montrent des mécanismes (comment une fausse image est fabriquée, pourquoi elle circule) et citent des sources officielles. Aucun contenu partisan n'est montré, aucune position n'est prise. Chaque exemple est revu avant les périodes électorales.</p>
+            </div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Comment faire venir le public ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+              </span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">
+              <p style="margin: 0">Après le devis, vous recevez un kit de communication <span style="display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px dashed #857E71; color: #5F5A50; font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; vertical-align: 1px">[À PRODUIRE]</span> : une affiche et un texte prêt à publier dans le bulletin municipal et sur vos réseaux. Le jour même, le contenu s'adapte au public présent.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="m42-night" aria-labelledby="titre-contact" style="background: #0E0F12; color: #F2EEE6; padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #F2EEE6; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Contact</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px 64px">
+          <div style="flex: 1 1 520px; min-width: 0">
+            <h2 id="titre-contact" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Organisons une conférence dans votre commune</h2>
+            <p style="margin: 20px 0 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #CFC8BB">Des formats adaptés aux budgets des collectivités et des associations. Devis gratuit sous 48 h.</p>
+          </div>
+          <div style="flex: 0 1 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 16px">
+            <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 14px 24px; box-sizing: border-box; background: #F2EEE6; color: #0E0F12; font-size: 16px; font-weight: 500; line-height: 1.2; text-decoration: none">Demander un devis</a>
+            <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #CFC8BB">Clara : <a href="mailto:clara@m42.guide" style="color: #F2EEE6; text-underline-offset: 3px">clara@m42.guide</a><br>Paul : <a href="mailto:paul@m42.guide" style="color: #F2EEE6; text-underline-offset: 3px">paul@m42.guide</a><br>[À COMPLÉTER : téléphone]</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="m42-night" style="background: #0E0F12; color: #CFC8BB; border-top: 1px solid #2E2F35">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 64px clamp(1rem, 4vw, 3rem) 32px">
+      <div style="display: flex; flex-wrap: wrap; gap: 48px 64px">
+        <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 16px">
+          <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; color: #F2EEE6; text-decoration: none; min-height: 44px">
+            <svg width="40" height="40" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <circle cx="50" cy="50" r="46" fill="none" stroke="#F2EEE6" stroke-width="2.4"></circle>
+              <polyline points="27,71 27,29 50,55 73,29 73,71" fill="none" stroke="#F2EEE6" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"></polyline>
+              <path d="M50 46 C51 54 51 54 59 55 C51 56 51 56 50 64 C49 56 49 56 41 55 C49 54 49 54 50 46 Z" fill="#B08D57"></path>
+            </svg>
+            <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+            <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+          </a>
+          <p style="margin: 0; font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1.2; color: #F2EEE6">Se repérer dans l'IA.</p>
+        </div>
+        <nav aria-label="Plan du site" style="flex: 3 1 560px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 32px 24px">
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Conférences</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Conf-ia-au-quotidien.dc.html" class="m42-fl" style="color: #CFC8BB">L'IA au quotidien</a></li>
+              <li><a href="Conf-arnaques-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Arnaques et IA</a></li>
+              <li><a href="Conf-desinformation-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Vrai ou faux ?</a></li>
+              <li><a href="Conf-parents-ados-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Parents, ados et IA</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Pour qui</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Entreprises.dc.html" class="m42-fl" style="color: #CFC8BB">Entreprises</a></li>
+              <li><a href="Evenements.dc.html" class="m42-fl" style="color: #CFC8BB">Événements &amp; congrès</a></li>
+              <li><a href="Collectivites.dc.html" class="m42-fl" style="color: #CFC8BB">Collectivités</a></li>
+              <li><a href="Education.dc.html" class="m42-fl" style="color: #CFC8BB">Écoles &amp; familles</a></li>
+              <li><a href="Associations.dc.html" class="m42-fl" style="color: #CFC8BB">Associations</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">M42</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Reperes.dc.html" class="m42-fl" style="color: #CFC8BB">Repères</a></li>
+              <li><a href="A-propos.dc.html" class="m42-fl" style="color: #CFC8BB">À propos</a></li>
+              <li><a href="Organisateurs.dc.html" class="m42-fl" style="color: #CFC8BB">Espace organisateurs</a></li>
+              <li><a href="Contact.dc.html" class="m42-fl" style="color: #CFC8BB">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Légal</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Mentions-legales.dc.html" class="m42-fl" style="color: #CFC8BB">Mentions légales</a></li>
+              <li><a href="Confidentialite.dc.html" class="m42-fl" style="color: #CFC8BB">Confidentialité</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div style="margin-top: 56px; padding-top: 24px; border-top: 1px solid #2E2F35; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 13px; line-height: 1.5; color: #9A9488">
+        <span>Partout en France, en présentiel ou à distance</span>
+        <span>© 2026 M42.guide</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":9000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

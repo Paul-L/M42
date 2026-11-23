@@ -1,0 +1,32 @@
+---
+/**
+ * Sur-titre : ouvre chaque section sur un filet de 1 px pleine largeur (la « graduation »
+ * de l'atlas), texte dessous. S'adapte seul aux sections nuit.
+ */
+interface Props {
+  as?: 'div' | 'p' | 'span';
+  class?: string;
+}
+const { as: Tag = 'div', class: className } = Astro.props;
+---
+
+<Tag class:list={['eyebrow', className]}>
+  <slot />
+</Tag>
+
+<style>
+  .eyebrow {
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--fg-3);
+  }
+
+  p.eyebrow {
+    margin: 0;
+  }
+</style>

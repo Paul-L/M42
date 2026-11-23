@@ -1,0 +1,203 @@
+---
+/**
+ * Carte de conférence. Toute la carte est cliquable grâce au lien du titre
+ * (pseudo-élément étendu, pas de <a> englobant). Survol : bordure encre,
+ * barre or de 2 px qui s'étend.
+ */
+import AudienceTag from './AudienceTag.astro';
+
+interface Props {
+  numeral: string;
+  title: string;
+  href: string;
+  summary: string;
+  publics?: string[];
+  formats?: string[];
+  cta?: string;
+  headingLevel?: 'h2' | 'h3';
+  /** Apparition au défilement (désactiver pour les cartes au-dessus de la ligne de flottaison). */
+  reveal?: boolean;
+}
+
+const {
+  numeral,
+  title,
+  href,
+  summary,
+  publics = [],
+  formats = [],
+  cta = 'Voir le programme',
+  headingLevel: Heading = 'h3',
+  reveal = true,
+} = Astro.props;
+---
+
+<article class:list={['card', { 'm42-reveal': reveal }]}>
+  <div class="top">
+    <span aria-hidden="true" class="numeral">
+      {numeral}
+    </span>
+    {publics.length > 0 && (
+      <ul aria-label="Publics" class="publics">
+        {publics.map((p) => (
+          <AudienceTag as="li">{p}</AudienceTag>
+        ))}
+      </ul>
+    )}
+  </div>
+  <Heading class="card-title">
+    <a href={href} class="stretch">
+      {title}
+    </a>
+  </Heading>
+  <p class="summary">{summary}</p>
+  {formats.length > 0 && <p class="formats">{formats.join(' · ')}</p>}
+  <span class="cta" aria-hidden="true">
+    {cta} <span class="arrow-i">→</span>
+  </span>
+  <span class="bar" aria-hidden="true"></span>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 32px 28px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    transition: border-color var(--dur-2) var(--ease-out);
+  }
+
+  .card:hover {
+    border-color: var(--ink);
+  }
+
+  :global(.m42-night) .card:hover {
+    border-color: var(--on-night);
+  }
+
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .numeral {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--gold-deep);
+  }
+
+  .publics {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .card-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-card);
+    line-height: var(--lh-card);
+  }
+
+  .stretch {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .stretch::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .stretch:focus-visible {
+    outline: none;
+  }
+
+  .stretch:focus-visible::after {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  .summary {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .formats {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .cta {
+    margin-top: auto;
+    padding-top: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: text-decoration-color var(--dur-1) var(--ease-out);
+  }
+
+  .card:hover .cta {
+    text-decoration-color: var(--gold);
+    text-decoration-thickness: 2px;
+  }
+
+  .arrow-i {
+    display: inline-block;
+    transition: transform var(--dur-1) var(--ease-out);
+  }
+
+  .card:hover .arrow-i {
+    transform: translateX(3px);
+  }
+
+  .bar {
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0.18);
+    transform-origin: left;
+    transition: transform var(--dur-3) var(--ease-out);
+  }
+
+  .card:hover .bar,
+  .card:focus-within .bar {
+    transform: scaleX(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover .arrow-i {
+      transform: none;
+    }
+  }
+</style>

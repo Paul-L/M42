@@ -1,0 +1,49 @@
+---
+/**
+ * Envoi de formulaire : bouton pleine largeur en mobile, mention RGPD 13 px dessous.
+ */
+import Button from './Button.astro';
+
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<div class="submit">
+  <Button type="submit" stretch>
+    {label}
+  </Button>
+  <p class="rgpd">
+    {Astro.slots.has('default') ? (
+      <slot />
+    ) : (
+      <>
+        Vos informations servent uniquement à répondre à votre demande.{' '}
+        <a href="/confidentialite/">Politique de confidentialité</a>.
+      </>
+    )}
+  </p>
+</div>
+
+<style>
+  .submit {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .rgpd {
+    flex: 1 1 100%;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .rgpd :global(a) {
+    color: var(--ink-3);
+    text-underline-offset: 3px;
+  }
+</style>

@@ -1,0 +1,286 @@
+---
+/**
+ * /_kit : page de démonstration de tous les composants (non indexée, hors plan du site).
+ * Astro ignore les fichiers préfixés par « _ » : la route passe donc par un paramètre.
+ * Partie 1 : reproduction de la démo de kit/maquette/22_gabarit.html (comparable à la maquette).
+ * Partie 2 : variantes et états supplémentaires.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArrowLink from '../components/ArrowLink.astro';
+import AudienceTag from '../components/AudienceTag.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import Button from '../components/Button.astro';
+import ConferenceCard from '../components/ConferenceCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import Faq from '../components/Faq.astro';
+import FormField from '../components/FormField.astro';
+import FormRequiredNote from '../components/FormRequiredNote.astro';
+import FormSubmit from '../components/FormSubmit.astro';
+import Placeholder from '../components/Placeholder.astro';
+import Quote from '../components/Quote.astro';
+import Section from '../components/Section.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+
+export function getStaticPaths() {
+  return [{ params: { kit: '_kit' } }];
+}
+
+const structureTypes = [
+  'Entreprise',
+  'Événement, salon ou congrès',
+  'Collectivité',
+  "Établissement scolaire ou d'enseignement supérieur",
+  "Association ou structure d'accompagnement",
+  'Autre',
+];
+---
+
+<BaseLayout title="Kit de composants · M42.guide" noindex>
+  <h1 class="sr-only">Kit de composants M42.guide</h1>
+  <!-- ============ Partie 1 : démo du gabarit commun ============ -->
+  <Section labelledby="g-titre">
+    <Breadcrumb
+      items={[
+        { label: 'Accueil', href: '/' },
+        { label: 'Conférences', href: '/conferences/' },
+        { label: 'Arnaques 2026' },
+      ]}
+    />
+
+    <SectionTitle id="g-titre" eyebrow="Nos conférences">
+      Titre de section en Cormorant
+      <Fragment slot="lead">
+        Chapô en Inter, 52 caractères par ligne au plus, couleur encre-2.
+      </Fragment>
+    </SectionTitle>
+
+    <p class="m42-text">
+      Texte courant : 60 à 70 caractères par ligne, aligné à gauche, jamais justifié.
+    </p>
+
+    <div class="row">
+      <Button href="/contact/">Parler de votre événement</Button>
+      <Button href="/conferences/" variant="secondary">
+        Découvrir les conférences
+      </Button>
+      <ArrowLink href="/conferences/">Voir toutes les conférences</ArrowLink>
+    </div>
+
+    <div class="tags">
+      <AudienceTag>Entreprises</AudienceTag>
+      <AudienceTag>Collectivités</AudienceTag>
+      <AudienceTag>Écoles &amp; familles</AudienceTag>
+    </div>
+
+    <div class="grid">
+      <ConferenceCard
+        numeral="II"
+        title="Arnaques et IA"
+        href="/conferences/arnaques-ia/"
+        summary="Reconnaître une voix clonée, un faux conseiller ou un faux SMS, et savoir exactement quoi faire. Pour les particuliers comme pour les équipes en entreprise."
+        publics={['Collectivités', 'Associations', 'Entreprises']}
+        formats={['Keynote', 'Conférence', 'Atelier', 'Cycle']}
+      />
+      <Placeholder label="[Photo : Clara Peron et Paul Loustaunau sur scène, plan large, public en amorce floue, 3:2]" />
+    </div>
+
+    <div class="night-sample m42-night">
+      <Placeholder
+        ratio="4/5"
+        label="[Photo : portrait de Clara Peron, lumière naturelle, 4:5]"
+        class="portrait"
+      />
+    </div>
+
+    <div class="quote-wrap">
+      <Quote name="[Prénom Nom]" role="[fonction]" organization="[structure]">
+        [À COMPLÉTER : témoignage réel, avec accord écrit de son auteur]
+      </Quote>
+    </div>
+
+    <div class="faq-wrap">
+      <Faq
+        items={[
+          {
+            question: "Cette conférence convient-elle à un public peu à l'aise avec le numérique ?",
+            answer:
+              '<p>[Réponse de 40 à 80 mots, identique à celle du balisage FAQPage éventuel.]</p>',
+          },
+        ]}
+      />
+    </div>
+
+    <form class="form" action="#" method="post" novalidate>
+      <FormRequiredNote />
+      <FormField id="g-nom" name="nom" label="Nom et prénom" autocomplete="name" required />
+      <FormField
+        id="g-mail"
+        name="email"
+        type="email"
+        label="E-mail"
+        autocomplete="email"
+        required
+        error="Indiquez une adresse e-mail valide, par exemple nom@structure.fr."
+      />
+      <FormField
+        id="g-type"
+        name="type"
+        type="select"
+        label="Type de structure"
+        required
+        options={structureTypes}
+      />
+      <FormSubmit label="Envoyer ma demande" />
+    </form>
+  </Section>
+
+  <CtaBand
+    id="g-cta"
+    title="Parlons de votre projet"
+    lead="Conférence, atelier, séminaire ou intervention sur mesure : dites-nous qui sera dans la salle, quand, et ce que vous attendez. Nous vous répondons sous 48 h."
+  />
+
+  <!-- ============ Partie 2 : variantes ============ -->
+  <Section labelledby="k-variantes" tone="sunk">
+    <SectionTitle
+      id="k-variantes"
+      eyebrow="Kit · variantes"
+      lead="États et variantes absents de la démo du gabarit."
+    >
+      Variantes des composants
+    </SectionTitle>
+
+    <h3 class="k-h3">Boutons (élément button)</h3>
+    <div class="row">
+      <Button>Bouton primaire</Button>
+      <Button variant="secondary">Bouton secondaire</Button>
+      <Button disabled>Désactivé</Button>
+    </div>
+
+    <h3 class="k-h3">Blocs de remplacement : 16:9 et 1:1</h3>
+    <div class="grid">
+      <Placeholder ratio="16/9" label="[Vidéo : extrait de conférence, 16:9]" />
+      <Placeholder ratio="1/1" label="[Image : visuel carré, 1:1]" />
+    </div>
+
+    <h3 class="k-h3">Formulaire : zone de texte et aide</h3>
+    <form class="form" action="#" method="post" novalidate>
+      <FormField
+        id="k-ville"
+        name="ville"
+        label="Ville"
+        autocomplete="address-level2"
+        hint="Ou « à distance »."
+      />
+      <FormField
+        id="k-message"
+        name="message"
+        type="textarea"
+        label="Votre message"
+        hint="[Aide de démonstration du kit.]"
+      />
+    </form>
+  </Section>
+
+  <Section labelledby="k-nuit" tone="night">
+    <SectionTitle
+      id="k-nuit"
+      eyebrow="Kit · nuit"
+      lead="Les composants s'adaptent seuls au fond encre."
+    >
+      Composants sur fond nuit
+    </SectionTitle>
+    <div class="row">
+      <Button href="/contact/">Primaire sur nuit</Button>
+      <Button href="/conferences/" variant="secondary">
+        Secondaire sur nuit
+      </Button>
+      <ArrowLink href="/conferences/">Lien fléché sur nuit</ArrowLink>
+    </div>
+    <div class="grid">
+      <ConferenceCard
+        numeral="I"
+        title="[Titre de conférence]"
+        href="#"
+        summary="[Exemple de carte sur fond nuit : texte de démonstration du kit, sans valeur de contenu.]"
+        publics={['[Public]']}
+        formats={['[Format]']}
+        cta="Voir la conférence"
+      />
+      <Placeholder ratio="3/2" label="[Photo : exemple de bloc photo sur fond nuit, 3:2]" />
+    </div>
+    <div class="faq-wrap">
+      <Faq
+        items={[
+          {
+            question: '[Question de démonstration sur fond nuit ?]',
+            answer: '<p>[Réponse de démonstration du kit.]</p>',
+          },
+        ]}
+      />
+    </div>
+  </Section>
+
+  <Section labelledby="k-eyebrow">
+    <Eyebrow>Sur-titre seul</Eyebrow>
+    <h2 id="k-eyebrow" class="sr-only">
+      Sur-titre seul
+    </h2>
+  </Section>
+</BaseLayout>
+
+<style>
+  .row {
+    margin-top: 48px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 24px;
+  }
+
+  .tags {
+    margin-top: 48px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .grid {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+    gap: var(--s-5);
+  }
+
+  /* Démo du gabarit : le portrait nuit est posé sur le fond clair, comme dans la maquette */
+  .night-sample {
+    background: transparent;
+  }
+
+  .night-sample :global(.portrait) {
+    margin-top: 24px;
+    max-width: 320px;
+  }
+
+  .quote-wrap,
+  .faq-wrap {
+    margin-top: 64px;
+  }
+
+  .form {
+    margin-top: 64px;
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .k-h3 {
+    margin: 48px 0 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+</style>

@@ -1,0 +1,54 @@
+---
+/**
+ * Lien fléché : ancre descriptive (jamais « en savoir plus » seul).
+ * Souligné 1 px décalé de 4 px ; survol : soulignement or 2 px, flèche décalée de 3 px.
+ */
+interface Props {
+  href: string;
+  class?: string;
+}
+const { href, class: className } = Astro.props;
+---
+
+<a href={href} class:list={['arrow', className]}>
+  <slot />{' '}
+  <span class="arrow-i" aria-hidden="true">
+    →
+  </span>
+</a>
+
+<style>
+  .arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: var(--target-min);
+    color: var(--fg);
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: text-decoration-color var(--dur-1) var(--ease-out);
+  }
+
+  .arrow:hover {
+    text-decoration-color: var(--gold);
+    text-decoration-thickness: 2px;
+  }
+
+  .arrow-i {
+    display: inline-block;
+    transition: transform var(--dur-1) var(--ease-out);
+  }
+
+  .arrow:hover .arrow-i {
+    transform: translateX(3px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arrow:hover .arrow-i {
+      transform: none;
+    }
+  }
+</style>

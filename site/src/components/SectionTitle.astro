@@ -1,0 +1,52 @@
+---
+/**
+ * Titre de section (H2 Cormorant, 18ch max) + chapô facultatif (Inter, 52ch max).
+ * Le titre passe par le slot (il peut contenir un <em>), le chapô par `lead` ou le slot « lead ».
+ */
+import Eyebrow from './Eyebrow.astro';
+
+interface Props {
+  id: string;
+  eyebrow?: string;
+  lead?: string;
+  as?: 'h1' | 'h2';
+}
+
+const { id, eyebrow, lead, as: Tag = 'h2' } = Astro.props;
+const hasLeadSlot = Astro.slots.has('lead');
+---
+
+{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+<Tag id={id} class:list={['title', { 'title--first': !eyebrow }]}>
+  <slot />
+</Tag>
+{lead && <p class="lead">{lead}</p>}
+{hasLeadSlot && (
+  <p class="lead">
+    <slot name="lead" />
+  </p>
+)}
+
+<style>
+  .title {
+    margin: 24px 0 0;
+    max-width: var(--measure-h2);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .title--first {
+    margin-top: 0;
+  }
+
+  .lead {
+    margin: 20px 0 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--fg-2);
+  }
+</style>

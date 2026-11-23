@@ -1,0 +1,43 @@
+---
+/**
+ * Section standard (gabarit : padding clamp(4rem, 9vw, 8rem) 0).
+ * `tone` : « paper » (défaut), « sunk » (section alternée) ou « night » (fond encre).
+ */
+import Container from './Container.astro';
+
+interface Props {
+  labelledby?: string;
+  label?: string;
+  tone?: 'paper' | 'sunk' | 'night';
+  id?: string;
+  class?: string;
+}
+
+const { labelledby, label, tone = 'paper', id, class: className } = Astro.props;
+---
+
+<section
+  id={id}
+  aria-labelledby={labelledby}
+  aria-label={label}
+  class:list={['section', `section--${tone}`, { 'm42-night': tone === 'night' }, className]}
+>
+  <Container>
+    <slot />
+  </Container>
+</section>
+
+<style>
+  .section {
+    padding: var(--section-y) 0;
+  }
+
+  .section--sunk {
+    background: var(--paper-sunk);
+  }
+
+  .section--night {
+    background: var(--night);
+    color: var(--on-night);
+  }
+</style>

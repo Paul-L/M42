@@ -1,0 +1,146 @@
+/*
+ * M42.guide — tokens de la direction artistique v2
+ * Source : kit/docs/10_direction_artistique.md (valeurs reprises telles quelles)
+ * et kit/maquette/22_gabarit.html (valeurs du gabarit commun).
+ */
+
+:root {
+  /* ---------- Couleurs · clair (par défaut) ---------- */
+  --paper: #f2eee6; /* fond de page */
+  --paper-raised: #f8f6f1; /* cartes, champs */
+  --paper-sunk: #e8e2d7; /* section alternée, tags */
+  --ink: #0e0f12; /* texte, titres, boutons — 16,56:1 */
+  --ink-2: #3a3731; /* texte secondaire — 10,25:1 */
+  --ink-3: #5f5a50; /* légendes, sur-titres — 5,92:1 */
+  --line: #d7d0c3; /* filets décoratifs uniquement */
+  --line-strong: #857e71; /* bordures de champs, contrôles — 3,48:1 */
+  --gold: #b08d57; /* étoile, barres, filets : jamais pour du texte sur clair */
+  --gold-deep: #7a5c30; /* texte en or (chiffres romains, guillemets) — 5,34:1 */
+  --error: #9b3328;
+  --success: #2e6a4e;
+  --focus: #0e0f12;
+
+  /* ---------- Couleurs · nuit ---------- */
+  --night: #0e0f12;
+  --night-raised: #17181c;
+  --night-line: #2e2f35;
+  --night-line-strong: #75767e;
+  --on-night: #f2eee6;
+  --on-night-2: #cfc8bb;
+  --on-night-3: #9a9488;
+  --gold-night: #b08d57; /* texte en or permis sur nuit — 6,20:1 */
+  --gold-light: #c9a46a; /* focus et survol sur nuit */
+  --error-night: #e58a7e;
+  --success-night: #7fc3a0;
+
+  /* Transparences utilisées par le gabarit */
+  --paper-header: rgb(242 238 230 / 0.92); /* en-tête collant */
+  --line-transparent: rgb(215 208 195 / 0); /* départ de l'animation du filet d'en-tête */
+  --ink-hover: rgb(14 15 18 / 0.06); /* survol bouton secondaire */
+  --paper-hover: rgb(242 238 230 / 0.08); /* survol bouton secondaire sur nuit */
+
+  /* ---------- Typographie ---------- */
+  --font-serif: 'Cormorant', serif;
+  --font-sans: 'Inter Variable', 'Inter', system-ui, sans-serif;
+
+  /* Échelle fluide 375 → 1 440 px */
+  --fs-h1: clamp(3rem, 1.6rem + 6vw, 6.5rem);
+  --fs-h2: clamp(2.25rem, 1.5rem + 3.2vw, 4rem);
+  --fs-card: clamp(1.75rem, 1.5rem + 1vw, 2rem);
+  --fs-h3: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --fs-faq: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
+  --fs-figure: clamp(3rem, 2rem + 4vw, 5rem);
+  --fs-quote: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+  --fs-lead: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem);
+  --fs-body: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --fs-small: 0.875rem;
+  --fs-eyebrow: 0.75rem;
+
+  --lh-h1: 0.95;
+  --lh-h2: 1.02;
+  --lh-card: 1.05;
+  --lh-h3: 1.25;
+  --lh-figure: 1;
+  --lh-quote: 1.2;
+  --lh-lead: 1.55;
+  --lh-body: 1.65;
+  --lh-small: 1.5;
+  --lh-eyebrow: 1.4;
+
+  --tracking-h1: -0.02em;
+  --tracking-h2: -0.01em;
+  --tracking-h3: -0.01em;
+  --tracking-eyebrow: 0.18em;
+
+  --measure-text: 68ch;
+  --measure-lead: 52ch;
+  --measure-h2: 18ch;
+  --measure-h1: 14ch;
+
+  /* ---------- Espacements (base 4) ---------- */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --s-10: 128px;
+
+  /* ---------- Grille ---------- */
+  --container: 1240px;
+  --gutter-x: clamp(1rem, 4vw, 3rem); /* marges latérales du conteneur */
+  --gap: 24px; /* gouttière (16 px sous 640 px) */
+  --section-y: clamp(4rem, 9vw, 8rem);
+
+  /* ---------- Formes ---------- */
+  --radius: 0; /* coins droits partout */
+  --radius-tag: 2px;
+  --control-h: 48px; /* hauteur minimale des boutons et champs */
+  --target-min: 44px; /* cible tactile minimale */
+
+  /* ---------- Mouvement ---------- */
+  --dur-1: 120ms; /* survol, appui */
+  --dur-2: 200ms; /* menus, champs, accordéons */
+  --dur-3: 320ms; /* apparition au défilement */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@media (max-width: 639px) {
+  :root {
+    --gap: 16px;
+  }
+}
+
+/*
+ * Couleurs de contexte : les composants utilisent ces variables, qui basculent
+ * automatiquement dans une section « nuit » (.m42-night).
+ */
+:root {
+  --fg: var(--ink);
+  --fg-2: var(--ink-2);
+  --fg-3: var(--ink-3);
+  --rule: var(--ink); /* filet d'ouverture de section */
+  --hairline: var(--line);
+  --control-border: var(--line-strong);
+  --surface-raised: var(--paper-raised);
+  --surface-sunk: var(--paper-sunk);
+  --accent-text: var(--gold-deep);
+  --focus-ring: var(--focus);
+}
+
+.m42-night {
+  --fg: var(--on-night);
+  --fg-2: var(--on-night-2);
+  --fg-3: var(--on-night-3);
+  --rule: var(--on-night);
+  --hairline: var(--night-line);
+  --control-border: var(--night-line-strong);
+  --surface-raised: var(--night-raised);
+  --surface-sunk: var(--night-raised);
+  --accent-text: var(--gold-night);
+  --focus-ring: var(--gold-light);
+}

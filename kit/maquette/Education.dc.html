@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Éducation · M42</title>
+<!-- SEO: /education/ | title: Intervention IA en collège, lycée et pour les parents | M42 | meta: Apprendre avec l'IA, pas à sa place : interventions pour élèves, enseignants et parents. Devoirs, esprit critique, fausses infos, cyberharcèlement. | canonical: https://m42.guide/education/ | H1 : titre de 03 D + phrase d'introduction avec les mots-clés | JSON-LD : WebPage + BreadcrumbList + Service + FAQPage | Mots-clés : intervention IA collège / lycée, intervenant IA établissement scolaire, éducation aux médias | FAQ pass Culture : seulement si référencement ADAGE obtenu -->
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+/* Base */
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:#F2EEE6;color:#0E0F12;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:#0E0F12}
+::selection{background:#E8E2D7;color:#0E0F12}
+
+/* Focus visible : encre sur clair, or clair sur nuit */
+:focus-visible{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night :focus-visible{outline-color:#C9A46A}
+
+/* Lien d'évitement */
+.m42-skip{position:absolute;left:16px;top:-200px;z-index:100}
+.m42-skip:focus{top:12px}
+
+/* En-tête : collant à partir de 960 px ; filet bas qui apparaît au défilement */
+@media (min-width:960px){.m42-hdr{position:sticky;top:0;z-index:50}}
+@keyframes m42-hdr{from{border-bottom-color:rgba(215,208,195,0)}to{border-bottom-color:#D7D0C3}}
+@supports (animation-timeline: scroll()){
+  .m42-hdr{animation:m42-hdr cubic-bezier(.22,1,.36,1) both;animation-timeline:scroll();animation-range:0px 96px}
+}
+
+/* Navigation : survol souligné encre 1 px, page active soulignée or 2 px */
+.m42-nav{text-decoration:none;text-underline-offset:8px;text-decoration-thickness:1px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-nav:hover{text-decoration-line:underline;text-decoration-color:#0E0F12}
+.m42-nav[aria-current="page"]{text-decoration-line:underline;text-decoration-color:#B08D57;text-decoration-thickness:2px}
+
+/* Boutons */
+.m42-btn,.m42-btn2,.m42-btn2n{transition:background-color 120ms cubic-bezier(.22,1,.36,1),color 120ms cubic-bezier(.22,1,.36,1),border-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-btn:hover{background-color:#B08D57!important;color:#0E0F12!important}
+.m42-btn2:hover{background-color:rgba(14,15,18,.06)!important}
+.m42-btn2n:hover{background-color:rgba(242,238,230,.08)!important;border-color:#C9A46A!important}
+.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:translateY(1px)}
+
+/* Lien fléché */
+.m42-arrow,.m42-cta{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-arrow-i{display:inline-block;transition:transform 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover .m42-arrow-i{transform:translateX(3px)}
+
+/* Carte cliquable : le lien du titre s'étend à toute la carte (pas de <a> englobant) */
+.m42-card{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover{border-color:#0E0F12!important}
+.m42-night .m42-card:hover{border-color:#F2EEE6!important}
+.m42-bar{transform:scaleX(.18);transform-origin:left;transition:transform 320ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover .m42-bar,.m42-card:focus-within .m42-bar{transform:scaleX(1)}
+.m42-card:hover .m42-arrow-i{transform:translateX(3px)}
+.m42-card:hover .m42-cta{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-stretch{text-decoration:none}
+.m42-stretch::after{content:"";position:absolute;inset:0;z-index:1}
+.m42-stretch:focus-visible{outline:none}
+.m42-stretch:focus-visible::after{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night .m42-stretch:focus-visible::after{outline-color:#C9A46A}
+
+/* Liens du pied de page */
+.m42-fl{text-decoration:none;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-fl:hover{text-decoration-line:underline;text-decoration-color:#B08D57;color:#F2EEE6!important}
+
+/* Fil d'Ariane : complet au-dessus de 640 px, parent seul en dessous */
+.m42-bc-full{display:flex}
+.m42-bc-short{display:none}
+@media (max-width:639px){.m42-bc-full{display:none}.m42-bc-short{display:inline-flex}}
+
+/* FAQ */
+.m42-faq summary{list-style:none;cursor:pointer}
+.m42-faq summary::-webkit-details-marker{display:none}
+.m42-faq-i{transition:transform 200ms cubic-bezier(.65,0,.35,1)}
+.m42-faq[open] .m42-faq-i{transform:rotate(45deg)}
+.m42-faq summary:hover h3{text-decoration:underline;text-decoration-color:#B08D57;text-underline-offset:4px}
+
+/* Champs de formulaire */
+.m42-field{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-field:not([aria-invalid="true"]):hover{border-color:#0E0F12!important}
+.m42-field:focus{outline:2px solid #0E0F12;outline-offset:-2px}
+
+/* Petit bouton texte (ex. pause d'animation) */
+.m42-txtbtn{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-txtbtn:hover{color:#0E0F12!important;text-decoration-color:#B08D57}
+
+/* Apparition au défilement : opacité + 8 px, natif, sans JavaScript.
+   Sans prise en charge, le contenu est simplement visible. Jamais au-dessus de la ligne de flottaison. */
+@keyframes m42-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@supports (animation-timeline: view()){
+  .m42-reveal{animation:m42-in cubic-bezier(.22,1,.36,1) both;animation-timeline:view();animation-range:entry 0% entry 45%}
+}
+.m42-still .m42-reveal{animation:none!important;opacity:1!important;transform:none!important}
+
+/* Pages « Pour qui » : rubrique courante du menu (page sœur), soulignement or comme la page active */
+.m42-nav[aria-current="true"]{text-decoration-line:underline;text-decoration-color:#B08D57;text-decoration-thickness:2px}
+/* Schémas : les flèches horizontales deviennent verticales sous 640 px */
+@media (max-width:639px){.m42-flow-arrow{transform:rotate(90deg)}}
+
+/* Mouvement réduit : aucune translation, fondus à 0 ms */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:0ms!important;animation-delay:0ms!important;transition-duration:0ms!important}
+  .m42-reveal,.m42-hdr{animation:none!important;opacity:1!important;transform:none!important}
+  .m42-arrow:hover .m42-arrow-i,.m42-card:hover .m42-arrow-i,.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:none!important}
+}
+</style>
+<style>
+/* --- Mobile : menu repliable, symbole d'accueil, coupures de mots --- */
+.m42-menu-t{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.m42-burger{display:none}
+p,li,dd,dt,td,th,h1,h2,h3,summary,label{overflow-wrap:break-word}
+a[href^="mailto:"]{overflow-wrap:anywhere}
+@media (max-width: 959px){
+  .m42-burger{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;border:1px solid #0E0F12;color:#0E0F12;background:transparent;font-family:Inter,system-ui,sans-serif;font-size:15px;font-weight:500;cursor:pointer;user-select:none}
+  .m42-menu-t:focus-visible + .m42-burger{outline:2px solid #7A5C30;outline-offset:2px}
+  .m42-burger .m42-b-close{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-open{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-close{display:inline}
+  header nav[aria-label="Navigation principale"]{display:none !important;width:100%;flex-direction:column !important;align-items:stretch !important;gap:0 !important;padding:4px 0 20px}
+  .m42-menu-t:checked ~ nav[aria-label="Navigation principale"]{display:flex !important}
+  header nav[aria-label="Navigation principale"] a{display:flex !important;align-items:center;min-height:52px;padding:0 !important;border-bottom:1px solid #D7D0C3;font-size:17px !important}
+  header nav[aria-label="Navigation principale"] a.m42-btn{justify-content:center;margin-top:20px;border-bottom:0;min-height:52px;padding:0 20px !important}
+  canvas[data-m42-sky]{max-width:300px !important;margin:0 auto}
+}
+@media (max-width: 480px){
+  canvas[data-m42-sky]{max-width:240px !important}
+}
+</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0E0F12; background: #F2EEE6; min-height: 100vh">
+
+  <a href="#contenu" class="m42-skip" style="background: #0E0F12; color: #F2EEE6; padding: 12px 18px; font-size: 15px; font-weight: 500; text-decoration: none">Aller au contenu</a>
+
+  <header class="m42-hdr" style="background: rgba(242, 238, 230, 0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid #D7D0C3">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 14px clamp(1rem, 4vw, 3rem); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px">
+      <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; color: #0E0F12; text-decoration: none; min-height: 44px">
+        <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+        <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+      </a>
+      <input type="checkbox" id="m42-menu-t" class="m42-menu-t" aria-controls="m42-menu" aria-label="Ouvrir ou fermer le menu">
+      <label for="m42-menu-t" class="m42-burger"><span class="m42-b-open">Menu</span><span class="m42-b-close">Fermer</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></label>
+      <nav id="m42-menu" aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; font-size: 14px; font-weight: 500; line-height: 1.3">
+        <a href="Conferences.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Conférences</a>
+        <a href="Entreprises.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Entreprises</a>
+        <a href="Collectivites.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Collectivités</a>
+        <a href="Education.dc.html" class="m42-nav" aria-current="page" style="color: #0E0F12; padding: 10px 0">Écoles</a>
+        <a href="Reperes.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Repères</a>
+        <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; background: #0E0F12; color: #F2EEE6; text-decoration: none; font-size: 14px; font-weight: 500">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu" tabindex="-1" style="outline: none">
+
+    <section aria-labelledby="titre-page">
+      <div style="max-width: 1240px; margin: 0 auto; padding: clamp(2rem, 4vw, 3rem) clamp(1rem, 4vw, 3rem) clamp(4rem, 7vw, 6rem)">
+        <nav aria-label="Fil d'Ariane" style="margin-bottom: 40px; font-size: 13px; line-height: 1.5; color: #5F5A50">
+          <ol class="m42-bc-full" style="list-style: none; margin: 0; padding: 0; flex-wrap: wrap; align-items: center; gap: 4px 8px">
+            <li><a href="Main.dc.html" style="color: #5F5A50; text-underline-offset: 3px">Accueil</a></li>
+            <li><span aria-hidden="true" style="margin-right: 8px">/</span><span aria-current="page" style="color: #0E0F12; font-weight: 500">Éducation</span></li>
+          </ol>
+          <a href="Main.dc.html" class="m42-bc-short m42-arrow" style="align-items: center; gap: 6px; min-height: 44px; color: #0E0F12; font-weight: 500"><span aria-hidden="true">←</span>Accueil</a>
+        </nav>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 48px 64px">
+          <div style="flex: 999 1 540px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+            <p style="margin: 0; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Établissements scolaires &amp; familles</p>
+            <h1 id="titre-page" style="margin: 0; max-width: 16ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 1.6rem + 6vw, 6.5rem); line-height: 0.95; letter-spacing: -0.02em; color: #0E0F12">Apprendre avec l'IA, pas à sa place.</h1>
+            <p style="margin: 8px 0 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #0E0F12">Vos élèves utilisent déjà l'IA. Pour leurs devoirs, leurs images, leurs messages.</p>
+            <div style="display: flex; flex-direction: column; gap: 12px">
+              <p style="margin: 0; max-width: 56ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Des interventions sur l'intelligence artificielle leur apprennent à s'en servir avec esprit critique : ce qui aide à apprendre, ce qui revient à tricher, comment vérifier une image.</p>
+              <p style="margin: 0; max-width: 56ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Enseignants et parents reçoivent les mêmes repères, pour tenir un discours commun. Au collège, au lycée et dans l'enseignement supérieur.</p>
+            </div>
+            <div style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 16px">
+              <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 14px 24px; box-sizing: border-box; background: #0E0F12; color: #F2EEE6; font-size: 16px; font-weight: 500; line-height: 1.2; text-decoration: none">Nous contacter</a>
+              <a href="#formats" class="m42-btn2" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 13px 23px; box-sizing: border-box; background: transparent; border: 1px solid #0E0F12; color: #0E0F12; font-size: 16px; font-weight: 500; line-height: 1.2; text-decoration: none">Voir les formats</a>
+            </div>
+          </div>
+          <div style="flex: 1 1 340px; min-width: 0; aspect-ratio: 4 / 5; max-height: 560px; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; text-align: center; background: #E8E2D7; border: 1px dashed #857E71; color: #5F5A50; font-size: 13px; line-height: 1.5">[Photo : intervention en classe, élèves en petits groupes devant une image à vérifier, enseignant présent, sans visage d'élève identifiable, 4:5, à produire]</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="enjeux" aria-labelledby="titre-enjeux" style="padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Vos enjeux</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-enjeux" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Trois enjeux pour votre établissement</h2>
+        </div>
+        <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 40px 48px">
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #D7D0C3; padding-top: 24px">
+            <span aria-hidden="true" style="font-size: 13px; font-weight: 500; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; color: #7A5C30">01</span>
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Les devoirs à l'heure de l'IA</h3>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Interdire ne suffit pas. Il faut apprendre aux élèves ce qui aide à apprendre, et ce qui revient à tricher.</p>
+          </div>
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #D7D0C3; padding-top: 24px">
+            <span aria-hidden="true" style="font-size: 13px; font-weight: 500; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; color: #7A5C30">02</span>
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Le vrai, le faux et le fabriqué</h3>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Images générées, vidéos truquées, faux sites d'information : l'éducation aux médias devient une priorité.</p>
+          </div>
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #D7D0C3; padding-top: 24px">
+            <span aria-hidden="true" style="font-size: 13px; font-weight: 500; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; color: #7A5C30">03</span>
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Réseaux sociaux et cyberharcèlement</h3>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">En 2025, les demandes d'aide pour cyberharcèlement reçues par Cybermalveillance.gouv.fr ont augmenté de 138 %, tous âges confondus. Élèves, parents et équipes doivent parler le même langage.</p>
+            <p style="margin: 4px 0 0; font-size: 12px; line-height: 1.5; color: #5F5A50">Source : Cybermalveillance.gouv.fr, bilan 2025</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="publics" aria-labelledby="titre-publics" style="background: #E8E2D7; padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Trois publics, un même langage</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-publics" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Élèves, enseignants, parents : des repères communs</h2>
+          <p style="flex: 0 1 52ch; margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Les élèves apprennent la méthode, les enseignants la prolongent en classe, les parents la retrouvent à la maison. Chacun son format, les mêmes règles pour tous.</p>
+        </div>
+        <div class="m42-reveal" aria-hidden="true" style="margin-top: 48px; display: flex; justify-content: center">
+          <svg viewBox="0 0 600 240" width="100%" style="max-width: 640px; height: auto; display: block" focusable="false">
+            <g stroke="#0E0F12" stroke-width="1.5" fill="none">
+              <path d="M100 180 L300 64 L500 180 Z"></path>
+            </g>
+            <g stroke="#857E71" stroke-width="1" stroke-dasharray="3 5" fill="none">
+              <path d="M300 142 L100 180"></path><path d="M300 142 L300 64"></path><path d="M300 142 L500 180"></path>
+            </g>
+            <g fill="#F2EEE6" stroke="#857E71" stroke-width="1">
+              <circle cx="100" cy="180" r="13"></circle><circle cx="300" cy="64" r="13"></circle><circle cx="500" cy="180" r="13"></circle>
+            </g>
+            <g fill="#0E0F12">
+              <circle cx="100" cy="180" r="6"></circle><circle cx="300" cy="64" r="6"></circle><circle cx="500" cy="180" r="6"></circle>
+            </g>
+            <path d="M300 124 C302 138 304 140 318 142 C304 144 302 146 300 160 C298 146 296 144 282 142 C296 140 298 138 300 124 Z" fill="#B08D57"></path>
+            <g font-family="Inter, system-ui, sans-serif" font-size="19" font-weight="600" fill="#0E0F12" text-anchor="middle">
+              <text x="300" y="32">Enseignants</text><text x="100" y="224">Élèves</text><text x="500" y="224">Parents</text>
+            </g>
+          </svg>
+        </div>
+        <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 40px 48px">
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 10px; padding-top: 24px; border-top: 1px solid #0E0F12">
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Élèves</h3>
+            <p style="margin: 0; font-size: 13px; font-weight: 500; line-height: 1.4; color: #5F5A50">Intervention en classe · conférence pour un niveau</p>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Ce qui aide à apprendre, ce qui revient à tricher. Vérifier une image, une vidéo, une information avant de la croire ou de la partager.</p>
+          </div>
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 10px; padding-top: 24px; border-top: 1px solid #0E0F12">
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Enseignants</h3>
+            <p style="margin: 0; font-size: 13px; font-weight: 500; line-height: 1.4; color: #5F5A50">Temps d'équipe de 2 h à 3 h</p>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Les usages possibles de l'IA en classe, ses limites, et des règles communes à l'établissement, pour que chaque collègue tienne le même discours.</p>
+          </div>
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 10px; padding-top: 24px; border-top: 1px solid #0E0F12">
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Parents</h3>
+            <p style="margin: 0; font-size: 13px; font-weight: 500; line-height: 1.4; color: #5F5A50">Soirée parents de 1 h 30</p>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Les devoirs avec l'IA, les réseaux sociaux, le cyberharcèlement : des repères pour parler à la maison le même langage qu'à l'école.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="formats" aria-labelledby="titre-formats" style="padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Formats</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-formats" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Un format pour chaque public de l'établissement</h2>
+          <p style="flex: 0 1 52ch; margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">De la classe à l'amphithéâtre, et jusqu'à la soirée des parents.</p>
+        </div>
+        <ul class="m42-reveal" style="list-style: none; margin: 48px 0 0; padding: 0; border-top: 1px solid #0E0F12">
+          <li style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 32px; padding: 24px 0; border-bottom: 1px solid #D7D0C3">
+            <div style="flex: 2 1 320px; min-width: 0">
+              <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Intervention en classe</h3>
+            </div>
+            <div style="flex: 1 1 170px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Durée</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">1 h à 2 h</span>
+            </div>
+            <div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Participants</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">Une classe, en présence de l'enseignant</span>
+            </div>
+          </li>
+          <li style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 32px; padding: 24px 0; border-bottom: 1px solid #D7D0C3">
+            <div style="flex: 2 1 320px; min-width: 0">
+              <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Conférence pour un niveau</h3>
+            </div>
+            <div style="flex: 1 1 170px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Durée</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">1 h à 1 h 30</span>
+            </div>
+            <div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Participants</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">Plusieurs classes, amphithéâtre ou CDI</span>
+            </div>
+          </li>
+          <li style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 32px; padding: 24px 0; border-bottom: 1px solid #D7D0C3">
+            <div style="flex: 2 1 320px; min-width: 0">
+              <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Temps d'équipe pour les enseignants</h3>
+              <p style="margin: 6px 0 0; font-size: 14px; line-height: 1.5; color: #5F5A50"><span style="display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px dashed #857E71; color: #5F5A50; font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; vertical-align: 1px">[À VALIDER : nouveau format]</span></p>
+            </div>
+            <div style="flex: 1 1 170px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Durée</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">2 h à 3 h</span>
+            </div>
+            <div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Participants</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">L'équipe pédagogique</span>
+            </div>
+          </li>
+          <li style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 32px; padding: 24px 0; border-bottom: 1px solid #D7D0C3">
+            <div style="flex: 2 1 320px; min-width: 0">
+              <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Soirée parents</h3>
+            </div>
+            <div style="flex: 1 1 170px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Durée</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">1 h 30</span>
+            </div>
+            <div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Participants</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">Selon la salle</span>
+            </div>
+          </li>
+          <li style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 32px; padding: 24px 0; border-bottom: 1px solid #D7D0C3">
+            <div style="flex: 2 1 320px; min-width: 0">
+              <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Enseignement supérieur : conférence, atelier ou séance de cours</h3>
+            </div>
+            <div style="flex: 1 1 170px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Durée</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">Selon le format</span>
+            </div>
+            <div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #5F5A50">Participants</span>
+              <span style="font-size: 17px; font-weight: 500; line-height: 1.4; color: #0E0F12">Amphithéâtre ou groupe de TD</span>
+            </div>
+          </li>
+        </ul>
+        <p class="m42-reveal" style="margin: 24px 0 0; max-width: 68ch; font-size: 16px; line-height: 1.6; color: #3A3731">Collèges, lycées (y compris professionnels), établissements d'enseignement supérieur.</p>
+      </div>
+    </section>
+
+    <section id="sujets" aria-labelledby="titre-sujets" style="background: #E8E2D7; padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Conférences</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-sujets" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Les conférences pour vos élèves et leurs familles</h2>
+          <p style="flex: 0 1 52ch; margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Deux conférences au cœur de l'éducation aux médias et du numérique en famille.</p>
+        </div>
+        <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 24px">
+          <article class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 16px; padding: 32px 28px; background: #F8F6F1; border: 1px solid #D7D0C3">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+              <span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">III</span>
+            </div>
+            <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Conf-desinformation-ia.dc.html" class="m42-stretch" style="color: #0E0F12">Vrai ou faux ?</a></h3>
+            <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Repérer une image truquée, une fausse vidéo ou un faux site d'information.</p>
+            <p style="margin: 0; padding: 14px 0 0; border-top: 1px solid #D7D0C3; font-size: 15px; line-height: 1.55; color: #0E0F12"><span style="font-weight: 600">Pour vous : </span>« Vrai ou IA ? » : une méthode de vérification en 4 étapes, appliquée à de vrais exemples. Une activité d'analyse, pas un simple jeu.</p>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Keynote · Conférence · Atelier · Cycle</p>
+            <span class="m42-cta" aria-hidden="true" style="margin-top: auto; padding-top: 8px; font-size: 15px; font-weight: 500; color: #0E0F12">Voir le programme <span class="m42-arrow-i">→</span></span>
+            <span class="m42-bar" aria-hidden="true" style="position: absolute; left: -1px; right: -1px; bottom: -1px; height: 2px; background: #B08D57"></span>
+          </article>
+          <article class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 16px; padding: 32px 28px; background: #F8F6F1; border: 1px solid #D7D0C3">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+              <span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">IV</span>
+            </div>
+            <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Conf-parents-ados-ia.dc.html" class="m42-stretch" style="color: #0E0F12">Parents, ados et IA</a></h3>
+            <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Devoirs avec l'IA sans tricher, réseaux sociaux, cyberharcèlement.</p>
+            <p style="margin: 0; padding: 14px 0 0; border-top: 1px solid #D7D0C3; font-size: 15px; line-height: 1.55; color: #0E0F12"><span style="font-weight: 600">Pour vous : </span>La soirée parents, avec la charte numérique de la famille et le 3018.</p>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Keynote · Conférence · Atelier · Cycle</p>
+            <span class="m42-cta" aria-hidden="true" style="margin-top: auto; padding-top: 8px; font-size: 15px; font-weight: 500; color: #0E0F12">Voir le programme <span class="m42-arrow-i">→</span></span>
+            <span class="m42-bar" aria-hidden="true" style="position: absolute; left: -1px; right: -1px; bottom: -1px; height: 2px; background: #B08D57"></span>
+          </article>
+        </div>
+        <div class="m42-reveal" style="margin-top: 64px">
+          <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Autres exemples de sujets</h3>
+          <ul style="list-style: none; margin: 24px 0 0; padding: 0; border-top: 1px solid #0E0F12">
+            <li style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <span style="flex: 1 1 420px; min-width: 0; font-size: 17px; font-weight: 500; line-height: 1.45; color: #0E0F12">Comment marche une IA ?<span style="display: block; margin-top: 4px; font-size: 15px; line-height: 1.55; color: #3A3731">Ce qu'elle sait faire, ce qu'elle invente, pourquoi elle se trompe.</span></span>
+            </li>
+            <li style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <span style="flex: 1 1 420px; min-width: 0; font-size: 17px; font-weight: 500; line-height: 1.45; color: #0E0F12">Devoirs avec l'IA : ce qui aide, ce qui triche<span style="display: block; margin-top: 4px; font-size: 15px; line-height: 1.55; color: #3A3731">Des règles simples, applicables dès le lendemain.</span></span>
+            </li>
+            <li style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <span style="flex: 1 1 420px; min-width: 0; font-size: 17px; font-weight: 500; line-height: 1.45; color: #0E0F12">Enseignants : l'IA en classe<span style="display: block; margin-top: 4px; font-size: 15px; line-height: 1.55; color: #3A3731">Usages possibles, limites, règles communes à l'établissement.</span></span>
+            </li>
+            <li style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <span style="flex: 1 1 420px; min-width: 0; font-size: 17px; font-weight: 500; line-height: 1.45; color: #0E0F12">Supérieur : travailler avec l'IA sans cesser de penser<span style="display: block; margin-top: 4px; font-size: 15px; line-height: 1.55; color: #3A3731">Ce que disent les premières études, présentées honnêtement.</span></span>
+            </li>
+          </ul>
+        </div>
+        <a href="Conferences.dc.html" class="m42-arrow" style="margin-top: 32px; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #0E0F12; font-size: 16px; font-weight: 500">Voir toutes les conférences et leurs formats <span class="m42-arrow-i" aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section id="emportent" aria-labelledby="titre-emportent" style="padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Après l'intervention</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-emportent" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Ce que chacun emporte</h2>
+        </div>
+        <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 40px 32px">
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px">
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Élèves</h3>
+            <ul style="list-style: none; margin: 0; padding: 0; border-top: 1px solid #D7D0C3; font-size: 16px; line-height: 1.55; color: #3A3731">
+              <li style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #D7D0C3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false" style="flex: none; margin-top: 6px"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>La méthode de vérification en 4 étapes, sur une fiche simple <span style="display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px dashed #857E71; color: #5F5A50; font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; vertical-align: 1px">[À PRODUIRE]</span></span></li>
+            </ul>
+          </div>
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px">
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Parents</h3>
+            <ul style="list-style: none; margin: 0; padding: 0; border-top: 1px solid #D7D0C3; font-size: 16px; line-height: 1.55; color: #3A3731">
+              <li style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #D7D0C3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false" style="flex: none; margin-top: 6px"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>La charte numérique de la famille, à remplir à la maison <span style="display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px dashed #857E71; color: #5F5A50; font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; vertical-align: 1px">[À PRODUIRE]</span></span></li>
+              <li style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #D7D0C3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false" style="flex: none; margin-top: 6px"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>Le 3018, numéro national contre le cyberharcèlement</span></li>
+            </ul>
+          </div>
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px">
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Enseignants</h3>
+            <ul style="list-style: none; margin: 0; padding: 0; border-top: 1px solid #D7D0C3; font-size: 16px; line-height: 1.55; color: #3A3731">
+              <li style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #D7D0C3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false" style="flex: none; margin-top: 6px"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>Des repères pour la classe et des ressources pour prolonger le travail <span style="display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px dashed #857E71; color: #5F5A50; font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; vertical-align: 1px">[À PRODUIRE]</span></span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="etapes" aria-labelledby="titre-etapes" style="background: #E8E2D7; padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Méthode</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-etapes" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Comment ça se passe</h2>
+        </div>
+        <ol style="list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 40px 48px">
+          <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 1px solid #0E0F12">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 48px; line-height: 1; font-variant-numeric: lining-nums tabular-nums; color: #7A5C30">1</span>
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Un échange avec l'équipe</h3>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Enseignant, professeur documentaliste, CPE ou direction : niveau, objectifs, lien avec les programmes.</p>
+          </li>
+          <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 1px solid #0E0F12">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 48px; line-height: 1; font-variant-numeric: lining-nums tabular-nums; color: #7A5C30">2</span>
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Une proposition adaptée à l'âge</h3>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Contenu, déroulé, devis. Nous vous indiquons les modalités de financement possibles.</p>
+          </li>
+          <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 1px solid #0E0F12">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 48px; line-height: 1; font-variant-numeric: lining-nums tabular-nums; color: #7A5C30">3</span>
+            <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">L'intervention, puis le prolongement</h3>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">En présence de l'enseignant. Ressources transmises pour poursuivre en classe.</p>
+          </li>
+        </ol>
+        <div class="m42-reveal" style="margin-top: 56px; padding: 24px 28px; background: #F8F6F1; border: 1px solid #D7D0C3; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px">
+          <p style="flex: 1 1 420px; min-width: 0; margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Qui intervient : Clara Peron, formatrice d'adultes, et Paul Loustaunau, qui conçoit l'IA au quotidien, en lien étroit avec l'équipe pédagogique.</p>
+          <a href="A-propos.dc.html" class="m42-arrow" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #0E0F12; font-size: 16px; font-weight: 500">Parcours et démarche <span class="m42-arrow-i" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" aria-labelledby="titre-faq" style="padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Questions fréquentes</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-faq" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Questions fréquentes</h2>
+        </div>
+        <div class="m42-reveal" style="margin-top: 48px; max-width: 52rem; border-top: 1px solid #0E0F12">
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">L'enseignant reste-t-il présent pendant l'intervention ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+              </span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">
+              <p style="margin: 0">Oui. Les interventions en classe se déroulent toujours en présence de l'enseignant, qui reste responsable de l'activité. Le contenu se prépare avec lui ou avec le professeur documentaliste, pour qu'il puisse prolonger le travail ensuite.</p>
+            </div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">À partir de quel niveau ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+              </span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">
+              <p style="margin: 0">Du collège à l'enseignement supérieur, y compris en lycée professionnel. Les contenus sont adaptés à l'âge. Le cadre d'usage de l'IA en éducation (juin 2025) autorise l'usage de l'IA par les élèves à partir de la 4e, en classe : les exemples et les règles proposés en tiennent compte.</p>
+            </div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Qui peut financer une soirée parents ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+              </span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">
+              <p style="margin: 0">Selon les établissements, le budget de l'établissement ou une association de parents d'élèves. Nous vous indiquons les modalités possibles lors du premier échange, et nous vous transmettons le programme et le devis nécessaires.</p>
+            </div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Le cyberharcèlement est-il abordé avec les élèves ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+              </span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">
+              <p style="margin: 0">Oui, dans les interventions sur les réseaux sociaux et dans la soirée parents : reconnaître les situations, réagir, savoir à qui en parler. Le 3018, numéro national contre le cyberharcèlement, est rappelé à chaque fois.</p>
+            </div>
+          </details>
+        </div>
+        <!-- [SI RÉFÉRENCEMENT ADAGE OBTENU] Question à ajouter à la FAQ (03 D, décision n° 7 de 05) :
+             « Votre intervention peut-elle être financée par le pass Culture ? »
+             Réponse : La part collective du pass Culture finance des actions d'éducation artistique et culturelle, dont l'éducation aux médias et à l'information et la culture scientifique. Elle passe par des intervenants référencés sur ADAGE. [Statut de notre référencement ADAGE]. Les séances de prévention du cyberharcèlement n'en relèvent pas : elles peuvent être financées par l'établissement ou une association de parents d'élèves.
+             Attention : présenter « Vrai ou IA ? » comme une activité d'analyse et de vérification, pas comme un jeu. -->
+        <p class="m42-reveal" style="margin: 24px 0 0; max-width: 52rem; padding: 12px 16px; border: 1px dashed #857E71; font-size: 13px; line-height: 1.5; color: #5F5A50">Note de relecture [SI RÉFÉRENCEMENT ADAGE OBTENU] : ajouter ici la question sur le financement par le pass Culture (texte en commentaire dans le code). Sinon, ne rien publier.</p>
+      </div>
+    </section>
+
+    <section class="m42-night" aria-labelledby="titre-contact" style="background: #0E0F12; color: #F2EEE6; padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #F2EEE6; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Contact</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px 64px">
+          <div style="flex: 1 1 520px; min-width: 0">
+            <h2 id="titre-contact" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Construisons une intervention pour vos élèves</h2>
+            <p style="margin: 20px 0 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #CFC8BB">Dites-nous le niveau, le nombre de classes et le thème. Réponse sous 48 h.</p>
+          </div>
+          <div style="flex: 0 1 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 16px">
+            <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 14px 24px; box-sizing: border-box; background: #F2EEE6; color: #0E0F12; font-size: 16px; font-weight: 500; line-height: 1.2; text-decoration: none">Nous contacter</a>
+            <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #CFC8BB">Clara : <a href="mailto:clara@m42.guide" style="color: #F2EEE6; text-underline-offset: 3px">clara@m42.guide</a><br>Paul : <a href="mailto:paul@m42.guide" style="color: #F2EEE6; text-underline-offset: 3px">paul@m42.guide</a><br>[À COMPLÉTER : téléphone]</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="m42-night" style="background: #0E0F12; color: #CFC8BB; border-top: 1px solid #2E2F35">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 64px clamp(1rem, 4vw, 3rem) 32px">
+      <div style="display: flex; flex-wrap: wrap; gap: 48px 64px">
+        <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 16px">
+          <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; color: #F2EEE6; text-decoration: none; min-height: 44px">
+            <svg width="40" height="40" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <circle cx="50" cy="50" r="46" fill="none" stroke="#F2EEE6" stroke-width="2.4"></circle>
+              <polyline points="27,71 27,29 50,55 73,29 73,71" fill="none" stroke="#F2EEE6" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"></polyline>
+              <path d="M50 46 C51 54 51 54 59 55 C51 56 51 56 50 64 C49 56 49 56 41 55 C49 54 49 54 50 46 Z" fill="#B08D57"></path>
+            </svg>
+            <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+            <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+          </a>
+          <p style="margin: 0; font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1.2; color: #F2EEE6">Se repérer dans l'IA.</p>
+        </div>
+        <nav aria-label="Plan du site" style="flex: 3 1 560px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 32px 24px">
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Conférences</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Conf-ia-au-quotidien.dc.html" class="m42-fl" style="color: #CFC8BB">L'IA au quotidien</a></li>
+              <li><a href="Conf-arnaques-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Arnaques et IA</a></li>
+              <li><a href="Conf-desinformation-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Vrai ou faux ?</a></li>
+              <li><a href="Conf-parents-ados-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Parents, ados et IA</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Pour qui</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Entreprises.dc.html" class="m42-fl" style="color: #CFC8BB">Entreprises</a></li>
+              <li><a href="Evenements.dc.html" class="m42-fl" style="color: #CFC8BB">Événements &amp; congrès</a></li>
+              <li><a href="Collectivites.dc.html" class="m42-fl" style="color: #CFC8BB">Collectivités</a></li>
+              <li><a href="Education.dc.html" class="m42-fl" style="color: #CFC8BB">Écoles &amp; familles</a></li>
+              <li><a href="Associations.dc.html" class="m42-fl" style="color: #CFC8BB">Associations</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">M42</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Reperes.dc.html" class="m42-fl" style="color: #CFC8BB">Repères</a></li>
+              <li><a href="A-propos.dc.html" class="m42-fl" style="color: #CFC8BB">À propos</a></li>
+              <li><a href="Organisateurs.dc.html" class="m42-fl" style="color: #CFC8BB">Espace organisateurs</a></li>
+              <li><a href="Contact.dc.html" class="m42-fl" style="color: #CFC8BB">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Légal</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Mentions-legales.dc.html" class="m42-fl" style="color: #CFC8BB">Mentions légales</a></li>
+              <li><a href="Confidentialite.dc.html" class="m42-fl" style="color: #CFC8BB">Confidentialité</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div style="margin-top: 56px; padding-top: 24px; border-top: 1px solid #2E2F35; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 13px; line-height: 1.5; color: #9A9488">
+        <span>Partout en France, en présentiel ou à distance</span>
+        <span>© 2026 M42.guide</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":8700}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

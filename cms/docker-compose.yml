@@ -1,0 +1,63 @@
+# Directus + Postgres pour M42.guide (développement local).
+# Lancement : cp .env.example .env (puis renseigner les secrets) et `docker compose up -d`.
+# Interface d'administration : http://localhost:8055
+
+name: m42-cms
+
+services:
+  database:
+    image: postgres:18.7-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      # Postgres 18 : monter le dossier parent, l'image range les données par version.
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_DATABASE}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  directus:
+    image: directus/directus:12.7.0
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - '${DIRECTUS_PORT:-8055}:8055'
+    volumes:
+      - directus_uploads:/directus/uploads
+      - directus_extensions:/directus/extensions
+    environment:
+      SECRET: ${SECRET}
+      PUBLIC_URL: ${PUBLIC_URL}
+
+      DB_CLIENT: pg
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+      # Compte administrateur créé au premier démarrage (Paul).
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+
+      # Clé « Open Innovation Grant » (facultative en local ; sans clé : 3 comptes, 25 collections, 5 flows).
+      LICENSE_KEY: ${LICENSE_KEY:-}
+
+      # Aucune télémétrie envoyée à l'éditeur.
+      TELEMETRY: 'false'
+
+      # Le site statique (dev Astro) lira l'API au moment du build ; CORS limité aux origines connues.
+      CORS_ENABLED: 'true'
+      CORS_ORIGIN: ${CORS_ORIGIN}
+
+volumes:
+  postgres_data:
+  directus_uploads:
+  directus_extensions:

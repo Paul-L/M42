@@ -1,0 +1,42 @@
+# Dépendances et builds
+node_modules/
+dist/
+.astro/
+.cache/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Données locales Directus / Postgres
+cms/data/
+cms/uploads/
+cms/database/
+
+# Tests
+site/tests/visual/sorties/
+test-results/
+playwright-report/
+
+# Claude : réglages personnels et liste locale des termes interdits
+.claude/settings.local.json
+.claude/regles-interdites.local.txt
+
+# Divers
+.DS_Store
+_a_supprimer/
+*.zip
+
+# Dossier d'installation de la config Claude (à supprimer après installation)
+claude-config/
+
+# Documents de référence qui citent les noms interdits (la règle elle-même) :
+# non versionnés pour que ces noms n'entrent jamais dans l'historique Git.
+# Voir DECISIONS.md (décision à confirmer).
+PROMPT_CLAUDE_CODE.md
+kit/docs/00_brief.md
+kit/docs/01_arbitrages.md
+kit/docs/05_relecture.md
+kit/docs/11_architecture_seo.md
+kit/docs/30_consigne_ton.md

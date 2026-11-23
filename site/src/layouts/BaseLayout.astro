@@ -1,0 +1,81 @@
+---
+/**
+ * Gabarit de page : <head>, lien d'évitement, en-tête, contenu, pied de page.
+ * Polices auto-hébergées (Fontsource) : aucune ressource tierce chargée par le navigateur.
+ */
+import '@fontsource/cormorant/500.css';
+import '@fontsource/cormorant/600.css';
+import '@fontsource/cormorant/500-italic.css';
+import '@fontsource-variable/inter/wght.css';
+import '../styles/global.css';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import type { NavKey } from '../data/navigation';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Lien d'en-tête à marquer comme page courante. */
+  current?: NavKey;
+  /** Page à exclure des moteurs (page interne, préproduction). */
+  noindex?: boolean;
+}
+
+const { title, description, current, noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {noindex ? (
+      <meta name="robots" content="noindex, nofollow" />
+    ) : (
+      <link rel="canonical" href={canonical} />
+    )}
+    <meta name="theme-color" content="#F2EEE6" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#contenu" class="skip">
+      Aller au contenu
+    </a>
+    <Header current={current} />
+    <main id="contenu" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  /* Lien d'évitement (toujours en premier) */
+  .skip {
+    position: absolute;
+    left: 16px;
+    top: -200px;
+    z-index: 100;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target-min);
+    box-sizing: border-box;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 18px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .skip:focus {
+    top: 12px;
+  }
+</style>

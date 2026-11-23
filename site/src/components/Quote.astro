@@ -1,0 +1,80 @@
+---
+/**
+ * Citation (témoignage nommé uniquement). Tant qu'il n'existe pas de vrai témoignage,
+ * la page n'affiche PAS ce bloc : jamais de faux.
+ */
+interface Props {
+  name: string;
+  role?: string;
+  organization?: string;
+}
+
+const { name, role, organization } = Astro.props;
+const details = [role, organization].filter(Boolean).join(', ');
+---
+
+<figure class="quote">
+  <span aria-hidden="true" class="mark">
+    «
+  </span>
+  <blockquote>
+    <p>
+      <slot />
+    </p>
+  </blockquote>
+  <span aria-hidden="true" class="rule"></span>
+  <figcaption>
+    <span class="name">{name}</span>
+    {details && `, ${details}`}
+  </figcaption>
+</figure>
+
+<style>
+  .quote {
+    margin: 0;
+    max-width: 46rem;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .mark {
+    font-family: var(--font-serif);
+    font-size: 72px;
+    font-weight: 500;
+    line-height: 0.5;
+    color: var(--accent-text);
+  }
+
+  blockquote {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: var(--fs-quote);
+    line-height: var(--lh-quote);
+    color: var(--fg);
+  }
+
+  blockquote p {
+    margin: 0;
+  }
+
+  .rule {
+    display: block;
+    width: 48px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  figcaption {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--fg-2);
+  }
+
+  .name {
+    font-weight: 600;
+    color: var(--fg);
+  }
+</style>

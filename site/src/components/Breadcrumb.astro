@@ -1,0 +1,110 @@
+---
+/**
+ * Fil d'Ariane (pages internes uniquement, au-dessus du sur-titre).
+ * Complet au-dessus de 640 px ; en dessous, lien vers le parent seul (« ← Conférences »).
+ * Le dernier élément est la page courante.
+ */
+export interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: Crumb[];
+}
+
+const { items } = Astro.props;
+const parent = items.length > 1 ? items[items.length - 2] : undefined;
+---
+
+<nav aria-label="Fil d'Ariane" class="bc">
+  <ol class="bc-full">
+    {items.map((item, i) => {
+      const last = i === items.length - 1;
+      return (
+        <li>
+          {i > 0 && (
+            <span aria-hidden="true" class="sep">
+              /
+            </span>
+          )}
+          {last ? (
+            <span aria-current="page" class="current">
+              {item.label}
+            </span>
+          ) : (
+            <a href={item.href}>{item.label}</a>
+          )}
+        </li>
+      );
+    })}
+  </ol>
+  {parent?.href && (
+    <a href={parent.href} class="bc-short">
+      <span aria-hidden="true">←</span>
+      {parent.label}
+    </a>
+  )}
+</nav>
+
+<style>
+  .bc {
+    margin-bottom: 32px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--fg-3);
+  }
+
+  .bc-full {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+  }
+
+  .bc-full a {
+    color: var(--fg-3);
+    text-underline-offset: 3px;
+  }
+
+  .sep {
+    margin-right: 8px;
+  }
+
+  .current {
+    color: var(--fg);
+    font-weight: 500;
+  }
+
+  /* Lien parent (mobile) : style « lien fléché » */
+  .bc-short {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    min-height: var(--target-min);
+    color: var(--fg);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: text-decoration-color var(--dur-1) var(--ease-out);
+  }
+
+  .bc-short:hover {
+    text-decoration-color: var(--gold);
+    text-decoration-thickness: 2px;
+  }
+
+  @media (max-width: 639px) {
+    .bc-full {
+      display: none;
+    }
+
+    .bc-short {
+      display: inline-flex;
+    }
+  }
+</style>

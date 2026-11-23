@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Repères · M42</title>
+<!-- SEO: /reperes/ | title: Repères gratuits sur l'IA : tests, méthodes et fiches pratiques | M42.guide | meta: Reconnaître une arnaque, vérifier une image, poser des règles d'usage de l'IA : des outils gratuits et sans inscription, pour vous, vos équipes, vos habitants ou vos élèves. | canonical: https://m42.guide/reperes/ | H1 : « Repères pour garder la main sur l'IA » | JSON-LD : CollectionPage + ItemList (ressources disponibles uniquement) + BreadcrumbList (Accueil > Repères) -->
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+/* Base */
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:#F2EEE6;color:#0E0F12;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:#0E0F12}
+::selection{background:#E8E2D7;color:#0E0F12}
+
+/* Focus visible : encre sur clair, or clair sur nuit */
+:focus-visible{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night :focus-visible{outline-color:#C9A46A}
+
+/* Lien d'évitement */
+.m42-skip{position:absolute;left:16px;top:-200px;z-index:100}
+.m42-skip:focus{top:12px}
+
+/* En-tête : collant à partir de 960 px ; filet bas qui apparaît au défilement */
+@media (min-width:960px){.m42-hdr{position:sticky;top:0;z-index:50}}
+@keyframes m42-hdr{from{border-bottom-color:rgba(215,208,195,0)}to{border-bottom-color:#D7D0C3}}
+@supports (animation-timeline: scroll()){
+  .m42-hdr{animation:m42-hdr cubic-bezier(.22,1,.36,1) both;animation-timeline:scroll();animation-range:0px 96px}
+}
+
+/* Navigation : survol souligné encre 1 px, page active soulignée or 2 px */
+.m42-nav{text-decoration:none;text-underline-offset:8px;text-decoration-thickness:1px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-nav:hover{text-decoration-line:underline;text-decoration-color:#0E0F12}
+.m42-nav[aria-current="page"]{text-decoration-line:underline;text-decoration-color:#B08D57;text-decoration-thickness:2px}
+
+/* Boutons */
+.m42-btn,.m42-btn2,.m42-btn2n{transition:background-color 120ms cubic-bezier(.22,1,.36,1),color 120ms cubic-bezier(.22,1,.36,1),border-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-btn:hover{background-color:#B08D57!important;color:#0E0F12!important}
+.m42-btn2:hover{background-color:rgba(14,15,18,.06)!important}
+.m42-btn2n:hover{background-color:rgba(242,238,230,.08)!important;border-color:#C9A46A!important}
+.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:translateY(1px)}
+
+/* Lien fléché */
+.m42-arrow,.m42-cta{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-arrow-i{display:inline-block;transition:transform 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover .m42-arrow-i{transform:translateX(3px)}
+
+/* Carte cliquable : le lien du titre s'étend à toute la carte (pas de <a> englobant) */
+.m42-card{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover{border-color:#0E0F12!important}
+.m42-night .m42-card:hover{border-color:#F2EEE6!important}
+.m42-bar{transform:scaleX(.18);transform-origin:left;transition:transform 320ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover .m42-bar,.m42-card:focus-within .m42-bar{transform:scaleX(1)}
+.m42-card:hover .m42-arrow-i{transform:translateX(3px)}
+.m42-card:hover .m42-cta{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-stretch{text-decoration:none}
+.m42-stretch::after{content:"";position:absolute;inset:0;z-index:1}
+.m42-stretch:focus-visible{outline:none}
+.m42-stretch:focus-visible::after{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night .m42-stretch:focus-visible::after{outline-color:#C9A46A}
+
+/* Liens du pied de page */
+.m42-fl{text-decoration:none;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-fl:hover{text-decoration-line:underline;text-decoration-color:#B08D57;color:#F2EEE6!important}
+
+/* Fil d'Ariane : complet au-dessus de 640 px, parent seul en dessous */
+.m42-bc-full{display:flex}
+.m42-bc-short{display:none}
+@media (max-width:639px){.m42-bc-full{display:none}.m42-bc-short{display:inline-flex}}
+
+/* FAQ */
+.m42-faq summary{list-style:none;cursor:pointer}
+.m42-faq summary::-webkit-details-marker{display:none}
+.m42-faq-i{transition:transform 200ms cubic-bezier(.65,0,.35,1)}
+.m42-faq[open] .m42-faq-i{transform:rotate(45deg)}
+.m42-faq summary:hover h3{text-decoration:underline;text-decoration-color:#B08D57;text-underline-offset:4px}
+
+/* Champs de formulaire */
+.m42-field{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-field:not([aria-invalid="true"]):hover{border-color:#0E0F12!important}
+.m42-field:focus{outline:2px solid #0E0F12;outline-offset:-2px}
+
+/* Petit bouton texte (ex. pause d'animation) */
+.m42-txtbtn{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-txtbtn:hover{color:#0E0F12!important;text-decoration-color:#B08D57}
+
+/* Apparition au défilement : opacité + 8 px, natif, sans JavaScript.
+   Sans prise en charge, le contenu est simplement visible. Jamais au-dessus de la ligne de flottaison. */
+@keyframes m42-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@supports (animation-timeline: view()){
+  .m42-reveal{animation:m42-in cubic-bezier(.22,1,.36,1) both;animation-timeline:view();animation-range:entry 0% entry 45%}
+}
+.m42-still .m42-reveal{animation:none!important;opacity:1!important;transform:none!important}
+
+/* Pages éditoriales (satellites) : sommaire, ancres, tableaux */
+.m42-anchor{scroll-margin-top:104px}
+.m42-toc{text-decoration:none;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1),border-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-toc:hover{text-decoration-line:underline;text-decoration-color:#B08D57;color:#0E0F12!important;border-left-color:#B08D57!important}
+@media (min-width:960px){.m42-toc-aside{position:sticky;top:104px}}
+.m42-inline{text-underline-offset:3px;text-decoration-thickness:1px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-inline:hover{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+
+/* Filtres de la bibliothèque (boutons bascule) */
+.m42-chip{transition:background-color 120ms cubic-bezier(.22,1,.36,1),color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-chip[aria-pressed="false"]:hover{background-color:rgba(14,15,18,.06)!important}
+
+/* Mouvement réduit : aucune translation, fondus à 0 ms */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:0ms!important;animation-delay:0ms!important;transition-duration:0ms!important}
+  .m42-reveal,.m42-hdr{animation:none!important;opacity:1!important;transform:none!important}
+  .m42-arrow:hover .m42-arrow-i,.m42-card:hover .m42-arrow-i,.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:none!important}
+}
+</style>
+<style>
+/* --- Mobile : menu repliable, symbole d'accueil, coupures de mots --- */
+.m42-menu-t{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.m42-burger{display:none}
+p,li,dd,dt,td,th,h1,h2,h3,summary,label{overflow-wrap:break-word}
+a[href^="mailto:"]{overflow-wrap:anywhere}
+@media (max-width: 959px){
+  .m42-burger{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;border:1px solid #0E0F12;color:#0E0F12;background:transparent;font-family:Inter,system-ui,sans-serif;font-size:15px;font-weight:500;cursor:pointer;user-select:none}
+  .m42-menu-t:focus-visible + .m42-burger{outline:2px solid #7A5C30;outline-offset:2px}
+  .m42-burger .m42-b-close{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-open{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-close{display:inline}
+  header nav[aria-label="Navigation principale"]{display:none !important;width:100%;flex-direction:column !important;align-items:stretch !important;gap:0 !important;padding:4px 0 20px}
+  .m42-menu-t:checked ~ nav[aria-label="Navigation principale"]{display:flex !important}
+  header nav[aria-label="Navigation principale"] a{display:flex !important;align-items:center;min-height:52px;padding:0 !important;border-bottom:1px solid #D7D0C3;font-size:17px !important}
+  header nav[aria-label="Navigation principale"] a.m42-btn{justify-content:center;margin-top:20px;border-bottom:0;min-height:52px;padding:0 20px !important}
+  canvas[data-m42-sky]{max-width:300px !important;margin:0 auto}
+}
+@media (max-width: 480px){
+  canvas[data-m42-sky]{max-width:240px !important}
+}
+</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0E0F12; background: #F2EEE6; min-height: 100vh">
+  <a href="#contenu" class="m42-skip" style="background: #0E0F12; color: #F2EEE6; padding: 12px 18px; font-size: 15px; font-weight: 500; text-decoration: none">Aller au contenu</a>
+  <header class="m42-hdr" style="background: rgba(242, 238, 230, 0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid #D7D0C3">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 14px clamp(1rem, 4vw, 3rem); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px">
+      <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; color: #0E0F12; text-decoration: none; min-height: 44px">
+        <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+        <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+      </a>
+      <input type="checkbox" id="m42-menu-t" class="m42-menu-t" aria-controls="m42-menu" aria-label="Ouvrir ou fermer le menu">
+      <label for="m42-menu-t" class="m42-burger"><span class="m42-b-open">Menu</span><span class="m42-b-close">Fermer</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></label>
+      <nav id="m42-menu" aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; font-size: 14px; font-weight: 500; line-height: 1.3">
+        <a href="Conferences.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Conférences</a>
+        <a href="Entreprises.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Entreprises</a>
+        <a href="Collectivites.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Collectivités</a>
+        <a href="Education.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Écoles</a>
+        <a href="Reperes.dc.html" class="m42-nav" aria-current="page" style="color: #0E0F12; padding: 10px 0">Repères</a>
+        <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; background: #0E0F12; color: #F2EEE6; text-decoration: none; font-size: 14px; font-weight: 500">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <main id="contenu" tabindex="-1" style="outline: none">
+<!-- NOTES DE PRODUCTION, NE PAS PUBLIER
+  - Page « hub » des outils gratuits (la « Boîte à outils » de 11_architecture_seo ; les outils eux-mêmes vivent sous /outils/ et /guides/, 12_growth_satellites 2.1).
+  - [À DÉCIDER] 12_growth_satellites 4.8 dit « pas de « bientôt » en ligne ». Les cartes « Bientôt » sont là pour la relecture : les masquer à la mise en ligne, ou les garder sans date annoncée.
+  - Lettre mensuelle : double opt-in recommandé, outil d'envoi hébergé en Europe [À CHOISIR] ; segment « Vous êtes » facultatif (12_growth_satellites 4.1).
+  - Maquette : le bouton n'envoie rien ; en production, <form method="post"> + page de confirmation.
+  - Le lien « Cinq questions » pointe vers la page séminaire (section « cinq-questions ») : pas d'ancre inter-pages dans la maquette.
+-->
+<section aria-labelledby="titre-page" style="padding: clamp(2rem, 4vw, 3rem) 0 clamp(2.5rem, 5vw, 4rem)"><div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)"><nav aria-label="Fil d'Ariane" style="margin-bottom: 32px; font-size: 13px; line-height: 1.5; color: #5F5A50"><ol class="m42-bc-full" style="list-style: none; margin: 0; padding: 0; flex-wrap: wrap; align-items: center; gap: 4px 8px"><li><a href="Main.dc.html" style="color: #5F5A50; text-underline-offset: 3px">Accueil</a></li><li><span aria-hidden="true" style="margin-right: 8px">/</span><span aria-current="page" style="color: #0E0F12; font-weight: 500">Repères</span></li></ol><a href="Main.dc.html" class="m42-bc-short m42-arrow" style="align-items: center; gap: 6px; min-height: 44px; color: #0E0F12; font-weight: 500"><span aria-hidden="true">←</span>Accueil</a></nav><div style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Outils gratuits · Sans inscription</div><h1 id="titre-page" style="margin: 24px 0 0; max-width: 20ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.75rem, 1.6rem + 4.2vw, 5.25rem); line-height: 0.98; letter-spacing: -0.02em; color: #0E0F12">Repères pour garder la main sur l'IA</h1><p style="margin: 24px 0 0; max-width: 56ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Des tests, des méthodes et des fiches à utiliser tout de suite : pour vous, pour vos équipes, pour les habitants de votre commune ou pour vos élèves. Chacun se lit ou se fait en quelques minutes, gratuitement.</p></div></section>
+<section id="bibliotheque" aria-labelledby="dispo-t" style="padding: 0 0 clamp(4rem, 8vw, 7rem)"><div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)"><div style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">La bibliothèque</div><h2 id="dispo-t" style="margin: 20px 0 0; max-width: 24ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2rem, 1.5rem + 2vw, 3rem); line-height: 1.05; letter-spacing: -0.01em; color: #0E0F12">Disponibles maintenant</h2><div role="group" aria-labelledby="filtre-t" style="margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 10px"><p id="filtre-t" style="margin: 0 8px 0 0; font-size: 14px; font-weight: 500; line-height: 1.4; color: #3A3731">Afficher :</p><button type="button" onClick="{{choose_tous}}" aria-pressed="{{chip_tous.pressed}}" class="m42-chip" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; box-sizing: border-box; border: 1px solid #0E0F12; border-radius: 0; font-family: inherit; font-size: 15px; font-weight: 500; line-height: 1.2; cursor: pointer; background-color: {{chip_tous.bg}}; color: {{chip_tous.fg}}">Tous les repères</button><button type="button" onClick="{{choose_vous}}" aria-pressed="{{chip_vous.pressed}}" class="m42-chip" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; box-sizing: border-box; border: 1px solid #0E0F12; border-radius: 0; font-family: inherit; font-size: 15px; font-weight: 500; line-height: 1.2; cursor: pointer; background-color: {{chip_vous.bg}}; color: {{chip_vous.fg}}">Pour vous</button><button type="button" onClick="{{choose_equipes}}" aria-pressed="{{chip_equipes.pressed}}" class="m42-chip" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; box-sizing: border-box; border: 1px solid #0E0F12; border-radius: 0; font-family: inherit; font-size: 15px; font-weight: 500; line-height: 1.2; cursor: pointer; background-color: {{chip_equipes.bg}}; color: {{chip_equipes.fg}}">Pour vos équipes</button><button type="button" onClick="{{choose_habitants}}" aria-pressed="{{chip_habitants.pressed}}" class="m42-chip" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; box-sizing: border-box; border: 1px solid #0E0F12; border-radius: 0; font-family: inherit; font-size: 15px; font-weight: 500; line-height: 1.2; cursor: pointer; background-color: {{chip_habitants.bg}}; color: {{chip_habitants.fg}}">Pour vos habitants</button><button type="button" onClick="{{choose_eleves}}" aria-pressed="{{chip_eleves.pressed}}" class="m42-chip" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; box-sizing: border-box; border: 1px solid #0E0F12; border-radius: 0; font-family: inherit; font-size: 15px; font-weight: 500; line-height: 1.2; cursor: pointer; background-color: {{chip_eleves.bg}}; color: {{chip_eleves.fg}}">Pour vos élèves</button></div><p aria-live="polite" style="margin: 16px 0 0; font-size: 14px; line-height: 1.5; color: #5F5A50">{{resume}}</p><div style="margin-top: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 24px"><sc-for list="{{dispo}}" as="r" hint-placeholder-count="4"><article class="m42-card" style="position: relative; display: flex; flex-direction: column; gap: 14px; padding: 32px 28px; background: #F8F6F1; border: 1px solid #D7D0C3"><p style="margin: 0; font-size: 12px; font-weight: 500; line-height: 1.4; letter-spacing: 0.14em; text-transform: uppercase; color: #7A5C30">{{r.type}}</p><h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="{{r.href}}" class="m42-stretch" style="color: #0E0F12">{{r.titre}}</a></h3><p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">{{r.desc}}</p><p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">{{r.pour}}</p><span class="m42-cta" aria-hidden="true" style="margin-top: auto; padding-top: 8px; font-size: 15px; font-weight: 500; color: #0E0F12">{{r.cta}} <span class="m42-arrow-i">→</span></span><span class="m42-bar" aria-hidden="true" style="position: absolute; left: -1px; right: -1px; bottom: -1px; height: 2px; background: #B08D57"></span></article></sc-for></div><sc-if value="{{hasBientot}}" hint-placeholder-val="{{true}}"><div style="margin-top: 80px; border-top: 1px solid #D7D0C3; padding-top: 16px"><h2 id="bientot-t" style="margin: 0; max-width: 24ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem); line-height: 1.1; letter-spacing: -0.01em; color: #0E0F12">En préparation</h2><p style="margin: 12px 0 0; max-width: 60ch; font-size: 16px; line-height: 1.6; color: #3A3731">Ces repères sont en cours d'écriture et de vérification. Pour être prévenu de leur sortie, inscrivez-vous à la lettre ci-dessous.</p><div style="margin-top: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 24px"><sc-for list="{{bientot}}" as="b" hint-placeholder-count="6"><article style="display: flex; flex-direction: column; gap: 12px; padding: 28px; border: 1px dashed #857E71; background: transparent"><div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px"><p style="margin: 0; font-size: 12px; font-weight: 500; line-height: 1.4; letter-spacing: 0.14em; text-transform: uppercase; color: #5F5A50">{{b.type}}</p><span style="display: inline-block; padding: 3px 10px; border: 1px solid #5F5A50; font-size: 12px; font-weight: 500; line-height: 1.4; color: #3A3731">Bientôt</span></div><h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05; color: #0E0F12">{{b.titre}}</h3><p style="margin: 0; font-size: 15px; line-height: 1.6; color: #3A3731">{{b.desc}}</p><p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">{{b.pour}}</p><p style="margin: auto 0 0; padding-top: 4px; font-size: 12px; line-height: 1.5; color: #5F5A50">[À PRODUIRE]</p></article></sc-for></div></div></sc-if></div></section>
+<section id="lettre" aria-labelledby="lettre-t" style="padding: clamp(4rem, 8vw, 6rem) 0; background: #E8E2D7"><div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)"><div style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #3A3731">Une fois par mois</div><div style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 40px 72px"><div style="flex: 1 1 440px; min-width: 0"><h2 id="lettre-t" style="margin: 0; max-width: 24ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2rem, 1.5rem + 2vw, 3rem); line-height: 1.05; letter-spacing: -0.01em; color: #0E0F12">Recevoir les nouveaux repères</h2><p style="margin: 20px 0 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Chaque nouveau repère, dès sa sortie, et une lettre courte qui se lit en trois minutes.</p><ul style="list-style: none; margin: 24px 0 0; padding: 0; max-width: 52ch; display: flex; flex-direction: column"><li style="display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: baseline; border-top: 1px solid #D7D0C3; padding: 12px 0"><span aria-hidden="true" style="font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; color: #7A5C30">01</span><span style="font-size: 16px; line-height: 1.55; color: #3A3731">Un chiffre sourcé, expliqué en trois phrases.</span></li><li style="display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: baseline; border-top: 1px solid #D7D0C3; padding: 12px 0"><span aria-hidden="true" style="font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; color: #7A5C30">02</span><span style="font-size: 16px; line-height: 1.55; color: #3A3731">Une arnaque, une fausse image ou une erreur d'IA, décortiquée.</span></li><li style="display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: baseline; border-top: 1px solid #D7D0C3; padding: 12px 0"><span aria-hidden="true" style="font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; color: #7A5C30">03</span><span style="font-size: 16px; line-height: 1.55; color: #3A3731">Une règle à appliquer dans la semaine.</span></li><li style="display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: baseline; border-top: 1px solid #D7D0C3; padding: 12px 0"><span aria-hidden="true" style="font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; color: #7A5C30">04</span><span style="font-size: 16px; line-height: 1.55; color: #3A3731">Une ressource utile : un nouveau repère, ou un outil public (Cybermalveillance.gouv.fr, CNIL).</span></li></ul><p style="margin: 16px 0 0; font-size: 13px; line-height: 1.5; color: #3A3731">Nom de la lettre : « Repères » [À VALIDER]</p></div><div style="flex: 1 1 400px; min-width: 0; padding: clamp(24px, 3vw, 36px); background: #F8F6F1; border: 1px solid #D7D0C3"><div aria-live="polite" style="display: flex; flex-direction: column; gap: 20px"><sc-if value="{{lettreEnvoyee}}" hint-placeholder-val="{{false}}"><div style="display: flex; flex-direction: column; gap: 10px; padding: 20px 22px; background: #F2EEE6; border-left: 3px solid #2E6A4E"><p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 600; line-height: 1.4; color: #2E6A4E"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E6A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5L16 9.5"></path></svg>C'est noté.</p><p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">{{lettreMsg}}</p><p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Maquette : aucune donnée n'a été envoyée.</p><button type="button" onClick="{{resetLettre}}" class="m42-txtbtn" style="align-self: flex-start; min-height: 44px; padding: 0 2px; border: 0; background: transparent; color: #3A3731; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer">Revenir au formulaire</button></div></sc-if><sc-if value="{{lettreForm}}" hint-placeholder-val="{{true}}"><div role="group" aria-label="S'inscrire à la lettre mensuelle" style="display: flex; flex-direction: column; gap: 20px"><p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Les champs marqués d'un astérisque (*) sont obligatoires.</p><div style="display: flex; flex-direction: column; gap: 8px"><label for="lettre-mail" style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #0E0F12">E-mail *</label><input type="email" id="lettre-mail" name="email" autocomplete="email" required aria-required="true" aria-invalid="{{fMail.inv}}" aria-describedby="lettre-mail-err" ref="{{fMail.ref}}" class="m42-field" style="box-sizing: border-box; width: 100%; min-height: 48px; border-radius: 0; background: #F2EEE6; color: #0E0F12; font-family: inherit; font-size: 16px; line-height: 1.4; padding: {{fMail.pad}}; border: {{fMail.border}}"><sc-if value="{{fMail.err}}" hint-placeholder-val="{{false}}"><p id="lettre-mail-err" style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 1.4; color: #9B3328"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9B3328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5h.01"></path></svg>Indiquez une adresse e-mail valide, par exemple nom@exemple.fr.</p></sc-if></div><div style="display: flex; flex-direction: column; gap: 8px"><label for="lettre-profil" style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #0E0F12">Vous êtes <span style="font-weight: 400; color: #5F5A50">(facultatif)</span></label><select id="lettre-profil" name="profil" ref="{{refProfil}}" class="m42-field" style="box-sizing: border-box; width: 100%; min-height: 48px; border-radius: 0; background: #F2EEE6; color: #0E0F12; font-family: inherit; font-size: 16px; line-height: 1.4; padding: 12px 14px; border: 1px solid #857E71"><option value="">Choisir…</option><option value="particulier">Un particulier</option><option value="entreprise">Une entreprise</option><option value="collectivite">Une collectivité</option><option value="etablissement">Un établissement scolaire</option><option value="association">Une association</option></select><p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Pour recevoir, en fin de lettre, les repères qui vous concernent le plus.</p></div><div style="display: flex; flex-wrap: wrap; gap: 12px"><button type="button" onClick="{{sendLettre}}" class="m42-btn" style="flex: 1 1 240px; max-width: 100%; min-height: 48px; padding: 14px 24px; box-sizing: border-box; border: 0; border-radius: 0; background: #0E0F12; color: #F2EEE6; font-family: inherit; font-size: 16px; font-weight: 500; line-height: 1.2; cursor: pointer">Recevoir les nouveaux repères</button><p style="flex: 1 1 100%; margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Une lettre par mois, désinscription en un clic dans chaque envoi. Votre adresse sert uniquement à vous envoyer cette lettre. Responsable : [À COMPLÉTER : entité éditrice]. Détails et droits : <a href="Confidentialite.dc.html" style="color: #5F5A50; text-underline-offset: 3px">Politique de confidentialité</a>.</p></div></div></sc-if></div></div></div></div></section>
+<section aria-label="Pour aller plus loin" style="padding: clamp(3rem, 6vw, 4.5rem) 0"><div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)"><div style="border-top: 1px solid #D7D0C3; padding-top: 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px"><p style="margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 16px; line-height: 1.5; color: #3A3731">Pour aller plus loin avec un groupe : <a href="Conferences.dc.html" class="m42-arrow" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #0E0F12; font-size: 16px; font-weight: 500">les conférences <span class="m42-arrow-i" aria-hidden="true">→</span></a></p><p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Repères écrits et vérifiés par <a href="A-propos.dc.html" class="m42-inline" style="color: #3A3731">Clara Peron et Paul Loustaunau</a>.</p></div></div></section>
+  </main>
+  <footer class="m42-night" style="background: #0E0F12; color: #CFC8BB; border-top: 1px solid #2E2F35">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 64px clamp(1rem, 4vw, 3rem) 32px">
+      <div style="display: flex; flex-wrap: wrap; gap: 48px 64px">
+        <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 16px">
+          <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; color: #F2EEE6; text-decoration: none; min-height: 44px">
+            <svg width="40" height="40" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <circle cx="50" cy="50" r="46" fill="none" stroke="#F2EEE6" stroke-width="2.4"></circle>
+              <polyline points="27,71 27,29 50,55 73,29 73,71" fill="none" stroke="#F2EEE6" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"></polyline>
+              <path d="M50 46 C51 54 51 54 59 55 C51 56 51 56 50 64 C49 56 49 56 41 55 C49 54 49 54 50 46 Z" fill="#B08D57"></path>
+            </svg>
+            <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+            <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+          </a>
+          <p style="margin: 0; font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1.2; color: #F2EEE6">Se repérer dans l'IA.</p>
+        </div>
+        <nav aria-label="Plan du site" style="flex: 3 1 560px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 32px 24px">
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Conférences</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Conf-ia-au-quotidien.dc.html" class="m42-fl" style="color: #CFC8BB">L'IA au quotidien</a></li>
+              <li><a href="Conf-arnaques-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Arnaques et IA</a></li>
+              <li><a href="Conf-desinformation-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Vrai ou faux ?</a></li>
+              <li><a href="Conf-parents-ados-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Parents, ados et IA</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Pour qui</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Entreprises.dc.html" class="m42-fl" style="color: #CFC8BB">Entreprises</a></li>
+              <li><a href="Evenements.dc.html" class="m42-fl" style="color: #CFC8BB">Événements &amp; congrès</a></li>
+              <li><a href="Collectivites.dc.html" class="m42-fl" style="color: #CFC8BB">Collectivités</a></li>
+              <li><a href="Education.dc.html" class="m42-fl" style="color: #CFC8BB">Écoles &amp; familles</a></li>
+              <li><a href="Associations.dc.html" class="m42-fl" style="color: #CFC8BB">Associations</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">M42</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Reperes.dc.html" class="m42-fl" style="color: #CFC8BB">Repères</a></li>
+              <li><a href="A-propos.dc.html" class="m42-fl" style="color: #CFC8BB">À propos</a></li>
+              <li><a href="Organisateurs.dc.html" class="m42-fl" style="color: #CFC8BB">Espace organisateurs</a></li>
+              <li><a href="Contact.dc.html" class="m42-fl" style="color: #CFC8BB">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Légal</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Mentions-legales.dc.html" class="m42-fl" style="color: #CFC8BB">Mentions légales</a></li>
+              <li><a href="Confidentialite.dc.html" class="m42-fl" style="color: #CFC8BB">Confidentialité</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div style="margin-top: 56px; padding-top: 24px; border-top: 1px solid #2E2F35; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 13px; line-height: 1.5; color: #9A9488">
+        <span>Partout en France, en présentiel ou à distance</span>
+        <span>© 2026 M42.guide</span>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3700}}'>
+class Component extends DCLogic {
+  // Bibliothèque des repères : filtres par public (état local), lettre mensuelle (confirmation affichée, rien n'est envoyé)
+  _ressources() {
+    return {
+      dispo: [
+        { href: 'Sat-test-arnaque-ou-pas.dc.html', type: 'Test · 5 minutes', titre: 'Arnaque ou pas ?',
+          desc: "Huit situations du quotidien : SMS, appels, messages. Pour chacune, la bonne réponse, l'indice qui trahit l'arnaque et la règle à retenir. Sans inscription.",
+          aud: ['vous', 'equipes', 'habitants'], cta: 'Faire le test' },
+        { href: 'Sat-sensibiliser-equipes-ia.dc.html', type: 'Guide · 8 minutes', titre: "Sensibiliser ses équipes à l'IA en 5 étapes",
+          desc: "Partir des usages réels, poser des règles vert, orange, rouge, réunir tout le monde, approfondir par métier, y revenir six mois plus tard. Avec un questionnaire prêt à l'emploi.",
+          aud: ['equipes', 'habitants'], cta: 'Lire le guide' },
+        { href: 'Conf-desinformation-ia.dc.html', type: 'Méthode · 4 étapes', titre: 'Vrai ou faux ? Vérifier une image ou une info',
+          desc: 'La méthode simple pour ne plus se faire avoir par une fausse image, une fausse vidéo ou un faux site, directement sur son téléphone.',
+          aud: ['vous', 'habitants', 'eleves'], cta: 'Découvrir la méthode' },
+        { href: 'Sat-seminaire-entreprise.dc.html', type: 'Liste · 5 questions', titre: 'Cinq questions pour choisir un conférencier IA',
+          desc: "Montre-t-il l'IA en direct ? Ses chiffres sont-ils sourcés ? Vend-il un outil ? Les questions à poser à tout intervenant, avant de signer.",
+          aud: ['equipes'], cta: 'Lire les 5 questions' }
+      ],
+      bientot: [
+        { type: 'Fiche à imprimer · 1 page', titre: "Les 10 réflexes face à l'IA",
+          desc: "Dix réflexes pour utiliser l'IA au quotidien sans s'y perdre, à afficher au bureau, en classe ou près de l'ordinateur.",
+          aud: ['vous', 'equipes', 'habitants', 'eleves'] },
+        { type: 'Modèle commenté', titre: "Modèle de charte d'usage de l'IA",
+          desc: "Une trame à adapter à une PME, un cabinet ou une collectivité, avec les règles vert, orange, rouge. Un point de départ, pas un conseil juridique.",
+          aud: ['equipes'] },
+        { type: 'Modèle à remplir', titre: 'La charte numérique de la famille',
+          desc: 'Écrans, réseaux, IA : des règles à fixer ensemble, parents et enfants, et à afficher à la maison.',
+          aud: ['vous', 'eleves'] },
+        { type: 'Fiche à imprimer', titre: 'La fiche des bons numéros',
+          desc: 'Signaler un SMS frauduleux, se faire aider, faire opposition : les numéros utiles en gros caractères, à garder près du téléphone.',
+          aud: ['vous', 'habitants'] },
+        { type: 'Quiz', titre: 'Vrai ou IA ?',
+          desc: "Des images, des voix et des articles à classer : authentiques ou générés par IA ? Uniquement des contenus créés pour l'occasion, sans aucun sujet politique.",
+          aud: ['vous', 'habitants', 'eleves'] },
+        { type: 'Guide', titre: 'Protéger les seniors des arnaques dans sa commune',
+          desc: 'Monter une action locale avec un CCAS, une médiathèque ou une association, et les financements possibles.',
+          aud: ['habitants'] }
+      ]
+    };
+  }
+
+  _pour(aud) {
+    const L = { vous: 'vous', equipes: 'vos équipes', habitants: 'vos habitants', eleves: 'vos élèves' };
+    const w = aud.map((a) => L[a]);
+    if (w.length === 1) return 'Pour ' + w[0];
+    return 'Pour ' + w.slice(0, -1).join(', ') + ' et ' + w[w.length - 1];
+  }
+
+  // Références DOM (lecture et focus du champ e-mail)
+  _ref(k) {
+    this._els = this._els || {};
+    this._refs = this._refs || {};
+    if (!this._refs[k]) this._refs[k] = (el) => { this._els[k] = el || null; };
+    return this._refs[k];
+  }
+  _el(k) { return (this._els || {})[k] || null; }
+  _val(k) { const el = this._el(k); return el && typeof el.value === 'string' ? el.value.trim() : ''; }
+  _valid(k) {
+    const el = this._el(k);
+    if (!el) return true; // sans référence (aperçu de l'éditeur) : on laisse la démonstration se faire
+    if (!el.value || !String(el.value).trim()) return false;
+    return typeof el.checkValidity === 'function' ? el.checkValidity() : true;
+  }
+  _focus(k) { const el = this._el(k); if (el && typeof el.focus === 'function') { try { el.focus(); } catch (e) {} } }
+
+  renderVals() {
+    const st = this.state || {};
+    const f = st.filtre || 'tous';
+    const R = this._ressources();
+    const keep = (r) => f === 'tous' || r.aud.indexOf(f) !== -1;
+    const dispo = R.dispo.filter(keep).map((r) => ({ href: r.href, type: r.type, titre: r.titre, desc: r.desc, cta: r.cta, pour: this._pour(r.aud) }));
+    const bientot = R.bientot.filter(keep).map((r) => ({ type: r.type, titre: r.titre, desc: r.desc, pour: this._pour(r.aud) }));
+
+    const NOMS = { tous: 'Tous les repères', vous: 'Pour vous', equipes: 'Pour vos équipes', habitants: 'Pour vos habitants', eleves: 'Pour vos élèves' };
+    const n = dispo.length, m = bientot.length;
+    const resume = NOMS[f] + ' : ' + n + (n > 1 ? ' repères disponibles' : ' repère disponible') + ', ' + m + ' en préparation.';
+
+    const chip = (k) => ({ pressed: f === k ? 'true' : 'false', bg: f === k ? '#0E0F12' : 'transparent', fg: f === k ? '#F2EEE6' : '#0E0F12' });
+    const choose = (k) => () => this.setState({ filtre: k });
+
+    const err = st.lettreErr || {};
+    const bad = !!err.fMail;
+    const sendLettre = () => {
+      if (!this._valid('fMail')) { this.setState({ lettreErr: { fMail: true } }); this._focus('fMail'); return; }
+      const mail = this._val('fMail');
+      this.setState({ lettreErr: {}, lettreEnvoyee: true,
+        lettreMsg: 'Vous recevrez les nouveaux repères' + (mail ? " à l'adresse " + mail : '') + ', une fois par mois. Vous pourrez vous désinscrire en un clic.' });
+    };
+
+    return {
+      dispo, bientot, hasBientot: m > 0, resume,
+      chip_tous: chip('tous'), chip_vous: chip('vous'), chip_equipes: chip('equipes'), chip_habitants: chip('habitants'), chip_eleves: chip('eleves'),
+      choose_tous: choose('tous'), choose_vous: choose('vous'), choose_equipes: choose('equipes'), choose_habitants: choose('habitants'), choose_eleves: choose('eleves'),
+      fMail: { ref: this._ref('fMail'), err: bad, inv: bad ? 'true' : 'false', border: bad ? '2px solid #9B3328' : '1px solid #857E71', pad: bad ? '11px 13px' : '12px 14px' },
+      refProfil: this._ref('profil'),
+      lettreEnvoyee: !!st.lettreEnvoyee, lettreForm: !st.lettreEnvoyee, lettreMsg: st.lettreMsg || '',
+      sendLettre,
+      resetLettre: () => this.setState({ lettreEnvoyee: false, lettreErr: {} })
+    };
+  }
+}
+</script>
+</body>
+</html>

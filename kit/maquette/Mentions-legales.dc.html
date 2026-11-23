@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Mentions légales · M42</title>
+<!-- SEO: /mentions-legales/ | title: Mentions légales | M42 | meta: (pas de description nécessaire) | canonical: https://m42.guide/mentions-legales/ | H1 : « Mentions légales » | JSON-LD : WebPage + BreadcrumbList uniquement ; aucune dénomination sociale dans le JSON-LD tant que l'entité éditrice n'est pas tranchée (05, décision n° 6). Sources : LCEN art. 6 ; service-public.fr F37351. Contenu à faire relire par un professionnel du droit avant la mise en ligne. -->
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+/* Base */
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:#F2EEE6;color:#0E0F12;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:#0E0F12}
+::selection{background:#E8E2D7;color:#0E0F12}
+
+/* Focus visible : encre sur clair, or clair sur nuit */
+:focus-visible{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night :focus-visible{outline-color:#C9A46A}
+
+/* Lien d'évitement */
+.m42-skip{position:absolute;left:16px;top:-200px;z-index:100}
+.m42-skip:focus{top:12px}
+
+/* En-tête : collant à partir de 960 px ; filet bas qui apparaît au défilement */
+@media (min-width:960px){.m42-hdr{position:sticky;top:0;z-index:50}}
+@keyframes m42-hdr{from{border-bottom-color:rgba(215,208,195,0)}to{border-bottom-color:#D7D0C3}}
+@supports (animation-timeline: scroll()){
+  .m42-hdr{animation:m42-hdr cubic-bezier(.22,1,.36,1) both;animation-timeline:scroll();animation-range:0px 96px}
+}
+
+/* Navigation : survol souligné encre 1 px, page active soulignée or 2 px */
+.m42-nav{text-decoration:none;text-underline-offset:8px;text-decoration-thickness:1px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-nav:hover{text-decoration-line:underline;text-decoration-color:#0E0F12}
+.m42-nav[aria-current="page"]{text-decoration-line:underline;text-decoration-color:#B08D57;text-decoration-thickness:2px}
+
+/* Boutons */
+.m42-btn,.m42-btn2,.m42-btn2n{transition:background-color 120ms cubic-bezier(.22,1,.36,1),color 120ms cubic-bezier(.22,1,.36,1),border-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-btn:hover{background-color:#B08D57!important;color:#0E0F12!important}
+.m42-btn2:hover{background-color:rgba(14,15,18,.06)!important}
+.m42-btn2n:hover{background-color:rgba(242,238,230,.08)!important;border-color:#C9A46A!important}
+.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:translateY(1px)}
+
+/* Lien fléché */
+.m42-arrow,.m42-cta{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-arrow-i{display:inline-block;transition:transform 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover .m42-arrow-i{transform:translateX(3px)}
+
+/* Carte cliquable : le lien du titre s'étend à toute la carte (pas de <a> englobant) */
+.m42-card{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover{border-color:#0E0F12!important}
+.m42-night .m42-card:hover{border-color:#F2EEE6!important}
+.m42-bar{transform:scaleX(.18);transform-origin:left;transition:transform 320ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover .m42-bar,.m42-card:focus-within .m42-bar{transform:scaleX(1)}
+.m42-card:hover .m42-arrow-i{transform:translateX(3px)}
+.m42-card:hover .m42-cta{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-stretch{text-decoration:none}
+.m42-stretch::after{content:"";position:absolute;inset:0;z-index:1}
+.m42-stretch:focus-visible{outline:none}
+.m42-stretch:focus-visible::after{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night .m42-stretch:focus-visible::after{outline-color:#C9A46A}
+
+/* Liens du pied de page */
+.m42-fl{text-decoration:none;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-fl:hover{text-decoration-line:underline;text-decoration-color:#B08D57;color:#F2EEE6!important}
+
+/* Fil d'Ariane : complet au-dessus de 640 px, parent seul en dessous */
+.m42-bc-full{display:flex}
+.m42-bc-short{display:none}
+@media (max-width:639px){.m42-bc-full{display:none}.m42-bc-short{display:inline-flex}}
+
+/* FAQ */
+.m42-faq summary{list-style:none;cursor:pointer}
+.m42-faq summary::-webkit-details-marker{display:none}
+.m42-faq-i{transition:transform 200ms cubic-bezier(.65,0,.35,1)}
+.m42-faq[open] .m42-faq-i{transform:rotate(45deg)}
+.m42-faq summary:hover h3{text-decoration:underline;text-decoration-color:#B08D57;text-underline-offset:4px}
+
+/* Champs de formulaire */
+.m42-field{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-field:not([aria-invalid="true"]):hover{border-color:#0E0F12!important}
+.m42-field:focus{outline:2px solid #0E0F12;outline-offset:-2px}
+
+/* Petit bouton texte (ex. pause d'animation) */
+.m42-txtbtn{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-txtbtn:hover{color:#0E0F12!important;text-decoration-color:#B08D57}
+
+/* Apparition au défilement : opacité + 8 px, natif, sans JavaScript.
+   Sans prise en charge, le contenu est simplement visible. Jamais au-dessus de la ligne de flottaison. */
+@keyframes m42-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@supports (animation-timeline: view()){
+  .m42-reveal{animation:m42-in cubic-bezier(.22,1,.36,1) both;animation-timeline:view();animation-range:entry 0% entry 45%}
+}
+.m42-still .m42-reveal{animation:none!important;opacity:1!important;transform:none!important}
+
+/* Mouvement réduit : aucune translation, fondus à 0 ms */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:0ms!important;animation-delay:0ms!important;transition-duration:0ms!important}
+  .m42-reveal,.m42-hdr{animation:none!important;opacity:1!important;transform:none!important}
+  .m42-arrow:hover .m42-arrow-i,.m42-card:hover .m42-arrow-i,.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:none!important}
+}
+
+/* Propre à cette page */
+/* Sommaire collant à partir de 960 px seulement (en mobile, il passe au-dessus du texte) */
+.m42-toc{position:static}
+@media (min-width:960px){.m42-toc{position:sticky;top:96px}}
+</style>
+<style>
+/* --- Mobile : menu repliable, symbole d'accueil, coupures de mots --- */
+.m42-menu-t{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.m42-burger{display:none}
+p,li,dd,dt,td,th,h1,h2,h3,summary,label{overflow-wrap:break-word}
+a[href^="mailto:"]{overflow-wrap:anywhere}
+@media (max-width: 959px){
+  .m42-burger{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;border:1px solid #0E0F12;color:#0E0F12;background:transparent;font-family:Inter,system-ui,sans-serif;font-size:15px;font-weight:500;cursor:pointer;user-select:none}
+  .m42-menu-t:focus-visible + .m42-burger{outline:2px solid #7A5C30;outline-offset:2px}
+  .m42-burger .m42-b-close{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-open{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-close{display:inline}
+  header nav[aria-label="Navigation principale"]{display:none !important;width:100%;flex-direction:column !important;align-items:stretch !important;gap:0 !important;padding:4px 0 20px}
+  .m42-menu-t:checked ~ nav[aria-label="Navigation principale"]{display:flex !important}
+  header nav[aria-label="Navigation principale"] a{display:flex !important;align-items:center;min-height:52px;padding:0 !important;border-bottom:1px solid #D7D0C3;font-size:17px !important}
+  header nav[aria-label="Navigation principale"] a.m42-btn{justify-content:center;margin-top:20px;border-bottom:0;min-height:52px;padding:0 20px !important}
+  canvas[data-m42-sky]{max-width:300px !important;margin:0 auto}
+}
+@media (max-width: 480px){
+  canvas[data-m42-sky]{max-width:240px !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="font-family: Inter, system-ui, sans-serif; color: #0E0F12; background: #F2EEE6; min-height: 100vh">
+
+  <a href="#contenu" class="m42-skip" style="background: #0E0F12; color: #F2EEE6; padding: 12px 18px; font-size: 15px; font-weight: 500; text-decoration: none">Aller au contenu</a>
+
+  <!-- En-tête / navigation (gabarit 22) -->
+  <header class="m42-hdr" style="background: rgba(242, 238, 230, 0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid #D7D0C3">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 14px clamp(1rem, 4vw, 3rem); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px">
+      <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; color: #0E0F12; text-decoration: none; min-height: 44px">
+        <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+        <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+      </a>
+      <input type="checkbox" id="m42-menu-t" class="m42-menu-t" aria-controls="m42-menu" aria-label="Ouvrir ou fermer le menu">
+      <label for="m42-menu-t" class="m42-burger"><span class="m42-b-open">Menu</span><span class="m42-b-close">Fermer</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></label>
+      <nav id="m42-menu" aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; font-size: 14px; font-weight: 500; line-height: 1.3">
+        <a href="Conferences.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Conférences</a>
+        <a href="Entreprises.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Entreprises</a>
+        <a href="Collectivites.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Collectivités</a>
+        <a href="Education.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Écoles</a>
+        <a href="Reperes.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Repères</a>
+        <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; background: #0E0F12; color: #F2EEE6; text-decoration: none; font-size: 14px; font-weight: 500">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu" tabindex="-1" style="outline: none">
+
+    <!-- En-tête de page -->
+    <section aria-labelledby="titre-ml">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem); padding-top: clamp(2rem, 4vw, 3rem); padding-bottom: clamp(2.5rem, 5vw, 4rem)">
+        <nav aria-label="Fil d'Ariane" style="margin-bottom: 32px; font-size: 13px; line-height: 1.5; color: #5F5A50">
+          <ol class="m42-bc-full" style="list-style: none; margin: 0; padding: 0; flex-wrap: wrap; align-items: center; gap: 4px 8px">
+            <li><a href="Main.dc.html" style="color: #5F5A50; text-underline-offset: 3px">Accueil</a></li>
+            <li><span aria-hidden="true" style="margin-right: 8px">/</span><span aria-current="page" style="color: #0E0F12; font-weight: 500">Mentions légales</span></li>
+          </ol>
+          <a href="Main.dc.html" class="m42-bc-short m42-arrow" style="align-items: center; gap: 6px; min-height: 44px; color: #0E0F12; font-weight: 500"><span aria-hidden="true">←</span>Accueil</a>
+        </nav>
+        <h1 id="titre-ml" style="margin: 0; display: flex; flex-direction: column; gap: 24px; font-weight: 400">
+          <span style="font-family: Inter, system-ui, sans-serif; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Informations légales</span>
+          <span style="max-width: 14ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 1.6rem + 6vw, 6.5rem); line-height: 0.95; letter-spacing: -0.02em; color: #0E0F12">Mentions légales</span>
+        </h1>
+        <p style="margin: 32px 0 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Qui édite ce site, qui l'héberge, et ce que vous pouvez faire de son contenu.</p>
+        <p style="margin: 16px 0 0; margin: 0; font-size: 14px; line-height: 1.5; color: #5F5A50">Dernière mise à jour : [À COMPLÉTER : date de mise en ligne]</p>
+
+        <!-- ENCADRÉ À DÉCIDER : entité éditrice. Ne nommer AUCUNE société dans la maquette.
+             Rappel interne (01, ligne « Mentions légales » ; 05, décision n° 6) : si la structure de facturation édite le site,
+             la loi impose de la nommer ici. Elle peut rester absente partout ailleurs (pages, JSON-LD). -->
+        <aside aria-labelledby="titre-decider" style="margin-top: 48px; max-width: 52rem; border: 1px solid #7A5C30; border-left: 4px solid #B08D57; background: #F8F6F1; padding: 24px 28px; display: flex; flex-direction: column; gap: 10px">
+          <p style="margin: 0; font-size: 0.75rem; font-weight: 600; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #7A5C30">[À DÉCIDER] avant la mise en ligne</p>
+          <h2 id="titre-decider" style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35">La loi impose de nommer l'entité qui édite ce site</h2>
+          <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">La loi pour la confiance dans l'économie numérique (LCEN, article 6) impose d'identifier clairement l'éditeur d'un site professionnel. Si une société édite le site ou facture les interventions qui y sont présentées, sa dénomination sociale, sa forme juridique, son capital, son siège, son immatriculation et son numéro de TVA doivent figurer ci-dessous, en clair. Si le site est édité par des entrepreneurs individuels, ce sont leurs nom, prénom, adresse et numéro SIREN [À VALIDER].</p>
+          <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Cette section ne peut pas rester vide : l'absence de ces mentions expose l'éditeur à des sanctions pénales. L'entité choisie peut rester absente du reste du site. Faire relire cette page par un professionnel du droit.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Corps : sommaire + sections -->
+    <section aria-label="Contenu des mentions légales" style="padding: 0 0 clamp(4rem, 9vw, 8rem)">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem); display: flex; flex-wrap: wrap; align-items: flex-start; gap: 32px 80px">
+
+        <nav aria-label="Sommaire" class="m42-toc" style="flex: 1 1 220px; min-width: 0; border-top: 1px solid #0E0F12; padding-top: 16px">
+          <p style="margin: 0 0 8px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Sommaire</p>
+          <ol style="list-style: none; margin: 0; padding: 0">
+            <li><a href="#editeur" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">1. Éditeur du site</a></li>
+            <li><a href="#directeur" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">2. Directeur de la publication</a></li>
+            <li><a href="#hebergeur" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">3. Hébergeur</a></li>
+            <li><a href="#propriete" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">4. Propriété intellectuelle</a></li>
+            <li><a href="#credits" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">5. Crédits</a></li>
+            <li><a href="#donnees" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">6. Données personnelles</a></li>
+            <li><a href="#responsabilite" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">7. Liens et responsabilité</a></li>
+            <li><a href="#droit" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">8. Droit applicable</a></li>
+          </ol>
+        </nav>
+
+        <div style="flex: 999 1 560px; min-width: 0; max-width: 52rem">
+
+          <section id="editeur" aria-labelledby="t-editeur" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px; border-top-color: #0E0F12">
+            <h2 id="t-editeur" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">1</span>Éditeur du site</h2>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Le site m42.guide est édité par :</p>
+            <dl style="margin: 0; border-top: 1px solid #D7D0C3">
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Dénomination sociale</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À COMPLÉTER]</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Forme juridique</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À COMPLÉTER : SAS, SARL, entreprise individuelle…]</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Capital social</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À COMPLÉTER : montant]</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Siège social</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À COMPLÉTER : adresse complète]</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Immatriculation</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">RCS [À COMPLÉTER : ville] n° [À COMPLÉTER] · SIREN [À COMPLÉTER]</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">TVA intracommunautaire</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À COMPLÉTER]</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Nom commercial</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">M42 [À VALIDER : dépôt de marque éventuel]</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Contact</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731"><a href="mailto:clara@m42.guide" style="color: #0E0F12; text-underline-offset: 3px">clara@m42.guide</a> · <a href="mailto:paul@m42.guide" style="color: #0E0F12; text-underline-offset: 3px">paul@m42.guide</a> · [À COMPLÉTER : téléphone]</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Médiation de la consommation</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À VALIDER : mention obligatoire seulement si des prestations sont vendues à des particuliers]</dd></div>
+            </dl>
+          </section>
+
+          <section id="directeur" aria-labelledby="t-directeur" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-directeur" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">2</span>Directeur de la publication</h2>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">[À COMPLÉTER : prénom, nom et qualité]. Pour une société, le directeur de la publication est en principe son représentant légal.</p>
+          </section>
+
+          <section id="hebergeur" aria-labelledby="t-hebergeur" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-hebergeur" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">3</span>Hébergeur</h2>
+            <dl style="margin: 0; border-top: 1px solid #D7D0C3">
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Hébergeur</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À COMPLÉTER : dénomination et forme juridique de l'hébergeur, OVH ou autre]</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Adresse</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À COMPLÉTER : adresse du siège de l'hébergeur]</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Téléphone</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À COMPLÉTER]</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Lieu d'hébergement</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À COMPLÉTER : pays du centre de données, de préférence dans l'Union européenne]</dd></div>
+            </dl>
+          </section>
+
+          <section id="propriete" aria-labelledby="t-propriete" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-propriete" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">4</span>Propriété intellectuelle</h2>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">L'ensemble du site est protégé par le droit d'auteur et, le cas échéant, par le droit des marques : textes, nom et symbole M42, mise en page, photographies et vidéos. Sauf mention contraire, ces éléments appartiennent à l'éditeur ou à leurs auteurs. Toute reproduction, représentation ou adaptation, totale ou partielle, sans autorisation écrite préalable est interdite (Code de la propriété intellectuelle, article L. 122-4).</p>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Exception : les éléments de l'<a href="Organisateurs.dc.html" style="color: #0E0F12; text-underline-offset: 3px">espace organisateurs</a> (biographies, photos, logos, texte d'annonce, fiche technique) peuvent être reproduits librement pour annoncer ou présenter une intervention de M42, sans modification et avec le crédit photo indiqué.</p>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Les chiffres et études cités sur le site restent la propriété de leurs auteurs. Ils sont toujours accompagnés de leur source.</p>
+          </section>
+
+          <section id="credits" aria-labelledby="t-credits" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-credits" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">5</span>Crédits</h2>
+            <dl style="margin: 0; border-top: 1px solid #D7D0C3">
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Conception et rédaction</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Clara Peron et Paul Loustaunau</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Photographies</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À COMPLÉTER : nom du photographe]</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Vidéo</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À COMPLÉTER : réalisation]</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Design et développement</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À COMPLÉTER]</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Polices de caractères</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Cormorant (Christian Thalmann) et Inter (Rasmus Andersson), sous licence SIL Open Font License 1.1</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Icônes</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À VALIDER : dessinées pour le site, ou bibliothèque Lucide sous licence ISC]</dd></div>
+            </dl>
+          </section>
+
+          <section id="donnees" aria-labelledby="t-donnees" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-donnees" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">6</span>Données personnelles</h2>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Le traitement des informations que vous nous transmettez par le formulaire de contact, et vos droits sur ces données, sont décrits dans notre <a href="Confidentialite.dc.html" style="color: #0E0F12; text-underline-offset: 3px">politique de confidentialité</a>.</p>
+          </section>
+
+          <section id="responsabilite" aria-labelledby="t-resp" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-resp" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">7</span>Liens et responsabilité</h2>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Le site renvoie vers des sources officielles (par exemple Cybermalveillance.gouv.fr, l'Arcep ou la CNIL). L'éditeur n'a aucun contrôle sur ces sites et n'est pas responsable de leur contenu.</p>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Les informations publiées sont vérifiées et datées. Elles peuvent toutefois évoluer : si vous repérez une erreur, écrivez-nous, nous la corrigerons.</p>
+          </section>
+
+          <section id="droit" aria-labelledby="t-droit" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-droit" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">8</span>Droit applicable</h2>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Les présentes mentions légales sont régies par le droit français.</p>
+          </section>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Pied de page (gabarit 22) -->
+  <footer class="m42-night" style="background: #0E0F12; color: #CFC8BB; border-top: 1px solid #2E2F35">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 64px clamp(1rem, 4vw, 3rem) 32px">
+      <div style="display: flex; flex-wrap: wrap; gap: 48px 64px">
+        <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 16px">
+          <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; color: #F2EEE6; text-decoration: none; min-height: 44px">
+            <svg width="40" height="40" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <circle cx="50" cy="50" r="46" fill="none" stroke="#F2EEE6" stroke-width="2.4"></circle>
+              <polyline points="27,71 27,29 50,55 73,29 73,71" fill="none" stroke="#F2EEE6" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"></polyline>
+              <path d="M50 46 C51 54 51 54 59 55 C51 56 51 56 50 64 C49 56 49 56 41 55 C49 54 49 54 50 46 Z" fill="#B08D57"></path>
+            </svg>
+            <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+            <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+          </a>
+          <p style="margin: 0; font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1.2; color: #F2EEE6">Se repérer dans l'IA.</p>
+        </div>
+        <nav aria-label="Plan du site" style="flex: 3 1 560px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 32px 24px">
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Conférences</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Conf-ia-au-quotidien.dc.html" class="m42-fl" style="color: #CFC8BB">L'IA au quotidien</a></li>
+              <li><a href="Conf-arnaques-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Arnaques et IA</a></li>
+              <li><a href="Conf-desinformation-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Vrai ou faux ?</a></li>
+              <li><a href="Conf-parents-ados-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Parents, ados et IA</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Pour qui</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Entreprises.dc.html" class="m42-fl" style="color: #CFC8BB">Entreprises</a></li>
+              <li><a href="Evenements.dc.html" class="m42-fl" style="color: #CFC8BB">Événements &amp; congrès</a></li>
+              <li><a href="Collectivites.dc.html" class="m42-fl" style="color: #CFC8BB">Collectivités</a></li>
+              <li><a href="Education.dc.html" class="m42-fl" style="color: #CFC8BB">Écoles &amp; familles</a></li>
+              <li><a href="Associations.dc.html" class="m42-fl" style="color: #CFC8BB">Associations</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">M42</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Reperes.dc.html" class="m42-fl" style="color: #CFC8BB">Repères</a></li>
+              <li><a href="A-propos.dc.html" class="m42-fl" style="color: #CFC8BB">À propos</a></li>
+              <li><a href="Organisateurs.dc.html" class="m42-fl" style="color: #CFC8BB">Espace organisateurs</a></li>
+              <li><a href="Contact.dc.html" class="m42-fl" style="color: #CFC8BB">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Légal</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Mentions-legales.dc.html" aria-current="page" class="m42-fl" style="color: #CFC8BB">Mentions légales</a></li>
+              <li><a href="Confidentialite.dc.html" class="m42-fl" style="color: #CFC8BB">Confidentialité</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div style="margin-top: 56px; padding-top: 24px; border-top: 1px solid #2E2F35; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 13px; line-height: 1.5; color: #9A9488">
+        <span>Partout en France, en présentiel ou à distance</span>
+        <span>© 2026 M42.guide</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"animations":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":4100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const anim = this.props.animations ?? true;
+    return {
+      rootClass: anim ? 'm42-anim' : 'm42-still'
+    };
+  }
+}
+</script>
+</body>
+</html>

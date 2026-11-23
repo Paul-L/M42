@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Vrai ou faux ? · M42</title>
+<!-- SEO: /conferences/desinformation-ia/ | title: Conférence fausses infos et IA : vrai ou faux ? | M42 | meta: Images truquées, fausses vidéos, faux sites d'info générés par IA : une méthode de vérification en 4 étapes et le jeu « Vrai ou IA ? ». Strictement neutre. | canonical: https://m42.guide/conferences/desinformation-ia/ | JSON-LD : WebPage + BreadcrumbList + Service (+ FAQPage facultatif) | Neutralité politique stricte : mécanismes seulement, source officielle citée, aucun exemple partisan. [À DÉCIDER n° 10 de 05 : dire ou non sur scène l'attribution officielle de Storm-1516 ; ici, le titre officiel de la source est cité tel quel dans « Sources ».] -->
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+/* Base */
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:#F2EEE6;color:#0E0F12;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:#0E0F12}
+::selection{background:#E8E2D7;color:#0E0F12}
+
+/* Focus visible : encre sur clair, or clair sur nuit */
+:focus-visible{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night :focus-visible{outline-color:#C9A46A}
+
+/* Lien d'évitement */
+.m42-skip{position:absolute;left:16px;top:-200px;z-index:100}
+.m42-skip:focus{top:12px}
+
+/* En-tête : collant à partir de 960 px ; filet bas qui apparaît au défilement */
+@media (min-width:960px){.m42-hdr{position:sticky;top:0;z-index:50}}
+@keyframes m42-hdr{from{border-bottom-color:rgba(215,208,195,0)}to{border-bottom-color:#D7D0C3}}
+@supports (animation-timeline: scroll()){
+  .m42-hdr{animation:m42-hdr cubic-bezier(.22,1,.36,1) both;animation-timeline:scroll();animation-range:0px 96px}
+}
+
+/* Navigation : survol souligné encre 1 px, page active soulignée or 2 px */
+.m42-nav{text-decoration:none;text-underline-offset:8px;text-decoration-thickness:1px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-nav:hover{text-decoration-line:underline;text-decoration-color:#0E0F12}
+.m42-nav[aria-current="page"]{text-decoration-line:underline;text-decoration-color:#B08D57;text-decoration-thickness:2px}
+
+/* Boutons */
+.m42-btn,.m42-btn2,.m42-btn2n{transition:background-color 120ms cubic-bezier(.22,1,.36,1),color 120ms cubic-bezier(.22,1,.36,1),border-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-btn:hover{background-color:#B08D57!important;color:#0E0F12!important}
+.m42-btn2:hover{background-color:rgba(14,15,18,.06)!important}
+.m42-btn2n:hover{background-color:rgba(242,238,230,.08)!important;border-color:#C9A46A!important}
+.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:translateY(1px)}
+
+/* Lien fléché */
+.m42-arrow,.m42-cta{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-arrow-i{display:inline-block;transition:transform 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover .m42-arrow-i{transform:translateX(3px)}
+
+/* Carte cliquable : le lien du titre s'étend à toute la carte (pas de <a> englobant) */
+.m42-card{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover{border-color:#0E0F12!important}
+.m42-night .m42-card:hover{border-color:#F2EEE6!important}
+.m42-bar{transform:scaleX(.18);transform-origin:left;transition:transform 320ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover .m42-bar,.m42-card:focus-within .m42-bar{transform:scaleX(1)}
+.m42-card:hover .m42-arrow-i{transform:translateX(3px)}
+.m42-card:hover .m42-cta{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-stretch{text-decoration:none}
+.m42-stretch::after{content:"";position:absolute;inset:0;z-index:1}
+.m42-stretch:focus-visible{outline:none}
+.m42-stretch:focus-visible::after{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night .m42-stretch:focus-visible::after{outline-color:#C9A46A}
+
+/* Liens du pied de page */
+.m42-fl{text-decoration:none;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-fl:hover{text-decoration-line:underline;text-decoration-color:#B08D57;color:#F2EEE6!important}
+
+/* Fil d'Ariane : complet au-dessus de 640 px, parent seul en dessous */
+.m42-bc-full{display:flex}
+.m42-bc-short{display:none}
+@media (max-width:639px){.m42-bc-full{display:none}.m42-bc-short{display:inline-flex}}
+
+/* FAQ */
+.m42-faq summary{list-style:none;cursor:pointer}
+.m42-faq summary::-webkit-details-marker{display:none}
+.m42-faq-i{transition:transform 200ms cubic-bezier(.65,0,.35,1)}
+.m42-faq[open] .m42-faq-i{transform:rotate(45deg)}
+.m42-faq summary:hover h3{text-decoration:underline;text-decoration-color:#B08D57;text-underline-offset:4px}
+
+/* Champs de formulaire */
+.m42-field{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-field:not([aria-invalid="true"]):hover{border-color:#0E0F12!important}
+.m42-field:focus{outline:2px solid #0E0F12;outline-offset:-2px}
+
+/* Petit bouton texte (ex. pause d'animation) */
+.m42-txtbtn{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-txtbtn:hover{color:#0E0F12!important;text-decoration-color:#B08D57}
+
+/* Apparition au défilement : opacité + 8 px, natif, sans JavaScript.
+   Sans prise en charge, le contenu est simplement visible. Jamais au-dessus de la ligne de flottaison. */
+@keyframes m42-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@supports (animation-timeline: view()){
+  .m42-reveal{animation:m42-in cubic-bezier(.22,1,.36,1) both;animation-timeline:view();animation-range:entry 0% entry 45%}
+}
+.m42-still .m42-reveal{animation:none!important;opacity:1!important;transform:none!important}
+
+/* Mouvement réduit : aucune translation, fondus à 0 ms */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:0ms!important;animation-delay:0ms!important;transition-duration:0ms!important}
+  .m42-reveal,.m42-hdr{animation:none!important;opacity:1!important;transform:none!important}
+  .m42-arrow:hover .m42-arrow-i,.m42-card:hover .m42-arrow-i,.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:none!important}
+}
+/* Pages Conférences : rubrique active pour les sous-pages, transitions des animations au défilement */
+.m42-nav[aria-current="true"]{text-decoration-line:underline;text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-night .m42-txtbtn:hover{color:#F2EEE6!important}
+.m42-fade{transition:opacity 320ms cubic-bezier(.22,1,.36,1),transform 320ms cubic-bezier(.22,1,.36,1),background-color 320ms cubic-bezier(.22,1,.36,1),box-shadow 320ms cubic-bezier(.22,1,.36,1),border-color 320ms cubic-bezier(.22,1,.36,1),color 320ms cubic-bezier(.22,1,.36,1)}
+.m42-move{transition:left 320ms cubic-bezier(.65,0,.35,1)}
+.m42-choice{transition:background-color 120ms cubic-bezier(.22,1,.36,1),color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-choice:hover{background-color:rgba(14,15,18,.06)!important}
+.m42-src a{color:#3A3731;text-underline-offset:3px;word-break:break-word}
+.m42-src a:hover{text-decoration-color:#B08D57}
+@media (max-width:640px){.m42-sv{max-width:100%!important}}
+</style>
+<style>
+/* --- Mobile : menu repliable, symbole d'accueil, coupures de mots --- */
+.m42-menu-t{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.m42-burger{display:none}
+p,li,dd,dt,td,th,h1,h2,h3,summary,label{overflow-wrap:break-word}
+a[href^="mailto:"]{overflow-wrap:anywhere}
+@media (max-width: 959px){
+  .m42-burger{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;border:1px solid #0E0F12;color:#0E0F12;background:transparent;font-family:Inter,system-ui,sans-serif;font-size:15px;font-weight:500;cursor:pointer;user-select:none}
+  .m42-menu-t:focus-visible + .m42-burger{outline:2px solid #7A5C30;outline-offset:2px}
+  .m42-burger .m42-b-close{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-open{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-close{display:inline}
+  header nav[aria-label="Navigation principale"]{display:none !important;width:100%;flex-direction:column !important;align-items:stretch !important;gap:0 !important;padding:4px 0 20px}
+  .m42-menu-t:checked ~ nav[aria-label="Navigation principale"]{display:flex !important}
+  header nav[aria-label="Navigation principale"] a{display:flex !important;align-items:center;min-height:52px;padding:0 !important;border-bottom:1px solid #D7D0C3;font-size:17px !important}
+  header nav[aria-label="Navigation principale"] a.m42-btn{justify-content:center;margin-top:20px;border-bottom:0;min-height:52px;padding:0 20px !important}
+  canvas[data-m42-sky]{max-width:300px !important;margin:0 auto}
+}
+@media (max-width: 480px){
+  canvas[data-m42-sky]{max-width:240px !important}
+}
+</style>
+<style>
+/* --- Mobile : animations au défilement plus compactes --- */
+@media (max-width: 700px){
+  .m42-sv{zoom:.78}
+}
+@media (max-width: 700px) and (max-height: 760px){
+  .m42-sv{zoom:.66}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="font-family: Inter, system-ui, sans-serif; color: #0E0F12; background: #F2EEE6; min-height: 100vh">
+
+  <a href="#contenu" class="m42-skip" style="background: #0E0F12; color: #F2EEE6; padding: 12px 18px; font-size: 15px; font-weight: 500; text-decoration: none">Aller au contenu</a>
+
+  <!-- En-tête / navigation (gabarit 22) -->
+  <header class="m42-hdr" style="background: rgba(242, 238, 230, 0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid #D7D0C3">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 14px clamp(1rem, 4vw, 3rem); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px">
+      <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; color: #0E0F12; text-decoration: none; min-height: 44px">
+        <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+        <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+      </a>
+      <input type="checkbox" id="m42-menu-t" class="m42-menu-t" aria-controls="m42-menu" aria-label="Ouvrir ou fermer le menu">
+      <label for="m42-menu-t" class="m42-burger"><span class="m42-b-open">Menu</span><span class="m42-b-close">Fermer</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></label>
+      <nav id="m42-menu" aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; font-size: 14px; font-weight: 500; line-height: 1.3">
+        <a href="Conferences.dc.html" aria-current="true" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Conférences</a>
+        <a href="Entreprises.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Entreprises</a>
+        <a href="Collectivites.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Collectivités</a>
+        <a href="Education.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Écoles</a>
+        <a href="Reperes.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Repères</a>
+        <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; background: #0E0F12; color: #F2EEE6; text-decoration: none; font-size: 14px; font-weight: 500">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu" tabindex="-1" style="outline: none">
+
+    <!-- En-tête du thème -->
+    <section aria-labelledby="titre-page" style="padding: clamp(2.5rem, 4vw, 3.5rem) 0 clamp(4rem, 7vw, 6rem); border-bottom: 1px solid #D7D0C3">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <nav aria-label="Fil d'Ariane" style="margin-bottom: 32px; font-size: 13px; line-height: 1.5; color: #5F5A50">
+          <ol class="m42-bc-full" style="list-style: none; margin: 0; padding: 0; flex-wrap: wrap; align-items: center; gap: 4px 8px">
+            <li><a href="Main.dc.html" style="color: #5F5A50; text-underline-offset: 3px">Accueil</a></li>
+            <li><span aria-hidden="true" style="margin-right: 8px">/</span><a href="Conferences.dc.html" style="color: #5F5A50; text-underline-offset: 3px">Conférences</a></li>
+            <li><span aria-hidden="true" style="margin-right: 8px">/</span><span aria-current="page" style="color: #0E0F12; font-weight: 500">Vrai ou faux ?</span></li>
+          </ol>
+          <a href="Conferences.dc.html" class="m42-bc-short m42-arrow" style="align-items: center; gap: 6px; min-height: 44px; color: #0E0F12; font-weight: 500"><span aria-hidden="true">←</span>Conférences</a>
+        </nav>
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 48px 64px">
+          <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
+            <h1 id="titre-page" style="margin: 0; display: flex; flex-direction: column; gap: 20px; font-weight: 400">
+              <span style="font-family: Inter, system-ui, sans-serif; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Conférence III · Fausses informations et intelligence artificielle</span>
+              <span style="max-width: 14ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 1.6rem + 6vw, 6.5rem); line-height: 0.95; letter-spacing: -0.02em; color: #0E0F12">Vrai ou faux ?</span>
+            </h1>
+            <p style="margin: 0; max-width: 28ch; font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem); line-height: 1.2; color: #3A3731">Fausses images, fausses vidéos, faux sites d'information : une méthode pour vérifier en quatre étapes.</p>
+            <p style="margin: 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Vous repartez avec une méthode courte pour vérifier une information avant de la croire ou de la partager.</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 16px">
+              <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 14px 24px; box-sizing: border-box; background: #0E0F12; color: #F2EEE6; font-size: 16px; font-weight: 500; line-height: 1.2; text-decoration: none">Programmer cette conférence</a>
+              <a href="#jeu" class="m42-btn2" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 13px 23px; box-sizing: border-box; background: transparent; border: 1px solid #0E0F12; color: #0E0F12; font-size: 16px; font-weight: 500; line-height: 1.2; text-decoration: none">Jouer à « Vrai ou IA ? »</a>
+            </div>
+            <p style="margin: 0; display: inline-flex; align-items: center; gap: 10px; font-size: 14px; line-height: 1.5; color: #3A3731">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v18"></path><path d="M5 7h14"></path><path d="M5 7l-3 7h6z"></path><path d="M19 7l-3 7h6z"></path></svg>
+              Strictement neutre : des mécanismes, jamais de contenu partisan.
+            </p>
+            <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #5F5A50">Par <a href="A-propos.dc.html" style="color: #3A3731; text-underline-offset: 3px">Clara Peron et Paul Loustaunau</a> · Mise à jour : [À COMPLÉTER : date]</p>
+          </div>
+          <dl style="flex: 1 1 300px; min-width: 0; margin: 0; border-top: 1px solid #0E0F12">
+            <div style="padding: 14px 0; border-bottom: 1px solid #D7D0C3"><dt style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Pour qui</dt><dd style="margin: 6px 0 0; font-size: 16px; line-height: 1.5">Grand public, médiathèques, lycées et universités, associations, élus et agents, journalistes locaux</dd></div>
+            <div style="padding: 14px 0; border-bottom: 1px solid #D7D0C3"><dt style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Formats</dt><dd style="margin: 6px 0 0; font-size: 16px; line-height: 1.5">Keynote 45 min à 1 h · Conférence 1 h 30 · Atelier 2 h · Cycle de 4 rendez-vous</dd></div>
+            <div style="padding: 14px 0; border-bottom: 1px solid #D7D0C3"><dt style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Participants</dt><dd style="margin: 6px 0 0; font-size: 16px; line-height: 1.5">Selon la salle · 15 en atelier</dd></div>
+            <div style="padding: 14px 0; border-bottom: 1px solid #D7D0C3"><dt style="font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Où</dt><dd style="margin: 6px 0 0; font-size: 16px; line-height: 1.5">Partout en France, en présentiel ou à distance · en français</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- Animation au défilement : une image virale se dévoile comme générée, avec la méthode en 4 étapes -->
+    <section id="demonstration" data-m42-story="1" class="m42-night" aria-label="Démonstration : une image virale passée à la méthode en 4 étapes" style="position: relative; height: {{storyH}}; background: #0E0F12; color: #F2EEE6">
+      <div style="position: {{stickyPos}}; top: 0; height: {{stickyH}}; box-sizing: border-box; padding: {{stickyPad}}; overflow: hidden; display: flex; flex-direction: column; justify-content: center">
+        <div style="width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem); box-sizing: border-box">
+          <div style="border-top: 1px solid #F2EEE6; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Démonstration · Une image qui circule</div>
+          <div style="margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 40px 72px">
+
+            <!-- la publication -->
+            <div class="m42-sv" style="flex: 0 1 440px; min-width: 0; max-width: 440px">
+              <div style="background: #F8F6F1; color: #0E0F12; border: 1px solid #2E2F35">
+                <div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px">
+                  <span aria-hidden="true" style="flex: none; width: 34px; height: 34px; border-radius: 17px; background: #D7D0C3"></span>
+                  <div style="min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                    <span style="font-size: 14px; font-weight: 600; line-height: 1.3">Info_Littoral_24</span>
+                    <span class="m42-fade" style="align-self: flex-start; font-size: 12px; line-height: 1.4; color: #5F5A50; border-radius: 3px; background-color: {{hA}}; box-shadow: 0 0 0 2px {{rA}}">Compte créé il y a 3 jours</span>
+                  </div>
+                  <span style="margin-left: auto; font-size: 12px; color: #5F5A50">il y a 2 h</span>
+                </div>
+                <p style="margin: 0; padding: 0 14px 12px; font-size: 14.5px; line-height: 1.55"><span class="m42-fade" style="border-radius: 3px; font-weight: 600; background-color: {{hE}}; box-shadow: 0 0 0 2px {{rE}}">INCROYABLE</span> : une baleine géante échouée ce matin sur la grande plage. <span class="m42-fade" style="border-radius: 3px; background-color: {{hE}}; box-shadow: 0 0 0 2px {{rE}}">Partagez avant que ce soit supprimé !</span></p>
+                <div style="position: relative; border-top: 1px solid #D7D0C3; border-bottom: 1px solid #D7D0C3">
+                  <svg viewBox="0 0 320 190" style="display: block; width: 100%; height: auto" role="img" aria-label="Illustration : une baleine échouée sur une plage, deux promeneurs, un panneau. Les repères numérotés signalent les incohérences.">
+                    <rect x="0" y="0" width="320" height="104" fill="#D7D0C3"></rect>
+                    <circle cx="262" cy="32" r="13" fill="#F8F6F1"></circle>
+                    <rect x="0" y="100" width="320" height="34" fill="#857E71"></rect>
+                    <path d="M0 110 q10 -5 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" fill="none" stroke="#F2EEE6" stroke-width="1.5"></path>
+                    <path d="M0 121 q10 -5 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" fill="none" stroke="#F2EEE6" stroke-width="1.5"></path>
+                    <rect x="0" y="132" width="320" height="58" fill="#E8E2D7"></rect>
+                    <path d="M108 150 C112 130 168 124 214 132 C236 136 246 146 248 152 L272 140 L266 156 L276 168 L248 160 C236 168 160 172 124 166 C112 163 106 158 108 150 Z" fill="#3A3731"></path>
+                    <rect x="38" y="122" width="4" height="50" fill="#3A3731"></rect>
+                    <rect x="18" y="98" width="44" height="26" fill="#F8F6F1" stroke="#3A3731" stroke-width="1.5"></rect>
+                    <path d="M23 106 q4 -4 7 0 t6 1 t7 -2 t8 2 M23 114 q5 3 9 -1 t8 2 t9 -1" fill="none" stroke="#3A3731" stroke-width="1.2"></path>
+                    <rect x="286" y="146" width="7" height="20" fill="#0E0F12"></rect>
+                    <circle cx="289.5" cy="141" r="4" fill="#0E0F12"></circle>
+                    <rect x="300" y="148" width="7" height="18" fill="#0E0F12"></rect>
+                    <circle cx="303.5" cy="143" r="4" fill="#0E0F12"></circle>
+                    <path d="M286 166 L268 172 L276 172 L293 166 Z" fill="#857E71"></path>
+                    <path d="M307 166 L318 172 L312 172 L300 166 Z" fill="#857E71"></path>
+                    <g class="m42-fade" style="opacity: {{mk}}">
+                      <path d="M292 170 h12 M298 164 v12" stroke="{{or}}" stroke-width="2.5" stroke-linecap="round"></path>
+                      <circle cx="298" cy="182" r="7" fill="#0E0F12"></circle><text x="298" y="185.5" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#F2EEE6">1</text>
+                      <path d="M34 92 h12 M40 86 v12" stroke="{{or}}" stroke-width="2.5" stroke-linecap="round"></path>
+                      <circle cx="54" cy="86" r="7" fill="#0E0F12"></circle><text x="54" y="89.5" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#F2EEE6">2</text>
+                      <path d="M144 116 h12 M150 110 v12" stroke="{{or}}" stroke-width="2.5" stroke-linecap="round"></path>
+                      <circle cx="164" cy="110" r="7" fill="#0E0F12"></circle><text x="164" y="113.5" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#F2EEE6">3</text>
+                    </g>
+                  </svg>
+                  <div class="m42-fade" aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; display: flex; justify-content: center; padding-top: 10px; opacity: {{aiO}}">
+                    <span style="border: 2px solid {{or}}; color: {{or}}; background: rgba(14, 15, 18, 0.9); padding: 6px 12px; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase">Image générée par IA</span>
+                  </div>
+                </div>
+                <ol class="m42-fade" style="list-style: none; margin: 0; padding: 10px 14px; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; line-height: 1.5; color: #3A3731; opacity: {{mk}}">
+                  <li><strong>1</strong> Ombres dans deux directions</li>
+                  <li><strong>2</strong> Panneau au texte illisible</li>
+                  <li><strong>3</strong> Vagues identiques, répétées</li>
+                </ol>
+                <div style="display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-top: 1px solid #D7D0C3">
+                  <div class="m42-fade" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; font-size: 13px; line-height: 1.4; opacity: {{v1O}}"><span>Recherche d'image inversée</span><span style="font-weight: 600; color: #9B3328">Aucune photo antérieure</span></div>
+                  <div class="m42-fade" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; font-size: 13px; line-height: 1.4; opacity: {{v2O}}"><span>Presse locale, mairie, préfecture</span><span style="font-weight: 600; color: #9B3328">Aucune mention</span></div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px; color: #5F5A50">
+                    <span>12 400 partages</span>
+                    <span class="m42-fade" style="padding: 4px 12px; border: 1px solid #857E71; color: #0E0F12; text-decoration: {{shareStrike}}; opacity: {{shareO}}">Partager</span>
+                  </div>
+                </div>
+              </div>
+              <p style="margin: 12px 0 0; font-size: 12px; line-height: 1.5; color: #9A9488">Exemple fictif construit pour la démonstration. [À REMPLACER par un cas réel documenté, neutre et sourcé]</p>
+            </div>
+
+            <!-- les explications -->
+            <div style="flex: 1 1 400px; min-width: 0; max-width: 540px; display: flex; flex-direction: column; gap: 24px">
+              <sc-if value="{{animated}}" hint-placeholder-val="{{true}}">
+                <div style="display: flex; gap: 28px">
+                  <div aria-hidden="true" style="display: flex; flex-direction: column; gap: 10px; padding-top: 6px">
+                    <sc-for list="{{dots}}" as="d" hint-placeholder-count="5">
+                      <div class="m42-fade" style="width: 8px; height: 8px; border-radius: 4px; background-color: {{d.c}}"></div>
+                    </sc-for>
+                  </div>
+                  <div style="position: relative; flex: 1; min-width: 0; min-height: 320px">
+                    <sc-for list="{{steps}}" as="s" hint-placeholder-count="5">
+                      <div class="m42-fade" aria-hidden="{{s.hid}}" style="position: absolute; inset: 0; display: flex; flex-direction: column; gap: 14px; opacity: {{s.o}}; transform: translateY({{s.y}}px)">
+                        <p style="margin: 0; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: {{s.gold}}">{{s.kicker}}</p>
+                        <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2rem, 1.5rem + 2vw, 3rem); line-height: 1.05">{{s.title}}</p>
+                        <p style="margin: 0; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #CFC8BB">{{s.text}}</p>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{flat}}" hint-placeholder-val="{{false}}">
+                <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+                  <sc-for list="{{steps}}" as="s" hint-placeholder-count="5">
+                    <li style="display: flex; flex-direction: column; gap: 8px; padding: 18px 0; border-top: 1px solid #2E2F35">
+                      <p style="margin: 0; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: {{s.gold}}">{{s.kicker}}</p>
+                      <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05">{{s.title}}</p>
+                      <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #CFC8BB">{{s.text}}</p>
+                    </li>
+                  </sc-for>
+                </ol>
+              </sc-if>
+              <sc-if value="{{canToggle}}" hint-placeholder-val="{{true}}">
+                <button type="button" onClick="{{toggleStory}}" class="m42-txtbtn" style="align-self: flex-start; min-height: 44px; padding: 0; border: 0; background: transparent; color: #CFC8BB; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer">{{toggleLabel}}</button>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- En clair + objectifs -->
+    <section aria-labelledby="titre-objectifs" style="padding: clamp(4rem, 9vw, 8rem) 0">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+      <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Objectifs</div>
+      <h2 id="titre-objectifs" class="m42-reveal" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Ce que vos participants sauront faire</h2>
+      <div class="m42-reveal" style="margin-top: 48px; max-width: 46rem; border-left: 2px solid {{or}}; padding: 4px 0 4px 24px">
+        <p style="margin: 0 0 8px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">En clair</p>
+        <p style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #0E0F12">Un contenu faux circule souvent plus vite qu'un contenu vrai, parce qu'il joue sur l'émotion, l'urgence et ce que l'on pense déjà. Avant de croire ou de partager : je m'arrête, je cherche la source d'origine, je vérifie ailleurs, et dans le doute, je ne partage pas.</p>
+      </div>
+      <ul style="list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 32px 48px">
+        
+        <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #D7D0C3; padding-top: 24px">
+          <span aria-hidden="true" style="font-size: 13px; font-weight: 500; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; color: #7A5C30">01</span>
+          <p style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 500; line-height: 1.45; color: #0E0F12">À la fin, vous saurez pourquoi un contenu faux circule plus vite qu'un contenu vrai : émotion, urgence, confirmation de ce qu'on pense déjà.</p>
+        </li>
+        <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #D7D0C3; padding-top: 24px">
+          <span aria-hidden="true" style="font-size: 13px; font-weight: 500; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; color: #7A5C30">02</span>
+          <p style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 500; line-height: 1.45; color: #0E0F12">À la fin, vous saurez appliquer une méthode de vérification en quatre étapes, sur votre téléphone, en quelques minutes.</p>
+        </li>
+        <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #D7D0C3; padding-top: 24px">
+          <span aria-hidden="true" style="font-size: 13px; font-weight: 500; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; color: #7A5C30">03</span>
+          <p style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 500; line-height: 1.45; color: #0E0F12">À la fin, vous saurez reconnaître les signes d'un faux site d'information.</p>
+        </li>
+      </ul>
+    </div>
+    </section>
+
+    <!-- Chiffres sourcés -->
+    <section class="m42-night" aria-label="Les fausses informations en chiffres" style="background: #0E0F12; color: #F2EEE6">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 64px clamp(1rem, 4vw, 3rem); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 40px 64px; align-items: start">
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 2rem + 4vw, 5rem); line-height: 1; letter-spacing: -0.01em; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap">62 %</p>
+          <p style="margin: 0; max-width: 32ch; font-size: 16px; line-height: 1.5; color: #CFC8BB">des personnes interrogées s'inquiètent des fausses informations en ligne, 4 points de plus en un an.</p>
+          <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #9A9488">Source : Reuters Institute, Digital News Report 2026 (juin 2026)</p>
+        </div>
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 2rem + 4vw, 5rem); line-height: 1; letter-spacing: -0.01em; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; color: {{or}}">100</p>
+          <p style="margin: 0; max-width: 32ch; font-size: 16px; line-height: 1.5; color: #CFC8BB">Plus d'une centaine de noms de domaine imitent des journaux locaux français ; leurs contenus sont générés par IA.</p>
+          <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #9A9488">Source : Viginum (SGDSN), bulletin du 27 février 2026, d'après Banque des Territoires (mars 2026)</p>
+        </div>
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 2rem + 4vw, 5rem); line-height: 1; letter-spacing: -0.01em; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap">20 %</p>
+          <p style="margin: 0; max-width: 32ch; font-size: 16px; line-height: 1.5; color: #CFC8BB">C'est la confiance accordée aux réponses des assistants d'IA, selon la même enquête.</p>
+          <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #9A9488">Source : Reuters Institute, Digital News Report 2026 (juin 2026)</p>
+        </div>
+      </div>
+      <p style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem) 48px; box-sizing: border-box; font-size: 12px; line-height: 1.5; color: #9A9488">[À VÉRIFIER : périmètre exact des deux chiffres du Reuters Institute (France ou ensemble des pays étudiés) avant publication]</p>
+    </section>
+
+    <!-- Programme -->
+    <section id="programme" aria-labelledby="titre-programme" style="padding: clamp(4rem, 9vw, 8rem) 0">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+      <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Programme · conférence de 1 h 30</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 48px 64px">
+        <div style="flex: 1 1 320px; min-width: 0">
+          <h2 id="titre-programme" class="m42-reveal" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Ce que l'on voit ensemble</h2>
+          <p class="m42-reveal" style="margin: 20px 0 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Des cas documentés, un jeu avec la salle, et une méthode que chacun peut appliquer sur son téléphone.</p>
+        </div>
+        <ol style="flex: 999 1 560px; min-width: 0; margin: 24px 0 0; padding: 0; list-style: none; border-bottom: 1px solid #D7D0C3">
+          
+          <li class="m42-reveal" style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px 20px; padding: 24px 0; border-top: 1px solid #0E0F12">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 32px; line-height: 1; color: #7A5C30; font-variant-numeric: lining-nums tabular-nums">01</span>
+            <div style="min-width: 0; display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px">
+                <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Le faux s'est industrialisé</h3>
+                <span style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #5F5A50; font-variant-numeric: tabular-nums">15 min</span>
+              </div>
+              <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Exemple documenté par Viginum : plus d'une centaine de noms de domaine imitant des journaux locaux français, remplis de contenus générés par IA (opération Storm-1516). Uniquement le mécanisme, jamais de contenu partisan.</p>
+            </div>
+          </li>
+          <li class="m42-reveal" style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px 20px; padding: 24px 0; border-top: 1px solid #D7D0C3">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 32px; line-height: 1; color: #7A5C30; font-variant-numeric: lining-nums tabular-nums">02</span>
+            <div style="min-width: 0; display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px">
+                <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Pourquoi ça marche sur nous tous</h3>
+                <span style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #5F5A50; font-variant-numeric: tabular-nums">15 min</span>
+              </div>
+              <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">L'émotion, l'urgence, les bulles. Personne n'est immunisé, quel que soit son niveau d'études.</p>
+            </div>
+          </li>
+          <li class="m42-reveal" style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px 20px; padding: 24px 0; border-top: 1px solid #D7D0C3">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 32px; line-height: 1; color: #7A5C30; font-variant-numeric: lining-nums tabular-nums">03</span>
+            <div style="min-width: 0; display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px">
+                <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Le jeu « Vrai ou IA ? »</h3>
+                <span style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #5F5A50; font-variant-numeric: tabular-nums">20 min</span>
+              </div>
+              <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Images, voix, vidéos, articles. La salle vote, puis on montre les indices.</p>
+            </div>
+          </li>
+          <li class="m42-reveal" style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px 20px; padding: 24px 0; border-top: 1px solid #D7D0C3">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 32px; line-height: 1; color: #7A5C30; font-variant-numeric: lining-nums tabular-nums">04</span>
+            <div style="min-width: 0; display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px">
+                <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">La méthode en 4 étapes</h3>
+                <span style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #5F5A50; font-variant-numeric: tabular-nums">25 min</span>
+              </div>
+              <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Je m'arrête. Je cherche la source d'origine. Je vérifie ailleurs. Je ne partage pas en cas de doute. Démonstration avec des outils gratuits.</p>
+            </div>
+          </li>
+          <li class="m42-reveal" style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px 20px; padding: 24px 0; border-top: 1px solid #D7D0C3">
+            <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: 32px; line-height: 1; color: #7A5C30; font-variant-numeric: lining-nums tabular-nums">05</span>
+            <div style="min-width: 0; display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px">
+                <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Questions et cas de la salle</h3>
+                <span style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #5F5A50; font-variant-numeric: tabular-nums">15 min</span>
+              </div>
+              <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Vérification en direct de contenus apportés par le public, avec un filtre préalable pour rester neutre.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+    </section>
+
+    <!-- Temps fort : le jeu « Vrai ou IA ? » -->
+    <section id="jeu" aria-labelledby="titre-jeu" style="padding: clamp(4rem, 9vw, 8rem) 0; background: #F8F6F1; border-top: 1px solid #D7D0C3; border-bottom: 1px solid #D7D0C3">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+      <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Le temps fort</div>
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px 64px">
+        <div style="flex: 1 1 320px; min-width: 0">
+          <h2 id="titre-jeu" class="m42-reveal" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Le jeu « Vrai ou IA ? »</h2>
+          <p class="m42-reveal" style="margin: 20px 0 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Pendant la conférence, la salle vote sur des images, des voix et des articles, puis on montre les indices. Essayez avec quatre exemples.</p>
+          <p style="margin: 16px 0 0; max-width: 44ch; font-size: 14px; line-height: 1.5; color: #5F5A50">Exemples fictifs et neutres, décrits en texte pour la maquette. En conférence, la salle voit les vrais contenus.</p>
+        </div>
+        <div class="m42-reveal" style="flex: 999 1 520px; min-width: 0; background: #F2EEE6; border: 1px solid #D7D0C3; padding: clamp(24px, 3vw, 40px); display: flex; flex-direction: column; gap: 20px">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">
+            <span>{{g.kind}}</span><span>Exemple {{g.num}} sur {{g.total}}</span>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: center; min-height: 140px; padding: 20px; box-sizing: border-box; text-align: center; background: #E8E2D7; border: 1px dashed #857E71; color: #5F5A50; font-size: 14px; line-height: 1.5">{{g.visual}}</div>
+          <p style="margin: 0; font-family: Cormorant, serif; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); font-weight: 500; line-height: 1.25">{{g.text}}</p>
+          <sc-if value="{{g.open}}" hint-placeholder-val="{{true}}">
+            <div role="group" aria-label="Votre réponse" style="display: flex; flex-wrap: wrap; gap: 12px">
+              <button type="button" onClick="{{g.pickV}}" class="m42-btn2" style="min-height: 48px; padding: 13px 23px; border: 1px solid #0E0F12; border-radius: 0; background: transparent; color: #0E0F12; font-family: inherit; font-size: 16px; font-weight: 500; cursor: pointer">Vrai</button>
+              <button type="button" onClick="{{g.pickI}}" class="m42-btn" style="min-height: 48px; padding: 14px 24px; border: 0; border-radius: 0; background: #0E0F12; color: #F2EEE6; font-family: inherit; font-size: 16px; font-weight: 500; cursor: pointer">IA ou faux</button>
+            </div>
+          </sc-if>
+          <div aria-live="polite">
+            <sc-if value="{{g.done}}" hint-placeholder-val="{{false}}">
+              <div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #D7D0C3; padding-top: 20px">
+                <p style="margin: 0; font-weight: 600; font-size: 17px; line-height: 1.4; color: {{g.verdictColor}}">{{g.verdict}}</p>
+                <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">{{g.explain}}</p>
+                <sc-if value="{{g.last}}" hint-placeholder-val="{{false}}">
+                  <p style="margin: 0; font-size: 15px; font-weight: 500; line-height: 1.5; color: #0E0F12">{{g.score}}</p>
+                </sc-if>
+                <button type="button" onClick="{{g.next}}" class="m42-txtbtn" style="align-self: flex-start; min-height: 44px; padding: 0; border: 0; background: transparent; color: #0E0F12; font-family: inherit; font-size: 16px; font-weight: 500; cursor: pointer">{{g.nextLabel}}</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </div>
+    </section>
+
+    <!-- La méthode en 4 étapes + neutralité -->
+    <section id="methode" aria-labelledby="titre-methode" style="padding: clamp(4rem, 9vw, 8rem) 0">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+      <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">La méthode</div>
+      <h2 id="titre-methode" class="m42-reveal" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Vérifier en quatre étapes, sur son téléphone</h2>
+      <ol style="list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 32px">
+        <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #0E0F12; padding-top: 20px">
+          <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 2rem + 4vw, 5rem); line-height: 1; color: #7A5C30">1</span>
+          <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Je m'arrête</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">L'émotion est un signal. Colère, peur, émerveillement : c'est le moment de ralentir.</p>
+        </li>
+        <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #0E0F12; padding-top: 20px">
+          <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 2rem + 4vw, 5rem); line-height: 1; color: #7A5C30">2</span>
+          <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Je cherche la source d'origine</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Qui l'a publiée en premier ? Depuis quand ce compte, ce site existent-ils ?</p>
+        </li>
+        <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #0E0F12; padding-top: 20px">
+          <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 2rem + 4vw, 5rem); line-height: 1; color: #7A5C30">3</span>
+          <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Je vérifie ailleurs</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Un média reconnu, une source officielle en parlent-ils ? Une seule source ne suffit pas.</p>
+        </li>
+        <li class="m42-reveal" style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #0E0F12; padding-top: 20px">
+          <span aria-hidden="true" style="font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 2rem + 4vw, 5rem); line-height: 1; color: #7A5C30">4</span>
+          <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Dans le doute, je ne partage pas</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Ne pas partager, c'est déjà agir : un faux contenu vit de ses partages.</p>
+        </li>
+      </ol>
+      <p class="m42-reveal" style="margin: 32px 0 0; font-size: 14px; line-height: 1.5; color: #5F5A50">Démonstration avec des outils gratuits, comme la recherche d'image inversée [À COMPLÉTER : liste des outils montrés]. Fiche méthode à emporter [À PRODUIRE].</p>
+      <div class="m42-reveal" style="margin-top: 48px; background: #F8F6F1; border: 1px solid #D7D0C3; border-left: 2px solid #0E0F12; padding: 28px; display: flex; flex-wrap: wrap; gap: 16px 48px">
+        <h3 style="flex: 1 1 240px; margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">La règle : la neutralité</h3>
+        <p style="flex: 3 1 420px; min-width: 0; margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Aucun exemple partisan. Aucun parti ni candidat cité comme cible ou bénéficiaire. La conférence montre comment un faux contenu est fabriqué et pourquoi il circule, cite la source officielle qui l'a documenté, et s'arrête là. Les contenus apportés par la salle sont filtrés avant d'être vérifiés en direct.</p>
+      </div>
+    </div>
+    </section>
+
+    <!-- Formats -->
+    <section id="formats" aria-labelledby="titre-formats" style="padding: clamp(4rem, 9vw, 8rem) 0">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+      <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Formats</div>
+      <h2 id="titre-formats" class="m42-reveal" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Quatre façons de la programmer</h2>
+      <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 32px">
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #0E0F12; padding-top: 20px">
+          <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05">45 min à 1 h</p>
+          <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.3">Keynote ou intervention plénière</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Le faux industrialisé, le jeu « Vrai ou IA ? » en version courte, et la méthode en quatre étapes.</p>
+        </div>
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #0E0F12; padding-top: 20px">
+          <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05">1 h 30</p>
+          <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.3">Conférence</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Le programme complet en cinq parties, avec la vérification en direct de cas apportés par la salle. Jauge selon la salle [À VALIDER : jauge maximale testée].</p>
+        </div>
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #0E0F12; padding-top: 20px">
+          <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05">2 h</p>
+          <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.3">Atelier pratique</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">15 personnes. Vérification en petits groupes sur de vrais cas ; chaque groupe présente sa démarche.</p>
+        </div>
+        <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #0E0F12; padding-top: 20px">
+          <p style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05">4 rendez-vous</p>
+          <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.3">Cycle</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731">Le programme réparti sur quatre séances, pour un groupe stable : classe, médiathèque, association [À VALIDER : rythme et déroulé].</p>
+        </div>
+      </div>
+    </div>
+    </section>
+
+    <!-- Pour qui -->
+    <section id="pour-qui" aria-labelledby="titre-pour-qui" style="padding: clamp(4rem, 9vw, 8rem) 0; background: #E8E2D7">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+      <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Pour qui</div>
+      <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+        <h2 id="titre-pour-qui" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Personne n'est immunisé</h2>
+        <p style="flex: 0 1 52ch; margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Quel que soit son âge ou son niveau d'études. Les exemples s'adaptent à votre public.</p>
+      </div>
+      <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 0 32px; border-top: 1px solid #0E0F12">
+        <div class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 10px; padding: 28px 0 32px; border-bottom: 1px solid #D7D0C3">
+          <h3 style="margin: 0; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Education.dc.html" class="m42-stretch" style="color: #0E0F12">Lycées, universités &amp; enseignants</a><span class="m42-arrow-i" aria-hidden="true" style="font-family: Inter, system-ui, sans-serif; font-size: 20px; font-weight: 400">→</span></h3>
+          <p style="margin: 0; max-width: 46ch; font-size: 16px; line-height: 1.6; color: #3A3731">Apprendre à vérifier avant de croire ou de partager : une intervention d'éducation aux médias et à l'information.</p>
+        </div>
+        <div class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 10px; padding: 28px 0 32px; border-bottom: 1px solid #D7D0C3">
+          <h3 style="margin: 0; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Collectivites.dc.html" class="m42-stretch" style="color: #0E0F12">Collectivités, médiathèques &amp; élus</a><span class="m42-arrow-i" aria-hidden="true" style="font-family: Inter, system-ui, sans-serif; font-size: 20px; font-weight: 400">→</span></h3>
+          <p style="margin: 0; max-width: 46ch; font-size: 16px; line-height: 1.6; color: #3A3731">Pour les habitants, et pour les élus et les agents confrontés aux rumeurs et aux faux contenus.</p>
+        </div>
+        <div class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 10px; padding: 28px 0 32px; border-bottom: 1px solid #D7D0C3">
+          <h3 style="margin: 0; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Evenements.dc.html" class="m42-stretch" style="color: #0E0F12">Événements &amp; salons</a><span class="m42-arrow-i" aria-hidden="true" style="font-family: Inter, system-ui, sans-serif; font-size: 20px; font-weight: 400">→</span></h3>
+          <p style="margin: 0; max-width: 46ch; font-size: 16px; line-height: 1.6; color: #3A3731">Le jeu « Vrai ou IA ? » comme temps fort d'une plénière ou d'un congrès.</p>
+        </div>
+      </div>
+      <div class="m42-reveal" style="margin-top: 48px; background: #F8F6F1; border: 1px solid #D7D0C3; padding: 32px 28px; display: flex; flex-wrap: wrap; gap: 24px 48px">
+        <div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Déclinaison entreprise</p>
+          <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05">Rumeurs, faux contenus et réputation</h3>
+        </div>
+        <div style="flex: 2 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+          <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Pour les directions de la communication, les RH et les comités de direction. Faux avis, fausse vidéo d'un dirigeant, faux communiqué, rumeur interne. On prépare la procédure : qui vérifie, qui décide, qui répond, en combien de temps.</p>
+          <a href="Entreprises.dc.html" class="m42-arrow" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #0E0F12; font-size: 16px; font-weight: 500">Préparer vos équipes aux faux contenus <span class="m42-arrow-i" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+    </section>
+
+    <!-- Questions fréquentes + sources -->
+    <section id="questions" aria-labelledby="titre-faq" style="padding: clamp(4rem, 9vw, 8rem) 0">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+      <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Questions fréquentes</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 48px 64px">
+        <div style="flex: 1 1 300px; min-width: 0">
+          <h2 id="titre-faq" class="m42-reveal" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Avant de programmer cette conférence</h2>
+        </div>
+        <div style="flex: 999 1 560px; min-width: 0; margin-top: 24px; border-top: 1px solid #0E0F12">
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Comment la conférence reste-t-elle neutre sur un sujet aussi sensible ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731"><p style="margin: 0">Elle ne montre que des mécanismes : comment un faux contenu est fabriqué, pourquoi il circule, comment le vérifier. Aucun exemple partisan, aucun parti ni candidat cité comme cible ou bénéficiaire. Les cas documentés sont présentés avec leur source officielle. Les contenus apportés par la salle sont filtrés avant d'être vérifiés en direct, pour rester sur la méthode.</p></div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Qu'est-ce qu'un deepfake ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731"><p style="margin: 0">C'est une image, une vidéo ou un enregistrement de voix fabriqué ou modifié par une IA, pour faire croire qu'une personne a dit ou fait quelque chose. On le repère de moins en moins à l'œil nu. Le réflexe le plus sûr : chercher la source d'origine, et vérifier si des médias reconnus ou des sources officielles confirment l'information.</p></div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Faut-il des outils particuliers pour vérifier une image ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731"><p style="margin: 0">Non. La méthode tient sur un téléphone : s'arrêter, chercher la source d'origine, vérifier ailleurs, ne pas partager dans le doute. Pendant la conférence, des outils gratuits sont montrés, comme la recherche d'image inversée. Mais l'essentiel reste le raisonnement, qui fonctionne même quand les outils se trompent.</p></div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Peut-on l'organiser pour des lycéens ou des étudiants ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731"><p style="margin: 0">Oui. Le programme s'adapte aux lycées et à l'enseignement supérieur : exemples tirés des réseaux sociaux des élèves, jeu « Vrai ou IA ? », vérification en petits groupes en atelier. C'est une intervention d'éducation aux médias et à l'information, qui peut s'inscrire dans un projet d'établissement ou une semaine thématique.</p></div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Existe-t-il une version pour les entreprises ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731"><p style="margin: 0">Oui : « Rumeurs, faux contenus et réputation », pour les directions de la communication, les RH et les comités de direction. Faux avis, fausse vidéo d'un dirigeant, faux communiqué, rumeur interne : on prépare ensemble la procédure, c'est-à-dire qui vérifie, qui décide, qui répond, et en combien de temps.</p></div>
+          </details>
+          <div style="margin-top: 56px">
+            <h3 id="sources" style="margin: 0 0 8px; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Sources</h3>
+            <ul class="m42-src" style="list-style: none; margin: 0; padding: 0; border-bottom: 1px solid #D7D0C3">
+              <li style="padding: 14px 0; border-top: 1px solid #D7D0C3; font-size: 14px; line-height: 1.55; color: #3A3731">SGDSN / Viginum, <em>Analyse du mode opératoire informationnel russe Storm-1516</em>, juin 2025. 77 opérations documentées.<br><a href="https://www.defense.gouv.fr/desinformation/aller-plus-loin/analyses-sgdsn/sgdsn-viginum-analyse-du-mode-operatoire-informationnel-russe-storm" rel="noopener">https://www.defense.gouv.fr/desinformation/aller-plus-loin/analyses-sgdsn/sgdsn-viginum-analyse-du-mode-operatoire-informationnel-russe-storm</a></li>
+              <li style="padding: 14px 0; border-top: 1px solid #D7D0C3; font-size: 14px; line-height: 1.55; color: #3A3731">Banque des Territoires, <em>Viginum confirme deux ingérences numériques étrangères à l'approche des municipales</em>, mars 2026 (d'après le bulletin n° 5 du SGDSN du 27 février 2026).<br><a href="https://www.banquedesterritoires.fr/viginum-confirme-deux-ingerences-numeriques-etrangeres-lapproche-des-municipales" rel="noopener">https://www.banquedesterritoires.fr/viginum-confirme-deux-ingerences-numeriques-etrangeres-lapproche-des-municipales</a></li>
+              <li style="padding: 14px 0; border-top: 1px solid #D7D0C3; font-size: 14px; line-height: 1.55; color: #3A3731">Reuters Institute (Université d'Oxford), <em>Digital News Report 2026</em>, juin 2026.<br><a href="https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2026/dnr-executive-summary" rel="noopener">https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2026/dnr-executive-summary</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    </section>
+
+    <section aria-labelledby="titre-autres" style="padding: clamp(4rem, 9vw, 8rem) 0; background: #E8E2D7">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+    <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Catalogue</div>
+    <h2 id="titre-autres" class="m42-reveal" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Les autres conférences</h2>
+    <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px">
+    <article class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 16px; padding: 32px 28px; background: #F8F6F1; border: 1px solid #D7D0C3">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px"><span style="display: inline-flex; align-items: center; gap: 12px"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">I</span><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 1 C13 10 14 11 23 12 C14 13 13 14 12 23 C11 14 10 13 1 12 C10 11 11 10 12 1 Z" fill="{{or}}"></path></svg><span style="font-size: 13px; font-weight: 500; line-height: 1.4; color: #5F5A50">Conférence signature</span></span><ul aria-label="Publics" style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px"><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Entreprises</li><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Événements</li><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Collectivités</li></ul></div>
+      <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Conf-ia-au-quotidien.dc.html" class="m42-stretch" style="color: #0E0F12">L'IA au quotidien</a></h3>
+      <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Comprendre ce que l'IA sait faire, repérer quand elle invente, et adopter les méthodes des professionnels pour s'en servir sans cesser de réfléchir.</p>
+      <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Keynote · Conférence · Atelier · Cycle</p>
+      <span class="m42-cta" aria-hidden="true" style="margin-top: auto; padding-top: 8px; font-size: 15px; font-weight: 500; color: #0E0F12">Voir la conférence <span class="m42-arrow-i">→</span></span>
+      <span class="m42-bar" aria-hidden="true" style="position: absolute; left: -1px; right: -1px; bottom: -1px; height: 2px; background: {{or}}"></span>
+    </article>
+    <article class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 16px; padding: 32px 28px; background: #F8F6F1; border: 1px solid #D7D0C3">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">II</span><ul aria-label="Publics" style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px"><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Collectivités</li><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Associations</li><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Entreprises</li></ul></div>
+      <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Conf-arnaques-ia.dc.html" class="m42-stretch" style="color: #0E0F12">Arnaques et IA</a></h3>
+      <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Reconnaître une voix clonée, un faux conseiller ou un faux SMS, et savoir exactement quoi faire. Pour les particuliers comme pour les équipes en entreprise.</p>
+      <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Keynote · Conférence · Atelier · Cycle</p>
+      <span class="m42-cta" aria-hidden="true" style="margin-top: auto; padding-top: 8px; font-size: 15px; font-weight: 500; color: #0E0F12">Voir la conférence <span class="m42-arrow-i">→</span></span>
+      <span class="m42-bar" aria-hidden="true" style="position: absolute; left: -1px; right: -1px; bottom: -1px; height: 2px; background: {{or}}"></span>
+    </article>
+    <article class="m42-card m42-reveal" style="position: relative; display: flex; flex-direction: column; gap: 16px; padding: 32px 28px; background: #F8F6F1; border: 1px solid #D7D0C3">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">IV</span><ul aria-label="Publics" style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px"><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Écoles &amp; familles</li><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Associations</li><li style="padding: 4px 10px; border-radius: 2px; background: #E8E2D7; color: #3A3731; font-size: 13px; font-weight: 500; line-height: 1.4">Collectivités</li></ul></div>
+      <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05"><a href="Conf-parents-ados-ia.dc.html" class="m42-stretch" style="color: #0E0F12">Parents, ados et IA</a></h3>
+      <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #3A3731; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">Des repères clairs sur les devoirs, les réseaux sociaux et le cyberharcèlement, et une charte numérique à construire en famille.</p>
+      <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Keynote · Conférence · Atelier · Cycle</p>
+      <span class="m42-cta" aria-hidden="true" style="margin-top: auto; padding-top: 8px; font-size: 15px; font-weight: 500; color: #0E0F12">Voir la conférence <span class="m42-arrow-i">→</span></span>
+      <span class="m42-bar" aria-hidden="true" style="position: absolute; left: -1px; right: -1px; bottom: -1px; height: 2px; background: {{or}}"></span>
+    </article>
+    </div>
+    <a href="Conferences.dc.html" class="m42-arrow" style="margin-top: 32px; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #0E0F12; font-size: 16px; font-weight: 500">Toutes les conférences, les formats et le sur-mesure <span class="m42-arrow-i" aria-hidden="true">→</span></a>
+    </div>
+    </section>
+
+    <section class="m42-night" aria-labelledby="titre-contact" style="background: #0E0F12; color: #F2EEE6; padding: clamp(4rem, 9vw, 8rem) 0; border-top: 1px solid #2E2F35">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #F2EEE6; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Contact</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px 64px">
+          <div style="flex: 1 1 520px; min-width: 0">
+            <h2 id="titre-contact" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Programmer « Vrai ou faux ? » pour votre public</h2>
+            <p style="margin: 20px 0 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #CFC8BB">Médiathèque, établissement, collectivité ou événement : dites-nous qui sera dans la salle, quand, et le format qui vous intéresse. Nous vous répondons sous 48 h.</p>
+          </div>
+          <div style="flex: 0 1 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 16px">
+            <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 14px 24px; box-sizing: border-box; background: #F2EEE6; color: #0E0F12; font-size: 16px; font-weight: 500; line-height: 1.2; text-decoration: none">Organiser cette conférence</a>
+            <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #CFC8BB">Clara : <a href="mailto:clara@m42.guide" style="color: #F2EEE6; text-underline-offset: 3px">clara@m42.guide</a><br>Paul : <a href="mailto:paul@m42.guide" style="color: #F2EEE6; text-underline-offset: 3px">paul@m42.guide</a><br>[À COMPLÉTER : téléphone]</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pied de page (gabarit 22) -->
+  <footer class="m42-night" style="background: #0E0F12; color: #CFC8BB; border-top: 1px solid #2E2F35">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 64px clamp(1rem, 4vw, 3rem) 32px">
+      <div style="display: flex; flex-wrap: wrap; gap: 48px 64px">
+        <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 16px">
+          <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; color: #F2EEE6; text-decoration: none; min-height: 44px">
+            <svg width="40" height="40" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <circle cx="50" cy="50" r="46" fill="none" stroke="#F2EEE6" stroke-width="2.4"></circle>
+              <polyline points="27,71 27,29 50,55 73,29 73,71" fill="none" stroke="#F2EEE6" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"></polyline>
+              <path d="M50 46 C51 54 51 54 59 55 C51 56 51 56 50 64 C49 56 49 56 41 55 C49 54 49 54 50 46 Z" fill="{{or}}"></path>
+            </svg>
+            <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+            <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+          </a>
+          <p style="margin: 0; font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1.2; color: #F2EEE6">Se repérer dans l'IA.</p>
+        </div>
+        <nav aria-label="Plan du site" style="flex: 3 1 560px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 32px 24px">
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Conférences</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Conf-ia-au-quotidien.dc.html" class="m42-fl" style="color: #CFC8BB">L'IA au quotidien</a></li>
+              <li><a href="Conf-arnaques-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Arnaques et IA</a></li>
+              <li><a href="Conf-desinformation-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Vrai ou faux ?</a></li>
+              <li><a href="Conf-parents-ados-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Parents, ados et IA</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Pour qui</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Entreprises.dc.html" class="m42-fl" style="color: #CFC8BB">Entreprises</a></li>
+              <li><a href="Evenements.dc.html" class="m42-fl" style="color: #CFC8BB">Événements &amp; congrès</a></li>
+              <li><a href="Collectivites.dc.html" class="m42-fl" style="color: #CFC8BB">Collectivités</a></li>
+              <li><a href="Education.dc.html" class="m42-fl" style="color: #CFC8BB">Écoles &amp; familles</a></li>
+              <li><a href="Associations.dc.html" class="m42-fl" style="color: #CFC8BB">Associations</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">M42</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Reperes.dc.html" class="m42-fl" style="color: #CFC8BB">Repères</a></li>
+              <li><a href="A-propos.dc.html" class="m42-fl" style="color: #CFC8BB">À propos</a></li>
+              <li><a href="Organisateurs.dc.html" class="m42-fl" style="color: #CFC8BB">Espace organisateurs</a></li>
+              <li><a href="Contact.dc.html" class="m42-fl" style="color: #CFC8BB">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Légal</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Mentions-legales.dc.html" class="m42-fl" style="color: #CFC8BB">Mentions légales</a></li>
+              <li><a href="Confidentialite.dc.html" class="m42-fl" style="color: #CFC8BB">Confidentialité</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div style="margin-top: 56px; padding-top: 24px; border-top: 1px solid #2E2F35; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 13px; line-height: 1.5; color: #9A9488">
+        <span>Partout en France, en présentiel ou à distance</span>
+        <span>© 2026 M42.guide</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"or":{"editor":"color","default":"#B08D57","options":["#B08D57","#C9A227","#D4AF37"]},"animations":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":11700}}'>
+class Component extends DCLogic {
+  get _N() { return 5; }
+  get _K() { return 3.2; }
+
+  // ---- Animation au défilement (technique de ThemeArnaques) ----
+  // Section haute + bloc sticky de hauteur vh ; progression calculée au défilement de window.
+  // prefers-reduced-motion, réglage « animations » à faux ou bouton « Afficher toutes les étapes » : tout à plat.
+  _isStill() {
+    const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return this.props.animations === false || reduce;
+  }
+  _story() {
+    if (!this._tg) this._tg = () => this.setState({ flat: !(this.state && this.state.flat) });
+    const st = this.state || {};
+    const still = this._isStill();
+    const flat = still || !!st.flat;
+    const vh = st.vh || 820;
+    const n = this._N;
+    const step = flat ? n - 1 : Math.min(n - 1, st.step ?? 0);
+    return {
+      step: step,
+      flat: flat,
+      vals: {
+        or: this.props.or ?? '#B08D57',
+        rootClass: still ? 'm42-still' : 'm42-anim',
+        animated: !flat,
+        flat: flat,
+        canToggle: !still,
+        toggleLabel: flat ? "Revenir à l'animation pas à pas" : 'Afficher toutes les étapes',
+        toggleStory: this._tg,
+        storyH: flat ? 'auto' : Math.round(vh * this._K) + 'px',
+        stickyPos: flat ? 'relative' : 'sticky',
+        stickyH: flat ? 'auto' : vh + 'px',
+        stickyPad: flat ? 'clamp(4rem, 9vw, 8rem) 0' : ((typeof window !== 'undefined' && window.innerWidth < 700) ? '16px 0 16px' : '88px 0 32px')
+      }
+    };
+  }
+  _mapSteps(list, step, gold) {
+    return list.map((s, i) => Object.assign({}, s, {
+      n: i + 1,
+      o: i === step ? 1 : 0,
+      y: i === step ? 0 : (i < step ? -16 : 16),
+      hid: i === step ? 'false' : 'true',
+      gold: gold
+    }));
+  }
+  _dots(n, step, gold) {
+    const out = [];
+    for (let i = 0; i < n; i++) out.push({ c: i === step ? gold : (i < step ? '#9A9488' : '#2E2F35') });
+    return out;
+  }
+  componentDidMount() { this._n = 0; this._find(); }
+  componentWillUnmount() { clearTimeout(this._t); this._stopScroll(); }
+  componentDidUpdate(prev) {
+    if (prev.animations !== this.props.animations && this.sec) { this._stopScroll(); this._startScroll(); }
+  }
+  _find() {
+    const sec = document.querySelector('[data-m42-story]');
+    if (!sec) { if (this._n++ < 50) this._t = setTimeout(() => this._find(), 100); return; }
+    this.sec = sec;
+    this._startScroll();
+  }
+  _stopScroll() {
+    if (this._onScroll) { window.removeEventListener('scroll', this._onScroll); window.removeEventListener('resize', this._onResize); }
+  }
+  _startScroll() {
+    this._onResize = () => {
+      const vh = Math.round(Math.max(560, Math.min(window.innerHeight || 820, 1000)));
+      if (!this.state || this.state.vh !== vh) this.setState({ vh: vh });
+      this._onScroll();
+    };
+    this._onScroll = () => {
+      if (this._isStill() || (this.state && this.state.flat)) return;
+      const r = this.sec.getBoundingClientRect(), vh = (this.state && this.state.vh) || 820;
+      const p = Math.max(0, Math.min(0.9999, -r.top / Math.max(1, r.height - vh)));
+      const step = Math.floor(p * this._N);
+      if (!this.state || this.state.step !== step) this.setState({ step: step });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('resize', this._onResize);
+    this._onResize();
+  }
+
+  renderVals() {
+    const S = this._story();
+    const gold = S.vals.or;
+    const step = S.step, flat = S.flat;
+    const st = this.state || {};
+
+    // Une image virale passée à la méthode en 4 étapes
+    const STEPS = [
+      { kicker: 'Exemple', title: 'Une image qui circule.', text: 'Douze mille partages en une matinée. Elle surprend, elle émeut : c\'est exactement pour cela qu\'elle circule.' },
+      { kicker: 'Étape 1 · Je m\'arrête', title: 'L\'émotion est un signal.', text: '« Incroyable », « partagez avant que ce soit supprimé » : la surprise et l\'urgence poussent à partager sans réfléchir. Je m\'arrête.' },
+      { kicker: 'Étape 2 · Je cherche la source d\'origine', title: 'Qui l\'a publiée en premier ?', text: 'Un compte créé il y a trois jours. La recherche d\'image inversée ne trouve aucune photo antérieure, aucun photographe.' },
+      { kicker: 'Étape 3 · Je vérifie ailleurs', title: 'Personne d\'autre n\'en parle.', text: 'Ni la presse locale, ni la mairie, ni la préfecture. Et en regardant de près, l\'image trahit des incohérences : les ombres, le panneau, les vagues.' },
+      { kicker: 'Étape 4 · Dans le doute, je ne partage pas', title: 'Une image générée par IA.', text: 'Les défauts visibles disparaissent peu à peu avec les nouveaux outils. Le meilleur indice reste la source : sans source fiable, pas de partage.' }
+    ];
+    const on = 'rgba(176,141,87,.32)', strong = 'rgba(176,141,87,.45)', off = 'rgba(176,141,87,0)';
+    const at = (k) => flat || step >= k;
+
+    // Jeu « Vrai ou IA ? »
+    const GS = [
+      { kind: 'Photo · réseau social', visual: '[Photo : une foule à un concert, bras levés. Au premier plan, une main à six doigts ; la banderole du fond est illisible.]', text: 'Une photo de concert partagée des milliers de fois, sans nom de photographe.', fake: true, explain: 'Mains, textes et reflets restent des points faibles des images générées. Mais ces défauts disparaissent peu à peu : le meilleur indice reste la source d\'origine.' },
+      { kind: 'Article · site d\'information local', visual: '[Capture : la page d\'accueil de « L\'Écho du Littoral », quarante articles publiés aujourd\'hui, tous signés « La rédaction ».]', text: 'Pas de mentions légales, pas d\'adresse, un nom de domaine créé il y a deux mois.', fake: true, explain: 'C\'est le mécanisme documenté par Viginum : des sites qui imitent la presse locale, remplis de contenus générés par IA. On vérifie les mentions légales, l\'ancienneté du site et la signature des articles.' },
+      { kind: 'Photo · compte officiel', visual: '[Photo : une rue inondée après un orage, publiée par le compte officiel de la préfecture.]', text: 'Reprise par deux journaux locaux, avec le nom du photographe et l\'heure de la prise de vue.', fake: false, explain: 'Source d\'origine identifiée, reprise par des médias reconnus, auteur nommé : la méthode conclut que l\'image est fiable. Douter de tout n\'est pas la solution ; vérifier, si.' },
+      { kind: 'Message vocal · messagerie', visual: '[Audio : 20 secondes, la voix d\'un présentateur connu annonce une « alerte à ne pas manquer » et renvoie vers un lien.]', text: 'Le message circule de groupe en groupe ; aucune chaîne ne l\'a diffusé.', fake: true, explain: 'Une voix peut être imitée par une IA à partir de quelques enregistrements. Une annonce importante passe par les canaux officiels : on vérifie sur le site de la source citée, jamais par le lien du message.' }
+    ];
+    const gi = st.gi ?? 0, gans = st.gans ?? null, gscore = st.gscore ?? 0;
+    const G = GS[gi];
+    const right = gans !== null && ((gans === 'i') === G.fake);
+    const last = gi === GS.length - 1;
+    const pick = (a) => () => this.setState({ gans: a, gscore: gscore + (((a === 'i') === G.fake) ? 1 : 0) });
+    const g = {
+      kind: G.kind, visual: G.visual, text: G.text, num: gi + 1, total: GS.length,
+      open: gans === null, done: gans !== null, last: last && gans !== null,
+      pickV: pick('v'), pickI: pick('i'),
+      verdict: (right ? 'Bien vu. ' : 'Raté. ') + (G.fake ? 'C\'est un contenu faux ou généré par IA.' : 'Ce contenu est vrai.'),
+      verdictColor: right ? '#2E6A4E' : '#9B3328',
+      explain: G.explain,
+      score: 'Votre score : ' + gscore + ' sur ' + GS.length + '. En conférence, la salle vote, puis on montre les indices un par un.',
+      nextLabel: last ? 'Recommencer' : 'Exemple suivant →',
+      next: () => this.setState(last ? { gi: 0, gans: null, gscore: 0 } : { gi: gi + 1, gans: null })
+    };
+
+    return Object.assign(S.vals, {
+      steps: this._mapSteps(STEPS, step, gold),
+      dots: this._dots(STEPS.length, step, gold),
+      g: g,
+      hE: at(1) ? (!flat && step === 1 ? strong : on) : off,
+      rE: (!flat && step === 1) ? gold : off,
+      hA: at(2) ? (!flat && step === 2 ? strong : on) : off,
+      rA: (!flat && step === 2) ? gold : off,
+      v1O: at(2) ? 1 : 0,
+      v2O: at(3) ? 1 : 0,
+      mk: at(3) ? 1 : 0,
+      aiO: at(4) ? 1 : 0,
+      shareStrike: at(4) ? 'line-through' : 'none',
+      shareO: at(4) ? 0.45 : 1
+    });
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Confidentialité · M42</title>
+<!-- SEO: /confidentialite/ | title: Politique de confidentialité | M42 | meta: Comment M42 traite les données transmises via le formulaire de contact : finalité, durée de conservation, destinataires et vos droits. | canonical: https://m42.guide/confidentialite/ | H1 : « Politique de confidentialité » | JSON-LD : WebPage + BreadcrumbList | Choix technique recommandé (11, § 3.4) : aucun traceur soumis à consentement, donc pas de bandeau cookies ; polices auto-hébergées ; vidéo chargée au clic. Texte à faire relire avant la mise en ligne. -->
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+/* Base */
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:#F2EEE6;color:#0E0F12;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:#0E0F12}
+::selection{background:#E8E2D7;color:#0E0F12}
+
+/* Focus visible : encre sur clair, or clair sur nuit */
+:focus-visible{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night :focus-visible{outline-color:#C9A46A}
+
+/* Lien d'évitement */
+.m42-skip{position:absolute;left:16px;top:-200px;z-index:100}
+.m42-skip:focus{top:12px}
+
+/* En-tête : collant à partir de 960 px ; filet bas qui apparaît au défilement */
+@media (min-width:960px){.m42-hdr{position:sticky;top:0;z-index:50}}
+@keyframes m42-hdr{from{border-bottom-color:rgba(215,208,195,0)}to{border-bottom-color:#D7D0C3}}
+@supports (animation-timeline: scroll()){
+  .m42-hdr{animation:m42-hdr cubic-bezier(.22,1,.36,1) both;animation-timeline:scroll();animation-range:0px 96px}
+}
+
+/* Navigation : survol souligné encre 1 px, page active soulignée or 2 px */
+.m42-nav{text-decoration:none;text-underline-offset:8px;text-decoration-thickness:1px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-nav:hover{text-decoration-line:underline;text-decoration-color:#0E0F12}
+.m42-nav[aria-current="page"]{text-decoration-line:underline;text-decoration-color:#B08D57;text-decoration-thickness:2px}
+
+/* Boutons */
+.m42-btn,.m42-btn2,.m42-btn2n{transition:background-color 120ms cubic-bezier(.22,1,.36,1),color 120ms cubic-bezier(.22,1,.36,1),border-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-btn:hover{background-color:#B08D57!important;color:#0E0F12!important}
+.m42-btn2:hover{background-color:rgba(14,15,18,.06)!important}
+.m42-btn2n:hover{background-color:rgba(242,238,230,.08)!important;border-color:#C9A46A!important}
+.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:translateY(1px)}
+
+/* Lien fléché */
+.m42-arrow,.m42-cta{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-arrow-i{display:inline-block;transition:transform 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover .m42-arrow-i{transform:translateX(3px)}
+
+/* Carte cliquable : le lien du titre s'étend à toute la carte (pas de <a> englobant) */
+.m42-card{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover{border-color:#0E0F12!important}
+.m42-night .m42-card:hover{border-color:#F2EEE6!important}
+.m42-bar{transform:scaleX(.18);transform-origin:left;transition:transform 320ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover .m42-bar,.m42-card:focus-within .m42-bar{transform:scaleX(1)}
+.m42-card:hover .m42-arrow-i{transform:translateX(3px)}
+.m42-card:hover .m42-cta{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-stretch{text-decoration:none}
+.m42-stretch::after{content:"";position:absolute;inset:0;z-index:1}
+.m42-stretch:focus-visible{outline:none}
+.m42-stretch:focus-visible::after{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night .m42-stretch:focus-visible::after{outline-color:#C9A46A}
+
+/* Liens du pied de page */
+.m42-fl{text-decoration:none;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-fl:hover{text-decoration-line:underline;text-decoration-color:#B08D57;color:#F2EEE6!important}
+
+/* Fil d'Ariane : complet au-dessus de 640 px, parent seul en dessous */
+.m42-bc-full{display:flex}
+.m42-bc-short{display:none}
+@media (max-width:639px){.m42-bc-full{display:none}.m42-bc-short{display:inline-flex}}
+
+/* FAQ */
+.m42-faq summary{list-style:none;cursor:pointer}
+.m42-faq summary::-webkit-details-marker{display:none}
+.m42-faq-i{transition:transform 200ms cubic-bezier(.65,0,.35,1)}
+.m42-faq[open] .m42-faq-i{transform:rotate(45deg)}
+.m42-faq summary:hover h3{text-decoration:underline;text-decoration-color:#B08D57;text-underline-offset:4px}
+
+/* Champs de formulaire */
+.m42-field{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-field:not([aria-invalid="true"]):hover{border-color:#0E0F12!important}
+.m42-field:focus{outline:2px solid #0E0F12;outline-offset:-2px}
+
+/* Petit bouton texte (ex. pause d'animation) */
+.m42-txtbtn{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-txtbtn:hover{color:#0E0F12!important;text-decoration-color:#B08D57}
+
+/* Apparition au défilement : opacité + 8 px, natif, sans JavaScript.
+   Sans prise en charge, le contenu est simplement visible. Jamais au-dessus de la ligne de flottaison. */
+@keyframes m42-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@supports (animation-timeline: view()){
+  .m42-reveal{animation:m42-in cubic-bezier(.22,1,.36,1) both;animation-timeline:view();animation-range:entry 0% entry 45%}
+}
+.m42-still .m42-reveal{animation:none!important;opacity:1!important;transform:none!important}
+
+/* Mouvement réduit : aucune translation, fondus à 0 ms */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:0ms!important;animation-delay:0ms!important;transition-duration:0ms!important}
+  .m42-reveal,.m42-hdr{animation:none!important;opacity:1!important;transform:none!important}
+  .m42-arrow:hover .m42-arrow-i,.m42-card:hover .m42-arrow-i,.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:none!important}
+}
+
+/* Propre à cette page */
+/* Sommaire collant à partir de 960 px seulement (en mobile, il passe au-dessus du texte) */
+.m42-toc{position:static}
+@media (min-width:960px){.m42-toc{position:sticky;top:96px}}
+</style>
+<style>
+/* --- Mobile : menu repliable, symbole d'accueil, coupures de mots --- */
+.m42-menu-t{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.m42-burger{display:none}
+p,li,dd,dt,td,th,h1,h2,h3,summary,label{overflow-wrap:break-word}
+a[href^="mailto:"]{overflow-wrap:anywhere}
+@media (max-width: 959px){
+  .m42-burger{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;border:1px solid #0E0F12;color:#0E0F12;background:transparent;font-family:Inter,system-ui,sans-serif;font-size:15px;font-weight:500;cursor:pointer;user-select:none}
+  .m42-menu-t:focus-visible + .m42-burger{outline:2px solid #7A5C30;outline-offset:2px}
+  .m42-burger .m42-b-close{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-open{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-close{display:inline}
+  header nav[aria-label="Navigation principale"]{display:none !important;width:100%;flex-direction:column !important;align-items:stretch !important;gap:0 !important;padding:4px 0 20px}
+  .m42-menu-t:checked ~ nav[aria-label="Navigation principale"]{display:flex !important}
+  header nav[aria-label="Navigation principale"] a{display:flex !important;align-items:center;min-height:52px;padding:0 !important;border-bottom:1px solid #D7D0C3;font-size:17px !important}
+  header nav[aria-label="Navigation principale"] a.m42-btn{justify-content:center;margin-top:20px;border-bottom:0;min-height:52px;padding:0 20px !important}
+  canvas[data-m42-sky]{max-width:300px !important;margin:0 auto}
+}
+@media (max-width: 480px){
+  canvas[data-m42-sky]{max-width:240px !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="font-family: Inter, system-ui, sans-serif; color: #0E0F12; background: #F2EEE6; min-height: 100vh">
+
+  <a href="#contenu" class="m42-skip" style="background: #0E0F12; color: #F2EEE6; padding: 12px 18px; font-size: 15px; font-weight: 500; text-decoration: none">Aller au contenu</a>
+
+  <!-- En-tête / navigation (gabarit 22) -->
+  <header class="m42-hdr" style="background: rgba(242, 238, 230, 0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid #D7D0C3">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 14px clamp(1rem, 4vw, 3rem); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px">
+      <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; color: #0E0F12; text-decoration: none; min-height: 44px">
+        <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+        <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+      </a>
+      <input type="checkbox" id="m42-menu-t" class="m42-menu-t" aria-controls="m42-menu" aria-label="Ouvrir ou fermer le menu">
+      <label for="m42-menu-t" class="m42-burger"><span class="m42-b-open">Menu</span><span class="m42-b-close">Fermer</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></label>
+      <nav id="m42-menu" aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; font-size: 14px; font-weight: 500; line-height: 1.3">
+        <a href="Conferences.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Conférences</a>
+        <a href="Entreprises.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Entreprises</a>
+        <a href="Collectivites.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Collectivités</a>
+        <a href="Education.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Écoles</a>
+        <a href="Reperes.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Repères</a>
+        <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; background: #0E0F12; color: #F2EEE6; text-decoration: none; font-size: 14px; font-weight: 500">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu" tabindex="-1" style="outline: none">
+
+    <!-- En-tête de page -->
+    <section aria-labelledby="titre-conf">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem); padding-top: clamp(2rem, 4vw, 3rem); padding-bottom: clamp(2.5rem, 5vw, 4rem)">
+        <nav aria-label="Fil d'Ariane" style="margin-bottom: 32px; font-size: 13px; line-height: 1.5; color: #5F5A50">
+          <ol class="m42-bc-full" style="list-style: none; margin: 0; padding: 0; flex-wrap: wrap; align-items: center; gap: 4px 8px">
+            <li><a href="Main.dc.html" style="color: #5F5A50; text-underline-offset: 3px">Accueil</a></li>
+            <li><span aria-hidden="true" style="margin-right: 8px">/</span><span aria-current="page" style="color: #0E0F12; font-weight: 500">Confidentialité</span></li>
+          </ol>
+          <a href="Main.dc.html" class="m42-bc-short m42-arrow" style="align-items: center; gap: 6px; min-height: 44px; color: #0E0F12; font-weight: 500"><span aria-hidden="true">←</span>Accueil</a>
+        </nav>
+        <h1 id="titre-conf" style="margin: 0; display: flex; flex-direction: column; gap: 24px; font-weight: 400">
+          <span style="font-family: Inter, system-ui, sans-serif; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Vos données personnelles</span>
+          <span style="max-width: 14ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 1.6rem + 6vw, 6.5rem); line-height: 0.95; letter-spacing: -0.02em; color: #0E0F12">Politique de confidentialité</span>
+        </h1>
+        <p style="margin: 32px 0 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Quelles données nous recueillons sur m42.guide, pourquoi, combien de temps, et comment exercer vos droits. Conformément au règlement général sur la protection des données (RGPD) et à la loi Informatique et Libertés.</p>
+        <p style="margin: 16px 0 0; margin: 0; font-size: 14px; line-height: 1.5; color: #5F5A50">Dernière mise à jour : [À COMPLÉTER : date de mise en ligne]</p>
+
+        <!-- En bref -->
+        <div style="margin-top: 48px; max-width: 52rem; background: #F8F6F1; border: 1px solid #D7D0C3; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+          <h2 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35">En bref</h2>
+          <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 16px; line-height: 1.55; color: #3A3731">
+            <li style="display: flex; align-items: baseline; gap: 12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>Nous recueillons seulement ce qui sert à répondre à votre demande.</span></li>
+            <li style="display: flex; align-items: baseline; gap: 12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>Vos données sont lues par Clara Peron et Paul Loustaunau, et par personne d'autre.</span></li>
+            <li style="display: flex; align-items: baseline; gap: 12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>Elles ne sont jamais vendues, louées ni cédées.</span></li>
+            <li style="display: flex; align-items: baseline; gap: 12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>Ce site n'utilise aucun cookie publicitaire ni traceur soumis à consentement [À DÉCIDER, voir section 10].</span></li>
+            <li style="display: flex; align-items: baseline; gap: 12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>Vous pouvez à tout moment accéder à vos données, les corriger ou les faire supprimer.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Corps : sommaire + sections -->
+    <section aria-label="Contenu de la politique de confidentialité" style="padding: 0 0 clamp(4rem, 9vw, 8rem)">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem); display: flex; flex-wrap: wrap; align-items: flex-start; gap: 32px 80px">
+
+        <nav aria-label="Sommaire" class="m42-toc" style="flex: 1 1 220px; min-width: 0; border-top: 1px solid #0E0F12; padding-top: 16px">
+          <p style="margin: 0 0 8px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Sommaire</p>
+          <ol style="list-style: none; margin: 0; padding: 0">
+            <li><a href="#responsable" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">1. Responsable du traitement</a></li>
+            <li><a href="#donnees" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">2. Données recueillies</a></li>
+            <li><a href="#finalites" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">3. Finalités et bases légales</a></li>
+            <li><a href="#durees" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">4. Durées de conservation</a></li>
+            <li><a href="#destinataires" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">5. Destinataires</a></li>
+            <li><a href="#stockage" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">6. Stockage et sécurité</a></li>
+            <li><a href="#droits" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">7. Vos droits</a></li>
+            <li><a href="#cnil" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">8. Réclamation auprès de la CNIL</a></li>
+            <li><a href="#lettre" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">9. Lettre d'information</a></li>
+            <li><a href="#cookies" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">10. Cookies et traceurs</a></li>
+            <li><a href="#modifications" class="m42-arrow" style="display: flex; align-items: center; min-height: 40px; color: #3A3731; text-decoration: none; font-size: 15px; line-height: 1.4">11. Modifications</a></li>
+          </ol>
+        </nav>
+
+        <div style="flex: 999 1 560px; min-width: 0; max-width: 52rem">
+
+          <section id="responsable" aria-labelledby="t-resp" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px; border-top-color: #0E0F12">
+            <h2 id="t-resp" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">1</span>Responsable du traitement</h2>
+            <dl style="margin: 0; border-top: 1px solid #D7D0C3">
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Responsable</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À COMPLÉTER : même entité que l'éditeur désigné dans les <a href="Mentions-legales.dc.html" style="color: #0E0F12; text-underline-offset: 3px">mentions légales</a> : dénomination, adresse]</dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Contact pour vos données</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">[À DÉCIDER : adresse dédiée en @m42.guide] · à défaut : <a href="mailto:clara@m42.guide" style="color: #0E0F12; text-underline-offset: 3px">clara@m42.guide</a> ou <a href="mailto:paul@m42.guide" style="color: #0E0F12; text-underline-offset: 3px">paul@m42.guide</a></dd></div>
+              <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Délégué à la protection des données</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Aucun délégué n'a été désigné, cette désignation n'étant pas obligatoire pour notre activité [À VALIDER].</dd></div>
+            </dl>
+          </section>
+
+          <section id="donnees" aria-labelledby="t-donnees" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-donnees" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">2</span>Données recueillies</h2>
+            <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Par le formulaire de contact</h3>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Obligatoires : nom et prénom, structure, adresse e-mail, type de structure. Utiles pour préparer notre réponse : thème, format, date ou période, ville, nombre de participants. Facultatives : téléphone, budget indicatif, message libre.</p>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Merci de ne pas indiquer dans le message d'informations sensibles (santé, opinions, situation personnelle) : elles ne nous sont pas utiles.</p>
+            <h3 style="margin: 8px 0 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Lors de votre visite</h3>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Comme tout serveur web, le nôtre enregistre des journaux techniques (adresse IP, date et heure, page demandée, navigateur) pour assurer la sécurité et le bon fonctionnement du site. Nous ne les utilisons pas pour vous identifier ni pour vous suivre.</p>
+          </section>
+
+          <section id="finalites" aria-labelledby="t-finalites" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-finalites" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">3</span>Finalités et bases légales</h2>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Chaque usage de vos données repose sur une base légale prévue par l'article 6 du RGPD.</p>
+            <dl style="margin: 0; border-top: 1px solid #D7D0C3">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Répondre à votre demande, préparer et vous envoyer un devis</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Mesures précontractuelles prises à votre demande (article 6.1.b)</dd></div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Organiser et réaliser l'intervention, puis la facturer</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Exécution du contrat (article 6.1.b) et obligations comptables (article 6.1.c)</dd></div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Vous recontacter au sujet d'une intervention passée ou à venir</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Intérêt légitime (article 6.1.f) ; vous pouvez vous y opposer à tout moment</dd></div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Vous envoyer notre lettre d'information, si elle existe</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Votre consentement (article 6.1.a), retirable à tout moment</dd></div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Assurer la sécurité du site (journaux techniques, anti-spam)</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Intérêt légitime (article 6.1.f)</dd></div>
+            </dl>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Nous ne faisons aucun profilage et aucune décision automatisée à partir de vos données.</p>
+          </section>
+
+          <section id="durees" aria-labelledby="t-durees" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-durees" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">4</span>Durées de conservation</h2>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Durées proposées, conformes aux recommandations de la CNIL [À VALIDER].</p>
+            <dl style="margin: 0; border-top: 1px solid #D7D0C3">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Demande restée sans suite</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">3 ans à compter de notre dernier échange, puis suppression</dd></div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Client (intervention réalisée)</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Pendant la relation, puis 3 ans après la dernière intervention. Factures et pièces comptables : 10 ans (obligation légale, Code de commerce, article L. 123-22)</dd></div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Lettre d'information</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Jusqu'à votre désinscription, et au plus 3 ans sans aucune ouverture [À VALIDER]</dd></div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Journaux techniques du serveur</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">6 mois [À VALIDER]</dd></div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3"><dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Mesure d'audience, si elle est mise en place</dt><dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">25 mois au plus pour les données, 13 mois au plus pour les traceurs</dd></div>
+            </dl>
+          </section>
+
+          <section id="destinataires" aria-labelledby="t-dest" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-dest" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">5</span>Destinataires</h2>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Vos données sont lues uniquement par Clara Peron et Paul Loustaunau. Elles ne sont jamais vendues, louées ni cédées à des tiers, et ne servent à aucune publicité.</p>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Nos prestataires techniques y ont accès dans la stricte limite de leur mission, en qualité de sous-traitants liés par contrat :</p>
+            <ul style="margin: 0; padding: 0 0 0 20px; display: flex; flex-direction: column; gap: 6px; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">
+              <li>hébergement du site : [À COMPLÉTER : hébergeur, voir les mentions légales] ;</li>
+              <li>messagerie électronique des adresses @m42.guide : [À COMPLÉTER : fournisseur] ;</li>
+              <li>envoi de la lettre d'information, si elle existe : [À DÉCIDER : outil].</li>
+            </ul>
+          </section>
+
+          <section id="stockage" aria-labelledby="t-stock" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-stock" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">6</span>Stockage et sécurité</h2>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Vos données sont stockées dans l'Union européenne [À VALIDER selon les prestataires retenus]. Aucun transfert hors de l'Union n'est prévu. Si un prestataire devait en effectuer un, il serait encadré par les garanties prévues par le RGPD, et cette page serait mise à jour.</p>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Le site est servi en HTTPS. L'accès aux demandes reçues est réservé à Clara Peron et Paul Loustaunau. Le formulaire est protégé contre les envois automatiques sans outil tiers de type reCAPTCHA.</p>
+          </section>
+
+          <section id="droits" aria-labelledby="t-droits" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-droits" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">7</span>Vos droits</h2>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Vous pouvez à tout moment :</p>
+            <ul style="margin: 0; padding: 0 0 0 20px; display: flex; flex-direction: column; gap: 6px; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">
+              <li>accéder à vos données et en obtenir une copie ;</li>
+              <li>les faire rectifier ou compléter ;</li>
+              <li>les faire effacer ;</li>
+              <li>demander la limitation de leur traitement ;</li>
+              <li>vous opposer à leur traitement fondé sur notre intérêt légitime ;</li>
+              <li>retirer votre consentement, par exemple à la lettre d'information ;</li>
+              <li>recevoir les données que vous nous avez fournies dans un format lisible (portabilité) ;</li>
+              <li>définir des directives sur le sort de vos données après votre décès.</li>
+            </ul>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Pour exercer ces droits, écrivez à [À DÉCIDER : adresse dédiée] ou à <a href="mailto:clara@m42.guide" style="color: #0E0F12; text-underline-offset: 3px">clara@m42.guide</a>. Nous répondons dans un délai d'un mois, prolongeable de deux mois si la demande est complexe ; nous vous prévenons alors. Une pièce d'identité ne vous sera demandée qu'en cas de doute raisonnable sur votre identité.</p>
+          </section>
+
+          <section id="cnil" aria-labelledby="t-cnil" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-cnil" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">8</span>Réclamation auprès de la CNIL</h2>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Si vous estimez, après nous avoir contactés, que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la Commission nationale de l'informatique et des libertés (CNIL) :</p>
+            <p style="margin: 0; font-size: 16px; line-height: 1.65; color: #0E0F12">CNIL, 3 place de Fontenoy, TSA 80715, 75334 Paris Cedex 07<br><a href="https://www.cnil.fr/fr/plaintes" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #0E0F12; text-underline-offset: 3px">Déposer une plainte en ligne sur cnil.fr <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 4h6v6"></path><path d="M20 4l-9 9"></path><path d="M18 14v6H4V6h6"></path></svg></a></p>
+          </section>
+
+          <section id="lettre" aria-labelledby="t-lettre" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-lettre" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">9</span>Lettre d'information</h2>
+            <aside aria-label="Point à décider : lettre d'information" style="border: 1px solid #7A5C30; border-left: 4px solid #B08D57; background: #F8F6F1; padding: 24px 28px; display: flex; flex-direction: column; gap: 10px">
+              <p style="margin: 0; font-size: 0.75rem; font-weight: 600; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #7A5C30">[À DÉCIDER] Lancer une lettre d'information ?</p>
+              <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Si oui, garder ce texte et préciser l'outil d'envoi (section 5). Sinon, supprimer cette section et les mentions de la lettre dans les sections 3 et 4.</p>
+            </aside>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">L'inscription se fait uniquement avec votre accord explicite, par une case à cocher non précochée, et elle est confirmée par un e-mail. Chaque envoi comporte un lien de désinscription en un clic. Nous ne recueillons que votre adresse e-mail et, si vous le souhaitez, votre prénom.</p>
+          </section>
+
+          <section id="cookies" aria-labelledby="t-cookies" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-cookies" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">10</span>Cookies et traceurs</h2>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Ce site n'utilise aucun cookie publicitaire, aucun pixel de réseau social et aucun traceur soumis à votre consentement. C'est pourquoi aucun bandeau ne vous demande d'accepter des cookies. Seuls peuvent être utilisés des cookies strictement nécessaires au fonctionnement du site, qui n'exigent pas de consentement.</p>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Les polices de caractères sont hébergées sur notre propre serveur : votre visite ne transmet aucune donnée à un service de polices tiers [À VALIDER à l'intégration].</p>
+            <aside aria-label="Point à décider : mesure d'audience et vidéo" style="border: 1px solid #7A5C30; border-left: 4px solid #B08D57; background: #F8F6F1; padding: 24px 28px; display: flex; flex-direction: column; gap: 10px">
+              <p style="margin: 0; font-size: 0.75rem; font-weight: 600; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #7A5C30">[À DÉCIDER] Mesure d'audience et vidéo</p>
+              <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto"><strong style="font-weight: 600; color: #0E0F12">Choix recommandé : aucun cookie non essentiel.</strong> Le texte ci-dessus reste alors valable tel quel.</p>
+              <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Si une mesure d'audience est retenue, la configurer pour être exemptée de consentement selon les conditions de la CNIL (par exemple un outil auto-hébergé, données anonymisées, sans recoupement), puis décrire ici l'outil, les données et la durée (section 4). Tout autre outil impose un bandeau de consentement.</p>
+              <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Si la vidéo de présentation est hébergée sur une plateforme tierce, ne la charger qu'au clic, en mode « confidentialité renforcée », et indiquer ici que la plateforme peut alors déposer ses propres traceurs.</p>
+            </aside>
+          </section>
+
+          <section id="modifications" aria-labelledby="t-modif" style="scroll-margin-top: 96px; padding: 40px 0; border-top: 1px solid #D7D0C3; display: flex; flex-direction: column; gap: 16px">
+            <h2 id="t-modif" style="margin: 0; display: flex; align-items: baseline; gap: 16px; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); line-height: 1.1; letter-spacing: -0.01em"><span aria-hidden="true" style="font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1; color: #7A5C30">11</span>Modifications</h2>
+            <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Nous mettons cette page à jour si nos pratiques changent. La date de dernière mise à jour figure en haut de page. Une question ? <a href="Contact.dc.html" style="color: #0E0F12; text-underline-offset: 3px">Écrivez-nous</a>.</p>
+          </section>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Pied de page (gabarit 22) -->
+  <footer class="m42-night" style="background: #0E0F12; color: #CFC8BB; border-top: 1px solid #2E2F35">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 64px clamp(1rem, 4vw, 3rem) 32px">
+      <div style="display: flex; flex-wrap: wrap; gap: 48px 64px">
+        <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 16px">
+          <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; color: #F2EEE6; text-decoration: none; min-height: 44px">
+            <svg width="40" height="40" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <circle cx="50" cy="50" r="46" fill="none" stroke="#F2EEE6" stroke-width="2.4"></circle>
+              <polyline points="27,71 27,29 50,55 73,29 73,71" fill="none" stroke="#F2EEE6" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"></polyline>
+              <path d="M50 46 C51 54 51 54 59 55 C51 56 51 56 50 64 C49 56 49 56 41 55 C49 54 49 54 50 46 Z" fill="#B08D57"></path>
+            </svg>
+            <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+            <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+          </a>
+          <p style="margin: 0; font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1.2; color: #F2EEE6">Se repérer dans l'IA.</p>
+        </div>
+        <nav aria-label="Plan du site" style="flex: 3 1 560px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 32px 24px">
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Conférences</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Conf-ia-au-quotidien.dc.html" class="m42-fl" style="color: #CFC8BB">L'IA au quotidien</a></li>
+              <li><a href="Conf-arnaques-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Arnaques et IA</a></li>
+              <li><a href="Conf-desinformation-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Vrai ou faux ?</a></li>
+              <li><a href="Conf-parents-ados-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Parents, ados et IA</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Pour qui</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Entreprises.dc.html" class="m42-fl" style="color: #CFC8BB">Entreprises</a></li>
+              <li><a href="Evenements.dc.html" class="m42-fl" style="color: #CFC8BB">Événements &amp; congrès</a></li>
+              <li><a href="Collectivites.dc.html" class="m42-fl" style="color: #CFC8BB">Collectivités</a></li>
+              <li><a href="Education.dc.html" class="m42-fl" style="color: #CFC8BB">Écoles &amp; familles</a></li>
+              <li><a href="Associations.dc.html" class="m42-fl" style="color: #CFC8BB">Associations</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">M42</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Reperes.dc.html" class="m42-fl" style="color: #CFC8BB">Repères</a></li>
+              <li><a href="A-propos.dc.html" class="m42-fl" style="color: #CFC8BB">À propos</a></li>
+              <li><a href="Organisateurs.dc.html" class="m42-fl" style="color: #CFC8BB">Espace organisateurs</a></li>
+              <li><a href="Contact.dc.html" class="m42-fl" style="color: #CFC8BB">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Légal</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Mentions-legales.dc.html" class="m42-fl" style="color: #CFC8BB">Mentions légales</a></li>
+              <li><a href="Confidentialite.dc.html" aria-current="page" class="m42-fl" style="color: #CFC8BB">Confidentialité</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div style="margin-top: 56px; padding-top: 24px; border-top: 1px solid #2E2F35; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 13px; line-height: 1.5; color: #9A9488">
+        <span>Partout en France, en présentiel ou à distance</span>
+        <span>© 2026 M42.guide</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"animations":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":6500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const anim = this.props.animations ?? true;
+    return {
+      rootClass: anim ? 'm42-anim' : 'm42-still'
+    };
+  }
+}
+</script>
+</body>
+</html>

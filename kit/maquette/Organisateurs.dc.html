@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Espace organisateurs · M42</title>
+<!-- SEO: /organisateurs/ | title: Espace organisateurs : bios, photos, fiche technique | M42 | meta: Vous organisez une conférence sur l'IA ? Tout pour l'annoncer et la préparer : biographies de 50 et 150 mots, photos HD, logo, descriptifs, texte d'annonce et fiche technique. | canonical: https://m42.guide/organisateurs/ | H1 : « Espace organisateurs » | JSON-LD : WebPage + BreadcrumbList (Accueil > Espace organisateurs) ; VideoObject dès que le showreel existe | Les fichiers (PDF, photos, logos) ne sont liés qu'une fois produits : aucun lien vers un fichier absent. -->
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+/* Base */
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:#F2EEE6;color:#0E0F12;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:#0E0F12}
+::selection{background:#E8E2D7;color:#0E0F12}
+
+/* Focus visible : encre sur clair, or clair sur nuit */
+:focus-visible{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night :focus-visible{outline-color:#C9A46A}
+
+/* Lien d'évitement */
+.m42-skip{position:absolute;left:16px;top:-200px;z-index:100}
+.m42-skip:focus{top:12px}
+
+/* En-tête : collant à partir de 960 px ; filet bas qui apparaît au défilement */
+@media (min-width:960px){.m42-hdr{position:sticky;top:0;z-index:50}}
+@keyframes m42-hdr{from{border-bottom-color:rgba(215,208,195,0)}to{border-bottom-color:#D7D0C3}}
+@supports (animation-timeline: scroll()){
+  .m42-hdr{animation:m42-hdr cubic-bezier(.22,1,.36,1) both;animation-timeline:scroll();animation-range:0px 96px}
+}
+
+/* Navigation : survol souligné encre 1 px, page active soulignée or 2 px */
+.m42-nav{text-decoration:none;text-underline-offset:8px;text-decoration-thickness:1px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-nav:hover{text-decoration-line:underline;text-decoration-color:#0E0F12}
+.m42-nav[aria-current="page"]{text-decoration-line:underline;text-decoration-color:#B08D57;text-decoration-thickness:2px}
+
+/* Boutons */
+.m42-btn,.m42-btn2,.m42-btn2n{transition:background-color 120ms cubic-bezier(.22,1,.36,1),color 120ms cubic-bezier(.22,1,.36,1),border-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-btn:hover{background-color:#B08D57!important;color:#0E0F12!important}
+.m42-btn2:hover{background-color:rgba(14,15,18,.06)!important}
+.m42-btn2n:hover{background-color:rgba(242,238,230,.08)!important;border-color:#C9A46A!important}
+.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:translateY(1px)}
+
+/* Lien fléché */
+.m42-arrow,.m42-cta{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-arrow-i{display:inline-block;transition:transform 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover .m42-arrow-i{transform:translateX(3px)}
+
+/* Carte cliquable : le lien du titre s'étend à toute la carte (pas de <a> englobant) */
+.m42-card{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover{border-color:#0E0F12!important}
+.m42-night .m42-card:hover{border-color:#F2EEE6!important}
+.m42-bar{transform:scaleX(.18);transform-origin:left;transition:transform 320ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover .m42-bar,.m42-card:focus-within .m42-bar{transform:scaleX(1)}
+.m42-card:hover .m42-arrow-i{transform:translateX(3px)}
+.m42-card:hover .m42-cta{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-stretch{text-decoration:none}
+.m42-stretch::after{content:"";position:absolute;inset:0;z-index:1}
+.m42-stretch:focus-visible{outline:none}
+.m42-stretch:focus-visible::after{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night .m42-stretch:focus-visible::after{outline-color:#C9A46A}
+
+/* Liens du pied de page */
+.m42-fl{text-decoration:none;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-fl:hover{text-decoration-line:underline;text-decoration-color:#B08D57;color:#F2EEE6!important}
+
+/* Fil d'Ariane : complet au-dessus de 640 px, parent seul en dessous */
+.m42-bc-full{display:flex}
+.m42-bc-short{display:none}
+@media (max-width:639px){.m42-bc-full{display:none}.m42-bc-short{display:inline-flex}}
+
+/* FAQ */
+.m42-faq summary{list-style:none;cursor:pointer}
+.m42-faq summary::-webkit-details-marker{display:none}
+.m42-faq-i{transition:transform 200ms cubic-bezier(.65,0,.35,1)}
+.m42-faq[open] .m42-faq-i{transform:rotate(45deg)}
+.m42-faq summary:hover h3{text-decoration:underline;text-decoration-color:#B08D57;text-underline-offset:4px}
+
+/* Champs de formulaire */
+.m42-field{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-field:not([aria-invalid="true"]):hover{border-color:#0E0F12!important}
+.m42-field:focus{outline:2px solid #0E0F12;outline-offset:-2px}
+
+/* Petit bouton texte (ex. pause d'animation) */
+.m42-txtbtn{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-txtbtn:hover{color:#0E0F12!important;text-decoration-color:#B08D57}
+
+/* Apparition au défilement : opacité + 8 px, natif, sans JavaScript.
+   Sans prise en charge, le contenu est simplement visible. Jamais au-dessus de la ligne de flottaison. */
+@keyframes m42-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@supports (animation-timeline: view()){
+  .m42-reveal{animation:m42-in cubic-bezier(.22,1,.36,1) both;animation-timeline:view();animation-range:entry 0% entry 45%}
+}
+.m42-still .m42-reveal{animation:none!important;opacity:1!important;transform:none!important}
+
+/* Mouvement réduit : aucune translation, fondus à 0 ms */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:0ms!important;animation-delay:0ms!important;transition-duration:0ms!important}
+  .m42-reveal,.m42-hdr{animation:none!important;opacity:1!important;transform:none!important}
+  .m42-arrow:hover .m42-arrow-i,.m42-card:hover .m42-arrow-i,.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:none!important}
+}
+</style>
+<style>
+/* --- Mobile : menu repliable, symbole d'accueil, coupures de mots --- */
+.m42-menu-t{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.m42-burger{display:none}
+p,li,dd,dt,td,th,h1,h2,h3,summary,label{overflow-wrap:break-word}
+a[href^="mailto:"]{overflow-wrap:anywhere}
+@media (max-width: 959px){
+  .m42-burger{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;border:1px solid #0E0F12;color:#0E0F12;background:transparent;font-family:Inter,system-ui,sans-serif;font-size:15px;font-weight:500;cursor:pointer;user-select:none}
+  .m42-menu-t:focus-visible + .m42-burger{outline:2px solid #7A5C30;outline-offset:2px}
+  .m42-burger .m42-b-close{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-open{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-close{display:inline}
+  header nav[aria-label="Navigation principale"]{display:none !important;width:100%;flex-direction:column !important;align-items:stretch !important;gap:0 !important;padding:4px 0 20px}
+  .m42-menu-t:checked ~ nav[aria-label="Navigation principale"]{display:flex !important}
+  header nav[aria-label="Navigation principale"] a{display:flex !important;align-items:center;min-height:52px;padding:0 !important;border-bottom:1px solid #D7D0C3;font-size:17px !important}
+  header nav[aria-label="Navigation principale"] a.m42-btn{justify-content:center;margin-top:20px;border-bottom:0;min-height:52px;padding:0 20px !important}
+  canvas[data-m42-sky]{max-width:300px !important;margin:0 auto}
+}
+@media (max-width: 480px){
+  canvas[data-m42-sky]{max-width:240px !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="font-family: Inter, system-ui, sans-serif; color: #0E0F12; background: #F2EEE6; min-height: 100vh">
+
+  <a href="#contenu" class="m42-skip" style="background: #0E0F12; color: #F2EEE6; padding: 12px 18px; font-size: 15px; font-weight: 500; text-decoration: none">Aller au contenu</a>
+
+  <!-- En-tête / navigation (gabarit 22) -->
+  <header class="m42-hdr" style="background: rgba(242, 238, 230, 0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid #D7D0C3">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 14px clamp(1rem, 4vw, 3rem); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px">
+      <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; color: #0E0F12; text-decoration: none; min-height: 44px">
+        <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+        <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+      </a>
+      <input type="checkbox" id="m42-menu-t" class="m42-menu-t" aria-controls="m42-menu" aria-label="Ouvrir ou fermer le menu">
+      <label for="m42-menu-t" class="m42-burger"><span class="m42-b-open">Menu</span><span class="m42-b-close">Fermer</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></label>
+      <nav id="m42-menu" aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; font-size: 14px; font-weight: 500; line-height: 1.3">
+        <a href="Conferences.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Conférences</a>
+        <a href="Entreprises.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Entreprises</a>
+        <a href="Collectivites.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Collectivités</a>
+        <a href="Education.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Écoles</a>
+        <a href="Reperes.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Repères</a>
+        <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; background: #0E0F12; color: #F2EEE6; text-decoration: none; font-size: 14px; font-weight: 500">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu" tabindex="-1" style="outline: none">
+
+    <!-- Statut de copie, annoncé aux lecteurs d'écran -->
+    <p role="status" aria-live="polite" style="position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0">{{statut}}</p>
+
+    <!-- En-tête de page + vidéo -->
+    <section aria-labelledby="titre-orga">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem); padding-top: clamp(2rem, 4vw, 3rem); padding-bottom: clamp(4rem, 7vw, 6rem)">
+        <nav aria-label="Fil d'Ariane" style="margin-bottom: 32px; font-size: 13px; line-height: 1.5; color: #5F5A50">
+          <ol class="m42-bc-full" style="list-style: none; margin: 0; padding: 0; flex-wrap: wrap; align-items: center; gap: 4px 8px">
+            <li><a href="Main.dc.html" style="color: #5F5A50; text-underline-offset: 3px">Accueil</a></li>
+            <li><span aria-hidden="true" style="margin-right: 8px">/</span><span aria-current="page" style="color: #0E0F12; font-weight: 500">Espace organisateurs</span></li>
+          </ol>
+          <a href="Main.dc.html" class="m42-bc-short m42-arrow" style="align-items: center; gap: 6px; min-height: 44px; color: #0E0F12; font-weight: 500"><span aria-hidden="true">←</span>Accueil</a>
+        </nav>
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px 64px">
+          <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 32px">
+            <h1 id="titre-orga" style="margin: 0; display: flex; flex-direction: column; gap: 24px; font-weight: 400">
+              <span style="font-family: Inter, system-ui, sans-serif; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Kit organisateur</span>
+              <span style="max-width: 14ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 1.6rem + 6vw, 6.5rem); line-height: 0.95; letter-spacing: -0.02em; color: #0E0F12">Espace organisateurs</span>
+            </h1>
+            <p style="margin: 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Vous organisez une intervention : annonce à publier, fiche technique pour la salle, textes de présentation, photos et logos sont ici, au même endroit. Les textes se copient en un clic ; les photos et les logos se téléchargent en haute définition.</p>
+            <nav aria-label="Sur cette page" style="border-top: 1px solid #0E0F12">
+              <ul style="list-style: none; margin: 0; padding: 0; font-size: 16px; font-weight: 500; line-height: 1.4">
+                <li style="border-bottom: 1px solid #D7D0C3"><a href="#biographies" class="m42-arrow" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; color: #0E0F12; text-decoration: none">Biographies à copier <span class="m42-arrow-i" aria-hidden="true">↓</span></a></li>
+                <li style="border-bottom: 1px solid #D7D0C3"><a href="#photos" class="m42-arrow" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; color: #0E0F12; text-decoration: none">Photos haute définition <span class="m42-arrow-i" aria-hidden="true">↓</span></a></li>
+                <li style="border-bottom: 1px solid #D7D0C3"><a href="#fiche-technique" class="m42-arrow" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; color: #0E0F12; text-decoration: none">Fiche technique <span class="m42-arrow-i" aria-hidden="true">↓</span></a></li>
+                <li style="border-bottom: 1px solid #D7D0C3"><a href="#annonce" class="m42-arrow" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; color: #0E0F12; text-decoration: none">Texte d'annonce prêt à publier <span class="m42-arrow-i" aria-hidden="true">↓</span></a></li>
+                <li style="border-bottom: 1px solid #D7D0C3"><a href="#logos" class="m42-arrow" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; color: #0E0F12; text-decoration: none">Logos <span class="m42-arrow-i" aria-hidden="true">↓</span></a></li>
+                <li style="border-bottom: 1px solid #D7D0C3"><a href="#contact-presse" class="m42-arrow" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; color: #0E0F12; text-decoration: none">Contact presse <span class="m42-arrow-i" aria-hidden="true">↓</span></a></li>
+              </ul>
+            </nav>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">[À PRODUIRE : kit complet en PDF. Le bouton « Télécharger le kit organisateur » n'apparaît qu'une fois le fichier en ligne.]</p>
+          </div>
+          <figure style="flex: 999 1 560px; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: 12px">
+            <div style="aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; text-align: center; background: #E8E2D7; border: 1px dashed #857E71; color: #5F5A50; font-size: 13px; line-height: 1.5">[Vidéo 60–90 s à tourner]<br>Extrait de conférence sous-titré en français, image d'aperçu puis lecture au clic</div>
+            <figcaption style="margin: 0; font-size: 14px; line-height: 1.5; color: #5F5A50">Showreel M42, 60 à 90 secondes. Lien à partager : [À COMPLÉTER : URL de la vidéo]. Transcription sous la vidéo [À PRODUIRE].</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Biographies à copier (Clara avant Paul) -->
+    <section id="biographies" aria-labelledby="titre-bios" style="background: #E8E2D7; padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Biographies</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-bios" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Présenter les intervenants</h2>
+          <p style="flex: 0 1 52ch; margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Prêtes à coller dans un programme, un communiqué ou une page d'inscription. Merci de garder l'ordre : Clara Peron, puis Paul Loustaunau.</p>
+        </div>
+
+        <!-- Présentation du duo -->
+        <article class="m42-reveal" style="margin-top: 48px; background: #F8F6F1; border: 1px solid #D7D0C3; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+            <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px">
+              <h3 style="margin: 0; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -0.01em">Le duo M42</h3>
+              <span style="font-size: 13px; line-height: 1.5; color: #5F5A50">{{duo.mots}}</span>
+            </div>
+            <button type="button" onClick="{{duo.copier}}" aria-label="{{duo.aria}}" class="m42-btn2" style="flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; min-width: 112px; padding: 0 16px; box-sizing: border-box; border: 1px solid #0E0F12; border-radius: 0; background: transparent; color: #0E0F12; font-family: inherit; font-size: 14px; font-weight: 500; line-height: 1.2; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="12" height="12"></rect><path d="M5 15H3V3h12v2"></path></svg><span>{{duo.label}}</span></button>
+          </div>
+          <p style="margin: 0; max-width: 80ch; white-space: pre-line; font-size: 16px; line-height: 1.65; color: #0E0F12">{{duo.texte}}</p>
+        </article>
+
+        <div style="margin-top: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 24px">
+
+          <!-- Clara Peron -->
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 24px">
+            <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05; padding-top: 16px; border-top: 1px solid #0E0F12">Clara Peron</h3>
+            <article style="background: #F8F6F1; border: 1px solid #D7D0C3; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+              <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+                <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px">
+                  <h4 style="margin: 0; font-size: 16px; font-weight: 600; line-height: 1.4">Biographie courte</h4>
+                  <span style="font-size: 13px; line-height: 1.5; color: #5F5A50">{{claraCourte.mots}}</span>
+                </div>
+                <button type="button" onClick="{{claraCourte.copier}}" aria-label="{{claraCourte.aria}}" class="m42-btn2" style="flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; min-width: 112px; padding: 0 16px; box-sizing: border-box; border: 1px solid #0E0F12; border-radius: 0; background: transparent; color: #0E0F12; font-family: inherit; font-size: 14px; font-weight: 500; line-height: 1.2; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="12" height="12"></rect><path d="M5 15H3V3h12v2"></path></svg><span>{{claraCourte.label}}</span></button>
+              </div>
+              <p style="margin: 0; white-space: pre-line; font-size: 16px; line-height: 1.65; color: #0E0F12">{{claraCourte.texte}}</p>
+            </article>
+            <article style="background: #F8F6F1; border: 1px solid #D7D0C3; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+              <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+                <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px">
+                  <h4 style="margin: 0; font-size: 16px; font-weight: 600; line-height: 1.4">Biographie longue</h4>
+                  <span style="font-size: 13px; line-height: 1.5; color: #5F5A50">{{claraLongue.mots}}</span>
+                </div>
+                <button type="button" onClick="{{claraLongue.copier}}" aria-label="{{claraLongue.aria}}" class="m42-btn2" style="flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; min-width: 112px; padding: 0 16px; box-sizing: border-box; border: 1px solid #0E0F12; border-radius: 0; background: transparent; color: #0E0F12; font-family: inherit; font-size: 14px; font-weight: 500; line-height: 1.2; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="12" height="12"></rect><path d="M5 15H3V3h12v2"></path></svg><span>{{claraLongue.label}}</span></button>
+              </div>
+              <p style="margin: 0; white-space: pre-line; font-size: 16px; line-height: 1.65; color: #0E0F12">{{claraLongue.texte}}</p>
+            </article>
+          </div>
+
+          <!-- Paul Loustaunau : formulation prudente tant que l'accord écrit de l'employeur n'est pas obtenu.
+               VARIANTE après accord (dans js : _textes()) : « Paul Loustaunau développe des logiciels depuis 17 ans. Aujourd'hui Lead IA dans un grand groupe de logiciels, il conçoit et déploie l'IA et des agents autonomes au quotidien. » Ne jamais nommer l'employeur. -->
+          <div class="m42-reveal" style="display: flex; flex-direction: column; gap: 24px">
+            <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05; padding-top: 16px; border-top: 1px solid #0E0F12">Paul Loustaunau</h3>
+            <article style="background: #F8F6F1; border: 1px solid #D7D0C3; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+              <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+                <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px">
+                  <h4 style="margin: 0; font-size: 16px; font-weight: 600; line-height: 1.4">Biographie courte</h4>
+                  <span style="font-size: 13px; line-height: 1.5; color: #5F5A50">{{paulCourte.mots}}</span>
+                </div>
+                <button type="button" onClick="{{paulCourte.copier}}" aria-label="{{paulCourte.aria}}" class="m42-btn2" style="flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; min-width: 112px; padding: 0 16px; box-sizing: border-box; border: 1px solid #0E0F12; border-radius: 0; background: transparent; color: #0E0F12; font-family: inherit; font-size: 14px; font-weight: 500; line-height: 1.2; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="12" height="12"></rect><path d="M5 15H3V3h12v2"></path></svg><span>{{paulCourte.label}}</span></button>
+              </div>
+              <p style="margin: 0; white-space: pre-line; font-size: 16px; line-height: 1.65; color: #0E0F12">{{paulCourte.texte}}</p>
+            </article>
+            <article style="background: #F8F6F1; border: 1px solid #D7D0C3; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+              <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+                <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px">
+                  <h4 style="margin: 0; font-size: 16px; font-weight: 600; line-height: 1.4">Biographie longue</h4>
+                  <span style="font-size: 13px; line-height: 1.5; color: #5F5A50">{{paulLongue.mots}}</span>
+                </div>
+                <button type="button" onClick="{{paulLongue.copier}}" aria-label="{{paulLongue.aria}}" class="m42-btn2" style="flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; min-width: 112px; padding: 0 16px; box-sizing: border-box; border: 1px solid #0E0F12; border-radius: 0; background: transparent; color: #0E0F12; font-family: inherit; font-size: 14px; font-weight: 500; line-height: 1.2; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="12" height="12"></rect><path d="M5 15H3V3h12v2"></path></svg><span>{{paulLongue.label}}</span></button>
+              </div>
+              <p style="margin: 0; white-space: pre-line; font-size: 16px; line-height: 1.65; color: #0E0F12">{{paulLongue.texte}}</p>
+            </article>
+          </div>
+
+        </div>
+        <p class="m42-reveal" style="margin: 24px 0 0; margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Les mentions entre crochets sont à finaliser avant la mise en ligne.</p>
+      </div>
+    </section>
+
+    <!-- Photos HD -->
+    <section id="photos" aria-labelledby="titre-photos" style="padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Photos</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-photos" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Photos haute définition</h2>
+          <p style="flex: 0 1 52ch; margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Libres d'usage pour annoncer une intervention de M42, avec le crédit photo. Merci de ne pas les retoucher.</p>
+        </div>
+        <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 32px 24px; align-items: start">
+          <figure class="m42-reveal" style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+            <div style="aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; text-align: center; background: #E8E2D7; border: 1px dashed #857E71; color: #5F5A50; font-size: 13px; line-height: 1.5">[Photo : portrait de Clara Peron, de face, regard caméra, 4:5]</div>
+            <figcaption style="display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 15px; font-weight: 600; line-height: 1.4">Clara Peron, portrait</span>
+              <span style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">JPEG haute définition · [À PRODUIRE]</span>
+            </figcaption>
+          </figure>
+          <figure class="m42-reveal" style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+            <div style="aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; text-align: center; background: #E8E2D7; border: 1px dashed #857E71; color: #5F5A50; font-size: 13px; line-height: 1.5">[Photo : portrait de Paul Loustaunau, de trois quarts, 4:5]</div>
+            <figcaption style="display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 15px; font-weight: 600; line-height: 1.4">Paul Loustaunau, portrait</span>
+              <span style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">JPEG haute définition · [À PRODUIRE]</span>
+            </figcaption>
+          </figure>
+          <figure class="m42-reveal" style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+            <div style="aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; text-align: center; background: #E8E2D7; border: 1px dashed #857E71; color: #5F5A50; font-size: 13px; line-height: 1.5">[Photo : Clara (à gauche) et Paul (à droite) sur scène, en démonstration, public en amorce floue, existe aussi en 3:2 et 16:9]</div>
+            <figcaption style="display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 15px; font-weight: 600; line-height: 1.4">Le duo sur scène</span>
+              <span style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">JPEG haute définition, 3 formats · [À PRODUIRE]</span>
+            </figcaption>
+          </figure>
+          <figure class="m42-reveal" style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+            <div style="aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; text-align: center; background: #E8E2D7; border: 1px dashed #857E71; color: #5F5A50; font-size: 13px; line-height: 1.5">[Photo : Clara et Paul en échange avec la salle, une question, un geste, 4:5 et 3:2]</div>
+            <figcaption style="display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 15px; font-weight: 600; line-height: 1.4">Le duo avec la salle</span>
+              <span style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">JPEG haute définition · [À PRODUIRE]</span>
+            </figcaption>
+          </figure>
+        </div>
+        <p class="m42-reveal" style="margin: 24px 0 0; margin: 0; font-size: 14px; line-height: 1.5; color: #5F5A50">Crédit obligatoire : © [À COMPLÉTER : nom du photographe]. Toutes les photos suivent le même étalonnage ; aucune image générée par IA.</p>
+      </div>
+    </section>
+
+    <!-- Fiche technique -->
+    <section id="fiche-technique" aria-labelledby="titre-fiche" style="background: #E8E2D7; padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Fiche technique</div>
+        <div style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px 64px">
+          <div class="m42-reveal" style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+            <h2 id="titre-fiche" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Ce qu'il faut prévoir sur place</h2>
+            <p style="margin: 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Une configuration simple, que la plupart des salles ont déjà. Nous vérifions chaque point avec vous lors de l'échange de préparation.</p>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">[À PRODUIRE : fiche technique en PDF, version HTML ci-contre identique.]</p>
+          </div>
+          <dl class="m42-reveal" style="flex: 999 1 560px; min-width: 0; margin: 0; border-top: 1px solid #0E0F12">
+            <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Salle</dt>
+              <dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Public assis face à l'écran. Jauge selon la salle [À VALIDER : jauge maximale testée]. Pour un atelier : jusqu'à 15 personnes, tables en îlots.</dd>
+            </div>
+            <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Image</dt>
+              <dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Vidéoprojecteur et écran, avec entrée HDMI, visibles de toute la salle.</dd>
+            </div>
+            <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Son</dt>
+              <dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Deux micros sans fil : l'intervention se fait à deux voix.</dd>
+            </div>
+            <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Connexion internet</dt>
+              <dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Indispensable pour les démonstrations en direct. Filaire de préférence. Wi-Fi accessible au public si les participants votent depuis leur téléphone.</dd>
+            </div>
+            <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Retour écran</dt>
+              <dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Souhaité, face aux intervenants.</dd>
+            </div>
+            <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Installation</dt>
+              <dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">30 min avant l'arrivée du public, pour tester le son, l'image et la connexion.</dd>
+            </div>
+            <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Durée</dt>
+              <dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Keynote : 45 min à 1 h · Conférence : 1 h 30 · Atelier : 2 h · Cycle : 4 rendez-vous · Demi-journée sur mesure.</dd>
+            </div>
+            <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Nous apportons</dt>
+              <dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Nos ordinateurs et nos adaptateurs [À VALIDER], et une vidéo de secours pour chaque démonstration [À PRODUIRE].</dd>
+            </div>
+            <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">À distance</dt>
+              <dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Sur l'outil de visioconférence de votre choix [À VALIDER], avec un test technique avant la séance.</dd>
+            </div>
+            <div style="display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 32px; padding: 18px 0; border-bottom: 1px solid #D7D0C3">
+              <dt style="margin: 0; font-size: 15px; font-weight: 600; line-height: 1.5; color: #0E0F12">Langue</dt>
+              <dd style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">Interventions en français.</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- Texte d'annonce prêt à publier -->
+    <section id="annonce" aria-labelledby="titre-annonce" style="padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Annonce</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-annonce" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Texte d'annonce prêt à publier</h2>
+          <p style="flex: 0 1 52ch; margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Copiez, puis remplacez les éléments entre crochets. Version longue pour un programme ou un bulletin municipal, version courte pour les réseaux sociaux.</p>
+        </div>
+        <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 24px; align-items: start">
+          <article class="m42-reveal" style="background: #F8F6F1; border: 1px solid #D7D0C3; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+              <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px">
+                <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Version longue</h3>
+                <span style="font-size: 13px; line-height: 1.5; color: #5F5A50">{{annonceLongue.mots}}</span>
+              </div>
+              <button type="button" onClick="{{annonceLongue.copier}}" aria-label="{{annonceLongue.aria}}" class="m42-btn2" style="flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; min-width: 112px; padding: 0 16px; box-sizing: border-box; border: 1px solid #0E0F12; border-radius: 0; background: transparent; color: #0E0F12; font-family: inherit; font-size: 14px; font-weight: 500; line-height: 1.2; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="12" height="12"></rect><path d="M5 15H3V3h12v2"></path></svg><span>{{annonceLongue.label}}</span></button>
+            </div>
+            <p style="margin: 0; white-space: pre-line; font-size: 16px; line-height: 1.65; color: #0E0F12">{{annonceLongue.texte}}</p>
+          </article>
+          <article class="m42-reveal" style="background: #F8F6F1; border: 1px solid #D7D0C3; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+              <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px">
+                <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Version courte</h3>
+                <span style="font-size: 13px; line-height: 1.5; color: #5F5A50">{{annonceCourte.mots}}</span>
+              </div>
+              <button type="button" onClick="{{annonceCourte.copier}}" aria-label="{{annonceCourte.aria}}" class="m42-btn2" style="flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; min-width: 112px; padding: 0 16px; box-sizing: border-box; border: 1px solid #0E0F12; border-radius: 0; background: transparent; color: #0E0F12; font-family: inherit; font-size: 14px; font-weight: 500; line-height: 1.2; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="12" height="12"></rect><path d="M5 15H3V3h12v2"></path></svg><span>{{annonceCourte.label}}</span></button>
+            </div>
+            <p style="margin: 0; white-space: pre-line; font-size: 16px; line-height: 1.65; color: #0E0F12">{{annonceCourte.texte}}</p>
+          </article>
+        </div>
+        <div class="m42-reveal" style="margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 24px; font-size: 15px; line-height: 1.5; color: #3A3731">
+          <span>Les descriptifs détaillés sont sur la page de chaque conférence :</span>
+          <a href="Conf-ia-au-quotidien.dc.html" class="m42-arrow" style="display: inline-flex; align-items: center; min-height: 44px; color: #0E0F12; font-weight: 500">L'IA au quotidien</a>
+          <a href="Conf-arnaques-ia.dc.html" class="m42-arrow" style="display: inline-flex; align-items: center; min-height: 44px; color: #0E0F12; font-weight: 500">Arnaques et IA</a>
+          <a href="Conf-desinformation-ia.dc.html" class="m42-arrow" style="display: inline-flex; align-items: center; min-height: 44px; color: #0E0F12; font-weight: 500">Vrai ou faux ?</a>
+          <a href="Conf-parents-ados-ia.dc.html" class="m42-arrow" style="display: inline-flex; align-items: center; min-height: 44px; color: #0E0F12; font-weight: 500">Parents, ados et IA</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Logos -->
+    <section id="logos" aria-labelledby="titre-logos" style="padding: 0 0 clamp(4rem, 9vw, 8rem)">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Logos</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 64px">
+          <h2 id="titre-logos" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Logos à télécharger</h2>
+          <p style="flex: 0 1 52ch; margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Version claire, version sombre et symbole seul. Choisissez celle qui contraste le mieux avec votre support.</p>
+        </div>
+        <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 24px">
+          <figure class="m42-reveal" style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+            <div style="aspect-ratio: 3 / 2; display: flex; align-items: center; justify-content: center; background: #F8F6F1; border: 1px solid #D7D0C3">
+              <span role="img" aria-label="Logo M42 Guide sur fond clair" style="display: inline-flex; align-items: center; gap: 12px; color: #0E0F12">
+                <svg width="48" height="48" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                  <circle cx="50" cy="50" r="46" fill="none" stroke="#0E0F12" stroke-width="3"></circle>
+                  <polyline points="27,71 27,29 50,55 73,29 73,71" fill="none" stroke="#0E0F12" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"></polyline>
+                  <path d="M50 46 C51 54 51 54 59 55 C51 56 51 56 50 64 C49 56 49 56 41 55 C49 54 49 54 50 46 Z" fill="#B08D57"></path>
+                </svg>
+                <span style="font-family: Cormorant, serif; font-size: 42px; font-weight: 600; line-height: 1">M42</span>
+                <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+              </span>
+            </div>
+            <figcaption style="display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 15px; font-weight: 600; line-height: 1.4">Logo complet, fond clair</span>
+              <span style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">SVG · PNG transparent · [À PRODUIRE : fichiers]</span>
+            </figcaption>
+          </figure>
+          <figure class="m42-reveal" style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+            <div style="aspect-ratio: 3 / 2; display: flex; align-items: center; justify-content: center; background: #0E0F12; border: 1px solid #0E0F12">
+              <span role="img" aria-label="Logo M42 Guide sur fond sombre" style="display: inline-flex; align-items: center; gap: 12px; color: #F2EEE6">
+                <svg width="48" height="48" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                  <circle cx="50" cy="50" r="46" fill="none" stroke="#F2EEE6" stroke-width="2.4"></circle>
+                  <polyline points="27,71 27,29 50,55 73,29 73,71" fill="none" stroke="#F2EEE6" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"></polyline>
+                  <path d="M50 46 C51 54 51 54 59 55 C51 56 51 56 50 64 C49 56 49 56 41 55 C49 54 49 54 50 46 Z" fill="#B08D57"></path>
+                </svg>
+                <span style="font-family: Cormorant, serif; font-size: 42px; font-weight: 600; line-height: 1">M42</span>
+                <span style="font-size: 13px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+              </span>
+            </div>
+            <figcaption style="display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 15px; font-weight: 600; line-height: 1.4">Logo complet, fond sombre</span>
+              <span style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">SVG · PNG transparent · [À PRODUIRE : fichiers]</span>
+            </figcaption>
+          </figure>
+          <figure class="m42-reveal" style="margin: 0; display: flex; flex-direction: column; gap: 12px">
+            <div style="aspect-ratio: 3 / 2; display: flex; align-items: center; justify-content: center; background: #F8F6F1; border: 1px solid #D7D0C3">
+              <svg width="96" height="96" viewBox="0 0 100 100" role="img" aria-label="Symbole M42 seul" focusable="false">
+                <circle cx="50" cy="50" r="46" fill="none" stroke="#0E0F12" stroke-width="3"></circle>
+                <polyline points="27,71 27,29 50,55 73,29 73,71" fill="none" stroke="#0E0F12" stroke-width="4.2" stroke-linejoin="round" stroke-linecap="round"></polyline>
+                <path d="M50 46 C51 54 51 54 59 55 C51 56 51 56 50 64 C49 56 49 56 41 55 C49 54 49 54 50 46 Z" fill="#B08D57"></path>
+              </svg>
+            </div>
+            <figcaption style="display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 15px; font-weight: 600; line-height: 1.4">Symbole seul</span>
+              <span style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">SVG · PNG carré 512 px · [À PRODUIRE : fichiers]</span>
+            </figcaption>
+          </figure>
+        </div>
+        <ul class="m42-reveal" style="margin: 32px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 15px; line-height: 1.5; color: #3A3731">
+          <li style="display: flex; align-items: baseline; gap: 12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>Ne pas déformer, recolorer ni ajouter d'effet au logo.</span></li>
+          <li style="display: flex; align-items: baseline; gap: 12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>Laisser un espace libre autour du logo, au moins égal à la hauteur du symbole divisée par deux [À VALIDER].</span></li>
+          <li style="display: flex; align-items: baseline; gap: 12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 3v18"></path><path d="M3 12h18"></path></svg><span>Dans un texte, écrire « M42 », et nommer les intervenants dans cet ordre : Clara Peron et Paul Loustaunau.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Contact presse (bandeau final) -->
+    <section id="contact-presse" class="m42-night" aria-labelledby="titre-presse" style="background: #0E0F12; color: #F2EEE6; padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #F2EEE6; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Contact presse</div>
+        <div class="m42-reveal" style="margin-top: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px 64px">
+          <div style="flex: 1 1 520px; min-width: 0">
+            <h2 id="titre-presse" style="margin: 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Une interview, un format de photo, une précision ?</h2>
+            <p style="margin: 20px 0 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #CFC8BB">Journalistes et organisateurs : écrivez-nous, nous répondons sous 48 h. Nous pouvons aussi relire votre annonce avant publication.</p>
+          </div>
+          <div style="flex: 0 1 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 16px">
+            <a href="Contact.dc.html" class="m42-btn" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 14px 24px; box-sizing: border-box; background: #F2EEE6; color: #0E0F12; font-size: 16px; font-weight: 500; line-height: 1.2; text-decoration: none">Parler de votre événement</a>
+            <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #CFC8BB">Clara Peron : <a href="mailto:clara@m42.guide" style="color: #F2EEE6; text-underline-offset: 3px">clara@m42.guide</a><br>Paul Loustaunau : <a href="mailto:paul@m42.guide" style="color: #F2EEE6; text-underline-offset: 3px">paul@m42.guide</a><br>[À COMPLÉTER : téléphone]<br>[À DÉCIDER : interlocuteur presse unique]</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Pied de page (gabarit 22) -->
+  <footer class="m42-night" style="background: #0E0F12; color: #CFC8BB; border-top: 1px solid #2E2F35">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 64px clamp(1rem, 4vw, 3rem) 32px">
+      <div style="display: flex; flex-wrap: wrap; gap: 48px 64px">
+        <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 16px">
+          <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; color: #F2EEE6; text-decoration: none; min-height: 44px">
+            <svg width="40" height="40" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <circle cx="50" cy="50" r="46" fill="none" stroke="#F2EEE6" stroke-width="2.4"></circle>
+              <polyline points="27,71 27,29 50,55 73,29 73,71" fill="none" stroke="#F2EEE6" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"></polyline>
+              <path d="M50 46 C51 54 51 54 59 55 C51 56 51 56 50 64 C49 56 49 56 41 55 C49 54 49 54 50 46 Z" fill="#B08D57"></path>
+            </svg>
+            <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+            <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+          </a>
+          <p style="margin: 0; font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1.2; color: #F2EEE6">Se repérer dans l'IA.</p>
+        </div>
+        <nav aria-label="Plan du site" style="flex: 3 1 560px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 32px 24px">
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Conférences</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Conf-ia-au-quotidien.dc.html" class="m42-fl" style="color: #CFC8BB">L'IA au quotidien</a></li>
+              <li><a href="Conf-arnaques-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Arnaques et IA</a></li>
+              <li><a href="Conf-desinformation-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Vrai ou faux ?</a></li>
+              <li><a href="Conf-parents-ados-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Parents, ados et IA</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Pour qui</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Entreprises.dc.html" class="m42-fl" style="color: #CFC8BB">Entreprises</a></li>
+              <li><a href="Evenements.dc.html" class="m42-fl" style="color: #CFC8BB">Événements &amp; congrès</a></li>
+              <li><a href="Collectivites.dc.html" class="m42-fl" style="color: #CFC8BB">Collectivités</a></li>
+              <li><a href="Education.dc.html" class="m42-fl" style="color: #CFC8BB">Écoles &amp; familles</a></li>
+              <li><a href="Associations.dc.html" class="m42-fl" style="color: #CFC8BB">Associations</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">M42</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Reperes.dc.html" class="m42-fl" style="color: #CFC8BB">Repères</a></li>
+              <li><a href="A-propos.dc.html" class="m42-fl" style="color: #CFC8BB">À propos</a></li>
+              <li><a href="Organisateurs.dc.html" aria-current="page" class="m42-fl" style="color: #CFC8BB">Espace organisateurs</a></li>
+              <li><a href="Contact.dc.html" class="m42-fl" style="color: #CFC8BB">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Légal</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Mentions-legales.dc.html" class="m42-fl" style="color: #CFC8BB">Mentions légales</a></li>
+              <li><a href="Confidentialite.dc.html" class="m42-fl" style="color: #CFC8BB">Confidentialité</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div style="margin-top: 56px; padding-top: 24px; border-top: 1px solid #2E2F35; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 13px; line-height: 1.5; color: #9A9488">
+        <span>Partout en France, en présentiel ou à distance</span>
+        <span>© 2026 M42.guide</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"animations":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":7200}}'>
+class Component extends DCLogic {
+  // Textes à copier : source unique, affichée telle quelle et copiée à l'identique.
+  // Paul : formulation prudente tant que l'accord écrit de l'employeur n'est pas obtenu [À VALIDER].
+  // VARIANTE après accord : « Paul Loustaunau développe des logiciels depuis 17 ans. Aujourd'hui Lead IA dans un grand
+  // groupe de logiciels, il conçoit et déploie l'IA et des agents autonomes au quotidien. » (jamais le nom de l'employeur)
+  _textes() {
+    if (this._t0) return this._t0;
+    this._t0 = {
+      duo: {
+        nom: 'la présentation du duo',
+        texte: "M42, c'est Clara Peron et Paul Loustaunau. Elle forme et accompagne des adultes ; il conçoit et déploie l'IA au quotidien. Ensemble, ils font le lien entre ceux qui fabriquent l'IA et ceux qui la vivent. Basés dans le Sud-Ouest, ils interviennent partout en France, en présentiel ou à distance."
+      },
+      claraCourte: {
+        nom: 'la biographie courte de Clara Peron',
+        texte: "Clara Peron est conseillère en insertion professionnelle et formatrice d'adultes. Son métier : rendre un sujet clair, utile et accessible, y compris pour des publics qui n'ont pas choisi d'être là. Chez M42, elle conçoit la pédagogie des interventions et veille à ce que chacun reparte avec des repères concrets."
+      },
+      claraLongue: {
+        nom: 'la biographie longue de Clara Peron',
+        texte: "Clara Peron est conseillère en insertion professionnelle et formatrice d'adultes [À COMPLÉTER : nombre d'années d'expérience, types de structures]. Au quotidien, elle accompagne des personnes en période de changement : reprise d'emploi, reconversion, nouveaux outils. Elle sait écouter, rassurer et transmettre, y compris à des publics qui n'ont pas choisi d'être là. Chez M42, elle conçoit la pédagogie des interventions : le déroulé, les jeux, les temps d'échange, les supports que chacun emporte. Son rôle est simple : que personne ne décroche, et que chacun reparte en sachant quoi faire. Elle apporte aussi un regard précieux sur l'IA : celui des personnes qui la découvrent sans l'avoir choisie. Avec elle, une conférence sur l'IA devient un moment d'échange, où chacun ose poser ses questions, même les plus simples. [À COMPLÉTER : formation, certification de formatrice éventuelle]"
+      },
+      paulCourte: {
+        nom: 'la biographie courte de Paul Loustaunau',
+        texte: "Paul Loustaunau développe des logiciels depuis 17 ans. Il conçoit et déploie aujourd'hui des systèmes d'IA en entreprise, dont des agents autonomes [À VALIDER]. Chez M42, il montre l'IA telle qu'elle est : ses forces, ses limites et les méthodes des professionnels pour la garder sous contrôle."
+      },
+      paulLongue: {
+        nom: 'la biographie longue de Paul Loustaunau',
+        texte: "Paul Loustaunau développe des logiciels depuis 17 ans. Il conçoit et déploie aujourd'hui des systèmes d'IA en entreprise [À VALIDER], notamment des agents autonomes, ces programmes capables d'agir seuls. Il travaille avec les méthodes des équipes professionnelles : faire relire chaque résultat, poser des règles fixes, ne donner que les accès nécessaires, garder une trace de tout. Chez M42, il traduit ces méthodes en réflexes simples, utiles à tous. Il fait des démonstrations en direct, montre ce que l'IA réussit et ce qu'elle invente, sans promesse ni alarmisme. Il sait aussi parler aux dirigeants comme aux équipes techniques, et adapter le niveau à chaque salle. Son principe : on réfléchit d'abord, l'IA ensuite. [À COMPLÉTER : interventions passées, publications, formation]"
+      },
+      annonceLongue: {
+        nom: "le texte d'annonce, version longue",
+        texte: "[Titre de la conférence]\n[Date] à [heure] · [Lieu, adresse]\n\nL'intelligence artificielle est déjà dans nos téléphones, nos métiers et nos foyers. Comment s'en servir avec méthode, repérer quand elle se trompe et garder l'esprit critique ?\n\nClara Peron, formatrice d'adultes, et Paul Loustaunau, qui conçoit et déploie l'IA au quotidien, proposent une intervention claire et concrète, avec des démonstrations en direct et un jeu avec la salle. Sans jargon, ni peur ni emballement : chacun repart avec des repères simples, à appliquer dès le lendemain.\n\nPublic : [tout public, salariés, parents…] · Durée : [1 h 30]\nEntrée : [libre / sur inscription] · Renseignements : [contact de l'organisateur]\nLes intervenants : m42.guide"
+      },
+      annonceCourte: {
+        nom: "le texte d'annonce, version courte",
+        texte: "[Date], [lieu] : « [Titre de la conférence] » avec Clara Peron et Paul Loustaunau (M42). Comprendre l'IA, repérer quand elle se trompe et garder l'esprit critique : démonstrations en direct, jeu avec la salle, repères concrets. [Entrée libre / Inscription : lien] · m42.guide"
+      }
+    };
+    return this._t0;
+  }
+
+  _mots(texte) {
+    const n = texte.split(/\s+/).filter((m) => /[0-9A-Za-zÀ-ÿ]/.test(m)).length;
+    return '≈ ' + n + ' mots';
+  }
+
+  _copier(cle) {
+    const t = this._textes()[cle];
+    const fin = (etat) => {
+      this.setState({ copie: cle, etat: etat });
+      clearTimeout(this._minuteur);
+      this._minuteur = setTimeout(() => this.setState({ copie: null, etat: null }), 2500);
+    };
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(t.texte).then(() => fin('ok'), () => fin('ko'));
+      } else {
+        fin('ko');
+      }
+    } catch (e) {
+      fin('ko');
+    }
+  }
+
+  componentWillUnmount() { clearTimeout(this._minuteur); }
+
+  renderVals() {
+    const anim = this.props.animations ?? true;
+    const s = this.state || {};
+    const textes = this._textes();
+    if (!this._gestionnaires) {
+      this._gestionnaires = {};
+      Object.keys(textes).forEach((cle) => { this._gestionnaires[cle] = () => this._copier(cle); });
+    }
+    const bloc = (cle) => {
+      const t = textes[cle];
+      const actif = s.copie === cle;
+      const ok = actif && s.etat === 'ok';
+      const ko = actif && s.etat === 'ko';
+      return {
+        texte: t.texte,
+        mots: this._mots(t.texte),
+        copier: this._gestionnaires[cle],
+        label: ok ? 'Copié' : (ko ? 'Sélectionnez le texte' : 'Copier'),
+        aria: ok ? 'Copié : ' + t.nom : 'Copier ' + t.nom
+      };
+    };
+    let statut = '';
+    if (s.copie && s.etat === 'ok') statut = 'Copié dans le presse-papiers : ' + textes[s.copie].nom + '.';
+    if (s.copie && s.etat === 'ko') statut = 'La copie automatique a échoué. Sélectionnez le texte, puis copiez-le avec Ctrl+C ou Cmd+C.';
+    return {
+      rootClass: anim ? 'm42-anim' : 'm42-still',
+      statut: statut,
+      duo: bloc('duo'),
+      claraCourte: bloc('claraCourte'),
+      claraLongue: bloc('claraLongue'),
+      paulCourte: bloc('paulCourte'),
+      paulLongue: bloc('paulLongue'),
+      annonceLongue: bloc('annonceLongue'),
+      annonceCourte: bloc('annonceCourte')
+    };
+  }
+}
+</script>
+</body>
+</html>

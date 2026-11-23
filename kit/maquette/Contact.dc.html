@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Contact · M42</title>
+<!-- SEO: /contact/ | title: Contact et devis pour une conférence sur l'IA | M42 | meta: Décrivez votre public, votre date et votre format : nous vous répondons sous 48 h. Conférence, keynote, atelier ou intervention sur mesure. | canonical: https://m42.guide/contact/ (y compris avec ?theme=…&type=… pour le préremplissage) | H1 : « Contact et devis » + « Parlons de votre projet » dans le même H1 | JSON-LD : ContactPage + BreadcrumbList | Après envoi réel : redirection vers /contact/merci/ (noindex), qui sert à mesurer les conversions. Anti-spam : champ piège + limitation côté serveur, pas de reCAPTCHA. -->
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+/* Base */
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:#F2EEE6;color:#0E0F12;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:#0E0F12}
+::selection{background:#E8E2D7;color:#0E0F12}
+
+/* Focus visible : encre sur clair, or clair sur nuit */
+:focus-visible{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night :focus-visible{outline-color:#C9A46A}
+
+/* Lien d'évitement */
+.m42-skip{position:absolute;left:16px;top:-200px;z-index:100}
+.m42-skip:focus{top:12px}
+
+/* En-tête : collant à partir de 960 px ; filet bas qui apparaît au défilement */
+@media (min-width:960px){.m42-hdr{position:sticky;top:0;z-index:50}}
+@keyframes m42-hdr{from{border-bottom-color:rgba(215,208,195,0)}to{border-bottom-color:#D7D0C3}}
+@supports (animation-timeline: scroll()){
+  .m42-hdr{animation:m42-hdr cubic-bezier(.22,1,.36,1) both;animation-timeline:scroll();animation-range:0px 96px}
+}
+
+/* Navigation : survol souligné encre 1 px, page active soulignée or 2 px */
+.m42-nav{text-decoration:none;text-underline-offset:8px;text-decoration-thickness:1px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-nav:hover{text-decoration-line:underline;text-decoration-color:#0E0F12}
+.m42-nav[aria-current="page"]{text-decoration-line:underline;text-decoration-color:#B08D57;text-decoration-thickness:2px}
+
+/* Boutons */
+.m42-btn,.m42-btn2,.m42-btn2n{transition:background-color 120ms cubic-bezier(.22,1,.36,1),color 120ms cubic-bezier(.22,1,.36,1),border-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-btn:hover{background-color:#B08D57!important;color:#0E0F12!important}
+.m42-btn2:hover{background-color:rgba(14,15,18,.06)!important}
+.m42-btn2n:hover{background-color:rgba(242,238,230,.08)!important;border-color:#C9A46A!important}
+.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:translateY(1px)}
+
+/* Lien fléché */
+.m42-arrow,.m42-cta{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:text-decoration-color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-arrow-i{display:inline-block;transition:transform 120ms cubic-bezier(.22,1,.36,1)}
+.m42-arrow:hover .m42-arrow-i{transform:translateX(3px)}
+
+/* Carte cliquable : le lien du titre s'étend à toute la carte (pas de <a> englobant) */
+.m42-card{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover{border-color:#0E0F12!important}
+.m42-night .m42-card:hover{border-color:#F2EEE6!important}
+.m42-bar{transform:scaleX(.18);transform-origin:left;transition:transform 320ms cubic-bezier(.22,1,.36,1)}
+.m42-card:hover .m42-bar,.m42-card:focus-within .m42-bar{transform:scaleX(1)}
+.m42-card:hover .m42-arrow-i{transform:translateX(3px)}
+.m42-card:hover .m42-cta{text-decoration-color:#B08D57;text-decoration-thickness:2px}
+.m42-stretch{text-decoration:none}
+.m42-stretch::after{content:"";position:absolute;inset:0;z-index:1}
+.m42-stretch:focus-visible{outline:none}
+.m42-stretch:focus-visible::after{outline:2px solid #0E0F12;outline-offset:3px}
+.m42-night .m42-stretch:focus-visible::after{outline-color:#C9A46A}
+
+/* Liens du pied de page */
+.m42-fl{text-decoration:none;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-fl:hover{text-decoration-line:underline;text-decoration-color:#B08D57;color:#F2EEE6!important}
+
+/* Fil d'Ariane : complet au-dessus de 640 px, parent seul en dessous */
+.m42-bc-full{display:flex}
+.m42-bc-short{display:none}
+@media (max-width:639px){.m42-bc-full{display:none}.m42-bc-short{display:inline-flex}}
+
+/* FAQ */
+.m42-faq summary{list-style:none;cursor:pointer}
+.m42-faq summary::-webkit-details-marker{display:none}
+.m42-faq-i{transition:transform 200ms cubic-bezier(.65,0,.35,1)}
+.m42-faq[open] .m42-faq-i{transform:rotate(45deg)}
+.m42-faq summary:hover h3{text-decoration:underline;text-decoration-color:#B08D57;text-underline-offset:4px}
+
+/* Champs de formulaire */
+.m42-field{transition:border-color 200ms cubic-bezier(.22,1,.36,1)}
+.m42-field:not([aria-invalid="true"]):hover{border-color:#0E0F12!important}
+.m42-field:focus{outline:2px solid #0E0F12;outline-offset:-2px}
+
+/* Petit bouton texte (ex. pause d'animation) */
+.m42-txtbtn{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:color 120ms cubic-bezier(.22,1,.36,1)}
+.m42-txtbtn:hover{color:#0E0F12!important;text-decoration-color:#B08D57}
+
+/* Apparition au défilement : opacité + 8 px, natif, sans JavaScript.
+   Sans prise en charge, le contenu est simplement visible. Jamais au-dessus de la ligne de flottaison. */
+@keyframes m42-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@supports (animation-timeline: view()){
+  .m42-reveal{animation:m42-in cubic-bezier(.22,1,.36,1) both;animation-timeline:view();animation-range:entry 0% entry 45%}
+}
+.m42-still .m42-reveal{animation:none!important;opacity:1!important;transform:none!important}
+
+/* Mouvement réduit : aucune translation, fondus à 0 ms */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:0ms!important;animation-delay:0ms!important;transition-duration:0ms!important}
+  .m42-reveal,.m42-hdr{animation:none!important;opacity:1!important;transform:none!important}
+  .m42-arrow:hover .m42-arrow-i,.m42-card:hover .m42-arrow-i,.m42-btn:active,.m42-btn2:active,.m42-btn2n:active{transform:none!important}
+}
+</style>
+<style>
+/* --- Mobile : menu repliable, symbole d'accueil, coupures de mots --- */
+.m42-menu-t{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.m42-burger{display:none}
+p,li,dd,dt,td,th,h1,h2,h3,summary,label{overflow-wrap:break-word}
+a[href^="mailto:"]{overflow-wrap:anywhere}
+@media (max-width: 959px){
+  .m42-burger{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;border:1px solid #0E0F12;color:#0E0F12;background:transparent;font-family:Inter,system-ui,sans-serif;font-size:15px;font-weight:500;cursor:pointer;user-select:none}
+  .m42-menu-t:focus-visible + .m42-burger{outline:2px solid #7A5C30;outline-offset:2px}
+  .m42-burger .m42-b-close{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-open{display:none}
+  .m42-menu-t:checked + .m42-burger .m42-b-close{display:inline}
+  header nav[aria-label="Navigation principale"]{display:none !important;width:100%;flex-direction:column !important;align-items:stretch !important;gap:0 !important;padding:4px 0 20px}
+  .m42-menu-t:checked ~ nav[aria-label="Navigation principale"]{display:flex !important}
+  header nav[aria-label="Navigation principale"] a{display:flex !important;align-items:center;min-height:52px;padding:0 !important;border-bottom:1px solid #D7D0C3;font-size:17px !important}
+  header nav[aria-label="Navigation principale"] a.m42-btn{justify-content:center;margin-top:20px;border-bottom:0;min-height:52px;padding:0 20px !important}
+  canvas[data-m42-sky]{max-width:300px !important;margin:0 auto}
+}
+@media (max-width: 480px){
+  canvas[data-m42-sky]{max-width:240px !important}
+}
+</style>
+</helmet>
+<div class="{{rootClass}}" style="font-family: Inter, system-ui, sans-serif; color: #0E0F12; background: #F2EEE6; min-height: 100vh">
+
+  <a href="#contenu" class="m42-skip" style="background: #0E0F12; color: #F2EEE6; padding: 12px 18px; font-size: 15px; font-weight: 500; text-decoration: none">Aller au contenu</a>
+
+  <!-- En-tête / navigation (gabarit 22) -->
+  <header class="m42-hdr" style="background: rgba(242, 238, 230, 0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid #D7D0C3">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 14px clamp(1rem, 4vw, 3rem); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px">
+      <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; color: #0E0F12; text-decoration: none; min-height: 44px">
+        <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+        <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+      </a>
+      <input type="checkbox" id="m42-menu-t" class="m42-menu-t" aria-controls="m42-menu" aria-label="Ouvrir ou fermer le menu">
+      <label for="m42-menu-t" class="m42-burger"><span class="m42-b-open">Menu</span><span class="m42-b-close">Fermer</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></label>
+      <nav id="m42-menu" aria-label="Navigation principale" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; font-size: 14px; font-weight: 500; line-height: 1.3">
+        <a href="Conferences.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Conférences</a>
+        <a href="Entreprises.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Entreprises</a>
+        <a href="Collectivites.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Collectivités</a>
+        <a href="Education.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Écoles</a>
+        <a href="Reperes.dc.html" class="m42-nav" style="color: #0E0F12; padding: 10px 0">Repères</a>
+        <a href="Contact.dc.html" aria-current="page" class="m42-btn" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; background: #0E0F12; color: #F2EEE6; text-decoration: none; font-size: 14px; font-weight: 500">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu" tabindex="-1" style="outline: none">
+
+    <!-- En-tête de page -->
+    <section aria-labelledby="titre-contact-page">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem); padding-top: clamp(2rem, 4vw, 3rem); padding-bottom: clamp(2.5rem, 5vw, 4rem)">
+        <nav aria-label="Fil d'Ariane" style="margin-bottom: 32px; font-size: 13px; line-height: 1.5; color: #5F5A50">
+          <ol class="m42-bc-full" style="list-style: none; margin: 0; padding: 0; flex-wrap: wrap; align-items: center; gap: 4px 8px">
+            <li><a href="Main.dc.html" style="color: #5F5A50; text-underline-offset: 3px">Accueil</a></li>
+            <li><span aria-hidden="true" style="margin-right: 8px">/</span><span aria-current="page" style="color: #0E0F12; font-weight: 500">Contact</span></li>
+          </ol>
+          <a href="Main.dc.html" class="m42-bc-short m42-arrow" style="align-items: center; gap: 6px; min-height: 44px; color: #0E0F12; font-weight: 500"><span aria-hidden="true">←</span>Accueil</a>
+        </nav>
+        <h1 id="titre-contact-page" style="margin: 0; display: flex; flex-direction: column; gap: 24px; font-weight: 400">
+          <span style="font-family: Inter, system-ui, sans-serif; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Contact et devis</span>
+          <span style="max-width: 14ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(3rem, 1.6rem + 6vw, 6.5rem); line-height: 0.95; letter-spacing: -0.02em; color: #0E0F12">Parlons de votre projet</span>
+        </h1>
+        <p style="margin: 32px 0 0; max-width: 52ch; font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem); line-height: 1.55; color: #3A3731">Conférence, atelier, séminaire ou intervention sur mesure : dites-nous qui sera dans la salle, quand, et ce que vous attendez. Vous recevez une réponse sous 48 h, puis une proposition construite pour votre public.</p>
+      </div>
+    </section>
+
+    <!-- Formulaire + coordonnées -->
+    <section aria-label="Formulaire et coordonnées" style="padding: 0 0 clamp(4rem, 9vw, 8rem)">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem); display: flex; flex-wrap: wrap; align-items: flex-start; gap: 64px 80px">
+
+        <!-- Colonne formulaire -->
+        <div style="flex: 999 1 560px; min-width: 0">
+          <div style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Votre demande</div>
+          <h2 id="titre-form" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Décrivez votre événement</h2>
+
+          <sc-if value="{{formulaire}}" hint-placeholder-val="{{true}}">
+            <!-- Formulaire qualifiant (01_arbitrages, ligne « Formulaire de contact » ; 02, § 6).
+                 Préremplissage possible : /contact/?theme=arnaques&type=collectivite (canonique inchangée).
+                 Maquette : le bouton affiche la confirmation, rien n'est envoyé. En production : validation côté client et serveur,
+                 messages d'erreur reliés par aria-describedby (modèle du gabarit 22), redirection vers /contact/merci/. -->
+            <form aria-labelledby="titre-form" style="position: relative; margin-top: 48px; display: flex; flex-direction: column; gap: 40px">
+              <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #5F5A50">Les champs marqués d'un astérisque (*) sont obligatoires. Les autres nous aident à vous répondre plus précisément.</p>
+
+              <fieldset style="margin: 0; padding: 0; border: 0; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+                <legend style="padding: 0 0 4px; font-size: 18px; font-weight: 600; line-height: 1.4; color: #0E0F12">Vous</legend>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 24px">
+                  <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                    <label for="c-nom" style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #0E0F12">Nom et prénom <span aria-hidden="true">*</span></label>
+                    <input id="c-nom" name="nom" type="text" autocomplete="name" required aria-required="true" class="m42-field" style="box-sizing: border-box; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid #857E71; border-radius: 0; background: #F8F6F1; color: #0E0F12; font-family: inherit; font-size: 16px; line-height: 1.4">
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                    <label for="c-structure" style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #0E0F12">Structure <span aria-hidden="true">*</span></label>
+                    <input id="c-structure" name="structure" type="text" autocomplete="organization" required aria-required="true" class="m42-field" style="box-sizing: border-box; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid #857E71; border-radius: 0; background: #F8F6F1; color: #0E0F12; font-family: inherit; font-size: 16px; line-height: 1.4">
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                    <label for="c-email" style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #0E0F12">E-mail <span aria-hidden="true">*</span></label>
+                    <input id="c-email" name="email" type="email" autocomplete="email" required aria-required="true" class="m42-field" style="box-sizing: border-box; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid #857E71; border-radius: 0; background: #F8F6F1; color: #0E0F12; font-family: inherit; font-size: 16px; line-height: 1.4">
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                    <label for="c-tel" style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #0E0F12">Téléphone <span style="font-weight: 400; color: #5F5A50">(facultatif)</span></label>
+                    <input id="c-tel" name="telephone" type="tel" autocomplete="tel" class="m42-field" style="box-sizing: border-box; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid #857E71; border-radius: 0; background: #F8F6F1; color: #0E0F12; font-family: inherit; font-size: 16px; line-height: 1.4">
+                  </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                  <label for="c-type" style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #0E0F12">Type de structure <span aria-hidden="true">*</span></label>
+                  <select id="c-type" name="type" required aria-required="true" class="m42-field" style="box-sizing: border-box; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid #857E71; border-radius: 0; background: #F8F6F1; color: #0E0F12; font-family: inherit; font-size: 16px; line-height: 1.4">
+                    <option value="">Choisir…</option>
+                    <option value="entreprise">Entreprise</option>
+                    <option value="evenement">Événement, salon ou congrès</option>
+                    <option value="collectivite">Collectivité</option>
+                    <option value="etablissement">Établissement scolaire ou d'enseignement supérieur</option>
+                    <option value="association">Association ou structure d'accompagnement</option>
+                    <option value="autre">Autre</option>
+                  </select>
+                </div>
+              </fieldset>
+
+              <fieldset style="margin: 0; padding: 0; border: 0; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+                <legend style="padding: 0 0 4px; font-size: 18px; font-weight: 600; line-height: 1.4; color: #0E0F12">Votre événement</legend>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 24px">
+                  <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                    <label for="c-theme" style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #0E0F12">Thème</label>
+                    <select id="c-theme" name="theme" class="m42-field" style="box-sizing: border-box; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid #857E71; border-radius: 0; background: #F8F6F1; color: #0E0F12; font-family: inherit; font-size: 16px; line-height: 1.4">
+                      <option value="">Choisir…</option>
+                      <option value="ia-au-quotidien">L'IA au quotidien</option>
+                      <option value="arnaques">Arnaques et IA</option>
+                      <option value="desinformation">Vrai ou faux ? (fausses informations)</option>
+                      <option value="parents-ados">Parents, ados et IA</option>
+                      <option value="sur-mesure">Sur mesure</option>
+                      <option value="a-definir">Je ne sais pas encore</option>
+                    </select>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                    <label for="c-format" style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #0E0F12">Format</label>
+                    <select id="c-format" name="format" class="m42-field" style="box-sizing: border-box; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid #857E71; border-radius: 0; background: #F8F6F1; color: #0E0F12; font-family: inherit; font-size: 16px; line-height: 1.4">
+                      <option value="">Choisir…</option>
+                      <option value="keynote">Keynote (45 min à 1 h)</option>
+                      <option value="conference">Conférence (1 h 30)</option>
+                      <option value="atelier">Atelier pratique (2 h)</option>
+                      <option value="cycle">Cycle de 4 rendez-vous</option>
+                      <option value="demi-journee">Demi-journée sur mesure</option>
+                      <option value="a-definir">À définir ensemble</option>
+                    </select>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                    <label for="c-date" style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #0E0F12">Date ou période souhaitée</label>
+                    <input id="c-date" name="date" type="text" aria-describedby="c-date-aide" class="m42-field" style="box-sizing: border-box; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid #857E71; border-radius: 0; background: #F8F6F1; color: #0E0F12; font-family: inherit; font-size: 16px; line-height: 1.4">
+                    <p id="c-date-aide" style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Par exemple : « un jeudi de mars » ou « avant l'été ».</p>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                    <label for="c-ville" style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #0E0F12">Ville</label>
+                    <input id="c-ville" name="ville" type="text" autocomplete="address-level2" aria-describedby="c-ville-aide" class="m42-field" style="box-sizing: border-box; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid #857E71; border-radius: 0; background: #F8F6F1; color: #0E0F12; font-family: inherit; font-size: 16px; line-height: 1.4">
+                    <p id="c-ville-aide" style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Ou « à distance ».</p>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                    <label for="c-participants" style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #0E0F12">Nombre de participants</label>
+                    <select id="c-participants" name="participants" class="m42-field" style="box-sizing: border-box; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid #857E71; border-radius: 0; background: #F8F6F1; color: #0E0F12; font-family: inherit; font-size: 16px; line-height: 1.4">
+                      <option value="">Choisir…</option>
+                      <option value="moins-20">Moins de 20</option>
+                      <option value="20-50">20 à 50</option>
+                      <option value="50-100">50 à 100</option>
+                      <option value="100-300">100 à 300</option>
+                      <option value="plus-300">Plus de 300</option>
+                      <option value="inconnu">Je ne sais pas encore</option>
+                    </select>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                    <label for="c-budget" style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #0E0F12">Budget indicatif <span style="font-weight: 400; color: #5F5A50">(facultatif)</span></label>
+                    <!-- [À VALIDER] préciser HT ou TTC dans le libellé -->
+                    <select id="c-budget" name="budget" aria-describedby="c-budget-aide" class="m42-field" style="box-sizing: border-box; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid #857E71; border-radius: 0; background: #F8F6F1; color: #0E0F12; font-family: inherit; font-size: 16px; line-height: 1.4">
+                      <option value="">Choisir…</option>
+                      <option value="moins-1500">Moins de 1 500 €</option>
+                      <option value="1500-3000">1 500 à 3 000 €</option>
+                      <option value="3000-6000">3 000 à 6 000 €</option>
+                      <option value="plus-6000">Plus de 6 000 €</option>
+                      <option value="a-definir">À définir</option>
+                    </select>
+                    <p id="c-budget-aide" style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Il nous aide à vous proposer le bon format. Chaque intervention fait l'objet d'un devis.</p>
+                  </div>
+                </div>
+              </fieldset>
+
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+                <label for="c-message" style="font-size: 14px; font-weight: 500; line-height: 1.4; color: #0E0F12">Votre message <span style="font-weight: 400; color: #5F5A50">(facultatif)</span></label>
+                <textarea id="c-message" name="message" rows="6" aria-describedby="c-message-aide" class="m42-field" style="box-sizing: border-box; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid #857E71; border-radius: 0; background: #F8F6F1; color: #0E0F12; font-family: inherit; font-size: 16px; line-height: 1.4; min-height: 160px; resize: vertical"></textarea>
+                <p id="c-message-aide" style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">Le contexte, le public, ce que vous attendez de l'intervention.</p>
+              </div>
+
+              <!-- Champ piège anti-spam (invisible, ignoré des lecteurs d'écran ; rejeté côté serveur s'il est rempli) -->
+              <div aria-hidden="true" style="position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden">
+                <label for="c-site">Ne pas remplir ce champ</label>
+                <input id="c-site" name="site_web" type="text" tabindex="-1" autocomplete="off">
+              </div>
+
+              <div style="display: flex; flex-wrap: wrap; gap: 16px">
+                <button type="submit" onClick="{{envoyer}}" class="m42-btn" style="flex: 1 1 240px; max-width: 100%; min-height: 48px; padding: 14px 24px; border: 0; border-radius: 0; background: #0E0F12; color: #F2EEE6; font-family: inherit; font-size: 16px; font-weight: 500; cursor: pointer">Envoyer ma demande</button>
+                <p style="flex: 1 1 100%; margin: 0; max-width: 80ch; font-size: 13px; line-height: 1.55; color: #5F5A50">Les informations de ce formulaire sont traitées par [À COMPLÉTER : responsable du traitement, identique à l'éditeur du site] pour répondre à votre demande et, le cas échéant, établir un devis (mesures précontractuelles prises à votre demande). Elles sont destinées uniquement à Clara Peron et Paul Loustaunau et conservées 3 ans après notre dernier échange. Vous pouvez y accéder, les rectifier, les faire effacer ou vous opposer à leur traitement en écrivant à [À COMPLÉTER : adresse de contact pour les données personnelles]. Vous pouvez aussi adresser une réclamation à la CNIL. En savoir plus : <a href="Confidentialite.dc.html" style="color: #5F5A50; text-underline-offset: 3px">politique de confidentialité</a>.</p>
+              </div>
+            </form>
+          </sc-if>
+
+          <sc-if value="{{envoye}}" hint-placeholder-val="{{false}}">
+            <div role="status" aria-live="polite" style="margin-top: 48px; padding: 32px 28px; background: #F8F6F1; border: 1px solid #D7D0C3; border-left: 4px solid #2E6A4E; display: flex; flex-direction: column; gap: 16px">
+              <p style="margin: 0; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; line-height: 1.4; color: #2E6A4E"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2E6A4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.7 2.7L16 9.8"></path></svg>Demande envoyée</p>
+              <h3 style="margin: 0; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem); line-height: 1.05">Merci, votre demande est bien partie.</h3>
+              <p style="margin: 0; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731; hyphens: auto">Clara ou Paul vous répond sous 48 h, à l'adresse e-mail indiquée. Pensez à vérifier vos courriers indésirables si vous ne voyez rien arriver.</p>
+              <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5F5A50">[Maquette : aucune donnée n'a été envoyée.]</p>
+              <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px">
+                <button type="button" onClick="{{recommencer}}" class="m42-btn2" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 13px 23px; box-sizing: border-box; background: transparent; border: 1px solid #0E0F12; color: #0E0F12; font-size: 16px; font-weight: 500; line-height: 1.2; text-decoration: none; font-family: inherit; cursor: pointer">Envoyer une autre demande</button>
+                <a href="Organisateurs.dc.html" class="m42-arrow" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #0E0F12; font-size: 16px; font-weight: 500">En attendant : l'espace organisateurs <span class="m42-arrow-i" aria-hidden="true">→</span></a>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+
+        <!-- Colonne coordonnées et suite -->
+        <aside aria-label="Coordonnées et étapes" style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 56px">
+          <div style="display: flex; flex-direction: column; gap: 20px">
+            <h2 style="margin: 0; border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Nous écrire directement</h2>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; font-size: 16px; line-height: 1.5">
+              <li style="display: flex; flex-direction: column; gap: 2px">
+                <span style="font-weight: 600">Clara Peron</span>
+                <a href="mailto:clara@m42.guide" style="display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: #0E0F12; text-underline-offset: 3px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14"></rect><path d="M3 7l9 6 9-6"></path></svg>clara@m42.guide</a>
+              </li>
+              <li style="display: flex; flex-direction: column; gap: 2px">
+                <span style="font-weight: 600">Paul Loustaunau</span>
+                <a href="mailto:paul@m42.guide" style="display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: #0E0F12; text-underline-offset: 3px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14"></rect><path d="M3 7l9 6 9-6"></path></svg>paul@m42.guide</a>
+              </li>
+              <li style="display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: #3A3731"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>[À COMPLÉTER : téléphone]</li>
+            </ul>
+            <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #5F5A50">Basés dans le Sud-Ouest. Nous intervenons partout en France, en présentiel ou à distance. Interventions en français.</p>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 20px">
+            <h2 style="margin: 0; border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Ce qui se passe ensuite</h2>
+            <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 24px">
+              <li style="display: grid; grid-template-columns: 56px 1fr; gap: 4px 16px; align-items: baseline">
+                <span aria-hidden="true" style="grid-row: span 2; font-family: Cormorant, serif; font-weight: 600; font-size: 40px; line-height: 1; color: #7A5C30; font-variant-numeric: lining-nums tabular-nums">1</span>
+                <h3 style="margin: 0; font-size: 17px; font-weight: 600; line-height: 1.4">Votre demande est lue</h3>
+                <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #3A3731">Clara ou Paul vous répond sous 48 h, par e-mail, ou par téléphone si vous nous avez laissé un numéro.</p>
+              </li>
+              <li style="display: grid; grid-template-columns: 56px 1fr; gap: 4px 16px; align-items: baseline">
+                <span aria-hidden="true" style="grid-row: span 2; font-family: Cormorant, serif; font-weight: 600; font-size: 40px; line-height: 1; color: #7A5C30; font-variant-numeric: lining-nums tabular-nums">2</span>
+                <h3 style="margin: 0; font-size: 17px; font-weight: 600; line-height: 1.4">Un échange pour comprendre</h3>
+                <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #3A3731">Une vingtaine de minutes [À VALIDER] pour parler de votre public, de vos objectifs, de la salle et de la date.</p>
+              </li>
+              <li style="display: grid; grid-template-columns: 56px 1fr; gap: 4px 16px; align-items: baseline">
+                <span aria-hidden="true" style="grid-row: span 2; font-family: Cormorant, serif; font-weight: 600; font-size: 40px; line-height: 1; color: #7A5C30; font-variant-numeric: lining-nums tabular-nums">3</span>
+                <h3 style="margin: 0; font-size: 17px; font-weight: 600; line-height: 1.4">Une proposition pour votre public</h3>
+                <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #3A3731">Le programme adapté à votre public, le format retenu et un devis détaillé, frais de déplacement compris.</p>
+              </li>
+            </ol>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- Questions fréquentes -->
+    <section aria-labelledby="titre-faq" style="background: #E8E2D7; padding: clamp(4rem, 9vw, 8rem) 0">
+      <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+        <div class="m42-reveal" style="border-top: 1px solid #0E0F12; padding-top: 16px; font-size: 0.75rem; font-weight: 500; line-height: 1.4; letter-spacing: 0.18em; text-transform: uppercase; color: #5F5A50">Questions fréquentes</div>
+        <h2 id="titre-faq" class="m42-reveal" style="margin: 24px 0 0; max-width: 18ch; font-family: Cormorant, serif; font-weight: 600; font-size: clamp(2.25rem, 1.5rem + 3.2vw, 4rem); line-height: 1.02; letter-spacing: -0.01em">Avant de nous écrire</h2>
+        <div class="m42-reveal" style="margin-top: 48px; max-width: 52rem; border-top: 1px solid #0E0F12">
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Sous quel délai nous répondez-vous ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">
+              <p style="margin: 0">Nous répondons à chaque demande sous 48 h [À VALIDER : jours ouvrés], par e-mail ou par téléphone. Si votre date est proche, dites-le dans le message : nous vous indiquons tout de suite si elle est possible. Pour une conférence, prévoyez idéalement quelques semaines entre le premier échange et le jour J [À VALIDER : délai minimal].</p>
+            </div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Vous déplacez-vous partout en France ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">
+              <p style="margin: 0">Oui. Basés dans le Sud-Ouest, nous intervenons partout en France, en présentiel ou à distance. Les frais de déplacement et, si besoin, d'hébergement sont indiqués clairement dès le devis, pour que vous puissiez décider en connaissance de cause. Pas de mauvaise surprise le jour J.</p>
+            </div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Pouvez-vous intervenir à distance ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">
+              <p style="margin: 0">Oui. Keynotes et conférences se prêtent bien à la visioconférence, avec les mêmes démonstrations en direct et un jeu adapté au vote en ligne. Les ateliers fonctionnent mieux en petit groupe. Nous utilisons l'outil de votre choix [À VALIDER] et faisons un test technique avant la séance.</p>
+            </div>
+          </details>
+          <details class="m42-faq" style="border-bottom: 1px solid #D7D0C3">
+            <summary style="display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 48px; padding: 20px 0">
+              <h3 style="margin: 0; font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 600; line-height: 1.35; letter-spacing: -0.01em">Faut-il connaître son budget pour nous écrire ?</h3>
+              <span class="m42-faq-i" aria-hidden="true" style="flex: none; display: inline-flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E0F12" stroke-width="1.5" stroke-linecap="round" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+            </summary>
+            <div style="padding: 0 0 24px; max-width: 68ch; font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); line-height: 1.65; color: #3A3731">
+              <p style="margin: 0">Non, le champ budget est facultatif. Chaque intervention fait l'objet d'un devis adapté à votre structure, à votre public et au format retenu. Si vous avez déjà une enveloppe, l'indiquer nous permet de vous proposer directement le format le plus juste.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Pied de page (gabarit 22) -->
+  <footer class="m42-night" style="background: #0E0F12; color: #CFC8BB; border-top: 1px solid #2E2F35">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 64px clamp(1rem, 4vw, 3rem) 32px">
+      <div style="display: flex; flex-wrap: wrap; gap: 48px 64px">
+        <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 16px">
+          <a href="Main.dc.html" aria-label="M42 Guide, retour à l'accueil" style="display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; color: #F2EEE6; text-decoration: none; min-height: 44px">
+            <svg width="40" height="40" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <circle cx="50" cy="50" r="46" fill="none" stroke="#F2EEE6" stroke-width="2.4"></circle>
+              <polyline points="27,71 27,29 50,55 73,29 73,71" fill="none" stroke="#F2EEE6" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"></polyline>
+              <path d="M50 46 C51 54 51 54 59 55 C51 56 51 56 50 64 C49 56 49 56 41 55 C49 54 49 54 50 46 Z" fill="#B08D57"></path>
+            </svg>
+            <span style="font-family: Cormorant, serif; font-size: 28px; font-weight: 600; line-height: 1">M42</span>
+            <span style="font-size: 11px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase">Guide</span>
+          </a>
+          <p style="margin: 0; font-family: Cormorant, serif; font-style: italic; font-weight: 500; font-size: 28px; line-height: 1.2; color: #F2EEE6">Se repérer dans l'IA.</p>
+        </div>
+        <nav aria-label="Plan du site" style="flex: 3 1 560px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 32px 24px">
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Conférences</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Conf-ia-au-quotidien.dc.html" class="m42-fl" style="color: #CFC8BB">L'IA au quotidien</a></li>
+              <li><a href="Conf-arnaques-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Arnaques et IA</a></li>
+              <li><a href="Conf-desinformation-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Vrai ou faux ?</a></li>
+              <li><a href="Conf-parents-ados-ia.dc.html" class="m42-fl" style="color: #CFC8BB">Parents, ados et IA</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Pour qui</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Entreprises.dc.html" class="m42-fl" style="color: #CFC8BB">Entreprises</a></li>
+              <li><a href="Evenements.dc.html" class="m42-fl" style="color: #CFC8BB">Événements &amp; congrès</a></li>
+              <li><a href="Collectivites.dc.html" class="m42-fl" style="color: #CFC8BB">Collectivités</a></li>
+              <li><a href="Education.dc.html" class="m42-fl" style="color: #CFC8BB">Écoles &amp; familles</a></li>
+              <li><a href="Associations.dc.html" class="m42-fl" style="color: #CFC8BB">Associations</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">M42</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Reperes.dc.html" class="m42-fl" style="color: #CFC8BB">Repères</a></li>
+              <li><a href="A-propos.dc.html" class="m42-fl" style="color: #CFC8BB">À propos</a></li>
+              <li><a href="Organisateurs.dc.html" class="m42-fl" style="color: #CFC8BB">Espace organisateurs</a></li>
+              <li><a href="Contact.dc.html" aria-current="page" class="m42-fl" style="color: #CFC8BB">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <p style="margin: 0 0 16px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #9A9488">Légal</p>
+            <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4">
+              <li><a href="Mentions-legales.dc.html" class="m42-fl" style="color: #CFC8BB">Mentions légales</a></li>
+              <li><a href="Confidentialite.dc.html" class="m42-fl" style="color: #CFC8BB">Confidentialité</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div style="margin-top: 56px; padding-top: 24px; border-top: 1px solid #2E2F35; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 13px; line-height: 1.5; color: #9A9488">
+        <span>Partout en France, en présentiel ou à distance</span>
+        <span>© 2026 M42.guide</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"animations":{"editor":"boolean","default":true},"confirmation":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":3500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const anim = this.props.animations ?? true;
+    const s = this.state || {};
+    // Maquette : rien n'est envoyé. Le clic affiche la confirmation (état local).
+    if (!this._envoyer) this._envoyer = (e) => {
+      if (e && typeof e.preventDefault === 'function') e.preventDefault();
+      this.setState({ envoye: true });
+      if (typeof window !== 'undefined' && window.scrollTo) {
+        const el = typeof document !== 'undefined' && document.getElementById('titre-form');
+        if (el && el.scrollIntoView) el.scrollIntoView({ block: 'start' });
+      }
+    };
+    if (!this._recommencer) this._recommencer = () => this.setState({ envoye: false });
+    // La propriété « confirmation » permet d'afficher l'état envoyé dans le canevas sans cliquer.
+    const envoye = s.envoye === undefined ? !!this.props.confirmation : !!s.envoye;
+    return {
+      rootClass: anim ? 'm42-anim' : 'm42-still',
+      formulaire: !envoye,
+      envoye: envoye,
+      envoyer: this._envoyer,
+      recommencer: this._recommencer
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+---
+/**
+ * Emplacement d'image ou de vidéo (« [Photo : …] », « [Vidéo : …] »).
+ * Quand l'image existe (Directus, phase 3), passer `image` + `alt` : elle remplace le bloc.
+ * Formats : 3/2 (scène), 4/5 (portrait), 16/9 (vidéo). S'adapte seul aux sections nuit.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  /** Texte du bloc, tel qu'écrit dans la maquette. */
+  label: string;
+  ratio?: '3/2' | '4/5' | '16/9' | '1/1';
+  image?: ImageMetadata;
+  alt?: string;
+  class?: string;
+}
+
+const { label, ratio = '3/2', image, alt = '', class: className } = Astro.props;
+const ratioClass = `r-${ratio.replace('/', '-')}`;
+---
+
+{image ? (
+  <Image src={image} alt={alt} class:list={['ph-img', ratioClass, className]} />
+) : (
+  <div class:list={['ph', ratioClass, className]}>{label}</div>
+)}
+
+<style>
+  .ph {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    box-sizing: border-box;
+    text-align: center;
+    background: var(--surface-sunk);
+    border: 1px dashed var(--control-border);
+    color: var(--fg-3);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .r-3-2 {
+    aspect-ratio: 3 / 2;
+  }
+
+  .r-4-5 {
+    aspect-ratio: 4 / 5;
+  }
+
+  .r-16-9 {
+    aspect-ratio: 16 / 9;
+  }
+
+  .r-1-1 {
+    aspect-ratio: 1 / 1;
+  }
+
+  .ph-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+</style>

@@ -1,0 +1,283 @@
+---
+/**
+ * En-tête commun (kit/maquette/22_gabarit.html, bloc b).
+ * Collant à partir de 960 px, filet bas qui apparaît au défilement.
+ * Menu mobile sans JavaScript : case à cocher + label.
+ * `current` : lien de la page courante (aria-current + soulignement or 2 px),
+ * renseigné page par page comme dans la maquette.
+ */
+import { headerContact, headerLinks, type NavKey } from '../data/navigation';
+
+interface Props {
+  current?: NavKey | undefined;
+}
+
+const { current } = Astro.props;
+---
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <a href="/" class="logo">
+      <span class="logo-m42">M42</span> <span class="logo-guide">Guide</span>
+      <span class="sr-only">, retour à l'accueil</span>
+    </a>
+    <input
+      type="checkbox"
+      id="m42-menu-t"
+      class="menu-t"
+      aria-controls="m42-menu"
+      aria-label="Ouvrir ou fermer le menu"
+    />
+    <label for="m42-menu-t" class="burger">
+      <span class="b-open">Menu</span>
+      <span class="b-close">Fermer</span>
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="M4 7h16"></path>
+        <path d="M4 12h16"></path>
+        <path d="M4 17h16"></path>
+      </svg>
+    </label>
+    <nav id="m42-menu" class="nav" aria-label="Navigation principale">
+      {headerLinks.map((link) => (
+        <a
+          href={link.href}
+          class="nav-link"
+          aria-current={current === link.key ? 'page' : undefined}
+        >
+          {link.label}
+        </a>
+      ))}
+      <a
+        href={headerContact.href}
+        class="nav-cta"
+        aria-current={current === 'contact' ? 'page' : undefined}
+      >
+        {headerContact.label}
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .hdr {
+    background: var(--paper-header);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  @media (min-width: 960px) {
+    .hdr {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+  }
+
+  @keyframes m42-hdr {
+    from {
+      border-bottom-color: var(--line-transparent);
+    }
+    to {
+      border-bottom-color: var(--line);
+    }
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .hdr {
+      animation: m42-hdr var(--ease-out) both;
+      animation-timeline: scroll();
+      animation-range: 0px 96px;
+    }
+  }
+
+  .hdr-inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 14px var(--gutter-x);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 32px;
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink);
+    text-decoration: none;
+    min-height: var(--target-min);
+  }
+
+  .logo-m42 {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .logo-guide {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  /* Survol souligné encre 1 px, page active soulignée or 2 px */
+  .nav-link {
+    color: var(--ink);
+    padding: 10px 0;
+    text-decoration: none;
+    text-underline-offset: 8px;
+    text-decoration-thickness: 1px;
+    transition: text-decoration-color var(--dur-1) var(--ease-out);
+  }
+
+  .nav-link:hover {
+    text-decoration-line: underline;
+    text-decoration-color: var(--ink);
+  }
+
+  .nav-link[aria-current='page'] {
+    text-decoration-line: underline;
+    text-decoration-color: var(--gold);
+    text-decoration-thickness: 2px;
+  }
+
+  /* Bouton primaire compact */
+  .nav-cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target-min);
+    padding: 0 18px;
+    background: var(--ink);
+    color: var(--paper);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition:
+      background-color var(--dur-1) var(--ease-out),
+      color var(--dur-1) var(--ease-out);
+  }
+
+  .nav-cta:hover {
+    background-color: var(--gold);
+    color: var(--ink);
+  }
+
+  .nav-cta:active {
+    transform: translateY(1px);
+  }
+
+  /* Menu mobile : case à cocher masquée, label « Menu / Fermer » */
+  .menu-t {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  .burger {
+    display: none;
+  }
+
+  @media (max-width: 959px) {
+    .burger {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: var(--target-min);
+      padding: 0 14px;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      background: transparent;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .menu-t:focus-visible + .burger {
+      outline: 2px solid var(--gold-deep);
+      outline-offset: 2px;
+    }
+
+    .burger .b-close {
+      display: none;
+    }
+
+    .menu-t:checked + .burger .b-open {
+      display: none;
+    }
+
+    .menu-t:checked + .burger .b-close {
+      display: inline;
+    }
+
+    .nav {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: 4px 0 20px;
+    }
+
+    .menu-t:checked ~ .nav {
+      display: flex;
+    }
+
+    .nav-link,
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      min-height: 52px;
+      padding: 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 17px;
+    }
+
+    .nav-cta {
+      justify-content: center;
+      margin-top: 20px;
+      border-bottom: 0;
+      min-height: var(--target-min);
+      padding: 0 20px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hdr {
+      animation: none;
+    }
+
+    .nav-cta:active {
+      transform: none;
+    }
+  }
+</style>

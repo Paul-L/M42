@@ -1,0 +1,126 @@
+---
+/**
+ * Bouton (gabarit : .m42-btn, .m42-btn2, .m42-btn2n).
+ * - primary : fond encre, texte papier ; survol fond or, texte encre. Un seul par écran.
+ * - secondary : transparent, bordure 1 px ; survol fond encre à 6 %.
+ * Dans une section nuit (.m42-night), les couleurs s'inversent automatiquement.
+ * Avec `href` : lien <a> ; sinon <button>.
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends Omit<HTMLAttributes<'button'>, 'type'> {
+  variant?: 'primary' | 'secondary';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  /** Bouton d'envoi de formulaire : pleine largeur en mobile (flex 1 1 240px). */
+  stretch?: boolean;
+}
+
+const {
+  variant = 'primary',
+  href,
+  type = 'button',
+  stretch = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const classes = ['btn', `btn--${variant}`, { 'btn--stretch': stretch }, className];
+---
+
+{href ? (
+  <a href={href} class:list={classes} {...(rest as HTMLAttributes<'a'>)}>
+    <slot />
+  </a>
+) : (
+  <button type={type} class:list={classes} {...rest}>
+    <slot />
+  </button>
+)}
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--control-h);
+    padding: 14px 24px;
+    box-sizing: border-box;
+    border: 0;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-1) var(--ease-out),
+      color var(--dur-1) var(--ease-out),
+      border-color var(--dur-1) var(--ease-out);
+  }
+
+  .btn:disabled,
+  .btn[aria-disabled='true'] {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  .btn--primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .btn--primary:hover {
+    background-color: var(--gold);
+    color: var(--ink);
+  }
+
+  .btn--secondary {
+    padding: 13px 23px;
+    background: transparent;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+  }
+
+  .btn--secondary:hover {
+    background-color: var(--ink-hover);
+  }
+
+  /* Sur fond nuit */
+  :global(.m42-night) .btn--primary {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  :global(.m42-night) .btn--primary:hover {
+    background-color: var(--gold);
+    color: var(--ink);
+  }
+
+  :global(.m42-night) .btn--secondary {
+    border-color: var(--on-night);
+    color: var(--on-night);
+  }
+
+  :global(.m42-night) .btn--secondary:hover {
+    background-color: var(--paper-hover);
+    border-color: var(--gold-light);
+  }
+
+  .btn--stretch {
+    flex: 1 1 240px;
+    max-width: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn:active {
+      transform: none;
+    }
+  }
+</style>
