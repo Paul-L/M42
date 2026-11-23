@@ -1,0 +1,294 @@
+---
+/**
+ * Bloc de texte à copier (biographies, présentation du duo, textes d'annonce).
+ * Le texte est affiché tel quel (retours à la ligne conservés) et reste sélectionnable sans JavaScript.
+ * Îlot « Copier » : presse-papiers, retour visuel sur le bouton (« Copié », 2,5 s), annonce dans la
+ * zone de statut de la page ([data-copy-status]) ; repli si l'API presse-papiers est indisponible.
+ * Sans JavaScript, le bouton reste masqué (il ne servirait à rien).
+ */
+import { copyTexts, wordCount, type CopyKey } from '../../data/organisateurs';
+
+interface Props {
+  /** Clé du texte dans src/data/organisateurs.ts. */
+  textKey: CopyKey;
+  title: string;
+  /** Niveau du titre : h3 (duo, annonces) ou h4 (biographies sous le nom). */
+  level?: 'h3' | 'h4';
+  /** Style du titre : « duo » (H3 standard), « bio » (16 px), « annonce » (taille FAQ). */
+  size?: 'duo' | 'bio' | 'annonce';
+  /** Largeur du texte limitée à 80ch (présentation du duo, pleine largeur). */
+  wide?: boolean;
+  class?: string;
+}
+
+const {
+  textKey,
+  title,
+  level: Heading = 'h3',
+  size = 'bio',
+  wide = false,
+  class: className,
+} = Astro.props;
+const { nom, texte } = copyTexts[textKey];
+const targetId = `copie-${textKey}`;
+---
+
+<article class:list={['card', className]}>
+  <div class="head">
+    <div class="meta">
+      <Heading class:list={['h', `h--${size}`]}>{title}</Heading>
+      <span class="count">{wordCount(texte)}</span>
+    </div>
+    <button
+      type="button"
+      class="copy-btn"
+      aria-label={`Copier ${nom}`}
+      data-copy-target={targetId}
+      data-copy-nom={nom}
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <rect x="9" y="9" width="12" height="12"></rect>
+        <path d="M5 15H3V3h12v2"></path>
+      </svg>
+      <span data-copy-label>Copier</span>
+    </button>
+  </div>
+  <p id={targetId} class:list={['text', { 'text--wide': wide }]}>
+    {texte}
+  </p>
+</article>
+
+<style>
+  .card {
+    background: var(--surface-raised);
+    border: 1px solid var(--hairline);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3) var(--s-5);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-1) var(--s-4);
+  }
+
+  .h {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .h--duo {
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .h--bio {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .h--annonce {
+    font-size: var(--fs-faq);
+    line-height: 1.35;
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .count {
+    font-size: 13px;
+    line-height: var(--lh-small);
+    color: var(--fg-3);
+  }
+
+  /* Bouton secondaire compact (cible 44 px), gabarit .m42-btn2 */
+  .copy-btn {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+    min-height: var(--target-min);
+    min-width: 112px;
+    padding: 0 var(--s-4);
+    box-sizing: border-box;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-1) var(--ease-out),
+      color var(--dur-1) var(--ease-out),
+      border-color var(--dur-1) var(--ease-out);
+  }
+
+  .copy-btn:hover {
+    background-color: var(--ink-hover);
+  }
+
+  .copy-btn:active {
+    transform: translateY(1px);
+  }
+
+  /* Sans JavaScript : bouton masqué, place réservée (pas de saut de mise en page) */
+  .copy-btn:not([data-ready]) {
+    visibility: hidden;
+  }
+
+  .text {
+    margin: 0;
+    white-space: pre-line;
+    font-size: 16px;
+    line-height: var(--lh-body);
+    color: var(--ink);
+  }
+
+  .text--wide {
+    max-width: 80ch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .copy-btn:active {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  /*
+   * Îlot « Copier » (logique de la classe Component de la maquette : _copier(), renderVals()).
+   * - Succès : libellé « Copié », nom accessible « Copié : … », annonce « Copié dans le presse-papiers : … ».
+   * - Échec : libellé « Sélectionnez le texte », annonce de repli ; le texte est sélectionné pour Ctrl+C / Cmd+C.
+   * Retour à l'état initial après 2,5 s ; une seule copie active à la fois.
+   */
+
+  const DELAI = 2500;
+  const MESSAGE_ECHEC =
+    'La copie automatique a échoué. Sélectionnez le texte, puis copiez-le avec Ctrl+C ou Cmd+C.';
+
+  type Etat = 'ok' | 'ko' | null;
+
+  let minuteur: number | undefined;
+  let actif: HTMLButtonElement | null = null;
+
+  function zoneStatut(): HTMLElement {
+    let el = document.querySelector<HTMLElement>('[data-copy-status]');
+    if (!el) {
+      el = document.createElement('p');
+      el.setAttribute('role', 'status');
+      el.setAttribute('aria-live', 'polite');
+      el.className = 'sr-only';
+      el.dataset.copyStatus = '';
+      document.body.append(el);
+    }
+    return el;
+  }
+
+  function annoncer(message: string): void {
+    const el = zoneStatut();
+    // Vider puis remplir : le même message est de nouveau annoncé à chaque copie.
+    el.textContent = '';
+    window.requestAnimationFrame(() => {
+      el.textContent = message;
+    });
+  }
+
+  function afficher(btn: HTMLButtonElement, etat: Etat): void {
+    const nom = btn.dataset.copyNom ?? '';
+    const label = btn.querySelector<HTMLElement>('[data-copy-label]');
+    if (label) {
+      label.textContent =
+        etat === 'ok' ? 'Copié' : etat === 'ko' ? 'Sélectionnez le texte' : 'Copier';
+    }
+    btn.setAttribute('aria-label', etat === 'ok' ? `Copié : ${nom}` : `Copier ${nom}`);
+    if (etat) btn.dataset.copyState = etat;
+    else delete btn.dataset.copyState;
+  }
+
+  function selectionner(cible: HTMLElement): Selection | null {
+    const selection = window.getSelection();
+    if (!selection) return null;
+    const range = document.createRange();
+    range.selectNodeContents(cible);
+    selection.removeAllRanges();
+    selection.addRange(range);
+    return selection;
+  }
+
+  /** API presse-papiers (contexte sécurisé requis). */
+  async function copierApi(texte: string): Promise<boolean> {
+    try {
+      if (!navigator.clipboard?.writeText) return false;
+      await navigator.clipboard.writeText(texte);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /** Repli : sélection du texte et ancienne commande de copie ; la sélection reste en cas d'échec. */
+  function copierRepli(cible: HTMLElement): boolean {
+    const selection = selectionner(cible);
+    if (!selection) return false;
+    let ok = false;
+    try {
+      ok = document.execCommand('copy');
+    } catch {
+      ok = false;
+    }
+    if (ok) selection.removeAllRanges();
+    return ok;
+  }
+
+  async function copier(btn: HTMLButtonElement): Promise<void> {
+    const cible = document.getElementById(btn.dataset.copyTarget ?? '');
+    if (!cible) return;
+    const texte = cible.textContent ?? '';
+    const ok = (await copierApi(texte)) || copierRepli(cible);
+
+    if (actif && actif !== btn) afficher(actif, null);
+    actif = btn;
+    afficher(btn, ok ? 'ok' : 'ko');
+    annoncer(ok ? `Copié dans le presse-papiers : ${btn.dataset.copyNom ?? ''}.` : MESSAGE_ECHEC);
+
+    window.clearTimeout(minuteur);
+    minuteur = window.setTimeout(() => {
+      if (actif) afficher(actif, null);
+      actif = null;
+      zoneStatut().textContent = '';
+    }, DELAI);
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-target]').forEach((btn) => {
+    btn.dataset.ready = '';
+    btn.addEventListener('click', () => {
+      void copier(btn);
+    });
+  });
+</script>

@@ -4,6 +4,13 @@
  * Le symbole est repris tel quel du gabarit (version simplifiée du logo validé).
  */
 import { footerColumns } from '../data/navigation';
+
+interface Props {
+  /** Chemin de la page courante : son lien reçoit aria-current (comme dans la maquette). */
+  current?: string | undefined;
+}
+
+const { current } = Astro.props;
 ---
 
 <footer class="ftr m42-night">
@@ -38,7 +45,11 @@ import { footerColumns } from '../data/navigation';
             <ul class="col-list">
               {col.links.map((link) => (
                 <li>
-                  <a href={link.href} class="fl">
+                  <a
+                    href={link.href}
+                    class="fl"
+                    aria-current={current === link.href ? 'page' : undefined}
+                  >
                     {link.label}
                   </a>
                 </li>

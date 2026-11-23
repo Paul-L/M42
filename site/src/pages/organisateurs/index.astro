@@ -1,0 +1,767 @@
+---
+/**
+ * Espace organisateurs (kit/maquette/Organisateurs.dc.html) : biographies et annonces à copier,
+ * photos, fiche technique, logos, contact presse.
+ * Les fichiers (PDF, photos, vidéo) ne sont liés qu'une fois produits : aucun lien vers un fichier absent.
+ * Les logos existent (kit/logo/, copiés sans modification dans public/logos/) : ils sont liés.
+ * JSON-LD : ajouter un VideoObject dès que le showreel existe.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import Section from '../../components/Section.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import Eyebrow from '../../components/Eyebrow.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import SplitHead from '../../components/organisateurs/SplitHead.astro';
+import CopyBlock from '../../components/organisateurs/CopyBlock.astro';
+import { routes } from '../../data/routes';
+import { onThisPage, photos, techSheet, logos, logoRules } from '../../data/organisateurs';
+
+const title = 'Espace organisateurs : bios, photos, fiche technique | M42';
+const description =
+  "Vous organisez une conférence sur l'IA ? Tout pour l'annoncer et la préparer : biographies de 50 et 150 mots, photos HD, logo, descriptifs, texte d'annonce et fiche technique.";
+
+const url = 'https://m42.guide/organisateurs/';
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': `${url}#page`,
+      url,
+      name: title,
+      description,
+      isPartOf: { '@id': 'https://m42.guide/#site' },
+      about: { '@id': 'https://m42.guide/#organisation' },
+      breadcrumb: { '@id': `${url}#ariane` },
+      inLanguage: 'fr-FR',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${url}#ariane`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Accueil', item: 'https://m42.guide/' },
+        { '@type': 'ListItem', position: 2, name: 'Espace organisateurs' },
+      ],
+    },
+  ],
+};
+
+const conferenceLinks = [
+  { label: "L'IA au quotidien", href: routes['Conf-ia-au-quotidien.dc.html'] },
+  { label: 'Arnaques et IA', href: routes['Conf-arnaques-ia.dc.html'] },
+  { label: 'Vrai ou faux ?', href: routes['Conf-desinformation-ia.dc.html'] },
+  { label: 'Parents, ados et IA', href: routes['Conf-parents-ados-ia.dc.html'] },
+];
+---
+
+<BaseLayout title={title} description={description} footerCurrent jsonLd={jsonLd}>
+  <!-- Statut de copie, annoncé aux lecteurs d'écran (îlot de CopyBlock) -->
+  <p role="status" aria-live="polite" class="sr-only" data-copy-status></p>
+
+  <!-- En-tête de page + vidéo -->
+  <section aria-labelledby="titre-orga">
+    <Container class="page-head">
+      <Breadcrumb
+        items={[
+          { label: 'Accueil', href: routes['Main.dc.html'] },
+          { label: 'Espace organisateurs' },
+        ]}
+      />
+      <div class="hero">
+        <div class="hero-text">
+          <h1 id="titre-orga" class="h1">
+            <Eyebrow as="span" rule={false}>
+              Kit organisateur
+            </Eyebrow>
+            <span class="h1-main">Espace organisateurs</span>
+          </h1>
+          <p class="intro">
+            Vous organisez une intervention : annonce à publier, fiche technique pour la salle,
+            textes de présentation, photos et logos sont ici, au même endroit. Les textes se copient
+            en un clic ; les photos et les logos se téléchargent en haute définition.
+          </p>
+          <nav aria-label="Sur cette page" class="toc">
+            <ul>
+              {onThisPage.map((item) => (
+                <li>
+                  <a href={`#${item.id}`}>
+                    {item.label}{' '}
+                    <span class="toc-i" aria-hidden="true">
+                      ↓
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <p class="note">
+            [À PRODUIRE : kit complet en PDF. Le bouton « Télécharger le kit organisateur »
+            n'apparaît qu'une fois le fichier en ligne.]
+          </p>
+        </div>
+        <figure class="hero-video">
+          <Placeholder
+            ratio="16/9"
+            class="ph-multiline"
+            label={
+              "[Vidéo 60–90 s à tourner]\nExtrait de conférence sous-titré en français, image d'aperçu puis lecture au clic"
+            }
+          />
+          <figcaption>
+            Showreel M42, 60 à 90 secondes. Lien à partager : [À COMPLÉTER : URL de la vidéo].
+            Transcription sous la vidéo [À PRODUIRE].
+          </figcaption>
+        </figure>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Biographies à copier (Clara avant Paul) -->
+  <Section id="biographies" labelledby="titre-bios" tone="sunk">
+    <SplitHead
+      id="titre-bios"
+      eyebrow="Biographies"
+      lead="Prêtes à coller dans un programme, un communiqué ou une page d'inscription. Merci de garder l'ordre : Clara Peron, puis Paul Loustaunau."
+    >
+      Présenter les intervenants
+    </SplitHead>
+
+    <CopyBlock textKey="duo" title="Le duo M42" level="h3" size="duo" wide class="duo m42-reveal" />
+
+    <div class="bios">
+      <div class="person m42-reveal">
+        <h3 class="person-name">Clara Peron</h3>
+        <CopyBlock textKey="claraCourte" title="Biographie courte" level="h4" />
+        <CopyBlock textKey="claraLongue" title="Biographie longue" level="h4" />
+      </div>
+      {/* Paul : formulation prudente tant que l'accord écrit n'est pas obtenu (variante dans src/data/organisateurs.ts). */}
+      <div class="person m42-reveal">
+        <h3 class="person-name">Paul Loustaunau</h3>
+        <CopyBlock textKey="paulCourte" title="Biographie courte" level="h4" />
+        <CopyBlock textKey="paulLongue" title="Biographie longue" level="h4" />
+      </div>
+    </div>
+    <p class="note m42-reveal">
+      Les mentions entre crochets sont à finaliser avant la mise en ligne.
+    </p>
+  </Section>
+
+  <!-- Photos HD -->
+  <Section id="photos" labelledby="titre-photos">
+    <SplitHead
+      id="titre-photos"
+      eyebrow="Photos"
+      lead="Libres d'usage pour annoncer une intervention de M42, avec le crédit photo. Merci de ne pas les retoucher."
+    >
+      Photos haute définition
+    </SplitHead>
+    <div class="photos">
+      {photos.map((photo) => (
+        <figure class="fig m42-reveal">
+          <Placeholder ratio="4/5" label={photo.placeholder} />
+          <figcaption class="fig-cap">
+            <span class="fig-title">{photo.title}</span>
+            <span class="fig-meta">{photo.formats}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+    <p class="credit m42-reveal">
+      Crédit obligatoire : © [À COMPLÉTER : nom du photographe]. Toutes les photos suivent le même
+      étalonnage ; aucune image générée par IA.
+    </p>
+  </Section>
+
+  <!-- Fiche technique -->
+  <Section id="fiche-technique" labelledby="titre-fiche" tone="sunk">
+    <Eyebrow class="m42-reveal">Fiche technique</Eyebrow>
+    <div class="sheet">
+      <div class="sheet-intro m42-reveal">
+        <h2 id="titre-fiche" class="h2">
+          Ce qu'il faut prévoir sur place
+        </h2>
+        <p class="sheet-lead">
+          Une configuration simple, que la plupart des salles ont déjà. Nous vérifions chaque point
+          avec vous lors de l'échange de préparation.
+        </p>
+        <p class="note">[À PRODUIRE : fiche technique en PDF, version HTML ci-contre identique.]</p>
+      </div>
+      <dl class="sheet-list m42-reveal">
+        {techSheet.map((row) => (
+          <div class="sheet-row">
+            <dt>{row.term}</dt>
+            <dd>{row.detail}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </Section>
+
+  <!-- Texte d'annonce prêt à publier -->
+  <Section id="annonce" labelledby="titre-annonce">
+    <SplitHead
+      id="titre-annonce"
+      eyebrow="Annonce"
+      lead="Copiez, puis remplacez les éléments entre crochets. Version longue pour un programme ou un bulletin municipal, version courte pour les réseaux sociaux."
+    >
+      Texte d'annonce prêt à publier
+    </SplitHead>
+    <div class="annonces">
+      <CopyBlock
+        textKey="annonceLongue"
+        title="Version longue"
+        level="h3"
+        size="annonce"
+        class="m42-reveal"
+      />
+      <CopyBlock
+        textKey="annonceCourte"
+        title="Version courte"
+        level="h3"
+        size="annonce"
+        class="m42-reveal"
+      />
+    </div>
+    <div class="conf-links m42-reveal">
+      <span>Les descriptifs détaillés sont sur la page de chaque conférence :</span>
+      {conferenceLinks.map((link) => (
+        <a href={link.href}>{link.label}</a>
+      ))}
+    </div>
+  </Section>
+
+  <!-- Logos -->
+  <section id="logos" aria-labelledby="titre-logos" class="logos-section">
+    <Container>
+      <SplitHead
+        id="titre-logos"
+        eyebrow="Logos"
+        lead="Version claire, version sombre et symbole seul. Choisissez celle qui contraste le mieux avec votre support."
+      >
+        Logos à télécharger
+      </SplitHead>
+      <div class="logos">
+        {logos.map((logo) => (
+          <figure class="fig m42-reveal">
+            <div class:list={['logo-box', `logo-box--${logo.tone}`]}>
+              {logo.tone === 'symbol' ? (
+                <svg
+                  width="96"
+                  height="96"
+                  viewBox="0 0 100 100"
+                  role="img"
+                  aria-label="Symbole M42 seul"
+                  focusable="false"
+                >
+                  <circle cx="50" cy="50" r="46" fill="none" stroke="#0E0F12" stroke-width="3" />
+                  <polyline
+                    points="27,71 27,29 50,55 73,29 73,71"
+                    fill="none"
+                    stroke="#0E0F12"
+                    stroke-width="4.2"
+                    stroke-linejoin="round"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M50 46 C51 54 51 54 59 55 C51 56 51 56 50 64 C49 56 49 56 41 55 C49 54 49 54 50 46 Z"
+                    fill="#B08D57"
+                  />
+                </svg>
+              ) : (
+                <span
+                  role="img"
+                  aria-label={
+                    logo.tone === 'light'
+                      ? 'Logo M42 Guide sur fond clair'
+                      : 'Logo M42 Guide sur fond sombre'
+                  }
+                  class="logo-full"
+                >
+                  <svg
+                    width="48"
+                    height="48"
+                    viewBox="0 0 100 100"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="46"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width={logo.tone === 'light' ? '3' : '2.4'}
+                    />
+                    <polyline
+                      points="27,71 27,29 50,55 73,29 73,71"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width={logo.tone === 'light' ? '4.2' : '3.6'}
+                      stroke-linejoin="round"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M50 46 C51 54 51 54 59 55 C51 56 51 56 50 64 C49 56 49 56 41 55 C49 54 49 54 50 46 Z"
+                      fill="#B08D57"
+                    />
+                  </svg>
+                  <span class="logo-m42">M42</span>
+                  <span class="logo-guide">Guide</span>
+                </span>
+              )}
+            </div>
+            <figcaption class="fig-cap">
+              <span class="fig-title">{logo.title}</span>
+              <span class="fig-meta">
+                {logo.files.map((file, i) => (
+                  <>
+                    {i > 0 && ' · '}
+                    {file.href ? (
+                      <a href={file.href} download class="dl">
+                        {file.label}
+                        <span class="sr-only">, {logo.srLabel}</span>
+                      </a>
+                    ) : (
+                      file.label
+                    )}
+                  </>
+                ))}
+                {logo.marker && ` · ${logo.marker}`}
+              </span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+      <ul class="rules m42-reveal">
+        {logoRules.map((rule) => (
+          <li>
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#0E0F12"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M12 3v18" />
+              <path d="M3 12h18" />
+            </svg>
+            <span>{rule}</span>
+          </li>
+        ))}
+      </ul>
+    </Container>
+  </section>
+
+  <!-- Contact presse (bandeau final) -->
+  <div id="contact-presse" class="presse">
+    <CtaBand
+      id="titre-presse"
+      eyebrow="Contact presse"
+      title="Une interview, un format de photo, une précision ?"
+      lead="Journalistes et organisateurs : écrivez-nous, nous répondons sous 48 h. Nous pouvons aussi relire votre annonce avant publication."
+      ctaLabel="Parler de votre événement"
+      ctaHref={routes['Contact.dc.html']}
+    >
+      <p slot="contact" class="presse-contact">
+        Clara Peron : <a href="mailto:clara@m42.guide">clara@m42.guide</a>
+        <br />
+        Paul Loustaunau : <a href="mailto:paul@m42.guide">paul@m42.guide</a>
+        <br />
+        [À COMPLÉTER : téléphone]
+        <br />
+        [À DÉCIDER : interlocuteur presse unique]
+      </p>
+    </CtaBand>
+  </div>
+</BaseLayout>
+
+<style>
+  /* ---------- En-tête de page ---------- */
+  section :global(.page-head) {
+    padding-top: clamp(2rem, 4vw, 3rem);
+    padding-bottom: clamp(4rem, 7vw, 6rem);
+  }
+
+  .hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--s-7) var(--s-8);
+  }
+
+  .hero-text {
+    flex: 1 1 420px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-6);
+  }
+
+  .h1 {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    font-weight: 400;
+  }
+
+  .h1-main {
+    max-width: var(--measure-h1);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+    letter-spacing: var(--tracking-h1);
+    color: var(--ink);
+  }
+
+  .intro {
+    margin: 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .toc {
+    border-top: 1px solid var(--ink);
+  }
+
+  .toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .toc li {
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* Lien fléché sans soulignement (le style inline de la maquette l'annule) ; la flèche glisse au survol */
+  .toc a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    min-height: var(--control-h);
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .toc-i {
+    display: inline-block;
+    transition: transform var(--dur-1) var(--ease-out);
+  }
+
+  .toc a:hover .toc-i {
+    transform: translateX(3px);
+  }
+
+  .note {
+    margin: 0;
+    font-size: 13px;
+    line-height: var(--lh-small);
+    color: var(--fg-3);
+  }
+
+  .hero-video {
+    flex: 999 1 560px;
+    min-width: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .hero-video :global(.ph-multiline) {
+    white-space: pre-line;
+  }
+
+  .hero-video figcaption {
+    margin: 0;
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    color: var(--fg-3);
+  }
+
+  /* ---------- Biographies ---------- */
+  :global(#biographies .duo) {
+    margin-top: var(--s-7);
+  }
+
+  .bios {
+    margin-top: var(--s-5);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr));
+    gap: var(--s-5);
+  }
+
+  .person {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+  }
+
+  .person-name {
+    margin: 0;
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--ink);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-card);
+    line-height: var(--lh-card);
+  }
+
+  /* ---------- Photos et logos (figures) ---------- */
+  .photos {
+    margin-top: var(--s-7);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: var(--s-6) var(--s-5);
+    align-items: start;
+  }
+
+  .fig {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .fig-cap {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .fig-title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .fig-meta {
+    margin: 0;
+    font-size: 13px;
+    line-height: var(--lh-small);
+    color: var(--fg-3);
+  }
+
+  .credit {
+    margin: 0;
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    color: var(--fg-3);
+  }
+
+  /* ---------- Fiche technique ---------- */
+  .sheet {
+    margin-top: var(--s-5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--s-7) var(--s-8);
+  }
+
+  .sheet-intro {
+    flex: 1 1 320px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .h2 {
+    margin: 0;
+    max-width: var(--measure-h2);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .sheet-lead {
+    margin: 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--fg-2);
+  }
+
+  .sheet-list {
+    flex: 999 1 560px;
+    min-width: 0;
+    margin: 0;
+    border-top: 1px solid var(--ink);
+  }
+
+  .sheet-row {
+    display: grid;
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+    gap: var(--s-1) var(--s-6);
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .sheet-row dt {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .sheet-row dd {
+    margin: 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--ink-2);
+  }
+
+  /* ---------- Annonce ---------- */
+  .annonces {
+    margin-top: var(--s-7);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr));
+    gap: var(--s-5);
+    align-items: start;
+  }
+
+  .conf-links {
+    margin-top: var(--s-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-1) var(--s-5);
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  .conf-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target-min);
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: text-decoration-color var(--dur-1) var(--ease-out);
+  }
+
+  .conf-links a:hover {
+    text-decoration-color: var(--gold);
+    text-decoration-thickness: 2px;
+  }
+
+  /* ---------- Logos ---------- */
+  .logos-section {
+    padding: 0 0 var(--section-y);
+    /* Section sans marge haute : l'ancre #logos passe sous l'en-tête collant */
+    scroll-margin-top: 96px;
+  }
+
+  .logos {
+    margin-top: var(--s-7);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: var(--s-5);
+  }
+
+  .logo-box {
+    aspect-ratio: 3 / 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+  }
+
+  .logo-box--dark {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .logo-full {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    color: var(--ink);
+  }
+
+  .logo-box--dark .logo-full {
+    color: var(--paper);
+  }
+
+  .logo-m42 {
+    font-family: var(--font-serif);
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .logo-guide {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .dl {
+    color: var(--ink);
+    text-underline-offset: 3px;
+  }
+
+  .rules {
+    margin: var(--s-6) 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  .rules li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-3);
+  }
+
+  .rules svg {
+    flex: none;
+  }
+
+  /* ---------- Contact presse ---------- */
+  .presse-contact {
+    margin: 0;
+    font-size: var(--fs-small);
+    line-height: 1.6;
+    color: var(--on-night-2);
+  }
+
+  .presse-contact a {
+    color: var(--on-night);
+    text-underline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toc a:hover .toc-i {
+      transform: none;
+    }
+  }
+</style>

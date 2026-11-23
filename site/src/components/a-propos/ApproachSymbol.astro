@@ -1,0 +1,61 @@
+---
+/**
+ * Carte du ciel décorative de la section « Notre démarche » (fond nuit) :
+ * cercles de graduation, quatre étoiles reliées en M, étoile d'or au centre.
+ * Reprise telle quelle de la maquette ; couleurs passées en tokens.
+ */
+---
+
+<svg viewBox="0 0 200 200" aria-hidden="true" focusable="false" class="symbol">
+  <circle cx="100" cy="100" r="92" class="ring" stroke-dasharray="2 5"></circle>
+  <circle cx="100" cy="100" r="70" class="ring"></circle>
+  <path d="M100 2v10M100 188v10M2 100h10M188 100h10" class="ticks"></path>
+  <polyline
+    points="54,142 54,58 100,110 146,58 146,142"
+    class="m"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+  ></polyline>
+  <circle cx="54" cy="142" r="3.5" class="star"></circle>
+  <circle cx="54" cy="58" r="3.5" class="star"></circle>
+  <circle cx="146" cy="58" r="3.5" class="star"></circle>
+  <circle cx="146" cy="142" r="3.5" class="star"></circle>
+  <path
+    d="M100 92 C102 108 102 108 118 110 C102 112 102 112 100 128 C98 112 98 112 82 110 C98 108 98 108 100 92 Z"
+    class="gold"
+  ></path>
+</svg>
+
+<style>
+  .symbol {
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    display: block;
+  }
+
+  .ring {
+    fill: none;
+    stroke: var(--night-line);
+    stroke-width: 1;
+  }
+
+  .ticks {
+    stroke: var(--night-line-strong);
+    stroke-width: 1;
+  }
+
+  .m {
+    fill: none;
+    stroke: var(--on-night);
+    stroke-width: 1.5;
+  }
+
+  .star {
+    fill: var(--on-night);
+  }
+
+  .gold {
+    fill: var(--gold);
+  }
+</style>

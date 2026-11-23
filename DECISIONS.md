@@ -20,3 +20,10 @@ Choix faits quand la maquette ou les consignes laissaient une ambiguïté (optio
 14. **Gouttière des grilles de cartes : 24 px à toutes les largeurs**, comme le gabarit (le token `--gap` de la DA, 16 px sous 640 px, reste réservé à la future grille 12 colonnes).
 15. **Bouton « Contact » du menu mobile : 44 px de haut**, comme le rendu réel de la maquette (le CSS du gabarit vise 52 px, mais le style inline à 44 px l'emporte).
 16. **Cibles tactiles < 44 px reprises de la maquette** (liens du pied de page, e-mails du bandeau CTA, lien « Politique de confidentialité ») : espacement conforme au critère WCAG 2.5.8 (24 px), mais sous la règle des 44 px du projet. *À traiter en phase 4 (accessibilité).*
+17. **Messages d'erreur du formulaire de contact** : `Contact.dc.html` n'en prévoit aucun (seulement `required`). Ils sont repris mot pour mot de `Sat-test-arnaque-ou-pas.dc.html` (« Indiquez votre nom. », etc.).
+18. **Typographie française dans les attributs lus** : le middleware du point 11 traite aussi `content` (meta description, Open Graph), `aria-label`, `alt`, `title` et `placeholder`.
+19. **Données structurées sans marqueur** : un champ JSON-LD dont la valeur est encore `[À …]` (LinkedIn, photo) n'est pas émis ; le marqueur reste visible dans la page et listé dans `TODO_CONTENU.md`.
+20. **Défauts de la maquette reproduits, à trancher** :
+    - H1 « Espace organisateurs » coupé en plein mot à 1 440 px (« organisate / urs ») : colonne de ~420 px + `overflow-wrap: break-word`.
+    - Listes terme / détail (fiche technique, pages légales) : colonne de termes de 15rem à 390 px, détails coupés en plein mot (« Vidéoproje cteur »). Proposition : empiler terme et détail sous 640 px.
+21. **Logos de l'espace organisateurs** : liens vers les vrais fichiers de `kit/logo/` (copiés dans `site/public/logos/`). Le « PNG carré 512 px » du symbole seul n'existe pas dans le kit : son format reste du texte, avec le marqueur `[À PRODUIRE : fichiers]`.

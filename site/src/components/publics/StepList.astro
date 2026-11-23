@@ -1,0 +1,76 @@
+---
+/**
+ * « Comment ça se passe » (pages « Pour qui ») : étapes numérotées 1, 2, 3 en grille
+ * (liste ordonnée), grand chiffre Cormorant or, H3, texte. Chaque étape apparaît au défilement.
+ *
+ * Props :
+ * - `items` : { title, text } ; le numéro est calculé.
+ */
+export interface Step {
+  title: string;
+  text: string;
+}
+
+export interface Props {
+  items: Step[];
+}
+
+const { items } = Astro.props;
+---
+
+<ol class="steps">
+  {items.map((item, i) => (
+    <li class="step m42-reveal">
+      <span aria-hidden="true" class="num">
+        {i + 1}
+      </span>
+      <h3 class="h3">{item.title}</h3>
+      <p class="text">{item.text}</p>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .steps {
+    list-style: none;
+    margin: var(--s-7) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 40px var(--s-7);
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--rule);
+  }
+
+  .num {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 1;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--accent-text);
+  }
+
+  .h3 {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .text {
+    margin: 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--fg-2);
+    hyphens: auto;
+  }
+</style>

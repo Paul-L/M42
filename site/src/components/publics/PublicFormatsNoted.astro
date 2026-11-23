@@ -1,0 +1,115 @@
+---
+/**
+ * Liste des formats des pages « Pour qui », avec précision facultative sous le titre
+ * (« Mises en situation sur vos cas réels. »), suivie ou non d'un marqueur de relecture.
+ * Même rendu que PublicFormats / FormatList, qui ne prévoient que le marqueur seul.
+ * La liste entière apparaît au défilement.
+ *
+ * Props :
+ * - `items` : { title, note?, marker?, duration, participants } (PublicFormat, src/data/publics/types.ts).
+ * - `durationLabel` (« Durée ») / `participantsLabel` (« Participants ») : intitulés des colonnes.
+ */
+import DraftMarker from './DraftMarker.astro';
+import type { PublicFormat } from '../../data/publics/types';
+
+export interface Props {
+  items: PublicFormat[];
+  durationLabel?: string;
+  participantsLabel?: string;
+}
+
+const { items, durationLabel = 'Durée', participantsLabel = 'Participants' } = Astro.props;
+---
+
+<ul class="list m42-reveal">
+  {items.map((item) => (
+    <li class="row">
+      <div class="name">
+        <h3 class="h3">{item.title}</h3>
+        {(item.note || item.marker) && (
+          <p class="note">
+            {item.note}
+            {item.note && item.marker && ' '}
+            {item.marker && <DraftMarker>{item.marker}</DraftMarker>}
+          </p>
+        )}
+      </div>
+      <div class="cell cell--duration">
+        <span class="label">{durationLabel}</span>
+        <span class="value">{item.duration}</span>
+      </div>
+      <div class="cell cell--people">
+        <span class="label">{participantsLabel}</span>
+        <span class="value">{item.participants}</span>
+      </div>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .list {
+    list-style: none;
+    margin: var(--s-7) 0 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-3) var(--s-6);
+    padding: var(--s-5) 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .name {
+    flex: 2 1 320px;
+    min-width: 0;
+  }
+
+  .h3 {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .note {
+    margin: 6px 0 0;
+    font-size: var(--fs-small);
+    line-height: var(--lh-small);
+    color: var(--fg-3);
+  }
+
+  .cell {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .cell--duration {
+    flex: 1 1 170px;
+  }
+
+  .cell--people {
+    flex: 1 1 220px;
+  }
+
+  .label {
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+  }
+
+  .value {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--fg);
+  }
+</style>

@@ -1,0 +1,170 @@
+---
+/**
+ * Fiche d'un intervenant (page À propos, section « Le duo ») : sur-titre, portrait 4:5
+ * à gauche avec crédit, nom en H2, accroche, bio longue, tableau Sur scène / Contact / LinkedIn.
+ * L'ancre (`id`) est le slug : #clara-peron, #paul-loustaunau (ancres stables, cf. SEO).
+ * Données : src/data/intervenants.ts (future collection Directus `intervenants`).
+ */
+import Eyebrow from '../Eyebrow.astro';
+import Placeholder from '../Placeholder.astro';
+import type { Intervenant } from '../../data/intervenants';
+
+interface Props {
+  person: Intervenant;
+}
+
+const { person } = Astro.props;
+const titleId = `titre-${person.slug.split('-')[0]}`;
+---
+
+<article id={person.slug} aria-labelledby={titleId} class="profile">
+  <Eyebrow class="m42-reveal">{person.role}</Eyebrow>
+  <div class="row">
+    <div class="photo m42-reveal">
+      <Placeholder
+        label={person.photo.placeholder}
+        ratio="4/5"
+        image={person.photo.image}
+        alt={person.photo.alt}
+      />
+      <p class="credit">{person.photo.credit}</p>
+    </div>
+    <div class="text m42-reveal">
+      <h2 id={titleId} class="name">
+        {person.nom}
+      </h2>
+      <p class="accroche">{person.accroche}</p>
+      {person.bioLongue.map((p) => (
+        <p class="bio">{p}</p>
+      ))}
+      <dl class="facts">
+        <div class="fact">
+          <dt>Sur scène</dt>
+          <dd>{person.surScene}</dd>
+        </div>
+        <div class="fact">
+          <dt>Contact</dt>
+          <dd>
+            <a href={`mailto:${person.email}`}>{person.email}</a>
+          </dd>
+        </div>
+        <div class="fact">
+          <dt>LinkedIn</dt>
+          <dd>
+            {person.linkedin.url ? (
+              <a href={person.linkedin.url} rel="me">
+                {person.linkedin.url}
+              </a>
+            ) : (
+              person.linkedin.placeholder
+            )}
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</article>
+
+<style>
+  .profile {
+    scroll-margin-top: 96px;
+  }
+
+  .row {
+    margin-top: var(--s-5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 40px var(--s-8);
+  }
+
+  .photo {
+    flex: 1 1 300px;
+    max-width: 440px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  /* Portrait sur section alternée : fond papier relevé (maquette #F8F6F1) */
+  .photo :global(.ph) {
+    background: var(--paper-raised);
+  }
+
+  .credit {
+    margin: 0;
+    font-size: 13px;
+    line-height: var(--lh-small);
+    color: var(--ink-3);
+  }
+
+  .text {
+    flex: 999 1 480px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .name {
+    margin: 0;
+    max-width: var(--measure-h2);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .accroche {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: var(--lh-small);
+    color: var(--ink);
+  }
+
+  .bio {
+    margin: 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--ink-2);
+    hyphens: auto;
+  }
+
+  .facts {
+    margin: var(--s-2) 0 0;
+    border-top: 1px solid var(--ink);
+  }
+
+  .fact {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: var(--s-1) var(--s-6);
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  dt {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: var(--lh-small);
+    color: var(--ink);
+  }
+
+  dd {
+    margin: 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--ink-2);
+  }
+
+  dd a {
+    color: var(--ink);
+    text-underline-offset: 3px;
+  }
+</style>

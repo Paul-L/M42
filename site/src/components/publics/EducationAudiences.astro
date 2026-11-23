@@ -1,0 +1,151 @@
+---
+/**
+ * Page Éducation, section « Trois publics, un même langage » : schéma en triangle
+ * (Enseignants en haut, Élèves et Parents en bas, étoile or au centre, décoratif) puis
+ * trois colonnes (H3, format en petit, texte). Schéma et colonnes apparaissent au défilement.
+ * Le schéma est propre à la page Éducation (libellés en dur, comme dans la maquette).
+ *
+ * Props :
+ * - `items` : { title, format, text } dans l'ordre Élèves, Enseignants, Parents.
+ */
+export interface EducationAudience {
+  title: string;
+  /** Format proposé à ce public (13 px, encre 3). */
+  format: string;
+  text: string;
+}
+
+export interface Props {
+  items: EducationAudience[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="schema m42-reveal" aria-hidden="true">
+  <svg viewBox="0 0 600 240" width="100%" class="svg" focusable="false">
+    <g class="edge" stroke-width="1.5" fill="none">
+      <path d="M100 180 L300 64 L500 180 Z"></path>
+    </g>
+    <g class="spoke" stroke-width="1" stroke-dasharray="3 5" fill="none">
+      <path d="M300 142 L100 180"></path>
+      <path d="M300 142 L300 64"></path>
+      <path d="M300 142 L500 180"></path>
+    </g>
+    <g class="halo" stroke-width="1">
+      <circle cx="100" cy="180" r="13"></circle>
+      <circle cx="300" cy="64" r="13"></circle>
+      <circle cx="500" cy="180" r="13"></circle>
+    </g>
+    <g class="dot">
+      <circle cx="100" cy="180" r="6"></circle>
+      <circle cx="300" cy="64" r="6"></circle>
+      <circle cx="500" cy="180" r="6"></circle>
+    </g>
+    <path
+      d="M300 124 C302 138 304 140 318 142 C304 144 302 146 300 160 C298 146 296 144 282 142 C296 140 298 138 300 124 Z"
+      class="star"
+    ></path>
+    <g class="labels" font-size="19" font-weight="600" text-anchor="middle">
+      <text x="300" y="32">
+        Enseignants
+      </text>
+      <text x="100" y="224">
+        Élèves
+      </text>
+      <text x="500" y="224">
+        Parents
+      </text>
+    </g>
+  </svg>
+</div>
+
+<div class="grid">
+  {items.map((item) => (
+    <div class="col m42-reveal">
+      <h3 class="h3">{item.title}</h3>
+      <p class="format">{item.format}</p>
+      <p class="text">{item.text}</p>
+    </div>
+  ))}
+</div>
+
+<style>
+  .schema {
+    margin-top: var(--s-7);
+    display: flex;
+    justify-content: center;
+  }
+
+  .svg {
+    max-width: 640px;
+    height: auto;
+    display: block;
+  }
+
+  .edge {
+    stroke: var(--ink);
+  }
+
+  .spoke {
+    stroke: var(--line-strong);
+  }
+
+  .halo {
+    fill: var(--paper);
+    stroke: var(--line-strong);
+  }
+
+  .dot {
+    fill: var(--ink);
+  }
+
+  .star {
+    fill: var(--gold);
+  }
+
+  .labels {
+    font-family: var(--font-sans);
+    fill: var(--ink);
+  }
+
+  .grid {
+    margin-top: var(--s-7);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 40px var(--s-7);
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--rule);
+  }
+
+  .h3 {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .format {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--fg-3);
+  }
+
+  .text {
+    margin: 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--fg-2);
+    hyphens: auto;
+  }
+</style>

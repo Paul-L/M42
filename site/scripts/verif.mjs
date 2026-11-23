@@ -120,14 +120,12 @@ report(
 );
 
 // ---------- 3. Liens internes ----------
-// Les liens vers des pages du plan (kit/maquette/21_plan_pages.md) pas encore intégrées
+// Les liens vers des pages du plan (site/src/data/routes.ts) pas encore intégrées
 // sont signalés « à venir » ; tout autre lien manquant est une erreur.
 const planned = new Set(
-  [
-    ...readFileSync(join(root, 'kit', 'maquette', '21_plan_pages.md'), 'utf8').matchAll(
-      /\| (\/[^ |]*) \|/g,
-    ),
-  ].map((m) => m[1]),
+  [...readFileSync(join(site, 'src', 'data', 'routes.ts'), 'utf8').matchAll(/: '(\/[^']*)'/g)].map(
+    (m) => m[1],
+  ),
 );
 const upcoming = new Set();
 const broken = [];

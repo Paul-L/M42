@@ -1,0 +1,128 @@
+---
+/**
+ * Règle « Vert, orange, rouge » (page Entreprises, réutilisable par une autre page « Pour qui ») :
+ * trois cartes à bandeau haut de couleur, pastille (rond, triangle, carré : la forme double
+ * la couleur), H3, liste de tâches, devise. Chaque carte apparaît au défilement.
+ *
+ * Props :
+ * - `cards` : { level: 'vert' | 'orange' | 'rouge', label, title, items, motto }
+ *   (ColorRuleCard, src/data/publics/entreprises.ts).
+ */
+import type { ColorRuleCard } from '../../data/publics/entreprises';
+
+export interface Props {
+  cards: ColorRuleCard[];
+}
+
+const { cards } = Astro.props;
+---
+
+<div class="grid">
+  {cards.map((card) => (
+    <div class:list={['card', `card--${card.level}`, 'm42-reveal']}>
+      <p class="label">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          aria-hidden="true"
+          focusable="false"
+          class="shape"
+        >
+          {card.level === 'vert' && <circle cx="10" cy="10" r="8" fill="currentColor" />}
+          {card.level === 'orange' && <path d="M10 2 L18.5 17.5 L1.5 17.5 Z" fill="currentColor" />}
+          {card.level === 'rouge' && (
+            <rect x="2.5" y="2.5" width="15" height="15" fill="currentColor" />
+          )}
+        </svg>
+        {card.label}
+      </p>
+      <h3 class="h3">{card.title}</h3>
+      <ul class="list">
+        {card.items.map((item) => (
+          <li class="item">{item}</li>
+        ))}
+      </ul>
+      <p class="motto">{card.motto}</p>
+    </div>
+  ))}
+</div>
+
+<style>
+  .grid {
+    margin-top: var(--s-7);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: var(--s-5);
+  }
+
+  .card {
+    /* Couleur du niveau : bandeau haut et pastille */
+    --level: var(--success);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding: 28px 28px var(--s-6);
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--level);
+  }
+
+  .card--orange {
+    /* Pas de token « orange » dans la DA : valeur de la maquette */
+    --level: #a85a16;
+  }
+
+  .card--rouge {
+    --level: var(--error);
+  }
+
+  .label {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .shape {
+    color: var(--level);
+  }
+
+  .h3 {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  .item {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .motto {
+    margin: auto 0 0;
+    padding-top: var(--s-2);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+</style>

@@ -1,0 +1,170 @@
+---
+/**
+ * Contact (kit/maquette/Contact.dc.html) : formulaire qualifiant, coordonnées, FAQ.
+ * Canonique : https://m42.guide/contact/, y compris avec ?theme=…&type=… (préremplissage).
+ * Après envoi réel (phase 4) : redirection vers /contact/merci/ (noindex).
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import Section from '../../components/Section.astro';
+import Eyebrow from '../../components/Eyebrow.astro';
+import Faq from '../../components/Faq.astro';
+import ContactForm from '../../components/contact/ContactForm.astro';
+import ContactAside from '../../components/contact/ContactAside.astro';
+import { routes } from '../../data/routes';
+import { contactFaq } from '../../data/contact';
+
+const title = "Contact et devis pour une conférence sur l'IA | M42";
+const description =
+  'Décrivez votre public, votre date et votre format : nous vous répondons sous 48 h. Conférence, keynote, atelier ou intervention sur mesure.';
+
+const url = 'https://m42.guide/contact/';
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ContactPage',
+      '@id': `${url}#page`,
+      url,
+      name: title,
+      description,
+      isPartOf: { '@id': 'https://m42.guide/#site' },
+      about: { '@id': 'https://m42.guide/#organisation' },
+      breadcrumb: { '@id': `${url}#ariane` },
+      inLanguage: 'fr-FR',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${url}#ariane`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Accueil', item: 'https://m42.guide/' },
+        { '@type': 'ListItem', position: 2, name: 'Contact' },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} current="contact" footerCurrent jsonLd={jsonLd}>
+  <!-- En-tête de page -->
+  <section aria-labelledby="titre-contact-page">
+    <Container class="page-head">
+      <Breadcrumb
+        items={[{ label: 'Accueil', href: routes['Main.dc.html'] }, { label: 'Contact' }]}
+      />
+      <h1 id="titre-contact-page" class="h1">
+        <span class="h1-kicker">Contact et devis</span>
+        <span class="h1-main">Parlons de votre projet</span>
+      </h1>
+      <p class="intro">
+        Conférence, atelier, séminaire ou intervention sur mesure : dites-nous qui sera dans la
+        salle, quand, et ce que vous attendez. Vous recevez une réponse sous 48 h, puis une
+        proposition construite pour votre public.
+      </p>
+    </Container>
+  </section>
+
+  <!-- Formulaire + coordonnées -->
+  <section aria-label="Formulaire et coordonnées" class="main-section">
+    <Container class="cols">
+      <div class="form-col">
+        <SectionTitle id="titre-form" eyebrow="Votre demande">
+          Décrivez votre événement
+        </SectionTitle>
+        <ContactForm />
+      </div>
+      <ContactAside />
+    </Container>
+  </section>
+
+  <!-- Questions fréquentes -->
+  <Section labelledby="titre-faq" tone="sunk">
+    <Eyebrow class="m42-reveal">Questions fréquentes</Eyebrow>
+    <h2 id="titre-faq" class="faq-title m42-reveal">
+      Avant de nous écrire
+    </h2>
+    <div class="faq-wrap m42-reveal">
+      <Faq items={contactFaq} />
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  section :global(.page-head) {
+    padding-top: clamp(2rem, 4vw, 3rem);
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .h1 {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    font-weight: 400;
+  }
+
+  .h1-kicker {
+    font-family: var(--font-sans);
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .h1-main {
+    max-width: var(--measure-h1);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+    letter-spacing: var(--tracking-h1);
+    color: var(--ink);
+  }
+
+  .intro {
+    margin: var(--s-6) 0 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .main-section {
+    padding: 0 0 var(--section-y);
+  }
+
+  .main-section :global(.cols) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--s-8) 80px;
+  }
+
+  .form-col {
+    flex: 999 1 560px;
+    min-width: 0;
+  }
+
+  /* Retour en haut du formulaire après envoi : sous l'en-tête collant (convention .m42-anchor) */
+  .form-col :global(#titre-form) {
+    scroll-margin-top: 104px;
+  }
+
+  .faq-title {
+    margin: var(--s-5) 0 0;
+    max-width: var(--measure-h2);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .faq-wrap {
+    margin-top: var(--s-7);
+  }
+</style>

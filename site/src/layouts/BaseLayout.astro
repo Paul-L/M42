@@ -20,9 +20,13 @@ interface Props {
   current?: NavKey;
   /** Page à exclure des moteurs (page interne, préproduction). */
   noindex?: boolean;
+  /** Marque le lien de cette page dans le pied de page (pages légales, Contact, À propos, Organisateurs). */
+  footerCurrent?: boolean;
+  /** Données structurées (schema.org), sérialisées en JSON-LD. */
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, current, noindex = false } = Astro.props;
+const { title, description, current, noindex = false, jsonLd, footerCurrent = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -42,6 +46,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
     <slot name="head" />
   </head>
   <body>
@@ -52,7 +57,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <main id="contenu" tabindex="-1">
       <slot />
     </main>
-    <Footer />
+    <Footer current={footerCurrent ? Astro.url.pathname : undefined} />
   </body>
 </html>
 

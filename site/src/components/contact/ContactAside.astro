@@ -1,0 +1,190 @@
+---
+/** Colonne « Coordonnées et étapes » de la page Contact (maquette Contact.dc.html). */
+import { nextSteps } from '../../data/contact';
+
+const people = [
+  { name: 'Clara Peron', email: 'clara@m42.guide' },
+  { name: 'Paul Loustaunau', email: 'paul@m42.guide' },
+];
+---
+
+<aside aria-label="Coordonnées et étapes" class="aside">
+  <div class="block">
+    <h2 class="label">Nous écrire directement</h2>
+    <ul class="contacts">
+      {people.map((p) => (
+        <li class="person">
+          <span class="name">{p.name}</span>
+          <a href={`mailto:${p.email}`} class="mail">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <rect x="3" y="5" width="18" height="14"></rect>
+              <path d="M3 7l9 6 9-6"></path>
+            </svg>
+            {p.email}
+          </a>
+        </li>
+      ))}
+      <li class="phone">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path>
+        </svg>
+        [À COMPLÉTER : téléphone]
+      </li>
+    </ul>
+    <p class="where">
+      Basés dans le Sud-Ouest. Nous intervenons partout en France, en présentiel ou à distance.
+      Interventions en français.
+    </p>
+  </div>
+
+  <div class="block">
+    <h2 class="label">Ce qui se passe ensuite</h2>
+    <ol class="steps">
+      {nextSteps.map((step, i) => (
+        <li class="step">
+          <span aria-hidden="true" class="num">
+            {i + 1}
+          </span>
+          <h3>{step.title}</h3>
+          <p>{step.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</aside>
+
+<style>
+  .aside {
+    flex: 1 1 320px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Titre au style de sur-titre (filet + capitales espacées) */
+  .label {
+    margin: 0;
+    border-top: 1px solid var(--rule);
+    padding-top: var(--s-4);
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .contacts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .person {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .name {
+    font-weight: 600;
+  }
+
+  .mail {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: var(--target-min);
+    color: var(--ink);
+    text-underline-offset: 3px;
+  }
+
+  .phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: var(--target-min);
+    color: var(--ink-2);
+  }
+
+  .where {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: var(--s-1) var(--s-4);
+    align-items: baseline;
+  }
+
+  .num {
+    grid-row: span 2;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 1;
+    color: var(--gold-deep);
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .step h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .step p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+</style>

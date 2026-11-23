@@ -1,0 +1,436 @@
+---
+/**
+ * Formulaire qualifiant + message de confirmation (maquette Contact.dc.html).
+ * Préremplissage possible : /contact/?theme=arnaques&type=collectivite (canonique inchangée).
+ * L'envoi réel (Directus, champ piège, délai minimal, limite de débit, flow e-mail,
+ * redirection vers /contact/merci/) est prévu en phase 4 : voir envoyerDemande() dans l'îlot.
+ */
+import Button from '../Button.astro';
+import ArrowLink from '../ArrowLink.astro';
+import ContactField from './ContactField.astro';
+import { routes } from '../../data/routes';
+import { structureTypes, themes, formats, participants, budgets } from '../../data/contact';
+---
+
+<div class="contact-form" data-contact-form>
+  <!-- Formulaire qualifiant (01_arbitrages, ligne « Formulaire de contact » ; 02, § 6). -->
+  <form aria-labelledby="titre-form" class="form" method="post" data-form>
+    <p class="note">
+      Les champs marqués d'un astérisque (*) sont obligatoires. Les autres nous aident à vous
+      répondre plus précisément.
+    </p>
+
+    <fieldset>
+      <legend>Vous</legend>
+      <div class="grid">
+        <ContactField
+          id="c-nom"
+          name="nom"
+          label="Nom et prénom"
+          autocomplete="name"
+          required
+          error="Indiquez votre nom."
+        />
+        <ContactField
+          id="c-structure"
+          name="structure"
+          label="Structure"
+          autocomplete="organization"
+          required
+          error="Indiquez le nom de votre structure."
+        />
+        <ContactField
+          id="c-email"
+          name="email"
+          type="email"
+          label="E-mail"
+          autocomplete="email"
+          required
+          error="Indiquez une adresse e-mail valide, par exemple nom@structure.fr."
+        />
+        <ContactField
+          id="c-tel"
+          name="telephone"
+          type="tel"
+          label="Téléphone"
+          autocomplete="tel"
+          optional
+        />
+      </div>
+      <ContactField
+        id="c-type"
+        name="type"
+        type="select"
+        label="Type de structure"
+        required
+        options={structureTypes}
+        error="Choisissez un type de structure."
+      />
+    </fieldset>
+
+    <fieldset>
+      <legend>Votre événement</legend>
+      <div class="grid">
+        <ContactField id="c-theme" name="theme" type="select" label="Thème" options={themes} />
+        <ContactField id="c-format" name="format" type="select" label="Format" options={formats} />
+        <ContactField
+          id="c-date"
+          name="date"
+          label="Date ou période souhaitée"
+          hint="Par exemple : « un jeudi de mars » ou « avant l'été »."
+        />
+        <ContactField
+          id="c-ville"
+          name="ville"
+          label="Ville"
+          autocomplete="address-level2"
+          hint="Ou « à distance »."
+        />
+        <ContactField
+          id="c-participants"
+          name="participants"
+          type="select"
+          label="Nombre de participants"
+          options={participants}
+        />
+        <!-- [À VALIDER] préciser HT ou TTC dans le libellé -->
+        <ContactField
+          id="c-budget"
+          name="budget"
+          type="select"
+          label="Budget indicatif"
+          optional
+          options={budgets}
+          hint="Il nous aide à vous proposer le bon format. Chaque intervention fait l'objet d'un devis."
+        />
+      </div>
+    </fieldset>
+
+    <ContactField
+      id="c-message"
+      name="message"
+      type="textarea"
+      label="Votre message"
+      optional
+      hint="Le contexte, le public, ce que vous attendez de l'intervention."
+    />
+
+    <!-- Champ piège anti-spam (invisible, ignoré des lecteurs d'écran ; rejeté côté serveur s'il est rempli) -->
+    <div aria-hidden="true" class="trap">
+      <label for="c-site">Ne pas remplir ce champ</label>
+      <input id="c-site" name="site_web" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div class="submit">
+      <Button type="submit" stretch>
+        Envoyer ma demande
+      </Button>
+      <p class="rgpd">
+        Les informations de ce formulaire sont traitées par [À COMPLÉTER : responsable du
+        traitement, identique à l'éditeur du site] pour répondre à votre demande et, le cas échéant,
+        établir un devis (mesures précontractuelles prises à votre demande). Elles sont destinées
+        uniquement à Clara Peron et Paul Loustaunau et conservées 3 ans après notre dernier échange.
+        Vous pouvez y accéder, les rectifier, les faire effacer ou vous opposer à leur traitement en
+        écrivant à [À COMPLÉTER : adresse de contact pour les données personnelles]. Vous pouvez
+        aussi adresser une réclamation à la CNIL. En savoir plus :{' '}
+        <a href={routes['Confidentialite.dc.html']}>politique de confidentialité</a>.
+      </p>
+    </div>
+  </form>
+
+  <div role="status" aria-live="polite" class="done" data-done hidden>
+    <p class="done-status">
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M8 12.5l2.7 2.7L16 9.8"></path>
+      </svg>
+      Demande envoyée
+    </p>
+    <h3 class="done-title" tabindex="-1" data-done-title>
+      Merci, votre demande est bien partie.
+    </h3>
+    <p class="done-text">
+      Clara ou Paul vous répond sous 48 h, à l'adresse e-mail indiquée. Pensez à vérifier vos
+      courriers indésirables si vous ne voyez rien arriver.
+    </p>
+    <p class="done-note">[Maquette : aucune donnée n'a été envoyée.]</p>
+    <div class="done-actions">
+      <Button variant="secondary" data-restart>
+        Envoyer une autre demande
+      </Button>
+      <ArrowLink href={routes['Organisateurs.dc.html']}>
+        En attendant : l'espace organisateurs
+      </ArrowLink>
+    </div>
+  </div>
+</div>
+
+<style>
+  .form {
+    position: relative;
+    margin-top: var(--s-7);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .form[hidden] {
+    display: none;
+  }
+
+  .note {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+  }
+
+  legend {
+    padding: 0 0 var(--s-1);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: var(--s-5);
+  }
+
+  .trap {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .submit {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+  }
+
+  .rgpd {
+    flex: 1 1 100%;
+    margin: 0;
+    max-width: 80ch;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-3);
+  }
+
+  .rgpd a {
+    color: var(--ink-3);
+    text-underline-offset: 3px;
+  }
+
+  /* Confirmation */
+  .done {
+    margin-top: var(--s-7);
+    padding: var(--s-6) 28px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--success);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .done[hidden] {
+    display: none;
+  }
+
+  .done-status {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--success);
+  }
+
+  .done-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-card);
+    line-height: var(--lh-card);
+  }
+
+  .done-title:focus {
+    outline: none;
+  }
+
+  .done-text {
+    margin: 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--ink-2);
+    hyphens: auto;
+  }
+
+  .done-note {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .done-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3) var(--s-6);
+  }
+</style>
+
+<script>
+  /*
+   * Îlot du formulaire de contact (logique de la classe Component de la maquette) :
+   * préremplissage depuis l'URL, validation côté client, messages d'erreur reliés
+   * par aria-describedby, confirmation à la place du formulaire, « Envoyer une autre demande ».
+   */
+
+  type Control = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
+  /** Paramètres d'URL acceptés pour le préremplissage (lien « Organiser cette conférence »). */
+  const PREFILL: Record<string, string> = { theme: 'c-theme', type: 'c-type' };
+
+  const root = document.querySelector<HTMLElement>('[data-contact-form]');
+  const form = root?.querySelector<HTMLFormElement>('[data-form]');
+  const done = root?.querySelector<HTMLElement>('[data-done]');
+  const doneTitle = root?.querySelector<HTMLElement>('[data-done-title]');
+  const restart = root?.querySelector<HTMLButtonElement>('[data-restart]');
+
+  /**
+   * Phase 4 : envoi vers Directus.
+   * À brancher : POST des champs (dont le champ piège « site_web »), délai minimal depuis
+   * l'affichage, limite de débit côté serveur, flow e-mail, puis redirection vers /contact/merci/.
+   * Pour l'instant : rien n'est envoyé, la confirmation s'affiche comme dans la maquette.
+   */
+  async function envoyerDemande(_data: FormData): Promise<void> {
+    // Phase 4 : envoi vers Directus
+  }
+
+  function controls(f: HTMLFormElement): Control[] {
+    return Array.from(f.querySelectorAll<Control>('[data-error-id]'));
+  }
+
+  function isValid(el: Control): boolean {
+    if (el.required && el.value.trim() === '') return false;
+    return el.checkValidity();
+  }
+
+  function setError(el: Control, invalid: boolean): void {
+    const errId = el.dataset.errorId;
+    if (!errId) return;
+    const msg = document.getElementById(errId);
+    const ids = (el.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(Boolean);
+    const others = ids.filter((id) => id !== errId);
+    if (invalid) {
+      el.setAttribute('aria-invalid', 'true');
+      el.setAttribute('aria-describedby', [...others, errId].join(' '));
+      if (msg) msg.hidden = false;
+    } else {
+      el.removeAttribute('aria-invalid');
+      if (others.length) el.setAttribute('aria-describedby', others.join(' '));
+      else el.removeAttribute('aria-describedby');
+      if (msg) msg.hidden = true;
+    }
+  }
+
+  function prefill(f: HTMLFormElement): void {
+    const params = new URLSearchParams(window.location.search);
+    for (const [param, id] of Object.entries(PREFILL)) {
+      const value = params.get(param);
+      const select = f.querySelector<HTMLSelectElement>(`#${id}`);
+      if (!value || !select) continue;
+      if (Array.from(select.options).some((o) => o.value === value)) select.value = value;
+    }
+  }
+
+  function scrollToForm(): void {
+    const title = document.getElementById('titre-form');
+    if (!title) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    title.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+  }
+
+  function showConfirmation(f: HTMLFormElement, box: HTMLElement): void {
+    f.hidden = true;
+    box.hidden = false;
+    scrollToForm();
+    doneTitle?.focus({ preventScroll: true });
+  }
+
+  function showForm(f: HTMLFormElement, box: HTMLElement): void {
+    f.reset();
+    controls(f).forEach((el) => setError(el, false));
+    box.hidden = true;
+    f.hidden = false;
+    scrollToForm();
+    f.querySelector<HTMLInputElement>('#c-nom')?.focus({ preventScroll: true });
+  }
+
+  if (form && done) {
+    // Validation par l'îlot (messages de la maquette) ; sans JavaScript, celle du navigateur.
+    form.noValidate = true;
+    prefill(form);
+
+    // Une erreur affichée disparaît dès que le champ est corrigé.
+    form.addEventListener('input', (e) => {
+      const el = e.target as Control;
+      if (el.getAttribute('aria-invalid') === 'true' && isValid(el)) setError(el, false);
+    });
+    form.addEventListener('change', (e) => {
+      const el = e.target as Control;
+      if (el.getAttribute('aria-invalid') === 'true' && isValid(el)) setError(el, false);
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let first: Control | undefined;
+      for (const el of controls(form)) {
+        const ok = isValid(el);
+        setError(el, !ok);
+        if (!ok && !first) first = el;
+      }
+      if (first) {
+        first.focus();
+        return;
+      }
+      await envoyerDemande(new FormData(form));
+      showConfirmation(form, done);
+    });
+
+    restart?.addEventListener('click', () => showForm(form, done));
+  }
+</script>

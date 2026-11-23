@@ -1,0 +1,184 @@
+---
+/**
+ * Champ du formulaire de contact (maquette Contact.dc.html, modèle du gabarit 22).
+ * Écarts avec le composant partagé FormField, qui justifient ce composant propre :
+ * - astérisque masqué aux lecteurs d'écran (<span aria-hidden="true">*</span>) + aria-required ;
+ * - mention « (facultatif) » en gris dans le libellé ;
+ * - message d'erreur présent dans le HTML mais masqué, affiché par l'îlot du formulaire
+ *   (l'îlot ajoute alors son id à aria-describedby et passe aria-invalid à « true »).
+ */
+import type { ChoiceOption } from '../../data/contact';
+
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  type?: 'text' | 'email' | 'tel' | 'select' | 'textarea';
+  required?: boolean;
+  /** Affiche « (facultatif) » après le libellé. */
+  optional?: boolean;
+  autocomplete?: string;
+  options?: ChoiceOption[];
+  hint?: string;
+  /** Message affiché par l'îlot si le champ est invalide à l'envoi. */
+  error?: string;
+  rows?: number;
+}
+
+const {
+  id,
+  name,
+  label,
+  type = 'text',
+  required = false,
+  optional = false,
+  autocomplete,
+  options = [],
+  hint,
+  error,
+  rows = 6,
+} = Astro.props;
+
+const hintId = hint ? `${id}-aide` : undefined;
+const common = {
+  id,
+  name,
+  required,
+  'aria-required': required ? ('true' as const) : undefined,
+  autocomplete,
+  'aria-describedby': hintId,
+  'data-error-id': error ? `${id}-err` : undefined,
+};
+---
+
+<div class="field">
+  <label for={id}>
+    {label}
+    {required && (
+      <>
+        {' '}
+        <span aria-hidden="true">*</span>
+      </>
+    )}
+    {optional && (
+      <>
+        {' '}
+        <span class="optional">(facultatif)</span>
+      </>
+    )}
+  </label>
+  {type === 'select' ? (
+    <select class="control" {...common}>
+      <option value="">Choisir…</option>
+      {options.map((o) => (
+        <option value={o.value}>{o.label}</option>
+      ))}
+    </select>
+  ) : type === 'textarea' ? (
+    <textarea class="control control--area" rows={rows} {...common}></textarea>
+  ) : (
+    <input class="control" type={type} {...common} />
+  )}
+  {hint && (
+    <p id={hintId} class="hint">
+      {hint}
+    </p>
+  )}
+  {error && (
+    <p id={`${id}-err`} class="error" hidden>
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M12 7.5v5.5"></path>
+        <path d="M12 16.5h.01"></path>
+      </svg>
+      {error}
+    </p>
+  )}
+</div>
+
+<style>
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    min-width: 0;
+  }
+
+  label {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  .optional {
+    font-weight: 400;
+    color: var(--ink-3);
+  }
+
+  .control {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: var(--control-h);
+    padding: 12px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--paper-raised);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.4;
+    transition: border-color var(--dur-2) var(--ease-out);
+  }
+
+  .control--area {
+    min-height: 160px;
+    resize: vertical;
+  }
+
+  .control:not([aria-invalid='true']):hover {
+    border-color: var(--ink);
+  }
+
+  .control:focus {
+    outline: 2px solid var(--ink);
+    outline-offset: -2px;
+  }
+
+  .control[aria-invalid='true'] {
+    padding: 11px 13px;
+    border: 2px solid var(--error);
+  }
+
+  .hint {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .error {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--error);
+  }
+
+  .error[hidden] {
+    display: none;
+  }
+</style>

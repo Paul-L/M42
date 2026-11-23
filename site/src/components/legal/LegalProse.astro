@@ -1,0 +1,264 @@
+---
+/**
+ * Corps des pages légales (Mentions légales, Confidentialité) : sommaire à gauche,
+ * collant à partir de 960 px, sections numérotées à droite.
+ *
+ * Le contenu passe par le slot. Classes disponibles dans le slot :
+ * - `legal-section` : une section (id = ancre du sommaire). La première a un filet encre.
+ * - `legal-h2` + `<span class="legal-num" aria-hidden="true">1</span>` : titre numéroté.
+ * - `legal-h3` (`legal-h3 legal-h3--spaced` pour un 2e sous-titre, marge 8 px).
+ * - `legal-p` : paragraphe courant ; `legal-note` : note 13 px.
+ * - `legal-dl` (`legal-dl--fixed` : colonne de termes fixe de 15rem) avec des
+ *   `<div class="legal-row"><dt>…</dt><dd>…</dd></div>`.
+ * - `legal-ul` : liste à puces.
+ * - `legal-aside` + `legal-aside-title` : encadré « [À DÉCIDER] ».
+ * - `legal-a` : lien dans le texte ; `legal-ext` : lien externe avec icône (cible 44 px).
+ */
+export interface TocItem {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  /** Nom accessible de la section englobante. */
+  label: string;
+  /** Entrées du sommaire, dans l'ordre ; numérotées automatiquement (« 1. … »). */
+  toc: TocItem[];
+}
+
+const { label, toc } = Astro.props;
+---
+
+<section aria-label={label} class="legal">
+  <div class="legal-inner">
+    <nav aria-label="Sommaire" class="legal-toc">
+      <p class="legal-toc-title">Sommaire</p>
+      <ol class="legal-toc-list">
+        {toc.map((item, i) => (
+          <li>
+            <a href={`#${item.id}`} class="legal-toc-link">
+              {`${i + 1}. ${item.label}`}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <div class="legal-body">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .legal {
+    padding: 0 0 var(--section-y);
+  }
+
+  .legal-inner {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 var(--gutter-x);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 32px 80px;
+  }
+
+  /* Sommaire : collant à partir de 960 px seulement (en mobile, il passe au-dessus du texte) */
+  .legal-toc {
+    position: static;
+    flex: 1 1 220px;
+    min-width: 0;
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+  }
+
+  @media (min-width: 960px) {
+    .legal-toc {
+      position: sticky;
+      top: 96px;
+    }
+  }
+
+  .legal-toc-title {
+    margin: 0 0 8px;
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--fg-3);
+  }
+
+  .legal-toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Maquette : classe « m42-arrow » annulée par text-decoration: none en ligne,
+     donc aucun soulignement, ni au repos ni au survol. */
+  .legal-toc-link {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    color: var(--fg-2);
+    text-decoration: none;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .legal-body {
+    flex: 999 1 560px;
+    min-width: 0;
+    max-width: 52rem;
+  }
+
+  /* ---------- Contenu du slot ---------- */
+
+  .legal-body :global(.legal-section) {
+    scroll-margin-top: 96px;
+    padding: 40px 0;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .legal-body :global(.legal-section:first-child) {
+    border-top-color: var(--rule);
+  }
+
+  .legal-body :global(.legal-h2) {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .legal-body :global(.legal-num) {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--accent-text);
+  }
+
+  .legal-body :global(.legal-h3) {
+    margin: 0;
+    font-size: var(--fs-faq);
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .legal-body :global(.legal-h3--spaced) {
+    margin-top: 8px;
+  }
+
+  .legal-body :global(.legal-p) {
+    margin: 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--fg-2);
+    hyphens: auto;
+  }
+
+  .legal-body :global(.legal-p strong) {
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .legal-body :global(.legal-note) {
+    margin: 0;
+    font-size: 13px;
+    line-height: var(--lh-small);
+    color: var(--fg-3);
+  }
+
+  .legal-body :global(.legal-dl) {
+    margin: 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .legal-body :global(.legal-row) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 4px 32px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .legal-body :global(.legal-dl--fixed .legal-row) {
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  }
+
+  .legal-body :global(.legal-row dt) {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: var(--lh-small);
+    color: var(--fg);
+  }
+
+  .legal-body :global(.legal-row dd) {
+    margin: 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--fg-2);
+  }
+
+  .legal-body :global(.legal-ul) {
+    margin: 0;
+    padding: 0 0 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--fg-2);
+  }
+
+  .legal-body :global(.legal-aside) {
+    border: 1px solid var(--gold-deep);
+    border-left: 4px solid var(--gold);
+    background: var(--surface-raised);
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .legal-body :global(.legal-aside-title) {
+    margin: 0;
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--accent-text);
+  }
+
+  .legal-body :global(.legal-a) {
+    color: var(--fg);
+    text-underline-offset: 3px;
+  }
+
+  .legal-body :global(.legal-ext) {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: var(--target-min);
+    color: var(--fg);
+    text-underline-offset: 3px;
+  }
+</style>

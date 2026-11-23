@@ -1,0 +1,47 @@
+---
+/**
+ * Encadré « Qui intervient » sous les étapes (pages « Pour qui ») : texte à gauche,
+ * lien fléché à droite. Apparaît au défilement.
+ *
+ * Props :
+ * - `text` : texte de l'encadré (« Qui intervient : … »).
+ * - `linkLabel` (« Parcours et démarche ») et `href` : lien fléché.
+ */
+import ArrowLink from '../ArrowLink.astro';
+
+export interface Props {
+  text: string;
+  linkLabel: string;
+  href: string;
+}
+
+const { text, linkLabel, href } = Astro.props;
+---
+
+<div class="note m42-reveal">
+  <p class="text">{text}</p>
+  <ArrowLink href={href}>{linkLabel}</ArrowLink>
+</div>
+
+<style>
+  .note {
+    margin-top: 56px;
+    padding: var(--s-5) 28px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3) var(--s-6);
+  }
+
+  .text {
+    flex: 1 1 420px;
+    min-width: 0;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+</style>

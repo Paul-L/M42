@@ -1,0 +1,256 @@
+---
+/**
+ * Collectivités (kit/maquette/Collectivites.dc.html) : page « Pour qui » n° 3.
+ * Contenus : src/data/publics/collectivites.ts (futur enregistrement Directus `publics`).
+ * JSON-LD : WebPage + BreadcrumbList + Service (areaServed : France ; la zone sans frais
+ * de déplacement est citée dans le texte) + FAQPage (texte identique à la FAQ visible).
+ * En-tête : « Collectivités » courant (aria-current, DECISIONS.md point 3).
+ * Pas de logique interactive (renderVals() vide) ; la FAQ est en <details> natif.
+ * Mots-clés : jamais « formation des élus » (on parle de sensibilisation, de temps d'information).
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/Section.astro';
+import ArrowLink from '../../components/ArrowLink.astro';
+import Faq, { type FaqItem } from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import PublicHero from '../../components/publics/PublicHero.astro';
+import PublicSectionHead from '../../components/publics/PublicSectionHead.astro';
+import PublicIssues from '../../components/publics/PublicIssues.astro';
+import PublicFormatsNoted from '../../components/publics/PublicFormatsNoted.astro';
+import PublicConferenceCard from '../../components/publics/PublicConferenceCard.astro';
+import TopicList from '../../components/publics/TopicList.astro';
+import TakeawayColumnsRich from '../../components/publics/TakeawayColumnsRich.astro';
+import StepList from '../../components/publics/StepList.astro';
+import IntervenantsNote from '../../components/publics/IntervenantsNote.astro';
+import PublicFlow from '../../components/publics/PublicFlow.astro';
+import { collectivites as page } from '../../data/publics/collectivites';
+import type { PublicRichText } from '../../data/publics/types';
+
+const { title, description } = page.seo;
+
+// FAQ : la réponse visible (HTML, marqueurs en étiquette) et le texte du JSON-LD sont tirés
+// des mêmes segments.
+const escapeHtml = (s: string) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const segmentsOf = (v: PublicRichText) => (typeof v === 'string' ? [v] : v);
+const toHtml = (v: PublicRichText) =>
+  `<p>${segmentsOf(v)
+    .map((s) =>
+      typeof s === 'string'
+        ? escapeHtml(s)
+        : `<span class="faq-marker">${escapeHtml(s.marker)}</span>`,
+    )
+    .join('')}</p>`;
+const toText = (v: PublicRichText) =>
+  segmentsOf(v)
+    .map((s) => (typeof s === 'string' ? s : s.marker))
+    .join('');
+const faqItems: FaqItem[] = page.faq.items.map((i) => ({
+  question: i.question,
+  answer: toHtml(i.answer),
+}));
+
+const site = 'https://m42.guide';
+const url = `${site}/collectivites/`;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': `${url}#page`,
+      url,
+      name: title,
+      description,
+      isPartOf: { '@id': `${site}/#site` },
+      about: { '@id': `${site}/#organisation` },
+      breadcrumb: { '@id': `${url}#ariane` },
+      mainEntity: { '@id': `${url}#service` },
+      inLanguage: 'fr-FR',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${url}#ariane`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${site}/` },
+        { '@type': 'ListItem', position: 2, name: 'Collectivités' },
+      ],
+    },
+    {
+      '@type': 'Service',
+      '@id': `${url}#service`,
+      name: "Conférences et ateliers sur l'IA et les arnaques pour les collectivités",
+      serviceType: 'Conférence et atelier de sensibilisation',
+      description: `${page.hero.lead} ${page.hero.paragraphs.join(' ')} ${page.formats.note}`,
+      provider: { '@id': `${site}/#organisation` },
+      areaServed: { '@type': 'Country', name: 'France' },
+      availableLanguage: 'fr',
+      audience: [
+        { '@type': 'Audience', audienceType: 'Habitants, seniors et grand public' },
+        { '@type': 'Audience', audienceType: 'Agents de collectivités, CCAS et France Services' },
+        { '@type': 'Audience', audienceType: 'Médiathèques' },
+        { '@type': 'Audience', audienceType: 'Élus locaux' },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${url}#faq`,
+      mainEntity: page.faq.items.map((i) => ({
+        '@type': 'Question',
+        name: i.question,
+        acceptedAnswer: { '@type': 'Answer', text: toText(i.answer) },
+      })),
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} current="collectivites" jsonLd={jsonLd}>
+  <PublicHero {...page.hero} />
+
+  <!-- Vos enjeux -->
+  <Section id="enjeux" labelledby="titre-enjeux">
+    <PublicSectionHead id="titre-enjeux" eyebrow={page.stakes.eyebrow}>
+      {page.stakes.title}
+    </PublicSectionHead>
+    <PublicIssues items={page.stakes.items} />
+  </Section>
+
+  <!-- Formats -->
+  <Section id="formats" labelledby="titre-formats" tone="sunk">
+    <PublicSectionHead id="titre-formats" eyebrow={page.formats.eyebrow} lead={page.formats.lead}>
+      {page.formats.title}
+    </PublicSectionHead>
+    <PublicFormatsNoted items={page.formats.items} />
+    <p class="formats-note m42-reveal">{page.formats.note}</p>
+    <div class="more more--formats">
+      <ArrowLink href={page.formats.link.href}>{page.formats.link.label}</ArrowLink>
+    </div>
+  </Section>
+
+  <!-- Conférences -->
+  <Section id="sujets" labelledby="titre-sujets">
+    <PublicSectionHead
+      id="titre-sujets"
+      eyebrow={page.conferences.eyebrow}
+      lead={page.conferences.lead}
+    >
+      {page.conferences.title}
+    </PublicSectionHead>
+    <div class="cards">
+      {page.conferences.items.map((c) => (
+        <PublicConferenceCard
+          numeral={c.numeral}
+          signature={c.signature}
+          title={c.title}
+          href={c.href}
+          summary={c.summary}
+          forYou={c.forYou}
+          formats={c.formats}
+        />
+      ))}
+    </div>
+    <TopicList title={page.conferences.otherTitle} items={page.conferences.others} />
+    <div class="more more--sujets">
+      <ArrowLink href={page.conferences.link.href}>{page.conferences.link.label}</ArrowLink>
+    </div>
+  </Section>
+
+  <!-- Ce que vos participants emportent -->
+  <Section id="emportent" labelledby="titre-emportent" tone="sunk">
+    <PublicSectionHead id="titre-emportent" eyebrow={page.takeaways.eyebrow}>
+      {page.takeaways.title}
+    </PublicSectionHead>
+    <TakeawayColumnsRich columns={page.takeaways.groups} />
+  </Section>
+
+  <!-- Comment ça se passe -->
+  <Section id="etapes" labelledby="titre-etapes">
+    <PublicSectionHead id="titre-etapes" eyebrow={page.steps.eyebrow}>
+      {page.steps.title}
+    </PublicSectionHead>
+    <StepList items={page.steps.items} />
+    <IntervenantsNote
+      text={page.steps.team.text}
+      linkLabel={page.steps.team.link.label}
+      href={page.steps.team.link.href}
+    />
+  </Section>
+
+  <!-- Commande publique -->
+  <Section id="commande" labelledby="titre-commande" tone="sunk">
+    <PublicSectionHead id="titre-commande" eyebrow={page.order.eyebrow} lead={page.order.lead}>
+      {page.order.title}
+    </PublicSectionHead>
+    <PublicFlow label={page.order.label} items={page.order.items} />
+    <p class="order-source m42-reveal">{page.order.source}</p>
+  </Section>
+
+  <!-- Questions fréquentes -->
+  <Section id="faq" labelledby="titre-faq">
+    <PublicSectionHead id="titre-faq" eyebrow={page.faq.eyebrow}>
+      {page.faq.title}
+    </PublicSectionHead>
+    <div class="faq-wrap m42-reveal">
+      <Faq items={faqItems} />
+    </div>
+  </Section>
+
+  <CtaBand id="titre-contact" {...page.cta} />
+</BaseLayout>
+
+<style>
+  .formats-note {
+    margin: var(--s-5) 0 0;
+    max-width: var(--measure-text);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--fg-2);
+  }
+
+  /* Liens fléchés de fin de section : marge haute de la maquette (16 px / 32 px).
+     Conteneur flex : pas de ligne de texte autour du lien (hauteur exacte de 44 px). */
+  .more {
+    display: flex;
+  }
+
+  .more--formats {
+    margin-top: var(--s-4);
+  }
+
+  .more--sujets {
+    margin-top: var(--s-6);
+  }
+
+  .cards {
+    margin-top: var(--s-7);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+    gap: var(--s-5);
+  }
+
+  .order-source {
+    margin: var(--s-5) 0 0;
+    max-width: 80ch;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--fg-3);
+  }
+
+  .faq-wrap {
+    margin-top: var(--s-7);
+  }
+
+  /* Marqueur de relecture dans une réponse (HTML injecté) : même rendu que DraftMarker */
+  .faq-wrap :global(.faq-marker) {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 6px;
+    border: 1px dashed var(--control-border);
+    color: var(--fg-3);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+    vertical-align: 1px;
+  }
+</style>

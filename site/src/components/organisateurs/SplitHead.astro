@@ -1,0 +1,53 @@
+---
+/**
+ * En-tête de section de l'espace organisateurs : sur-titre, puis titre H2 et chapô côte à côte
+ * (alignés en bas, le chapô passe sous le titre quand la place manque).
+ * Variante « côte à côte » de SectionTitle, qui empile titre et chapô.
+ */
+import Eyebrow from '../Eyebrow.astro';
+
+interface Props {
+  id: string;
+  eyebrow: string;
+  lead: string;
+}
+
+const { id, eyebrow, lead } = Astro.props;
+---
+
+<Eyebrow class="m42-reveal">{eyebrow}</Eyebrow>
+<div class="row m42-reveal">
+  <h2 id={id} class="title">
+    <slot />
+  </h2>
+  <p class="lead">{lead}</p>
+</div>
+
+<style>
+  .row {
+    margin-top: var(--s-5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-5) var(--s-8);
+  }
+
+  .title {
+    margin: 0;
+    max-width: var(--measure-h2);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .lead {
+    flex: 0 1 var(--measure-lead);
+    margin: 0;
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--fg-2);
+  }
+</style>

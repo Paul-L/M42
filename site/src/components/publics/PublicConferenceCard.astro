@@ -1,0 +1,239 @@
+---
+/**
+ * Carte de conférence des pages « Pour qui » : variante de ConferenceCard avec la ligne
+ * « Pour vous : … » propre au public, la mention « Conférence signature » (étoile or)
+ * et le résumé non tronqué. Toute la carte est cliquable (lien du titre étendu).
+ * Survol : bordure encre, barre or qui s'étend, flèche décalée.
+ *
+ * Props :
+ * - `numeral` : chiffre romain (I, II…), décoratif.
+ * - `title`, `href` : titre (H3) et lien de la fiche conférence.
+ * - `summary` : résumé.
+ * - `forYou` : texte après « Pour vous : » ; `forYouLabel` pour changer l'intitulé.
+ * - `formats` : formats, joints par « · ».
+ * - `signature` : affiche l'étoile et « Conférence signature ».
+ * - `cta` : texte du faux lien en bas de carte (« Voir le programme »).
+ */
+export interface Props {
+  numeral: string;
+  title: string;
+  href: string;
+  summary: string;
+  forYou?: string;
+  forYouLabel?: string;
+  formats?: string[];
+  signature?: boolean;
+  cta?: string;
+}
+
+const {
+  numeral,
+  title,
+  href,
+  summary,
+  forYou,
+  forYouLabel = 'Pour vous : ',
+  formats = [],
+  signature = false,
+  cta = 'Voir le programme',
+} = Astro.props;
+---
+
+<article class="card m42-reveal">
+  <div class="top">
+    {signature ? (
+      <span class="sig">
+        <span aria-hidden="true" class="numeral">
+          {numeral}
+        </span>
+        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path
+            d="M12 1 C13 10 14 11 23 12 C14 13 13 14 12 23 C11 14 10 13 1 12 C10 11 11 10 12 1 Z"
+            class="star"
+          ></path>
+        </svg>
+        <span class="sig-label">Conférence signature</span>
+      </span>
+    ) : (
+      <span aria-hidden="true" class="numeral">
+        {numeral}
+      </span>
+    )}
+  </div>
+  <h3 class="card-title">
+    <a href={href} class="stretch">
+      {title}
+    </a>
+  </h3>
+  <p class="summary">{summary}</p>
+  {forYou && (
+    <p class="for-you">
+      <span class="for-you-label">{forYouLabel}</span>
+      {forYou}
+    </p>
+  )}
+  {formats.length > 0 && <p class="formats">{formats.join(' · ')}</p>}
+  <span class="cta" aria-hidden="true">
+    {cta} <span class="arrow-i">→</span>
+  </span>
+  <span class="bar" aria-hidden="true"></span>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding: var(--s-6) 28px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    transition: border-color var(--dur-2) var(--ease-out);
+  }
+
+  .card:hover {
+    border-color: var(--ink);
+  }
+
+  :global(.m42-night) .card:hover {
+    border-color: var(--on-night);
+  }
+
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .sig {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .numeral {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--gold-deep);
+  }
+
+  .star {
+    fill: var(--gold);
+  }
+
+  .sig-label {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink-3);
+  }
+
+  .card-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-card);
+    line-height: var(--lh-card);
+  }
+
+  .stretch {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .stretch::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .stretch:focus-visible {
+    outline: none;
+  }
+
+  .stretch:focus-visible::after {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  .summary {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  .for-you {
+    margin: 0;
+    padding: 14px 0 0;
+    border-top: 1px solid var(--line);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  .for-you-label {
+    font-weight: 600;
+  }
+
+  .formats {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .cta {
+    margin-top: auto;
+    padding-top: var(--s-2);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: text-decoration-color var(--dur-1) var(--ease-out);
+  }
+
+  .card:hover .cta {
+    text-decoration-color: var(--gold);
+    text-decoration-thickness: 2px;
+  }
+
+  .arrow-i {
+    display: inline-block;
+    transition: transform var(--dur-1) var(--ease-out);
+  }
+
+  .card:hover .arrow-i {
+    transform: translateX(3px);
+  }
+
+  .bar {
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0.18);
+    transform-origin: left;
+    transition: transform var(--dur-3) var(--ease-out);
+  }
+
+  .card:hover .bar,
+  .card:focus-within .bar {
+    transform: scaleX(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover .arrow-i {
+      transform: none;
+    }
+  }
+</style>

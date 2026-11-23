@@ -1,0 +1,226 @@
+---
+/**
+ * Bibliothèque des repères (maquette Reperes.dc.html, section #bibliotheque) :
+ * filtres par public (boutons bascule aria-pressed), résumé annoncé (aria-live),
+ * repères disponibles, puis bloc « En préparation ».
+ *
+ * Sans JavaScript : la liste complète reste visible, avec le résumé de l'état initial
+ * (« Tous les repères »). L'îlot ne fait que masquer les cartes hors filtre.
+ */
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import RepereCard from './RepereCard.astro';
+import { repereFilters, reperesBientot, reperesDisponibles, resumeLabel } from '../../data/reperes';
+
+const resume = resumeLabel('tous', reperesDisponibles.length, reperesBientot.length);
+---
+
+<section id="bibliotheque" aria-labelledby="dispo-t" class="library" data-reperes>
+  <Container>
+    <Eyebrow>La bibliothèque</Eyebrow>
+    <h2 id="dispo-t" class="h2">
+      Disponibles maintenant
+    </h2>
+    <div role="group" aria-labelledby="filtre-t" class="filters">
+      <p id="filtre-t" class="filters-label">
+        Afficher :
+      </p>
+      {repereFilters.map((f) => (
+        <button
+          type="button"
+          class="chip"
+          data-filter={f.key}
+          aria-pressed={f.key === 'tous' ? 'true' : 'false'}
+        >
+          {f.label}
+        </button>
+      ))}
+    </div>
+    <p aria-live="polite" class="resume" data-resume>
+      {resume}
+    </p>
+    <div class="grid">
+      {reperesDisponibles.map((r) => (
+        <RepereCard repere={r} />
+      ))}
+    </div>
+    {reperesBientot.length > 0 && (
+      <div class="soon-block" data-bientot>
+        <h2 id="bientot-t" class="h2-soon">
+          En préparation
+        </h2>
+        <p class="soon-lead">
+          Ces repères sont en cours d'écriture et de vérification. Pour être prévenu de leur sortie,
+          inscrivez-vous à la lettre ci-dessous.
+        </p>
+        <div class="grid">
+          {reperesBientot.map((r) => (
+            <RepereCard repere={r} />
+          ))}
+        </div>
+      </div>
+    )}
+  </Container>
+</section>
+
+<style>
+  .library {
+    padding: 0 0 clamp(4rem, 8vw, 7rem);
+  }
+
+  .h2 {
+    margin: 20px 0 0;
+    max-width: 24ch;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: var(--tracking-h2);
+    color: var(--ink);
+  }
+
+  /* Filtres (boutons bascule) */
+  .filters {
+    margin-top: var(--s-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 10px;
+  }
+
+  .filters-label {
+    margin: 0 8px 0 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink-2);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target-min);
+    padding: 0 18px;
+    box-sizing: border-box;
+    border: 1px solid var(--ink);
+    border-radius: var(--radius);
+    background-color: transparent;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.2;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-1) var(--ease-out),
+      color var(--dur-1) var(--ease-out);
+  }
+
+  .chip[aria-pressed='true'] {
+    background-color: var(--ink);
+    color: var(--paper);
+  }
+
+  .chip[aria-pressed='false']:hover {
+    background-color: var(--ink-hover);
+  }
+
+  .resume {
+    margin: var(--s-4) 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .grid {
+    margin-top: var(--s-6);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: var(--s-5);
+  }
+
+  /* En préparation */
+  .soon-block {
+    margin-top: 80px;
+    border-top: 1px solid var(--line);
+    padding-top: var(--s-4);
+  }
+
+  .soon-block[hidden] {
+    display: none;
+  }
+
+  .h2-soon {
+    margin: 0;
+    max-width: 24ch;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+    line-height: 1.1;
+    letter-spacing: var(--tracking-h2);
+    color: var(--ink);
+  }
+
+  .soon-lead {
+    margin: var(--s-3) 0 0;
+    max-width: 60ch;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+</style>
+
+<script>
+  /*
+   * Îlot des filtres (logique de la classe Component de la maquette) :
+   * un seul filtre actif à la fois (« tous » par défaut), cartes hors filtre masquées,
+   * bloc « En préparation » masqué s'il est vide, résumé mis à jour (annoncé par aria-live).
+   * Aucun état dans l'URL, comme dans la maquette.
+   */
+  import { frenchTypography } from '../../lib/typo';
+  import { matchesFilter, resumeLabel, type RepereFilter } from '../../data/reperes';
+
+  const root = document.querySelector<HTMLElement>('[data-reperes]');
+
+  if (root) {
+    const chips = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+    const resume = root.querySelector<HTMLElement>('[data-resume]');
+    const soonBlock = root.querySelector<HTMLElement>('[data-bientot]');
+    const soonCards = soonBlock
+      ? Array.from(soonBlock.querySelectorAll<HTMLElement>('[data-repere]'))
+      : [];
+    const dispoCards = Array.from(root.querySelectorAll<HTMLElement>('[data-repere]')).filter(
+      (card) => !soonCards.includes(card),
+    );
+
+    /** Affiche les cartes du filtre et renvoie leur nombre. */
+    const show = (cards: HTMLElement[], filter: RepereFilter): number => {
+      let count = 0;
+      for (const card of cards) {
+        const ok = matchesFilter((card.dataset.publics ?? '').split(' '), filter);
+        card.hidden = !ok;
+        if (ok) count += 1;
+      }
+      return count;
+    };
+
+    const apply = (filter: RepereFilter): void => {
+      for (const chip of chips) {
+        chip.setAttribute('aria-pressed', chip.dataset.filter === filter ? 'true' : 'false');
+      }
+      const n = show(dispoCards, filter);
+      const m = show(soonCards, filter);
+      if (soonBlock) soonBlock.hidden = m === 0;
+      if (resume) resume.textContent = frenchTypography(resumeLabel(filter, n, m));
+    };
+
+    for (const chip of chips) {
+      chip.addEventListener('click', () => {
+        const filter = chip.dataset.filter as RepereFilter | undefined;
+        // Un nouveau clic sur le filtre actif ne change rien (pas de nouvelle annonce).
+        if (!filter || chip.getAttribute('aria-pressed') === 'true') return;
+        apply(filter);
+      });
+    }
+  }
+</script>

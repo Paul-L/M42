@@ -1,0 +1,106 @@
+---
+/**
+ * Liste « Autres exemples de sujets » des pages « Pour qui », avec étiquette facultative à droite
+ * de chaque ligne (« Sur demande ») et note facultative sous la liste.
+ * Même rendu que TopicList, qui ne prévoit ni l'étiquette ni la note. La précision sous
+ * l'intitulé garde la graisse héritée (500), comme dans la maquette.
+ * Le bloc apparaît au défilement.
+ *
+ * Props :
+ * - `title` : titre H3 (« Autres exemples de sujets »).
+ * - `items` : { title, detail, tag? } (PublicOtherSubject, src/data/publics/types.ts).
+ * - `note` : texte sous la liste (14 px, encre 3).
+ */
+import type { PublicOtherSubject } from '../../data/publics/types';
+
+export interface Props {
+  title: string;
+  items: PublicOtherSubject[];
+  note?: string;
+}
+
+const { title, items, note } = Astro.props;
+---
+
+<div class="topics m42-reveal">
+  <h3 class="h3">{title}</h3>
+  <ul class="list">
+    {items.map((item) => (
+      <li class="row">
+        <span class="name">
+          {item.title}
+          <span class="detail">{item.detail}</span>
+        </span>
+        {item.tag && <span class="tag">{item.tag}</span>}
+      </li>
+    ))}
+  </ul>
+  {note && <p class="note">{note}</p>}
+</div>
+
+<style>
+  .topics {
+    margin-top: var(--s-8);
+  }
+
+  .h3 {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .list {
+    list-style: none;
+    margin: var(--s-5) 0 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-2) var(--s-5);
+    padding: 18px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .name {
+    flex: 1 1 420px;
+    min-width: 0;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--fg);
+  }
+
+  .detail {
+    display: block;
+    margin-top: var(--s-1);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--fg-2);
+  }
+
+  .tag {
+    flex: none;
+    padding: 3px 9px;
+    border-radius: var(--radius-tag);
+    border: 1px solid var(--control-border);
+    color: var(--fg-2);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .note {
+    margin: 20px 0 0;
+    max-width: var(--measure-text);
+    font-size: var(--fs-small);
+    line-height: 1.55;
+    color: var(--fg-3);
+  }
+</style>

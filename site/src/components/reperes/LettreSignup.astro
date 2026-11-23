@@ -1,0 +1,484 @@
+---
+/**
+ * Inscription à la lettre mensuelle (maquette Reperes.dc.html, section #lettre).
+ * Champs propres à ce bloc (et non FormField) : fond papier (et non papier surélevé),
+ * mention des champs obligatoires en 13 px, message d'erreur affiché par l'îlot.
+ *
+ * Maquette : rien n'est envoyé, la confirmation s'affiche à la place du formulaire.
+ * Phase 4 : <form method="post"> vers l'outil d'envoi (double opt-in recommandé,
+ * outil hébergé en Europe [À CHOISIR]) + page de confirmation. Voir inscrireLettre() dans l'îlot.
+ */
+import Container from '../Container.astro';
+import Eyebrow from '../Eyebrow.astro';
+import Button from '../Button.astro';
+import { routes } from '../../data/routes';
+import { lettreProfils } from '../../data/reperes';
+
+const points = [
+  'Un chiffre sourcé, expliqué en trois phrases.',
+  "Une arnaque, une fausse image ou une erreur d'IA, décortiquée.",
+  'Une règle à appliquer dans la semaine.',
+  'Une ressource utile : un nouveau repère, ou un outil public (Cybermalveillance.gouv.fr, CNIL).',
+];
+---
+
+<section id="lettre" aria-labelledby="lettre-t" class="lettre" data-lettre>
+  <Container>
+    <Eyebrow class="lettre-eyebrow">Une fois par mois</Eyebrow>
+    <div class="row">
+      <div class="text">
+        <h2 id="lettre-t" class="h2">
+          Recevoir les nouveaux repères
+        </h2>
+        <p class="lead">
+          Chaque nouveau repère, dès sa sortie, et une lettre courte qui se lit en trois minutes.
+        </p>
+        <ul class="points">
+          {points.map((p, i) => (
+            <li>
+              <span aria-hidden="true" class="num">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span class="point">{p}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="name">Nom de la lettre : « Repères » [À VALIDER]</p>
+      </div>
+
+      <div class="box">
+        <div aria-live="polite" class="live">
+          <div class="done" tabindex="-1" data-done hidden>
+            <p class="done-title">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="M8 12.5l2.5 2.5L16 9.5"></path>
+              </svg>
+              C'est noté.
+            </p>
+            <p class="done-msg" data-done-msg></p>
+            <p class="done-note">Maquette : aucune donnée n'a été envoyée.</p>
+            <button type="button" class="txtbtn" data-restart>
+              Revenir au formulaire
+            </button>
+          </div>
+
+          <form method="post" aria-label="S'inscrire à la lettre mensuelle" class="form" data-form>
+            <p class="note">Les champs marqués d'un astérisque (*) sont obligatoires.</p>
+            <div class="field">
+              <label for="lettre-mail">E-mail *</label>
+              <input
+                type="email"
+                id="lettre-mail"
+                name="email"
+                autocomplete="email"
+                required
+                aria-required="true"
+                class="control"
+                data-mail
+              />
+              <p id="lettre-mail-err" class="error" data-mail-err hidden>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <circle cx="12" cy="12" r="9"></circle>
+                  <path d="M12 7.5v5.5"></path>
+                  <path d="M12 16.5h.01"></path>
+                </svg>
+                Indiquez une adresse e-mail valide, par exemple nom@exemple.fr.
+              </p>
+            </div>
+            <div class="field">
+              <label for="lettre-profil">
+                Vous êtes <span class="optional">(facultatif)</span>
+              </label>
+              <select
+                id="lettre-profil"
+                name="profil"
+                class="control"
+                aria-describedby="lettre-profil-aide"
+              >
+                <option value="">Choisir…</option>
+                {lettreProfils.map((o) => (
+                  <option value={o.value}>{o.label}</option>
+                ))}
+              </select>
+              <p id="lettre-profil-aide" class="hint">
+                Pour recevoir, en fin de lettre, les repères qui vous concernent le plus.
+              </p>
+            </div>
+            <div class="submit">
+              <Button type="submit" stretch>
+                Recevoir les nouveaux repères
+              </Button>
+              <p class="rgpd">
+                Une lettre par mois, désinscription en un clic dans chaque envoi. Votre adresse sert
+                uniquement à vous envoyer cette lettre. Responsable : [À COMPLÉTER : entité
+                éditrice]. Détails et droits :{' '}
+                <a href={routes['Confidentialite.dc.html']}>Politique de confidentialité</a>.
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .lettre {
+    padding: clamp(4rem, 8vw, 6rem) 0;
+    background: var(--paper-sunk);
+  }
+
+  .lettre :global(.lettre-eyebrow) {
+    color: var(--ink-2);
+  }
+
+  .row {
+    margin-top: var(--s-5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 40px 72px;
+  }
+
+  .text {
+    flex: 1 1 440px;
+    min-width: 0;
+  }
+
+  .h2 {
+    margin: 0;
+    max-width: 24ch;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: var(--tracking-h2);
+    color: var(--ink);
+  }
+
+  .lead {
+    margin: 20px 0 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .points {
+    list-style: none;
+    margin: var(--s-5) 0 0;
+    padding: 0;
+    max-width: 52ch;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .points li {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: var(--s-3);
+    align-items: baseline;
+    border-top: 1px solid var(--line);
+    padding: var(--s-3) 0;
+  }
+
+  .num {
+    font-size: 13px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--gold-deep);
+  }
+
+  .point {
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .name {
+    margin: var(--s-4) 0 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  /* Encadré du formulaire */
+  .box {
+    flex: 1 1 400px;
+    min-width: 0;
+    padding: clamp(24px, 3vw, 36px);
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+  }
+
+  .live,
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form[hidden] {
+    display: none;
+  }
+
+  .note {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  label {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  .optional {
+    font-weight: 400;
+    color: var(--ink-3);
+  }
+
+  .control {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: var(--control-h);
+    padding: 12px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.4;
+    transition: border-color var(--dur-2) var(--ease-out);
+  }
+
+  .control:not([aria-invalid='true']):hover {
+    border-color: var(--ink);
+  }
+
+  .control:focus {
+    outline: 2px solid var(--ink);
+    outline-offset: -2px;
+  }
+
+  .control[aria-invalid='true'] {
+    padding: 11px 13px;
+    border: 2px solid var(--error);
+  }
+
+  .error {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--error);
+  }
+
+  .error[hidden] {
+    display: none;
+  }
+
+  .hint {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .submit {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+  }
+
+  .rgpd {
+    flex: 1 1 100%;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .rgpd a {
+    color: var(--ink-3);
+    text-underline-offset: 3px;
+  }
+
+  /* Confirmation */
+  .done {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 22px;
+    background: var(--paper);
+    border-left: 3px solid var(--success);
+  }
+
+  .done[hidden] {
+    display: none;
+  }
+
+  .done:focus {
+    outline: none;
+  }
+
+  .done-title {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--success);
+  }
+
+  .done-msg {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  .done-note {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  /* Petit bouton texte */
+  .txtbtn {
+    align-self: flex-start;
+    min-height: var(--target-min);
+    padding: 0 2px;
+    border: 0;
+    background: transparent;
+    color: var(--ink-2);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: color var(--dur-1) var(--ease-out);
+  }
+
+  .txtbtn:hover {
+    color: var(--ink);
+    text-decoration-color: var(--gold);
+  }
+</style>
+
+<script>
+  /*
+   * Îlot de la lettre mensuelle (logique de la classe Component de la maquette) :
+   * validation de l'e-mail, message d'erreur relié par aria-describedby, confirmation
+   * à la place du formulaire, « Revenir au formulaire ». Rien n'est envoyé.
+   */
+  import { frenchTypography } from '../../lib/typo';
+
+  const root = document.querySelector<HTMLElement>('[data-lettre]');
+  const form = root?.querySelector<HTMLFormElement>('[data-form]');
+  const mail = root?.querySelector<HTMLInputElement>('[data-mail]');
+  const mailErr = root?.querySelector<HTMLElement>('[data-mail-err]');
+  const done = root?.querySelector<HTMLElement>('[data-done]');
+  const doneMsg = root?.querySelector<HTMLElement>('[data-done-msg]');
+  const restart = root?.querySelector<HTMLButtonElement>('[data-restart]');
+
+  /**
+   * Phase 4 : inscription réelle (outil d'envoi hébergé en Europe, double opt-in,
+   * segment « Vous êtes » facultatif). Pour l'instant : rien n'est envoyé.
+   */
+  async function inscrireLettre(data: FormData): Promise<void> {
+    // Phase 4 : envoi vers l'outil de lettre
+    void data;
+  }
+
+  const isValid = (el: HTMLInputElement): boolean => el.value.trim() !== '' && el.checkValidity();
+
+  function setError(el: HTMLInputElement, invalid: boolean): void {
+    if (invalid) {
+      el.setAttribute('aria-invalid', 'true');
+      el.setAttribute('aria-describedby', 'lettre-mail-err');
+    } else {
+      el.removeAttribute('aria-invalid');
+      el.removeAttribute('aria-describedby');
+    }
+    if (mailErr) mailErr.hidden = !invalid;
+  }
+
+  if (form && mail && done && doneMsg) {
+    // Validation par l'îlot (message de la maquette) ; sans JavaScript, celle du navigateur.
+    form.noValidate = true;
+
+    mail.addEventListener('input', () => {
+      if (mail.getAttribute('aria-invalid') === 'true' && isValid(mail)) setError(mail, false);
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!isValid(mail)) {
+        setError(mail, true);
+        mail.focus();
+        return;
+      }
+      setError(mail, false);
+      await inscrireLettre(new FormData(form));
+      const adresse = mail.value.trim();
+      doneMsg.textContent = frenchTypography(
+        'Vous recevrez les nouveaux repères' +
+          (adresse ? ` à l'adresse ${adresse}` : '') +
+          ', une fois par mois. Vous pourrez vous désinscrire en un clic.',
+      );
+      form.hidden = true;
+      done.hidden = false;
+      // Le focus suit le contenu remplacé (le bouton d'envoi disparaît).
+      done.focus({ preventScroll: true });
+    });
+
+    restart?.addEventListener('click', () => {
+      form.reset();
+      setError(mail, false);
+      done.hidden = true;
+      form.hidden = false;
+      mail.focus();
+    });
+  }
+</script>

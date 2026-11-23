@@ -1,0 +1,83 @@
+---
+/**
+ * Liste « Autres exemples de sujets » des pages « Pour qui » : titre H3, puis une ligne par
+ * sujet (intitulé en gras moyen, précision dessous). Le bloc apparaît au défilement.
+ *
+ * Props :
+ * - `title` : titre H3 (« Autres exemples de sujets »).
+ * - `items` : { title, text }.
+ */
+export interface Topic {
+  title: string;
+  text: string;
+}
+
+export interface Props {
+  title: string;
+  items: Topic[];
+}
+
+const { title, items } = Astro.props;
+---
+
+<div class="topics m42-reveal">
+  <h3 class="h3">{title}</h3>
+  <ul class="list">
+    {items.map((item) => (
+      <li class="row">
+        <span class="name">
+          {item.title}
+          <span class="text">{item.text}</span>
+        </span>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .topics {
+    margin-top: var(--s-8);
+  }
+
+  .h3 {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .list {
+    list-style: none;
+    margin: var(--s-5) 0 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-2) var(--s-5);
+    padding: 18px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .name {
+    flex: 1 1 420px;
+    min-width: 0;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--fg);
+  }
+
+  .text {
+    display: block;
+    margin-top: var(--s-1);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--fg-2);
+  }
+</style>

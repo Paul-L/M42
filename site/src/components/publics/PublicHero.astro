@@ -1,0 +1,151 @@
+---
+/**
+ * En-tête des pages « Pour qui » (Entreprises, Événements, Collectivités, Éducation, Associations).
+ * Fil d'Ariane, sur-titre, H1, accroche, paragraphes d'introduction, deux boutons, photo 4:5.
+ * Aucune apparition au défilement (au-dessus de la ligne de flottaison).
+ *
+ * Props :
+ * - `crumb` : libellé de la page courante dans le fil d'Ariane (parent : Accueil).
+ * - `eyebrow` : sur-titre (au-dessus du H1).
+ * - `title` : H1 (id « titre-page », à référencer par la section).
+ * - `lead` : accroche sous le H1 (encre, taille chapô).
+ * - `paragraphs` : paragraphes d'introduction (encre 2).
+ * - `primary` / `secondary` : boutons { label, href }.
+ * - `photo` : texte de l'emplacement photo (« [Photo : …] »), format 4:5.
+ */
+import Container from '../Container.astro';
+import Breadcrumb from '../Breadcrumb.astro';
+import Button from '../Button.astro';
+import Placeholder from '../Placeholder.astro';
+import { routes } from '../../data/routes';
+
+export interface PublicHeroLink {
+  label: string;
+  href: string;
+}
+
+export interface Props {
+  crumb: string;
+  eyebrow: string;
+  title: string;
+  lead: string;
+  paragraphs: string[];
+  primary: PublicHeroLink;
+  secondary?: PublicHeroLink;
+  photo: string;
+}
+
+const { crumb, eyebrow, title, lead, paragraphs, primary, secondary, photo } = Astro.props;
+---
+
+<section aria-labelledby="titre-page" class="hero">
+  <Container class="hero-inner">
+    <Breadcrumb items={[{ label: 'Accueil', href: routes['Main.dc.html'] }, { label: crumb }]} />
+    <div class="row">
+      <div class="text">
+        <p class="eyebrow">{eyebrow}</p>
+        <h1 id="titre-page" class="h1">
+          {title}
+        </h1>
+        <p class="lead">{lead}</p>
+        <div class="paras">
+          {paragraphs.map((p) => (
+            <p class="para">{p}</p>
+          ))}
+        </div>
+        <div class="actions">
+          <Button href={primary.href}>{primary.label}</Button>
+          {secondary && (
+            <Button href={secondary.href} variant="secondary">
+              {secondary.label}
+            </Button>
+          )}
+        </div>
+      </div>
+      <Placeholder label={photo} ratio="4/5" class="photo" />
+    </div>
+  </Container>
+</section>
+
+<style>
+  .hero :global(.hero-inner) {
+    padding-top: clamp(2rem, 4vw, 3rem);
+    padding-bottom: clamp(4rem, 7vw, 6rem);
+  }
+
+  /* Maquette : 40 px sous le fil d'Ariane (32 px par défaut dans Breadcrumb) */
+  .hero :global(.bc) {
+    margin-bottom: 40px;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-7) var(--s-8);
+  }
+
+  .text {
+    flex: 999 1 540px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+  }
+
+  .eyebrow {
+    margin: 0;
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    line-height: var(--lh-eyebrow);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .h1 {
+    margin: 0;
+    max-width: 16ch;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+    letter-spacing: var(--tracking-h1);
+    color: var(--ink);
+  }
+
+  .lead {
+    margin: var(--s-2) 0 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink);
+  }
+
+  .paras {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .para {
+    margin: 0;
+    max-width: 56ch;
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--ink-2);
+  }
+
+  .actions {
+    margin-top: var(--s-2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+  }
+
+  .row :global(.photo) {
+    flex: 1 1 340px;
+    min-width: 0;
+    max-height: 560px;
+  }
+</style>

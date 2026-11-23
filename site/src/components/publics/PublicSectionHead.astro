@@ -1,0 +1,60 @@
+---
+/**
+ * Ouverture de section des pages « Pour qui » : sur-titre à filet, puis une ligne
+ * H2 (18ch) + chapô facultatif à droite (52ch), alignés en bas. Les deux blocs apparaissent
+ * au défilement (m42-reveal). S'adapte aux sections nuit (couleurs de contexte).
+ * Diffère de SectionTitle : le chapô est sur la même ligne que le titre (flex), sans marge haute.
+ *
+ * Props :
+ * - `id` : id du H2 (à référencer par aria-labelledby de la section).
+ * - `eyebrow` : sur-titre.
+ * - `lead` : chapô facultatif.
+ * Slot : texte du titre.
+ */
+import Eyebrow from '../Eyebrow.astro';
+
+export interface Props {
+  id: string;
+  eyebrow: string;
+  lead?: string;
+}
+
+const { id, eyebrow, lead } = Astro.props;
+---
+
+<Eyebrow class="m42-reveal">{eyebrow}</Eyebrow>
+<div class="row m42-reveal">
+  <h2 id={id} class="title">
+    <slot />
+  </h2>
+  {lead && <p class="lead">{lead}</p>}
+</div>
+
+<style>
+  .row {
+    margin-top: var(--s-5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-5) var(--s-8);
+  }
+
+  .title {
+    margin: 0;
+    max-width: var(--measure-h2);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .lead {
+    flex: 0 1 52ch;
+    margin: 0;
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--fg-2);
+  }
+</style>

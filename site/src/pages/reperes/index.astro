@@ -1,0 +1,180 @@
+---
+/**
+ * Repères (kit/maquette/Reperes.dc.html) : page « hub » des outils gratuits
+ * (les outils eux-mêmes vivent sous /outils/ et /guides/), filtres par public,
+ * inscription à la lettre mensuelle.
+ * JSON-LD : CollectionPage + ItemList (ressources disponibles uniquement) + BreadcrumbList.
+ *
+ * Notes de production de la maquette :
+ * - [À DÉCIDER] cartes « Bientôt » : les masquer à la mise en ligne, ou les garder sans date
+ *   annoncée (interrupteur AFFICHER_BIENTOT dans src/data/reperes.ts).
+ * - Lettre mensuelle : double opt-in recommandé, outil d'envoi hébergé en Europe [À CHOISIR].
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import Eyebrow from '../../components/Eyebrow.astro';
+import ArrowLink from '../../components/ArrowLink.astro';
+import RepereLibrary from '../../components/reperes/RepereLibrary.astro';
+import LettreSignup from '../../components/reperes/LettreSignup.astro';
+import { routes } from '../../data/routes';
+import { reperesDisponibles } from '../../data/reperes';
+
+const title = "Repères gratuits sur l'IA : tests, méthodes et fiches pratiques | M42.guide";
+const description =
+  "Reconnaître une arnaque, vérifier une image, poser des règles d'usage de l'IA : des outils gratuits et sans inscription, pour vous, vos équipes, vos habitants ou vos élèves.";
+
+const site = 'https://m42.guide';
+const url = `${site}/reperes/`;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      '@id': `${url}#page`,
+      url,
+      name: title,
+      description,
+      isPartOf: { '@id': `${site}/#site` },
+      breadcrumb: { '@id': `${url}#ariane` },
+      mainEntity: { '@id': `${url}#reperes` },
+      inLanguage: 'fr-FR',
+    },
+    {
+      '@type': 'ItemList',
+      '@id': `${url}#reperes`,
+      name: 'Repères disponibles',
+      numberOfItems: reperesDisponibles.length,
+      itemListElement: reperesDisponibles.map((r, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: r.titre,
+        url: new URL(r.href ?? '/', site).href,
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${url}#ariane`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${site}/` },
+        { '@type': 'ListItem', position: 2, name: 'Repères' },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} current="reperes" jsonLd={jsonLd}>
+  <!-- En-tête de page -->
+  <section aria-labelledby="titre-page">
+    <Container class="page-head">
+      <Breadcrumb
+        items={[{ label: 'Accueil', href: routes['Main.dc.html'] }, { label: 'Repères' }]}
+      />
+      <Eyebrow>Outils gratuits · Sans inscription</Eyebrow>
+      <h1 id="titre-page" class="h1">
+        Repères pour garder la main sur l'IA
+      </h1>
+      <p class="intro">
+        Des tests, des méthodes et des fiches à utiliser tout de suite : pour vous, pour vos
+        équipes, pour les habitants de votre commune ou pour vos élèves. Chacun se lit ou se fait en
+        quelques minutes, gratuitement.
+      </p>
+    </Container>
+  </section>
+
+  <!-- Bibliothèque : filtres, disponibles, en préparation -->
+  <RepereLibrary />
+
+  <!-- Lettre mensuelle -->
+  <LettreSignup />
+
+  <!-- Pour aller plus loin -->
+  <section aria-label="Pour aller plus loin" class="further">
+    <Container>
+      <div class="further-row">
+        <p class="further-main">
+          Pour aller plus loin avec un groupe :
+          <ArrowLink href={routes['Conferences.dc.html']}>les conférences</ArrowLink>
+        </p>
+        <p class="further-by">
+          Repères écrits et vérifiés par{' '}
+          <a href={routes['A-propos.dc.html']} class="inline">
+            Clara Peron et Paul Loustaunau
+          </a>
+          .
+        </p>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>
+
+<style>
+  section :global(.page-head) {
+    padding-top: clamp(2rem, 4vw, 3rem);
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .h1 {
+    margin: var(--s-5) 0 0;
+    max-width: 20ch;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(2.75rem, 1.6rem + 4.2vw, 5.25rem);
+    line-height: 0.98;
+    letter-spacing: var(--tracking-h1);
+    color: var(--ink);
+  }
+
+  .intro {
+    margin: var(--s-5) 0 0;
+    max-width: 56ch;
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--ink-2);
+  }
+
+  .further {
+    padding: clamp(3rem, 6vw, 4.5rem) 0;
+  }
+
+  .further-row {
+    border-top: 1px solid var(--line);
+    padding-top: var(--s-5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 32px;
+  }
+
+  .further-main {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  .further-by {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .inline {
+    color: var(--ink-2);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: text-decoration-color var(--dur-1) var(--ease-out);
+  }
+
+  .inline:hover {
+    text-decoration-color: var(--gold);
+    text-decoration-thickness: 2px;
+  }
+</style>

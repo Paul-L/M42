@@ -5,12 +5,14 @@
  */
 interface Props {
   as?: 'div' | 'p' | 'span';
+  /** Filet de 1 px au-dessus (false : sur-titre de H1, sans filet). */
+  rule?: boolean;
   class?: string;
 }
-const { as: Tag = 'div', class: className } = Astro.props;
+const { as: Tag = 'div', rule = true, class: className } = Astro.props;
 ---
 
-<Tag class:list={['eyebrow', className]}>
+<Tag class:list={['eyebrow', { 'eyebrow--bare': !rule }, className]}>
   <slot />
 </Tag>
 
@@ -24,6 +26,16 @@ const { as: Tag = 'div', class: className } = Astro.props;
     letter-spacing: var(--tracking-eyebrow);
     text-transform: uppercase;
     color: var(--fg-3);
+  }
+
+  .eyebrow--bare {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  span.eyebrow {
+    display: block;
+    font-family: var(--font-sans);
   }
 
   p.eyebrow {

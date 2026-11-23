@@ -1,0 +1,112 @@
+---
+/**
+ * Bandeau d'appel à l'action de la page À propos (fond nuit).
+ * Variante de CtaBand : ajoute des liens fléchés sous le chapô et l'apparition
+ * au défilement, absents du composant partagé.
+ * Liens fléchés : `links` ; bloc contact identique à CtaBand.
+ */
+import Button from '../Button.astro';
+import Eyebrow from '../Eyebrow.astro';
+import ArrowLink from '../ArrowLink.astro';
+import Section from '../Section.astro';
+
+interface Props {
+  id: string;
+  eyebrow: string;
+  title: string;
+  lead: string;
+  links: { href: string; label: string }[];
+  ctaLabel: string;
+  ctaHref: string;
+}
+
+const { id, eyebrow, title, lead, links, ctaLabel, ctaHref } = Astro.props;
+---
+
+<Section tone="night" labelledby={id}>
+  <Eyebrow class="m42-reveal">{eyebrow}</Eyebrow>
+  <div class="row m42-reveal">
+    <div class="text">
+      <h2 id={id} class="title">
+        {title}
+      </h2>
+      <p class="lead">{lead}</p>
+      <div class="links">
+        {links.map((l) => (
+          <ArrowLink href={l.href}>{l.label}</ArrowLink>
+        ))}
+      </div>
+    </div>
+    <div class="actions">
+      <Button href={ctaHref}>{ctaLabel}</Button>
+      <p class="contact">
+        Clara : <a href="mailto:clara@m42.guide">clara@m42.guide</a>
+        <br />
+        Paul : <a href="mailto:paul@m42.guide">paul@m42.guide</a>
+        <br />
+        [À COMPLÉTER : téléphone]
+      </p>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .row {
+    margin-top: var(--s-5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-6) var(--s-8);
+  }
+
+  .text {
+    flex: 1 1 520px;
+    min-width: 0;
+  }
+
+  .title {
+    margin: 0;
+    max-width: var(--measure-h2);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .lead {
+    margin: 20px 0 0;
+    max-width: var(--measure-lead);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--fg-2);
+  }
+
+  .links {
+    margin-top: var(--s-5);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-6);
+  }
+
+  .actions {
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-4);
+  }
+
+  .contact {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--fg-2);
+  }
+
+  .contact a {
+    color: var(--fg);
+    text-underline-offset: 3px;
+  }
+</style>

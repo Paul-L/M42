@@ -1,0 +1,103 @@
+---
+/**
+ * « Ce que vos participants emportent » (pages « Pour qui »), variante de TakeawayColumns
+ * dont les éléments acceptent un marqueur de relecture au milieu de la phrase
+ * (« La fiche des bons numéros [À PRODUIRE] : 33700… »). Même rendu que TakeawayColumns :
+ * colonnes par public, H3, liste à puces en croix (+). Chaque colonne apparaît au défilement.
+ *
+ * Props :
+ * - `columns` : { title, items: PublicRichText[] } (src/data/publics/types.ts, rendu par RichText).
+ */
+import RichText from './RichText.astro';
+import type { PublicRichText } from '../../data/publics/types';
+
+export interface TakeawayRichColumn {
+  title: string;
+  items: PublicRichText[];
+}
+
+export interface Props {
+  columns: TakeawayRichColumn[];
+}
+
+const { columns } = Astro.props;
+---
+
+<div class="grid">
+  {columns.map((col) => (
+    <div class="col m42-reveal">
+      <h3 class="h3">{col.title}</h3>
+      <ul class="list">
+        {col.items.map((item) => (
+          <li class="item">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              aria-hidden="true"
+              focusable="false"
+              class="icon"
+            >
+              <path d="M12 3v18" />
+              <path d="M3 12h18" />
+            </svg>
+            <span>
+              <RichText value={item} />
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</div>
+
+<style>
+  .grid {
+    margin-top: var(--s-7);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 40px var(--s-6);
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .h3 {
+    margin: 0;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: var(--lh-h3);
+    letter-spacing: var(--tracking-h3);
+  }
+
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--hairline);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--fg-2);
+  }
+
+  .item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-3);
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .icon {
+    flex: none;
+    margin-top: 6px;
+    color: var(--fg);
+  }
+</style>
