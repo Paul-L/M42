@@ -1,7 +1,8 @@
 ---
 /**
  * Satellite « guide » (kit/maquette/Sat-sensibiliser-equipes-ia.dc.html).
- * Contenus : src/data/satellites/sensibiliser-equipes-ia.ts.
+ * Contenus : src/data/satellites/sensibiliser-equipes-ia.ts (objet `page` : sections et blocs
+ * typés, rendus ici selon leur `type`).
  * JSON-LD : Article (auteurs Person ×2, Clara puis Paul, via personSchema()) + WebPage
  * + BreadcrumbList + FAQPage (questions sans marqueur seulement, DECISIONS.md point 19).
  * `dateModified` absent tant que la date de mise à jour est « [À COMPLÉTER : date] ».
@@ -23,45 +24,22 @@ import SatFaq from '../../../components/satellites/SatFaq.astro';
 import SatLinkList from '../../../components/satellites/SatLinkList.astro';
 import SatSources from '../../../components/satellites/SatSources.astro';
 import SatCta from '../../../components/satellites/SatCta.astro';
-import { routes } from '../../../data/routes';
-import { satelliteArticleJsonLd } from '../../../data/satellites/json-ld';
-import {
-  crumbs,
-  cta,
-  dateModified,
-  dateModifiedPlaceholder,
-  faq,
-  hero,
-  mistakes,
-  publicSection,
-  related,
-  relatedNote,
-  seo,
-  sources,
-  sourcesNote,
-  step1,
-  step2,
-  step3,
-  step4,
-  step5,
-  toc,
-} from '../../../data/satellites/sensibiliser-equipes-ia';
+import { satelliteArticleJsonLdOf } from '../../../data/satellites/json-ld';
+import { page } from '../../../data/satellites/sensibiliser-equipes-ia';
 
-const jsonLd = satelliteArticleJsonLd({
-  path: seo.path,
-  title: seo.title,
-  description: seo.description,
-  crumbs,
-  faq: faq.items,
-  headline: hero.title,
-  dateModified,
-});
+const { seo, crumbs, hero, toc, sections, sources, cta } = page;
+const { byline } = hero;
+const dateModified = byline.dateModified ?? undefined;
+const jsonLd = satelliteArticleJsonLdOf(page, dateModified);
 
 const dateLabel = dateModified
   ? new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long', timeZone: 'UTC' }).format(
       new Date(`${dateModified}T00:00:00Z`),
     )
   : undefined;
+
+// Étapes numérotées : numéro et total déduits de l'ordre des sections « step ».
+const steps = sections.filter((s) => s.kind === 'step');
 ---
 
 <BaseLayout title={seo.title} description={seo.description} jsonLd={jsonLd}>
@@ -75,18 +53,18 @@ const dateLabel = dateModified
   >
     <Fragment slot="byline">
       <span>
-        Par{' '}
-        <a href={routes['A-propos.dc.html']} class="sat-inline">
-          Clara Peron et Paul Loustaunau
+        {byline.by}{' '}
+        <a href={byline.authors.href} class="sat-inline">
+          {byline.authors.label}
         </a>
       </span>
       <span aria-hidden="true">·</span>
       <span>
-        Mis à jour le{' '}
-        {dateModified ? <time datetime={dateModified}>{dateLabel}</time> : dateModifiedPlaceholder}
+        {byline.updated}{' '}
+        {dateModified ? <time datetime={dateModified}>{dateLabel}</time> : byline.datePlaceholder}
       </span>
       <span aria-hidden="true">·</span>
-      <span>{hero.readingTime}</span>
+      <span>{byline.readingTime}</span>
     </Fragment>
     <div slot="aside" role="note" aria-labelledby="bref-t" class="brief m42-night">
       <p id="bref-t" class="brief-label">
@@ -106,84 +84,102 @@ const dateLabel = dateModified
   </SatHero>
 
   <SatBody toc={toc}>
-    <SatStep id="etape-1" n={1} total={5} title={step1.title} first>
-      <SatText>
-        <Fragment set:html={step1.html} />
-      </SatText>
-      <SatBox label={step1.questionnaire.label}>
-        <ol class="questionnaire">
-          {step1.questionnaire.items.map((q) => (
-            <li>{q}</li>
-          ))}
-        </ol>
-      </SatBox>
-      <SatNote label="À retenir">{step1.takeaway}</SatNote>
-    </SatStep>
+    {sections.map((section, i) => {
+      const blocks = section.blocks.map((block) => {
+        switch (block.type) {
+          case 'text':
+            return (
+              <SatText variant={block.variant}>
+                {block.html !== undefined ? <Fragment set:html={block.html} /> : block.text}
+              </SatText>
+            );
+          case 'box':
+            return (
+              <SatBox label={block.label}>
+                {(block.paragraphs ?? []).map((p) => (
+                  <SatText variant={p.variant}>
+                    {p.html !== undefined ? <Fragment set:html={p.html} /> : p.text}
+                  </SatText>
+                ))}
+                {block.list && (
+                  <ol class="questionnaire">
+                    {block.list.map((q) => (
+                      <li>{q}</li>
+                    ))}
+                  </ol>
+                )}
+              </SatBox>
+            );
+          case 'note':
+            return <SatNote label={block.label}>{block.text}</SatNote>;
+          case 'table':
+            return <SatTable table={block.table} />;
+          case 'numbered':
+            return <SatNumbered items={block.items} />;
+          case 'more':
+            return <SatMore href={block.href}>{block.label}</SatMore>;
+          case 'sort':
+            return (
+              <figure class="sort">
+                <div class="sort-grid">
+                  {block.columns.map((col) => (
+                    <div class:list={['sort-col', `sort-col--${col.level}`]}>
+                      <p class="sort-label">{col.label}</p>
+                      <span aria-hidden="true" class="sort-slot"></span>
+                      <span aria-hidden="true" class="sort-slot"></span>
+                    </div>
+                  ))}
+                </div>
+                <figcaption>{block.caption}</figcaption>
+              </figure>
+            );
+          case 'cards':
+            return (
+              <ul class="mistakes">
+                {block.items.map((item) => (
+                  <li>
+                    <h3 class="mistake-title">{item.title}</h3>
+                    <p class="mistake-text">{item.text}</p>
+                  </li>
+                ))}
+              </ul>
+            );
+          case 'faq':
+            return <SatFaq items={block.items} />;
+          case 'links':
+            return (
+              <Fragment>
+                <SatLinkList items={block.items} />
+                {block.note && <p class="related-note">{block.note}</p>}
+              </Fragment>
+            );
+          default:
+            throw new Error(`Bloc non pris en charge sur cette page : ${block.type}`);
+        }
+      });
+      return section.kind === 'step' ? (
+        <SatStep
+          id={section.id}
+          n={steps.indexOf(section) + 1}
+          total={steps.length}
+          title={section.title}
+          first={i === 0}
+        >
+          {blocks}
+        </SatStep>
+      ) : (
+        <SatSection
+          id={section.id}
+          eyebrow={section.eyebrow ?? ''}
+          title={section.title}
+          first={i === 0}
+        >
+          {blocks}
+        </SatSection>
+      );
+    })}
 
-    <SatStep id="etape-2" n={2} total={5} title={step2.title}>
-      <SatText>{step2.text}</SatText>
-      <SatTable table={step2.table} />
-      <SatText>{step2.after}</SatText>
-      <SatText variant="source">{step2.source}</SatText>
-      <SatNote label="À retenir">{step2.takeaway}</SatNote>
-    </SatStep>
-
-    <SatStep id="etape-3" n={3} total={5} title={step3.title}>
-      <SatText>{step3.text}</SatText>
-      <SatNumbered items={step3.messages} />
-      <SatMore href={step3.link.href}>{step3.link.label}</SatMore>
-    </SatStep>
-
-    <SatStep id="etape-4" n={4} total={5} title={step4.title}>
-      <SatText>{step4.text}</SatText>
-      <figure class="sort">
-        <div class="sort-grid">
-          {step4.columns.map((col) => (
-            <div class:list={['sort-col', `sort-col--${col.level}`]}>
-              <p class="sort-label">{col.label}</p>
-              <span aria-hidden="true" class="sort-slot"></span>
-              <span aria-hidden="true" class="sort-slot"></span>
-            </div>
-          ))}
-        </div>
-        <figcaption>{step4.caption}</figcaption>
-      </figure>
-      <SatNote label="À retenir">{step4.takeaway}</SatNote>
-    </SatStep>
-
-    <SatStep id="etape-5" n={5} total={5} title={step5.title}>
-      <SatText>{step5.text}</SatText>
-      <SatText variant="source">{step5.source}</SatText>
-      <SatNote label="À retenir">{step5.takeaway}</SatNote>
-    </SatStep>
-
-    <SatSection id="erreurs" eyebrow={mistakes.eyebrow} title={mistakes.title}>
-      <ul class="mistakes">
-        {mistakes.items.map((item) => (
-          <li>
-            <h3 class="mistake-title">{item.title}</h3>
-            <p class="mistake-text">{item.text}</p>
-          </li>
-        ))}
-      </ul>
-    </SatSection>
-
-    <SatSection id="public" eyebrow={publicSection.eyebrow} title={publicSection.title}>
-      <SatText>
-        <Fragment set:html={publicSection.html} />
-      </SatText>
-    </SatSection>
-
-    <SatSection id="faq" eyebrow={faq.eyebrow} title={faq.title}>
-      <SatFaq items={faq.items} />
-    </SatSection>
-
-    <SatSection id="plus-loin" eyebrow="Pour aller plus loin" title="Pages liées">
-      <SatLinkList items={related} />
-      <p class="related-note">{relatedNote}</p>
-    </SatSection>
-
-    <SatSources items={sources} notes={[sourcesNote]} />
+    <SatSources items={sources.items} notes={sources.notes ?? []} />
   </SatBody>
 
   <SatCta

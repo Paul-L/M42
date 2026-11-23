@@ -1,7 +1,7 @@
 ---
 /**
  * Satellite « outil » : le test « Arnaque ou pas ? » (kit/maquette/Sat-test-arnaque-ou-pas.dc.html).
- * Contenus : src/data/outils/arnaque-ou-pas.ts.
+ * Contenus : src/data/outils/arnaque-ou-pas.ts (un seul objet `page`).
  * JSON-LD : le commentaire SEO n'en prévoit pas ; comme les autres satellites (11_architecture_seo,
  * § 3.3) : WebPage + BreadcrumbList + FAQPage (questions sans marqueur, DECISIONS.md point 19).
  * Aucun lien d'en-tête marqué dans la maquette : ni `current`, ni `section`.
@@ -19,25 +19,13 @@ import Eyebrow from '../../../components/Eyebrow.astro';
 import SatFaq from '../../../components/satellites/SatFaq.astro';
 import SatLinkList from '../../../components/satellites/SatLinkList.astro';
 import SatCta from '../../../components/satellites/SatCta.astro';
-import { routes } from '../../../data/routes';
 import { satellitePageJsonLd } from '../../../data/satellites/json-ld';
-import {
-  capture,
-  crumbs,
-  cta,
-  faq,
-  fieldErrors,
-  hero,
-  numbers,
-  related,
-  results,
-  rules,
-  seo,
-  situations,
-  sources,
-  testLabels,
-} from '../../../data/outils/arnaque-ou-pas';
+import { page } from '../../../data/outils/arnaque-ou-pas';
 
+const { seo, crumbs, hero, test, rules, numbers, capture, faq, related, sources, cta } = page;
+// Le texte de la maquette était écrit en dur au début du slot : on garde son retrait pour un HTML
+// identique octet pour octet (sans effet sur le rendu).
+const BYLINE_INDENT = '\n      ';
 const jsonLd = satellitePageJsonLd({
   path: seo.path,
   title: seo.title,
@@ -56,12 +44,13 @@ const jsonLd = satellitePageJsonLd({
     source={hero.source}
   >
     <Fragment slot="byline">
-      Conçu et animé en salle par{' '}
-      <a href={routes['A-propos.dc.html']} class="sat-inline">
-        Clara Peron et Paul Loustaunau
+      {BYLINE_INDENT}
+      {hero.byline.prefix}{' '}
+      <a href={hero.byline.authors.href} class="sat-inline">
+        {hero.byline.authors.label}
       </a>
     </Fragment>
-    <ArnaqueTest situations={situations} labels={testLabels} results={results} />
+    <ArnaqueTest situations={test.situations} labels={test.labels} results={test.results} />
   </OutilHero>
 
   <OutilSection id="regles" eyebrow={rules.eyebrow} title={rules.title} ruled>
@@ -118,8 +107,8 @@ const jsonLd = satellitePageJsonLd({
             name="email"
             type="email"
             autocomplete="email"
-            label="E-mail *"
-            error={fieldErrors.ficheMail}
+            label={capture.fiche.fields.mail.label}
+            error={capture.fiche.fields.mail.error}
           />
         </Fragment>
       </CaptureCard>
@@ -142,31 +131,31 @@ const jsonLd = satellitePageJsonLd({
               id="kit-nom"
               name="nom"
               autocomplete="name"
-              label="Nom *"
-              error={fieldErrors.kitNom}
+              label={capture.kit.fields.nom.label}
+              error={capture.kit.fields.nom.error}
             />
             <CaptureField
               id="kit-structure"
               name="structure"
               autocomplete="organization"
-              label="Structure *"
-              error={fieldErrors.kitStructure}
+              label={capture.kit.fields.structure.label}
+              error={capture.kit.fields.structure.error}
             />
           </div>
           <CaptureField
             id="kit-type"
             name="type"
-            label="Type de structure *"
+            label={capture.kit.fields.type.label}
             options={capture.kit.types}
-            error={fieldErrors.kitType}
+            error={capture.kit.fields.type.error}
           />
           <CaptureField
             id="kit-mail"
             name="email"
             type="email"
             autocomplete="email"
-            label="E-mail professionnel *"
-            error={fieldErrors.kitMail}
+            label={capture.kit.fields.mail.label}
+            error={capture.kit.fields.mail.error}
           />
         </Fragment>
         <div slot="after" class="more">
@@ -183,16 +172,16 @@ const jsonLd = satellitePageJsonLd({
     <SatFaq items={faq.items} />
     <div class="after-faq">
       <div class="further">
-        <Eyebrow as="p">Pour aller plus loin</Eyebrow>
-        <SatLinkList items={related} />
+        <Eyebrow as="p">{related.eyebrow}</Eyebrow>
+        <SatLinkList items={related.items} />
       </div>
       <div class="sources-col">
         <section aria-labelledby="sources-t" class="sources">
           <h2 id="sources-t" class="sources-title">
-            Sources de la page
+            {sources.title}
           </h2>
           <ol class="sources-list">
-            {sources.map((s) => (
+            {sources.items.map((s) => (
               <li>{s}</li>
             ))}
           </ol>
