@@ -13,27 +13,24 @@
  * - étape 3 : faits et source surlignés or 32 %, bloc « Le deuxième avis » affiché ;
  * - étapes 4 et 5 : faits et source barrés, tampon « Inventé » (échelle 1,4 → 1).
  * Exemple reconstitué : roman, autrice, éditeur, prix et revue fictifs.
+ *
+ * Props :
+ * - visuel : textes du visuel (VisuelErreurSure, `demonstration.visuel` de la conférence).
+ *   La réponse est rendue par segments pour qu'aucune espace ne s'insère entre « d' » et le nom
+ *   de l'autrice ; réponse et légende sont échappées, les autres textes sont en HTML simple.
  */
+import type { VisuelErreurSure } from '../../../data/conferences/types';
 
-const legende =
-  "Exemple reconstitué : le roman, l'autrice, l'éditeur, le prix et la revue sont fictifs. [À REMPLACER par la démonstration réelle filmée]";
+interface Props {
+  visuel: VisuelErreurSure;
+}
 
-// Réponse de l'IA : texte et faits inventés (surlignés puis barrés). Rendue par segments pour
-// qu'aucune espace ne s'insère entre « d' » et le nom de l'autrice.
-const reponse: (string | { fait: string })[] = [
-  "« Les Horloges de Port-Salies » est un roman d'",
-  { fait: 'Hélène Varenne' },
-  ', publié en ',
-  { fait: '2011 aux éditions du Phare' },
-  '. Il a reçu le ',
-  { fait: 'prix des Lecteurs du Littoral' },
-  ' en 2012, salué pour son écriture « lumineuse et précise ».',
-];
+const { visuel } = Astro.props;
 ---
 
 <div class="chat">
   <div class="chat-head">
-    <span>Assistant IA · nouvelle conversation</span>
+    <span set:html={visuel.entete} />
     <span class="chat-dots" aria-hidden="true">
       <span></span>
       <span></span>
@@ -41,66 +38,45 @@ const reponse: (string | { fait: string })[] = [
     </span>
   </div>
   <div class="chat-body">
-    <div class="question">
-      Qui a écrit le roman « Les Horloges de Port-Salies » ? A-t-il reçu un prix ?
-    </div>
+    <div class="question" set:html={visuel.question} />
     <div class="answer fade">
-      {reponse.map((seg) =>
+      {visuel.reponse.map((seg) =>
         typeof seg === 'string' ? seg : <span class="hl hl-f fade">{seg.fait}</span>,
       )}
       <span class="source">
-        Source : <span class="hl hl-s fade">La Revue des lettres, n° 214, mars 2012</span>
+        <Fragment set:html={visuel.source.libelle} />{' '}
+        <span class="hl hl-s fade" set:html={visuel.source.texte} />
       </span>
-      <span class="stamp fade" aria-hidden="true">
-        Inventé
-      </span>
+      <span class="stamp fade" aria-hidden="true" set:html={visuel.tampon} />
     </div>
   </div>
   <div class="verif fade">
-    <p class="verif-label">Le deuxième avis · vérification</p>
-    <div class="search">
-      <span class="search-q">
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <circle cx="11" cy="11" r="7"></circle>
-          <path d="M20 20l-4-4"></path>
-        </svg>
-        « Les Horloges de Port-Salies »
-      </span>
-      <span class="search-r">Aucun résultat</span>
-    </div>
-    <div class="search">
-      <span class="search-q">
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <circle cx="11" cy="11" r="7"></circle>
-          <path d="M20 20l-4-4"></path>
-        </svg>
-        « La Revue des lettres » n° 214
-      </span>
-      <span class="search-r">Introuvable</span>
-    </div>
+    <p class="verif-label" set:html={visuel.verification.titre} />
+    {visuel.verification.recherches.map((r) => (
+      <div class="search">
+        <span class="search-q">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="M20 20l-4-4"></path>
+          </svg>
+          <Fragment set:html={r.requete} />
+        </span>
+        <span class="search-r" set:html={r.resultat} />
+      </div>
+    ))}
   </div>
 </div>
-<p class="caption">{legende}</p>
+<p class="caption">{visuel.legende}</p>
 
 <style>
   .fade {

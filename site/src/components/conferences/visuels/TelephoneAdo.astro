@@ -10,53 +10,56 @@
  * « Afficher toutes les étapes »), l'étape est la dernière : la charte est affichée.
  * Les écrans masqués passent aussi en visibility: hidden (non lus par les lecteurs d'écran).
  * Journée reconstituée ; prénoms fictifs.
+ *
+ * Props :
+ * - visuel : textes des six écrans en HTML simple (VisuelTelephoneAdo, `demonstration.visuel`
+ *   de la conférence).
  */
+import type { VisuelTelephoneAdo } from '../../../data/conferences/types';
+
+interface Props {
+  visuel: VisuelTelephoneAdo;
+}
+
+const { visuel } = Astro.props;
+const { verrouille, groupe, devoirs, repas, inconnu, charte } = visuel;
 ---
 
 <div class="phone">
   <div class="screen">
     <!-- 7 h 10 : écran verrouillé -->
     <div class="scr scr-0 lock">
-      <p class="clock">7:10</p>
-      <p class="day">Mardi</p>
-      <div class="notif">
-        <strong>Groupe « 4e B »</strong>
-        <br />
-        23 nouveaux messages
-      </div>
-      <div class="notif">
-        <strong>Vidéos</strong>
-        <br />
-        12 nouvelles vidéos pour vous
-      </div>
-      <div class="notif">
-        <strong>Jeu</strong>
-        <br />
-        Votre série vous attend
-      </div>
+      <p class="clock" set:html={verrouille.heure} />
+      <p class="day" set:html={verrouille.jour} />
+      {verrouille.notifications.map((n) => (
+        <div class="notif">
+          <strong set:html={n.titre} />
+          <br />
+          <Fragment set:html={n.texte} />
+        </div>
+      ))}
     </div>
 
     <!-- 8 h 05 : le groupe de classe -->
     <div class="scr scr-1 app">
-      <div class="app-head">Groupe « 4e B » · 28 membres</div>
+      <div class="app-head" set:html={groupe.titre} />
       <div class="chat">
         <div class="bubble bubble--wide">
-          <span class="who">Léo</span>
-          <span class="photo">[Photo truquée d'un camarade]</span>
+          <span class="who" set:html={groupe.photo.auteur} />
+          <span class="photo" set:html={groupe.photo.texte} />
         </div>
-        <div class="bubble">
-          <span class="who">Inès</span> trop drôle
-        </div>
-        <div class="bubble">
-          <span class="who">Tom</span> envoie-la aux 4e A
-        </div>
-        <div class="bubble bubble--me">…</div>
+        {groupe.messages.map((m) => (
+          <div class="bubble">
+            <span class="who" set:html={m.auteur} /> <Fragment set:html={m.texte} />
+          </div>
+        ))}
+        <div class="bubble bubble--me" set:html={groupe.reponse} />
       </div>
     </div>
 
     <!-- 17 h 30 : les devoirs -->
     <div class="scr scr-2 app">
-      <div class="app-head">Assistant IA</div>
+      <div class="app-head" set:html={devoirs.titre} />
       <div class="homework">
         <div class="hw-row">
           <svg
@@ -74,7 +77,7 @@
             <path d="M6 6l12 12"></path>
             <path d="M18 6L6 18"></path>
           </svg>
-          <span class="prompt prompt--no">« Écris ma rédaction sur la Révolution française. »</span>
+          <span class="prompt prompt--no" set:html={devoirs.aEviter} />
         </div>
         <div class="hw-row">
           <svg
@@ -92,11 +95,9 @@
           >
             <path d="M5 12l5 5L19 7"></path>
           </svg>
-          <span class="prompt prompt--yes">
-            « Pose-moi trois questions pour m'aider à construire mon plan. »
-          </span>
+          <span class="prompt prompt--yes" set:html={devoirs.utile} />
         </div>
-        <p class="hw-note">La même IA, deux usages opposés.</p>
+        <p class="hw-note" set:html={devoirs.note} />
       </div>
     </div>
 
@@ -116,42 +117,37 @@
       >
         <path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path>
       </svg>
-      <p class="meal-title">Mode repas</p>
-      <p class="meal-text">
-        Notifications en pause jusqu'à 20 h 30, sur les téléphones de toute la famille.
-      </p>
+      <p class="meal-title" set:html={repas.titre} />
+      <p class="meal-text" set:html={repas.texte} />
     </div>
 
     <!-- 22 h 40 : un inconnu insiste -->
     <div class="scr scr-4 app">
-      <div class="app-head">nouveau_compte_2026</div>
+      <div class="app-head" set:html={inconnu.titre} />
       <div class="chat">
-        <div class="bubble bubble--wide">Tu es trop sympa, on a plein de points communs.</div>
-        <div class="bubble bubble--wide">Tu m'envoies une photo de toi ? Juste pour moi.</div>
+        {inconnu.messages.map((m) => (
+          <div class="bubble bubble--wide" set:html={m} />
+        ))}
       </div>
       <div class="actions">
-        <span class="action action--block">Bloquer</span>
-        <span class="action action--report">Signaler</span>
+        <span class="action action--block" set:html={inconnu.bloquer} />
+        <span class="action action--report" set:html={inconnu.signaler} />
       </div>
     </div>
 
     <!-- la charte -->
     <div class="scr scr-5 charter">
-      <p class="charter-title">Notre charte</p>
+      <p class="charter-title" set:html={charte.titre} />
       <ul class="charter-list">
-        <li>Le téléphone dort hors de la chambre.</li>
-        <li>On ne transfère pas une image blessante.</li>
-        <li>Je réfléchis d'abord, l'IA ensuite.</li>
-        <li>Pas d'écran à table, pour personne.</li>
-        <li>On peut tout dire, sans être puni.</li>
+        {charte.regles.map((r) => (
+          <li set:html={r} />
+        ))}
       </ul>
-      <p class="charter-sign">Signée par toute la famille</p>
+      <p class="charter-sign" set:html={charte.signature} />
     </div>
   </div>
 </div>
-<p class="caption">
-  Journée reconstituée ; prénoms fictifs. Les règles sont des exemples à adapter.
-</p>
+<p class="caption" set:html={visuel.legende} />
 
 <style>
   .phone {

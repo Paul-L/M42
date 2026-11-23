@@ -28,6 +28,8 @@ import OtherConferences from '../../../components/conferences/OtherConferences.a
 import ConferenceCta from '../../../components/conferences/ConferenceCta.astro';
 import { parentsAdosIa as conf } from '../../../data/conferences/parents-ados-ia';
 import { conferenceJsonLd } from '../../../data/conferences/jsonld';
+
+const visuel = conf.demonstration.visuel;
 ---
 
 <BaseLayout
@@ -58,7 +60,7 @@ import { conferenceJsonLd } from '../../../data/conferences/jsonld';
     visualSize="phone-narrow"
   >
     {conf.frise && <FriseJournee slot="before" heures={conf.frise} />}
-    <TelephoneAdo slot="visual" />
+    {visuel?.type === 'telephone-ado' && <TelephoneAdo slot="visual" visuel={visuel} />}
   </ScrollStory>
 
   <ConferenceObjectives

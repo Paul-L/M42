@@ -6,91 +6,13 @@
 // - [À DÉCIDER n° 10 de 05 : dire ou non sur scène l'attribution officielle de Storm-1516 ; ici, le titre
 //   officiel de la source est cité tel quel dans « Sources ».]
 //
-// Champs facultatifs du type Conference propres à cette page (./types.ts) : `jeu[].visuel`
+// Champs facultatifs du type Conference propres à cette page (./types.ts) : `mentionEnTete`
+// (« Strictement neutre »), `demonstration.visuel` (publication virale), `jeu[].visuel`
 // (bloc « [Photo : …] »), `chiffres.note` ([À VÉRIFIER …]), `methode` (section « La méthode »).
-// Les constantes `exemplesVraiOuIa`, `chiffresNote` et `methode` restent exportées.
+// Toute la conférence tient dans l'objet exporté (sérialisable en JSON).
 
 import { routes } from '../routes';
-import type { Conference, MessageJeu, SectionMethode } from './types';
-
-/** Exemple du jeu « Vrai ou IA ? » : `de` = nature du contenu, `arnaque` = faux ou généré par IA. */
-export interface ExempleVraiOuIa extends MessageJeu {
-  /** Texte du bloc de remplacement (« [Photo : …] »), en attendant le vrai contenu. */
-  visuel: string;
-}
-
-export const exemplesVraiOuIa: ExempleVraiOuIa[] = [
-  {
-    de: 'Photo · réseau social',
-    visuel:
-      '[Photo : une foule à un concert, bras levés. Au premier plan, une main à six doigts ; la banderole du fond est illisible.]',
-    texte: 'Une photo de concert partagée des milliers de fois, sans nom de photographe.',
-    arnaque: true,
-    explication:
-      "Mains, textes et reflets restent des points faibles des images générées. Mais ces défauts disparaissent peu à peu : le meilleur indice reste la source d'origine.",
-  },
-  {
-    de: "Article · site d'information local",
-    visuel:
-      "[Capture : la page d'accueil de « L'Écho du Littoral », quarante articles publiés aujourd'hui, tous signés « La rédaction ».]",
-    texte: "Pas de mentions légales, pas d'adresse, un nom de domaine créé il y a deux mois.",
-    arnaque: true,
-    explication:
-      "C'est le mécanisme documenté par Viginum : des sites qui imitent la presse locale, remplis de contenus générés par IA. On vérifie les mentions légales, l'ancienneté du site et la signature des articles.",
-  },
-  {
-    de: 'Photo · compte officiel',
-    visuel:
-      '[Photo : une rue inondée après un orage, publiée par le compte officiel de la préfecture.]',
-    texte:
-      "Reprise par deux journaux locaux, avec le nom du photographe et l'heure de la prise de vue.",
-    arnaque: false,
-    explication:
-      "Source d'origine identifiée, reprise par des médias reconnus, auteur nommé : la méthode conclut que l'image est fiable. Douter de tout n'est pas la solution ; vérifier, si.",
-  },
-  {
-    de: 'Message vocal · messagerie',
-    visuel:
-      "[Audio : 20 secondes, la voix d'un présentateur connu annonce une « alerte à ne pas manquer » et renvoie vers un lien.]",
-    texte: "Le message circule de groupe en groupe ; aucune chaîne ne l'a diffusé.",
-    arnaque: true,
-    explication:
-      'Une voix peut être imitée par une IA à partir de quelques enregistrements. Une annonce importante passe par les canaux officiels : on vérifie sur le site de la source citée, jamais par le lien du message.',
-  },
-];
-
-export const chiffresNote =
-  '[À VÉRIFIER : périmètre exact des deux chiffres du Reuters Institute (France ou ensemble des pays étudiés) avant publication]';
-
-export const methode: SectionMethode = {
-  surTitre: 'La méthode',
-  titre: 'Vérifier en quatre étapes, sur son téléphone',
-  etapes: [
-    {
-      titre: "Je m'arrête",
-      texte: "L'émotion est un signal. Colère, peur, émerveillement : c'est le moment de ralentir.",
-    },
-    {
-      titre: "Je cherche la source d'origine",
-      texte: "Qui l'a publiée en premier ? Depuis quand ce compte, ce site existent-ils ?",
-    },
-    {
-      titre: 'Je vérifie ailleurs',
-      texte:
-        'Un média reconnu, une source officielle en parlent-ils ? Une seule source ne suffit pas.',
-    },
-    {
-      titre: 'Dans le doute, je ne partage pas',
-      texte: "Ne pas partager, c'est déjà agir : un faux contenu vit de ses partages.",
-    },
-  ],
-  note: "Démonstration avec des outils gratuits, comme la recherche d'image inversée [À COMPLÉTER : liste des outils montrés]. Fiche méthode à emporter [À PRODUIRE].",
-  regle: {
-    titre: 'La règle : la neutralité',
-    texte:
-      "Aucun exemple partisan. Aucun parti ni candidat cité comme cible ou bénéficiaire. La conférence montre comment un faux contenu est fabriqué et pourquoi il circule, cite la source officielle qui l'a documenté, et s'arrête là. Les contenus apportés par la salle sont filtrés avant d'être vérifiés en direct.",
-  },
-};
+import type { Conference } from './types';
 
 export const desinformationIa: Conference = {
   slug: 'desinformation-ia',
@@ -108,6 +30,7 @@ export const desinformationIa: Conference = {
   promesse:
     'Vous repartez avec une méthode courte pour vérifier une information avant de la croire ou de la partager.',
   ctaSecondaire: { label: 'Jouer à « Vrai ou IA ? »', href: '#jeu' },
+  mentionEnTete: 'Strictement neutre : des mécanismes, jamais de contenu partisan.',
   miseAJour: '[À COMPLÉTER : date]',
   fiche: [
     {
@@ -159,6 +82,35 @@ export const desinformationIa: Conference = {
           'Les défauts visibles disparaissent peu à peu avec les nouveaux outils. Le meilleur indice reste la source : sans source fiable, pas de partage.',
       },
     ],
+    visuel: {
+      type: 'publication-virale',
+      compte: 'Info_Littoral_24',
+      anciennete: 'Compte créé il y a 3 jours',
+      date: 'il y a 2 h',
+      message: {
+        accroche: 'INCROYABLE',
+        texte: ': une baleine géante échouée ce matin sur la grande plage.',
+        appel: 'Partagez avant que ce soit supprimé !',
+      },
+      image: {
+        description:
+          'Illustration : une baleine échouée sur une plage, deux promeneurs, un panneau. Les repères numérotés signalent les incohérences.',
+        bandeau: 'Image générée par IA',
+      },
+      indices: [
+        'Ombres dans deux directions',
+        'Panneau au texte illisible',
+        'Vagues identiques, répétées',
+      ],
+      verifications: [
+        { label: "Recherche d'image inversée", resultat: 'Aucune photo antérieure' },
+        { label: 'Presse locale, mairie, préfecture', resultat: 'Aucune mention' },
+      ],
+      partages: '12 400 partages',
+      partager: 'Partager',
+      legende:
+        'Exemple fictif construit pour la démonstration. [À REMPLACER par un cas réel documenté, neutre et sourcé]',
+    },
   },
 
   enClair:
@@ -174,7 +126,7 @@ export const desinformationIa: Conference = {
 
   chiffres: {
     label: 'Les fausses informations en chiffres',
-    note: chiffresNote,
+    note: '[À VÉRIFIER : périmètre exact des deux chiffres du Reuters Institute (France ou ensemble des pays étudiés) avant publication]',
     items: [
       {
         valeur: '62 %',
@@ -245,9 +197,78 @@ export const desinformationIa: Conference = {
     note: 'Exemples fictifs et neutres, décrits en texte pour la maquette. En conférence, la salle voit les vrais contenus.',
   },
 
-  jeu: exemplesVraiOuIa,
+  // Jeu « Vrai ou IA ? » : `de` = nature du contenu, `arnaque` = faux ou généré par IA,
+  // `visuel` = bloc de remplacement (« [Photo : …] ») en attendant le vrai contenu.
+  jeu: [
+    {
+      de: 'Photo · réseau social',
+      visuel:
+        '[Photo : une foule à un concert, bras levés. Au premier plan, une main à six doigts ; la banderole du fond est illisible.]',
+      texte: 'Une photo de concert partagée des milliers de fois, sans nom de photographe.',
+      arnaque: true,
+      explication:
+        "Mains, textes et reflets restent des points faibles des images générées. Mais ces défauts disparaissent peu à peu : le meilleur indice reste la source d'origine.",
+    },
+    {
+      de: "Article · site d'information local",
+      visuel:
+        "[Capture : la page d'accueil de « L'Écho du Littoral », quarante articles publiés aujourd'hui, tous signés « La rédaction ».]",
+      texte: "Pas de mentions légales, pas d'adresse, un nom de domaine créé il y a deux mois.",
+      arnaque: true,
+      explication:
+        "C'est le mécanisme documenté par Viginum : des sites qui imitent la presse locale, remplis de contenus générés par IA. On vérifie les mentions légales, l'ancienneté du site et la signature des articles.",
+    },
+    {
+      de: 'Photo · compte officiel',
+      visuel:
+        '[Photo : une rue inondée après un orage, publiée par le compte officiel de la préfecture.]',
+      texte:
+        "Reprise par deux journaux locaux, avec le nom du photographe et l'heure de la prise de vue.",
+      arnaque: false,
+      explication:
+        "Source d'origine identifiée, reprise par des médias reconnus, auteur nommé : la méthode conclut que l'image est fiable. Douter de tout n'est pas la solution ; vérifier, si.",
+    },
+    {
+      de: 'Message vocal · messagerie',
+      visuel:
+        "[Audio : 20 secondes, la voix d'un présentateur connu annonce une « alerte à ne pas manquer » et renvoie vers un lien.]",
+      texte: "Le message circule de groupe en groupe ; aucune chaîne ne l'a diffusé.",
+      arnaque: true,
+      explication:
+        'Une voix peut être imitée par une IA à partir de quelques enregistrements. Une annonce importante passe par les canaux officiels : on vérifie sur le site de la source citée, jamais par le lien du message.',
+    },
+  ],
 
-  methode,
+  methode: {
+    surTitre: 'La méthode',
+    titre: 'Vérifier en quatre étapes, sur son téléphone',
+    etapes: [
+      {
+        titre: "Je m'arrête",
+        texte:
+          "L'émotion est un signal. Colère, peur, émerveillement : c'est le moment de ralentir.",
+      },
+      {
+        titre: "Je cherche la source d'origine",
+        texte: "Qui l'a publiée en premier ? Depuis quand ce compte, ce site existent-ils ?",
+      },
+      {
+        titre: 'Je vérifie ailleurs',
+        texte:
+          'Un média reconnu, une source officielle en parlent-ils ? Une seule source ne suffit pas.',
+      },
+      {
+        titre: 'Dans le doute, je ne partage pas',
+        texte: "Ne pas partager, c'est déjà agir : un faux contenu vit de ses partages.",
+      },
+    ],
+    note: "Démonstration avec des outils gratuits, comme la recherche d'image inversée [À COMPLÉTER : liste des outils montrés]. Fiche méthode à emporter [À PRODUIRE].",
+    regle: {
+      titre: 'La règle : la neutralité',
+      texte:
+        "Aucun exemple partisan. Aucun parti ni candidat cité comme cible ou bénéficiaire. La conférence montre comment un faux contenu est fabriqué et pourquoi il circule, cite la source officielle qui l'a documenté, et s'arrête là. Les contenus apportés par la salle sont filtrés avant d'être vérifiés en direct.",
+    },
+  },
 
   formats: {
     titre: 'Quatre façons de la programmer',

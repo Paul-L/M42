@@ -78,6 +78,22 @@ export const arnaquesIa: Conference = {
           "Puis je supprime le message. Pour suivre un colis, je passe par le site ou l'application que je connais déjà.",
       },
     ],
+    visuel: {
+      type: 'faux-sms',
+      numero: '+33 7 56 •• •• 12',
+      meta: "SMS · aujourd'hui 18:42",
+      message: [
+        { texte: 'Dernier avis : votre colis est bloqué.', indice: 2 },
+        ' Réglez ',
+        { texte: '1,99 € de frais', indice: 3 },
+        ' ',
+        { texte: 'avant ce soir', indice: 2 },
+        ' pour éviter son retour : ',
+        { texte: 'colis-suivi.exemple-frais.com/fr', indice: 4, lien: true },
+      ],
+      tampon: 'Arnaque',
+      legende: 'Exemple reconstitué : numéro et adresse fictifs.',
+    },
   },
 
   enClair:

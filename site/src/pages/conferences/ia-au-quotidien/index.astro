@@ -27,6 +27,8 @@ import MethodesPros from '../../../components/conferences/ia-au-quotidien/Method
 import VersionKeynote from '../../../components/conferences/ia-au-quotidien/VersionKeynote.astro';
 import { iaAuQuotidien as conf } from '../../../data/conferences/ia-au-quotidien';
 import { conferenceJsonLd } from '../../../data/conferences/jsonld';
+
+const visuel = conf.demonstration.visuel;
 ---
 
 <BaseLayout
@@ -45,7 +47,9 @@ import { conferenceJsonLd } from '../../../data/conferences/jsonld';
     fiche={conf.fiche}
     subtitleMax={28}
   >
-    <SignatureMention slot="before-title" />
+    {conf.mentionSignature && (
+      <SignatureMention slot="before-title" label={conf.mentionSignature} />
+    )}
   </ConferenceHero>
 
   <ScrollStory
@@ -55,7 +59,7 @@ import { conferenceJsonLd } from '../../../data/conferences/jsonld';
     k={conf.demonstration.k}
     visualSize="wide"
   >
-    <ErreurSure slot="visual" />
+    {visuel?.type === 'erreur-sure' && <ErreurSure slot="visual" visuel={visuel} />}
   </ScrollStory>
 
   <ConferenceObjectives
@@ -79,26 +83,30 @@ import { conferenceJsonLd } from '../../../data/conferences/jsonld';
     notePosition={conf.tempsFort.notePosition}
     asideBasis={360}
   >
-    <TempsFortEtapes etapes={conf.tempsFortEtapes} />
+    {conf.tempsFortEtapes && <TempsFortEtapes etapes={conf.tempsFortEtapes} />}
   </TempsFort>
 
-  <MethodesPros
-    surTitre={conf.methodes.surTitre}
-    titre={conf.methodes.titre}
-    chapo={conf.methodes.chapo}
-    colonnes={conf.methodes.colonnes}
-    items={conf.methodes.items}
-  />
+  {conf.methodes && (
+    <MethodesPros
+      surTitre={conf.methodes.surTitre}
+      titre={conf.methodes.titre}
+      chapo={conf.methodes.chapo}
+      colonnes={conf.methodes.colonnes}
+      items={conf.methodes.items}
+    />
+  )}
 
-  <VersionKeynote
-    surTitre={conf.keynote.surTitre}
-    titre={conf.keynote.titre}
-    chapo={conf.keynote.chapo}
-    note={conf.keynote.note}
-    deroule={conf.keynote.deroule}
-    regles={conf.keynote.regles}
-    lien={conf.keynote.lien}
-  />
+  {conf.keynote && (
+    <VersionKeynote
+      surTitre={conf.keynote.surTitre}
+      titre={conf.keynote.titre}
+      chapo={conf.keynote.chapo}
+      note={conf.keynote.note}
+      deroule={conf.keynote.deroule}
+      regles={conf.keynote.regles}
+      lien={conf.keynote.lien}
+    />
+  )}
 
   <ConferenceFormats titre={conf.formats.titre} items={conf.formats.items} />
 
