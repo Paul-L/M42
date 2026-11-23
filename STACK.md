@@ -20,6 +20,7 @@ Versions relevées le 23 novembre 2026 (registre npm, Docker Hub, nodejs.org).
 | Mailpit | 1.34.0 (`axllent/mailpit:v1.34.0`, local) | 1.34.0 | Boîte de test des e-mails de Directus en local. |
 | Node (image de build) | `node:26.13.1-alpine` | 26.13.1 | Build du site dans Coolify (Node 26 LTS). |
 | Caddy | `caddy:2.11.9-alpine` | 2.11.9 | Sert le site statique : compression, cache, en-têtes de sécurité, 404, redirection www, mot de passe de la préproduction. |
+| @directus/visual-editing | 2.1.0 (dev) | 2.1.0 | Édition sur la page (Visual Editor de Directus), en aperçu seulement. |
 | PostgreSQL | 18.7 (`postgres:18.7-alpine`) | 19.0 | La 19.0 vient de sortir : on attend une version corrective et la confirmation de compatibilité Directus. |
 
 ## Choix techniques
@@ -60,6 +61,12 @@ Versions relevées le 23 novembre 2026 (registre npm, Docker Hub, nodejs.org).
 - Identité M42 : logo, encre / papier / or, titres en Cormorant (police servie par Directus), page de connexion, favicon, interface en français.
 - Dossiers « Site » et « Formulaires », colonnes utiles dans chaque liste, menus déroulants pour les valeurs connues.
 - Aperçu à côté du formulaire (Live Preview) : `npm run apercu` en local (instantané, brouillons compris), préproduction en ligne (`CONTENT_SECURITY_POLICY_DIRECTIVES__FRAME_SRC` côté Directus, `FRAME_ANCESTORS` côté préproduction).
+
+## Édition sur la page (Visual Editor)
+
+- En aperçu (`npm run apercu`), chaque texte lu dans Directus porte à sa fin une marque invisible (caractères de largeur nulle) qui code sa collection, son élément et son champ (`src/lib/cms/marques.ts`). Seuls les textes « rédigés » (avec une espace) sont marqués : les valeurs techniques comparées dans le code restent intactes.
+- Le script `src/lib/apercu-client.ts`, injecté par l'intégration `m42-apercu` dans le serveur de développement seulement, retire les marques, pose les attributs `data-directus` sur les éléments et se connecte au Visual Editor (`@directus/visual-editing`). Aucun composant n'est annoté à la main ; un nouveau composant est éditable sans rien faire.
+- Rien de tout cela n'entre dans un build (vérifié : build identique octet pour octet, aucune trace du code d'édition dans `dist/`).
 
 ## Licence Directus
 

@@ -71,6 +71,8 @@ Page de démonstration des composants : http://localhost:4321/_kit/ (non indexé
 
 Les pages à adresse fixe (accueil, Conférences, À propos, Organisateurs, Contact, Repères, pages légales) ne peuvent pas passer en brouillon : le build s'arrête avec un message.
 
+**Modifier directement sur la page** (module « Éditeur visuel » de Directus, icône crayon dans la barre de gauche) : la page du site s'affiche ; au survol, chaque texte s'entoure d'un cadre avec un crayon ; un clic ouvre son champ dans une bulle (ou un panneau pour une liste). « Enregistrer » écrit dans Directus et la page se recharge avec le nouveau texte. Fonctionne avec l'aperçu local ci-dessous.
+
 **Aperçu instantané en local** : `npm run apercu` (dans `site/`) lance le site sur http://localhost:4321 en relisant Directus à chaque page, brouillons compris ; l'aperçu de Directus l'affiche à côté du formulaire. Ce mode est refusé pour un build publié.
 
 ## Formulaires reçus

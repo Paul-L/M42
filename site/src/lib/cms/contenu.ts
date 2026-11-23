@@ -11,6 +11,7 @@
 import { createDirectus, readItems, readSingleton, rest, staticToken } from '@directus/sdk';
 import { documents as registre } from './registre';
 import { plan } from './plat';
+import { marquer, marquerValeur } from './marques';
 import {
   PARENT,
   depuisEnregistrement,
@@ -38,11 +39,16 @@ export const SOURCE: 'cms' | 'local' =
 
 type Brut = Record<string, unknown> & { id: number; slug: string };
 type LigneFaqBrute = LigneFaq & {
+  id: number;
   conference: number | null;
   public: number | null;
   page: number | null;
 };
-type LigneSourceBrute = LigneSource & { conference: number | null; page: number | null };
+type LigneSourceBrute = LigneSource & {
+  id: number;
+  conference: number | null;
+  page: number | null;
+};
 
 interface Element {
   slug: string;
@@ -51,6 +57,7 @@ interface Element {
 type Contenus = Map<string, Element[]>;
 
 let cache: Promise<Contenus> | undefined;
+let cacheDate = 0;
 
 async function chargerCms(): Promise<Contenus> {
   const token = env('DIRECTUS_TOKEN');
@@ -66,10 +73,46 @@ async function chargerCms(): Promise<Contenus> {
   const lire = <T>(c: string) =>
     client.request(readItems(c as never, publies as never)) as unknown as Promise<T[]>;
 
-  const [faq, sources] = await Promise.all([
+  const [faqBrute, sourcesBrutes] = await Promise.all([
     lire<LigneFaqBrute>('faq'),
     lire<LigneSourceBrute>('sources'),
   ]);
+  // Aperçu : marques invisibles pour l'édition sur la page (marques.ts).
+  const faq = APERCU
+    ? faqBrute.map((l) => ({
+        ...l,
+        question: marquer(l.question, { collection: 'faq', item: l.id, champ: 'question' }),
+        reponse: marquer(l.reponse, { collection: 'faq', item: l.id, champ: 'reponse' }),
+      }))
+    : faqBrute;
+  const sources = APERCU
+    ? sourcesBrutes.map((l) => {
+        const m = (champ: 'avant' | 'titre' | 'apres' | 'html') =>
+          l[champ] === null
+            ? null
+            : marquer(l[champ]!, { collection: 'sources', item: l.id, champ });
+        return { ...l, avant: m('avant'), titre: m('titre'), apres: m('apres'), html: m('html') };
+      })
+    : sourcesBrutes;
+  /** Aperçu : marque les textes des champs à plat d'un enregistrement. */
+  const annoter = (
+    collection: string,
+    l: Record<string, unknown>,
+    champs: { nom: string; forme: { k: string } }[],
+  ): Record<string, unknown> => {
+    if (!APERCU) return l;
+    const out = { ...l };
+    for (const c of champs) {
+      if (c.forme.k !== 'texte' && c.forme.k !== 'liste') continue;
+      out[c.nom] = marquerValeur(l[c.nom], {
+        collection,
+        item: l.id as number,
+        champ: c.nom,
+        liste: c.forme.k === 'liste',
+      });
+    }
+    return out;
+  };
   const parDefinition = new Map<string, Document>(
     registre.map((d) => [`${d.collection}/${d.slug}`, d]),
   );
@@ -103,7 +146,7 @@ async function chargerCms(): Promise<Contenus> {
             def,
             forme,
             champs,
-            l,
+            annoter(collection, l, champs),
             deCeParent(faq),
             deCeParent(sources),
           ),
@@ -123,7 +166,7 @@ async function chargerCms(): Promise<Contenus> {
         defSettings,
         plan('settings').forme,
         plan('settings').champs,
-        settings,
+        annoter('settings', settings, plan('settings').champs),
         [],
         [],
       ),
@@ -143,8 +186,15 @@ async function chargerLocal(): Promise<Contenus> {
 }
 
 function tout(): Promise<Contenus> {
-  // Aperçu : relu à chaque page, pour voir tout de suite une modification enregistrée.
-  if (APERCU) return chargerCms();
+  // Aperçu : relu pour chaque page (cache de 3 s, le temps de la rendre), pour voir tout de
+  // suite une modification enregistrée sans dépasser la limite de débit de Directus.
+  if (APERCU) {
+    if (!cache || Date.now() - cacheDate > 3000) {
+      cache = chargerCms();
+      cacheDate = Date.now();
+    }
+    return cache;
+  }
   if (!cache) {
     if (SOURCE === 'local' && !URL_CMS && !env('M42_CONTENU'))
       console.warn('[contenu] DIRECTUS_URL absent : contenu lu dans src/data (M42_CONTENU=local).');

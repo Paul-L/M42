@@ -65,6 +65,8 @@ await api('PATCH', '/settings', {
   public_note: 'Espace d’édition de M42.guide. Un souci d’accès ? Écrivez à paul@m42.guide.',
   default_language: 'fr-FR',
   default_appearance: 'light',
+  // Édition sur la page (module « Éditeur visuel ») : le site en aperçu.
+  visual_editor_urls: [{ url: `${APERCU}/` }],
   custom_css: [
     `@font-face { font-family: 'Cormorant'; src: url('/assets/${cormorant}') format('woff2'); font-weight: 600; font-display: swap; }`,
   ].join('\n'),
