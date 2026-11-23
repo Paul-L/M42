@@ -49,7 +49,7 @@ Si les boîtes clara@ et paul@ existent déjà, ne pas toucher à leurs enregist
 | `EMAIL_SMTP_HOST`, `EMAIL_SMTP_PORT`, `EMAIL_SMTP_USER`, `EMAIL_SMTP_PASSWORD`, `EMAIL_SMTP_SECURE` | fournis par l'hébergeur de messagerie |
 | `COOLIFY_DEPLOY_URL`, `COOLIFY_TOKEN` | à remplir à l'étape 5 |
 
-4. Déployer. Vérifier https://cms.m42.guide/server/health (`{"status":"ok"}`).
+4. Déployer. Vérifier https://cms.m42.guide/server/ping (`pong`).
 
 ## 3. Contenu, rôles et flows (depuis un poste, une seule fois)
 
@@ -83,9 +83,12 @@ Activer ensuite le compte de Clara dans Directus (Paramètres → Utilisateurs �
 
 ## 5. Publication sans développeur
 
-1. Coolify → application du site → Webhooks : copier l'URL « Deploy Webhook ».
-2. Coolify → Keys & Tokens → API tokens : créer un jeton avec la permission « deploy ».
-3. Dans les variables de Directus : `COOLIFY_DEPLOY_URL` = l'URL, `COOLIFY_TOKEN` = le jeton. Redéployer Directus.
+1. Coolify → Keys & Tokens → API tokens : créer un jeton avec la permission « deploy » uniquement.
+2. Dans les variables de Directus : `COOLIFY_DEPLOY_URL` = `https://coolify.m42.guide/api/v1/deploy?uuid=<uuid de l'application du site>&force=true`
+   (`force=true` : build sans cache, sinon Docker réutilise l'étape `astro build` et le contenu ne change pas),
+   `COOLIFY_TOKEN` = le jeton. Redémarrer Directus.
+3. Ajouter le champ et le flow en production (depuis `site/`, avec `CMS_URL=https://cms.m42.guide`) :
+   `npm run cms:schema && npm run cms:flows`.
 
 Ensuite, toute modification de contenu (création, modification, suppression, passage en publié ou en brouillon) déclenche le flow « Site : publication » : il attend 60 secondes sans nouvelle modification (anti-rebond), puis lance un seul build du site. Le site est à jour 2 à 3 minutes après la dernière modification.
 

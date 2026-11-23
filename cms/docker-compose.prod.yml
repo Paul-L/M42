@@ -31,10 +31,12 @@ services:
       - directus_uploads:/directus/uploads
       - directus_extensions:/directus/extensions
     healthcheck:
-      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:8055/server/health || exit 1']
+      # /server/ping : /server/health répond 403 sans authentification (Directus 12).
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:8055/server/ping || exit 1']
       interval: 30s
       timeout: 5s
       retries: 5
+      start_period: 30s
     environment:
       SECRET: ${SECRET:?}
       PUBLIC_URL: https://cms.m42.guide
@@ -61,6 +63,10 @@ services:
       RATE_LIMITER_POINTS: ${RATE_LIMITER_POINTS:-600}
       RATE_LIMITER_DURATION: ${RATE_LIMITER_DURATION:-60}
       IP_TRUST_PROXY: 'true'
+
+      # Cookies de session envoyés seulement en HTTPS.
+      SESSION_COOKIE_SECURE: 'true'
+      REFRESH_TOKEN_COOKIE_SECURE: 'true'
 
       EMAIL_FROM: ${EMAIL_FROM:-bonjour@m42.guide}
       EMAIL_TRANSPORT: smtp

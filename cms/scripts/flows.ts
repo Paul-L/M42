@@ -469,7 +469,8 @@ await operations(publication, [
     name: 'Déployer (Coolify)',
     type: 'request',
     options: {
-      method: 'GET',
+      // POST : l'API de Coolify refuse GET sur /deploy (405).
+      method: 'POST',
       url: '{{decider.url}}',
       headers: [{ header: 'Authorization', value: 'Bearer {{$env.COOLIFY_TOKEN}}' }],
     },
