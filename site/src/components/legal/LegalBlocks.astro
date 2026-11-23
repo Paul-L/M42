@@ -1,0 +1,99 @@
+---
+/**
+ * Rend les blocs d'une section des pages légales (types : ./types.ts), à placer
+ * dans une `legal-section` du slot de LegalProse. Les classes `legal-*` sont
+ * stylées par LegalProse ; `cnil-address` est stylée par la page Confidentialité.
+ *
+ * Pas de `<style>` ici : les éléments reprennent la portée CSS de la page parente
+ * (voir ./scope.ts), comme s'ils étaient écrits dans la page.
+ */
+import type { LegalBlock, LegalInline } from './types';
+import { scopeHtml, scopeOf } from './scope';
+
+interface Props {
+  blocks: LegalBlock[];
+}
+
+const { blocks } = Astro.props;
+const scope = scopeOf(Astro.props);
+const html = (value: string) => scopeHtml(value, scope);
+const inline = (value: LegalInline) => ('html' in value ? html(value.html) : undefined);
+---
+
+{blocks.map((block) => {
+  switch (block.type) {
+    case 'p':
+      return <p class="legal-p" {...scope} set:html={html(block.html)} />;
+    case 'note':
+      return <p class="legal-note" {...scope} set:html={html(block.html)} />;
+    case 'h3':
+      return (
+        <h3 class={block.spaced ? 'legal-h3 legal-h3--spaced' : 'legal-h3'} {...scope}>
+          {block.text}
+        </h3>
+      );
+    case 'dl':
+      return (
+        <dl class={block.fixed ? 'legal-dl legal-dl--fixed' : 'legal-dl'} {...scope}>
+          {block.rows.map((row) => (
+            <div class="legal-row" {...scope}>
+              <dt {...scope}>{row.term}</dt>
+              {'html' in row.def ? (
+                <dd {...scope} set:html={inline(row.def)} />
+              ) : (
+                <dd {...scope}>{row.def.text}</dd>
+              )}
+            </div>
+          ))}
+        </dl>
+      );
+    case 'ul':
+      return (
+        <ul class="legal-ul" {...scope}>
+          {block.items.map((item) =>
+            'html' in item ? (
+              <li {...scope} set:html={inline(item)} />
+            ) : (
+              <li {...scope}>{item.text}</li>
+            ),
+          )}
+        </ul>
+      );
+    case 'aside':
+      return (
+        <aside aria-label={block.label} class="legal-aside" {...scope}>
+          <p class="legal-aside-title" {...scope} set:html={html(block.title)} />
+          {block.paragraphs.map((p) => (
+            <p class="legal-p" {...scope} set:html={html(p)} />
+          ))}
+        </aside>
+      );
+    case 'address':
+      return (
+        <p class="cnil-address" {...scope}>
+          {block.address}
+          <br {...scope} />
+          <a href={block.link.href} class="legal-ext" {...scope}>
+            {block.link.label}{' '}
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+              {...scope}
+            >
+              <path d="M14 4h6v6" {...scope} />
+              <path d="M20 4l-9 9" {...scope} />
+              <path d="M18 14v6H4V6h6" {...scope} />
+            </svg>
+          </a>
+        </p>
+      );
+  }
+})}
