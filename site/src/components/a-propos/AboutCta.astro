@@ -9,6 +9,7 @@ import Button from '../Button.astro';
 import Eyebrow from '../Eyebrow.astro';
 import ArrowLink from '../ArrowLink.astro';
 import Section from '../Section.astro';
+import { cta } from '../../data/a-propos';
 
 interface Props {
   id: string;
@@ -18,9 +19,23 @@ interface Props {
   links: { href: string; label: string }[];
   ctaLabel: string;
   ctaHref: string;
+  /** Adresses affichées sous le bouton (Clara avant Paul). Par défaut : `cta.contacts`. */
+  contacts?: { name: string; email: string }[];
+  /** Téléphone (ou son marqueur), en dernière ligne. Par défaut : `cta.phone`. */
+  phone?: string;
 }
 
-const { id, eyebrow, title, lead, links, ctaLabel, ctaHref } = Astro.props;
+const {
+  id,
+  eyebrow,
+  title,
+  lead,
+  links,
+  ctaLabel,
+  ctaHref,
+  contacts = cta.contacts,
+  phone = cta.phone,
+} = Astro.props;
 ---
 
 <Section tone="night" labelledby={id}>
@@ -40,11 +55,13 @@ const { id, eyebrow, title, lead, links, ctaLabel, ctaHref } = Astro.props;
     <div class="actions">
       <Button href={ctaHref}>{ctaLabel}</Button>
       <p class="contact">
-        Clara : <a href="mailto:clara@m42.guide">clara@m42.guide</a>
-        <br />
-        Paul : <a href="mailto:paul@m42.guide">paul@m42.guide</a>
-        <br />
-        [À COMPLÉTER : téléphone]
+        {contacts.map((c) => (
+          <>
+            {c.name} : <a href={`mailto:${c.email}`}>{c.email}</a>
+            <br />
+          </>
+        ))}
+        {phone}
       </p>
     </div>
   </div>

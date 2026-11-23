@@ -19,12 +19,22 @@ import ApproachSymbol from '../../components/a-propos/ApproachSymbol.astro';
 import IntervenantProfile from '../../components/a-propos/IntervenantProfile.astro';
 import AboutCta from '../../components/a-propos/AboutCta.astro';
 import { routes } from '../../data/routes';
+import { slotText } from '../../lib/slot-text';
 import { intervenants, personId, personSchema } from '../../data/intervenants';
-import { approach, facts, limits, onThisPage, principles } from '../../data/a-propos';
-
-const title = 'Clara Peron et Paul Loustaunau, conférenciers IA | M42';
-const description =
-  "Une formatrice d'adultes et un expert qui conçoit l'IA au quotidien : découvrez le duo M42, sa méthode et pourquoi il intervient à deux voix.";
+import {
+  approach,
+  approachSection,
+  cta,
+  duo,
+  facts,
+  hero,
+  limits,
+  limitsSection,
+  onThisPage,
+  principles,
+  principlesSection,
+  seo,
+} from '../../data/a-propos';
 
 const url = 'https://m42.guide/a-propos/';
 const jsonLd = {
@@ -34,7 +44,7 @@ const jsonLd = {
       '@type': 'AboutPage',
       '@id': `${url}#page`,
       url,
-      name: title,
+      name: seo.title,
       isPartOf: { '@id': 'https://m42.guide/#site' },
       about: { '@id': 'https://m42.guide/#organisation' },
       breadcrumb: { '@id': `${url}#ariane` },
@@ -46,7 +56,7 @@ const jsonLd = {
       '@id': `${url}#ariane`,
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Accueil', item: 'https://m42.guide/' },
-        { '@type': 'ListItem', position: 2, name: 'À propos' },
+        { '@type': 'ListItem', position: 2, name: hero.crumb },
       ],
     },
     ...intervenants.map(personSchema),
@@ -54,26 +64,22 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={title} description={description} footerCurrent jsonLd={jsonLd}>
+<BaseLayout title={seo.title} description={seo.description} footerCurrent jsonLd={jsonLd}>
   <!-- En-tête de page : aucune animation d'entrée sur le H1 et le chapô -->
   <section aria-labelledby="titre-apropos">
     <Container class="page-head">
       <Breadcrumb
-        items={[{ label: 'Accueil', href: routes['Main.dc.html'] }, { label: 'À propos' }]}
+        items={[{ label: 'Accueil', href: routes['Main.dc.html'] }, { label: hero.crumb }]}
       />
       <div class="head-row">
         <div class="head-text">
           <h1 id="titre-apropos" class="h1">
             <Eyebrow as="span" rule={false}>
-              À propos de M42
+              <Fragment set:html={slotText(hero.eyebrow, 12)} />
             </Eyebrow>
-            <span class="h1-main">Clara Peron et Paul Loustaunau</span>
+            <span class="h1-main">{hero.title}</span>
           </h1>
-          <p class="intro">
-            Une formatrice d'adultes et un expert qui conçoit l'IA au quotidien. Ensemble, nous
-            faisons le lien entre ceux qui fabriquent l'IA et ceux qui la vivent, pour que chacun
-            puisse s'en servir avec méthode et garder l'esprit critique.
-          </p>
+          <p class="intro" set:html={hero.intro} />
           <ul class="facts">
             {facts.map((f) => (
               <li>
@@ -98,10 +104,7 @@ const jsonLd = {
           </ul>
         </div>
         <div class="head-photo">
-          <Placeholder
-            label="[Photo : Clara Peron (à gauche) et Paul Loustaunau (à droite) en échange avec la salle, lumière de scène latérale, public en amorce floue, 3:2]"
-            ratio="3/2"
-          />
+          <Placeholder label={hero.photo} ratio="3/2" />
         </div>
       </div>
       <nav aria-label="Sur cette page" class="toc">
@@ -117,11 +120,11 @@ const jsonLd = {
 
   <!-- Notre démarche (section nuit) : le nom, la nébuleuse d'Orion, « se repérer », le duo -->
   <Section id="demarche" tone="night" labelledby="titre-demarche">
-    <Eyebrow class="m42-reveal">Notre démarche</Eyebrow>
+    <Eyebrow class="m42-reveal">{approachSection.eyebrow}</Eyebrow>
     <div class="approach">
       <div class="approach-side m42-reveal">
         <h2 id="titre-demarche" class="h2">
-          Rendre visible ce qui est flou
+          {approachSection.title}
         </h2>
         <ApproachSymbol />
       </div>
@@ -140,9 +143,9 @@ const jsonLd = {
 
   <!-- Nos principes -->
   <Section id="principes" labelledby="titre-principes">
-    <Eyebrow class="m42-reveal">Nos principes</Eyebrow>
+    <Eyebrow class="m42-reveal">{principlesSection.eyebrow}</Eyebrow>
     <h2 id="titre-principes" class="h2 h2--after-eyebrow m42-reveal">
-      Ce qui guide chaque intervention
+      {principlesSection.title}
     </h2>
     <div class="principles">
       {principles.map((p, i) => (
@@ -158,24 +161,24 @@ const jsonLd = {
   </Section>
 
   <!-- Le duo : Clara puis Paul (Clara toujours en premier) -->
-  <Section tone="sunk" label="Le duo">
+  <Section tone="sunk" label={duo.label}>
     <div class="duo">
       {intervenants.map((person) => (
-        <IntervenantProfile person={person} />
+        <IntervenantProfile person={person} labels={duo.labels} />
       ))}
     </div>
   </Section>
 
   <!-- Ce que nous ne faisons pas -->
   <Section id="limites" labelledby="titre-limites">
-    <Eyebrow class="m42-reveal">Nos limites, posées d'avance</Eyebrow>
+    <Eyebrow class="m42-reveal">
+      <Fragment set:html={limitsSection.eyebrow} />
+    </Eyebrow>
     <div class="limits-head m42-reveal">
       <h2 id="titre-limites" class="h2">
-        Ce que nous ne faisons pas
+        {limitsSection.title}
       </h2>
-      <p class="limits-lead">
-        Pour que vous sachiez exactement ce que vous programmez, et ce que vous ne programmez pas.
-      </p>
+      <p class="limits-lead" set:html={limitsSection.lead} />
     </div>
     <ul class="limits">
       {limits.map((l) => (
@@ -207,18 +210,14 @@ const jsonLd = {
   <!-- Appel à l'action -->
   <AboutCta
     id="titre-contact"
-    eyebrow="Contact"
-    title="Faisons connaissance"
-    lead="Dites-nous qui sera dans la salle, quand, et ce que vous attendez. Nous vous répondons sous 48 h, et nous construisons l'intervention avec vous."
-    links={[
-      { href: routes['Conferences.dc.html'], label: 'Découvrir nos conférences' },
-      {
-        href: routes['Organisateurs.dc.html'],
-        label: 'Préparer notre venue : espace organisateurs',
-      },
-    ]}
-    ctaLabel="Organiser une intervention"
-    ctaHref={routes['Contact.dc.html']}
+    eyebrow={cta.eyebrow}
+    title={cta.title}
+    lead={cta.lead}
+    links={cta.links}
+    ctaLabel={cta.ctaLabel}
+    ctaHref={cta.ctaHref}
+    contacts={cta.contacts}
+    phone={cta.phone}
   />
 </BaseLayout>
 

@@ -9,7 +9,14 @@ import Button from '../Button.astro';
 import ArrowLink from '../ArrowLink.astro';
 import ContactField from './ContactField.astro';
 import { routes } from '../../data/routes';
-import { structureTypes, themes, formats, participants, budgets } from '../../data/contact';
+import {
+  structureTypes,
+  themes,
+  formats,
+  participants,
+  budgets,
+  rgpdNotice,
+} from '../../data/contact';
 ---
 
 <div class="contact-form" data-contact-form>
@@ -126,14 +133,8 @@ import { structureTypes, themes, formats, participants, budgets } from '../../da
         Envoyer ma demande
       </Button>
       <p class="rgpd">
-        Les informations de ce formulaire sont traitées par [À COMPLÉTER : responsable du
-        traitement, identique à l'éditeur du site] pour répondre à votre demande et, le cas échéant,
-        établir un devis (mesures précontractuelles prises à votre demande). Elles sont destinées
-        uniquement à Clara Peron et Paul Loustaunau et conservées 3 ans après notre dernier échange.
-        Vous pouvez y accéder, les rectifier, les faire effacer ou vous opposer à leur traitement en
-        écrivant à [À COMPLÉTER : adresse de contact pour les données personnelles]. Vous pouvez
-        aussi adresser une réclamation à la CNIL. En savoir plus :{' '}
-        <a href={routes['Confidentialite.dc.html']}>politique de confidentialité</a>.
+        <Fragment set:html={rgpdNotice.text} />{' '}
+        <a href={rgpdNotice.link.href}>{rgpdNotice.link.label}</a>.
       </p>
     </div>
   </form>
