@@ -94,8 +94,9 @@ import { arnaquesIa } from '../data/conferences/arnaques-ia';
 import { desinformationIa, exemplesVraiOuIa } from '../data/conferences/desinformation-ia';
 import { catalogue } from '../data/conferences/catalogue';
 import { cartes, catalogueSection, formatsDetailles } from '../data/conferences-index';
-import * as seminaire from '../data/satellites/seminaire-entreprise';
-import { capture, fieldErrors } from '../data/outils/arnaque-ou-pas';
+import { page as seminaire } from '../data/satellites/seminaire-entreprise';
+import type { SatBlock } from '../data/satellites/types';
+import { page as arnaqueOuPas } from '../data/outils/arnaque-ou-pas';
 import { hero as accueilHero, chiffres, citationChiffres } from '../data/accueil';
 
 export function getStaticPaths() {
@@ -123,6 +124,26 @@ const signature = catalogue.find((c) => c.signature);
 const carteSignature = cartes.find((c) => c.signature);
 const carteStandard = cartes.find((c) => !c.signature);
 const premiereConference = entreprises.conferences.items[0];
+/** Bloc d'un type donné dans une section de la page séminaire (données réelles du kit). */
+function seminaireBlock<T extends SatBlock['type']>(
+  id: string,
+  type: T,
+): Extract<SatBlock, { type: T }> {
+  const block = seminaire.sections
+    .find((s) => s.id === id)
+    ?.blocks.find((b): b is Extract<SatBlock, { type: T }> => b.type === type);
+  if (!block) throw new Error(`Kit : bloc « ${type} » absent de la section #${id}`);
+  return block;
+}
+const semFigures = seminaireBlock('pourquoi', 'figures');
+const semBox = seminaireBlock('pourquoi', 'box');
+const semQuote = seminaireBlock('pourquoi', 'quote');
+const semNumbered = seminaireBlock('keynote', 'numbered');
+const semNote = seminaireBlock('keynote', 'note');
+const semTable = seminaireBlock('sujets', 'table');
+const semDefinitions = seminaireBlock('organisation', 'definitions');
+const semDraft = seminaireBlock('organisation', 'draft');
+const capture = arnaqueOuPas.capture;
 const demoRichText = [
   '[Texte de démonstration avec un marqueur en ligne] ',
   { marker: '[À COMPLÉTER : marqueur de démonstration]' },
@@ -863,31 +884,32 @@ const demoRichText = [
     </p>
     <div class="k-article">
       <h3 class="k-h3">SatFigures</h3>
-      <SatFigures items={seminaire.why.figures} />
+      <SatFigures items={semFigures.items} />
 
       <h3 class="k-h3">SatBox (avec SatText)</h3>
-      <SatBox label={seminaire.why.case.label}>
-        <SatText>{seminaire.why.case.text}</SatText>
-        <SatText variant="source">{seminaire.why.case.source}</SatText>
+      <SatBox label={semBox.label}>
+        {(semBox.paragraphs ?? []).map((p) => (
+          <SatText variant={p.variant}>{p.text}</SatText>
+        ))}
       </SatBox>
 
       <h3 class="k-h3">SatPullQuote</h3>
-      <SatPullQuote>{seminaire.why.quote}</SatPullQuote>
+      <SatPullQuote>{semQuote.text}</SatPullQuote>
 
       <h3 class="k-h3">SatNumbered</h3>
-      <SatNumbered items={seminaire.keynote.steps} />
+      <SatNumbered items={semNumbered.items} />
 
       <h3 class="k-h3">SatNote</h3>
-      <SatNote label="À retenir">{seminaire.keynote.takeaway}</SatNote>
+      <SatNote label={semNote.label}>{semNote.text}</SatNote>
 
       <h3 class="k-h3">SatTable</h3>
-      <SatTable table={seminaire.topics.table} />
+      <SatTable table={semTable.table} />
 
       <h3 class="k-h3">SatDefList</h3>
-      <SatDefList items={seminaire.organisation.items} />
+      <SatDefList items={semDefinitions.items} />
 
       <h3 class="k-h3">SatDraftBlock</h3>
-      <SatDraftBlock>{seminaire.organisation.testimonials}</SatDraftBlock>
+      <SatDraftBlock>{semDraft.text}</SatDraftBlock>
     </div>
   </Section>
   <Container class="k-band-label">
@@ -928,8 +950,8 @@ const demoRichText = [
             name="email"
             type="email"
             autocomplete="email"
-            label="E-mail *"
-            error={fieldErrors.ficheMail}
+            label={capture.fiche.fields.mail.label}
+            error={capture.fiche.fields.mail.error}
           />
         </Fragment>
       </CaptureCard>

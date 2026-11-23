@@ -6,7 +6,7 @@
 // Jamais de nom d'employeur : les auteurs viennent de personSchema() (memberOf M42 seulement).
 
 import { intervenants, personSchema } from '../intervenants';
-import type { Crumb, FaqItem } from './types';
+import type { Crumb, FaqItem, SatPage, SatSectionData } from './types';
 
 const SITE = 'https://m42.guide';
 
@@ -151,4 +151,36 @@ export function satelliteArticleJsonLd({
     breadcrumbNode(url, crumbs),
     faqNode(url, faq),
   ]);
+}
+
+/** Questions de la FAQ d'une page satellite (blocs `faq` de ses sections, dans l'ordre). */
+export function faqOf(sections: SatSectionData[]): FaqItem[] {
+  return sections.flatMap((s) => s.blocks.flatMap((b) => (b.type === 'faq' ? b.items : [])));
+}
+
+/** JSON-LD d'une page satellite « événement » ou « secteur », lu dans l'objet de la page. */
+export function satellitePageJsonLdOf(page: SatPage<unknown>) {
+  return satellitePageJsonLd({
+    path: page.seo.path,
+    title: page.seo.title,
+    description: page.seo.description,
+    crumbs: page.crumbs,
+    faq: faqOf(page.sections),
+  });
+}
+
+/** JSON-LD d'une page satellite « guide » : le titre de l'article est le H1 de l'en-tête. */
+export function satelliteArticleJsonLdOf(
+  page: SatPage<{ title: string }>,
+  dateModified: string | undefined,
+) {
+  return satelliteArticleJsonLd({
+    path: page.seo.path,
+    title: page.seo.title,
+    description: page.seo.description,
+    crumbs: page.crumbs,
+    faq: faqOf(page.sections),
+    headline: page.hero.title,
+    dateModified,
+  });
 }

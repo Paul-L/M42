@@ -1,7 +1,8 @@
 ---
 /**
  * Satellite « secteur » (kit/maquette/Sat-experts-comptables.dc.html).
- * Contenus : src/data/satellites/experts-comptables.ts (les notes internes de la maquette,
+ * Contenus : src/data/satellites/experts-comptables.ts (objet `page` : sections et blocs typés,
+ * rendus ici selon leur `type` ; les notes internes de la maquette,
  * « NE PAS PUBLIER », y sont reprises en commentaire de code, jamais dans le HTML).
  * JSON-LD : WebPage + BreadcrumbList + FAQPage (questions sans marqueur seulement,
  * DECISIONS.md point 19 ; src/data/satellites/json-ld.ts).
@@ -25,30 +26,11 @@ import SatFaq from '../../components/satellites/SatFaq.astro';
 import SatLinkList from '../../components/satellites/SatLinkList.astro';
 import SatSources from '../../components/satellites/SatSources.astro';
 import SatCta from '../../components/satellites/SatCta.astro';
-import { satellitePageJsonLd } from '../../data/satellites/json-ld';
-import {
-  crumbs,
-  cta,
-  faq,
-  findings,
-  formats,
-  hero,
-  related,
-  seo,
-  sources,
-  speakers,
-  stakes,
-  takeaways,
-  toc,
-} from '../../data/satellites/experts-comptables';
+import { satellitePageJsonLdOf } from '../../data/satellites/json-ld';
+import { page } from '../../data/satellites/experts-comptables';
 
-const jsonLd = satellitePageJsonLd({
-  path: seo.path,
-  title: seo.title,
-  description: seo.description,
-  crumbs,
-  faq: faq.items,
-});
+const { seo, crumbs, hero, toc, sections, sources, cta } = page;
+const jsonLd = satellitePageJsonLdOf(page);
 
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
@@ -78,54 +60,78 @@ const pad = (n: number) => String(n).padStart(2, '0');
   </SatHero>
 
   <SatBody toc={toc}>
-    <SatSection id="constat" eyebrow={findings.eyebrow} title={findings.title} first>
-      <SatText>{findings.text}</SatText>
-      <SatFigures items={findings.figures} />
-      <SatNote label={findings.caution.label}>{findings.caution.text}</SatNote>
-      <SatPullQuote>{findings.quote}</SatPullQuote>
-    </SatSection>
+    {sections.map((section, i) => {
+      // Section « minor » (Qui intervient) : paragraphe et lien plus serrés.
+      const minor = section.kind === 'minor';
+      const blocks = section.blocks.map((block) => {
+        switch (block.type) {
+          case 'text':
+            return minor ? (
+              <p class="speakers">{block.text}</p>
+            ) : (
+              <SatText variant={block.variant}>
+                {block.html !== undefined ? <Fragment set:html={block.html} /> : block.text}
+              </SatText>
+            );
+          case 'figures':
+            return <SatFigures items={block.items} />;
+          case 'note':
+            return <SatNote label={block.label}>{block.text}</SatNote>;
+          case 'quote':
+            return <SatPullQuote>{block.text}</SatPullQuote>;
+          case 'numbered':
+            return <SatNumbered items={block.items} />;
+          case 'table':
+            return <SatTable table={block.table} />;
+          case 'highlights':
+            return (
+              <ul class="takeaways">
+                {block.items.map((item, n) => (
+                  <li>
+                    <span aria-hidden="true" class="takeaway-num">
+                      {pad(n + 1)}
+                    </span>
+                    <p class="takeaway-text">
+                      <strong>{item.strong}</strong>
+                      {item.rest}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            );
+          case 'more':
+            return (
+              <SatMore href={block.href} spacing={minor ? 'sm' : 'md'}>
+                {block.label}
+              </SatMore>
+            );
+          case 'draft':
+            return <SatDraftBlock>{block.text}</SatDraftBlock>;
+          case 'faq':
+            return <SatFaq items={block.items} />;
+          case 'links':
+            return <SatLinkList items={block.items} />;
+          default:
+            throw new Error(`Bloc non pris en charge sur cette page : ${block.type}`);
+        }
+      });
+      return minor ? (
+        <SatMinor id={section.id} headingId={`${section.id}-t`} title={section.title} spacing="lg">
+          {blocks}
+        </SatMinor>
+      ) : (
+        <SatSection
+          id={section.id}
+          eyebrow={section.eyebrow ?? ''}
+          title={section.title}
+          first={i === 0}
+        >
+          {blocks}
+        </SatSection>
+      );
+    })}
 
-    <SatSection id="enjeux" eyebrow={stakes.eyebrow} title={stakes.title}>
-      <SatNumbered items={stakes.items} />
-    </SatSection>
-
-    <SatSection id="formats" eyebrow={formats.eyebrow} title={formats.title}>
-      <SatTable table={formats.table} />
-    </SatSection>
-
-    <SatSection id="emporter" eyebrow={takeaways.eyebrow} title={takeaways.title}>
-      <ul class="takeaways">
-        {takeaways.items.map((item, i) => (
-          <li>
-            <span aria-hidden="true" class="takeaway-num">
-              {pad(i + 1)}
-            </span>
-            <p class="takeaway-text">
-              <strong>{item.strong}</strong>
-              {item.rest}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </SatSection>
-
-    <SatMinor id="intervenants" headingId="intervenants-t" title={speakers.title} spacing="lg">
-      <p class="speakers">{speakers.text}</p>
-      <SatMore href={speakers.link.href} spacing="sm">
-        {speakers.link.label}
-      </SatMore>
-      <SatDraftBlock>{speakers.placeholder}</SatDraftBlock>
-    </SatMinor>
-
-    <SatSection id="faq" eyebrow={faq.eyebrow} title={faq.title}>
-      <SatFaq items={faq.items} />
-    </SatSection>
-
-    <SatSection id="plus-loin" eyebrow="Pour aller plus loin" title="Pages liées">
-      <SatLinkList items={related} />
-    </SatSection>
-
-    <SatSources items={sources} />
+    <SatSources items={sources.items} />
   </SatBody>
 
   <SatCta

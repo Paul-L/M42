@@ -19,7 +19,7 @@
  */
 import Button from '../Button.astro';
 import Eyebrow from '../Eyebrow.astro';
-import type { capture } from '../../data/outils/arnaque-ou-pas';
+import type { CaptureTexts } from '../../data/outils/arnaque-ou-pas';
 import '../satellites/satellites.css';
 
 interface Props {
@@ -31,7 +31,7 @@ interface Props {
   submit: string;
   submitVariant?: 'primary' | 'secondary';
   usage: string;
-  texts: typeof capture;
+  texts: CaptureTexts;
 }
 
 const {

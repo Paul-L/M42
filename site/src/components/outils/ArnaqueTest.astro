@@ -20,13 +20,13 @@
 import Button from '../Button.astro';
 import ArrowLink from '../ArrowLink.astro';
 import { frenchTypography } from '../../lib/typo';
-import type { Situation, results as Results, testLabels } from '../../data/outils/arnaque-ou-pas';
+import type { Situation, TestLabels, TestResults } from '../../data/outils/arnaque-ou-pas';
 import '../satellites/satellites.css';
 
 interface Props {
   situations: Situation[];
-  labels: typeof testLabels;
-  results: typeof Results;
+  labels: TestLabels;
+  results: TestResults;
 }
 
 const { situations, labels, results } = Astro.props;
