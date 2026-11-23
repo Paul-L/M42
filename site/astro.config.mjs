@@ -10,7 +10,11 @@ export default defineConfig({
   build: { format: 'directory' },
   integrations: [
     sitemap({
-      filter: (page) => !new URL(page).pathname.startsWith('/_'),
+      // Pages non indexées : pages internes (/_…) et confirmation de la lettre.
+      filter: (page) => {
+        const chemin = new URL(page).pathname;
+        return !chemin.startsWith('/_') && !chemin.startsWith('/lettre/');
+      },
     }),
   ],
 });

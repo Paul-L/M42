@@ -1,7 +1,7 @@
 ---
 /**
  * Mentions légales (kit/maquette/Mentions-legales.dc.html).
- * SEO : title « Mentions légales | M42 », pas de description, canonical /mentions-legales/.
+ * SEO : title « Mentions légales | M42 », description ajoutée (DECISIONS.md, point 41), canonical /mentions-legales/.
  * JSON-LD : WebPage + BreadcrumbList uniquement, aucune dénomination sociale
  * tant que l'entité éditrice n'est pas tranchée (05, décision n° 6).
  * Textes : src/data/legal/mentions-legales.ts. La page ne garde que la structure.
@@ -44,7 +44,7 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout footerCurrent title={seo.title} jsonLd={jsonLd}>
+<BaseLayout footerCurrent title={seo.title} description={seo.description} jsonLd={jsonLd}>
   <!-- En-tête de page -->
   <section aria-labelledby="titre-ml">
     <div class="intro">

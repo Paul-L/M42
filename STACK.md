@@ -16,6 +16,8 @@ Versions relevées le 23 novembre 2026 (registre npm, Docker Hub, nodejs.org).
 | Directus | 12.7.0 (image `directus/directus:12.7.0`) | 12.7.0 | CMS. |
 | @directus/sdk | 27.2.0 | 27.2.0 | Lecture de Directus au build (jeton statique en lecture seule). |
 | tsx | 4.23.15 | 4.23.15 | Lance les scripts TypeScript de `cms/scripts/` (schéma, rôles, seed). |
+| Lighthouse | 13.6.0 (dev) | 13.6.0 | Mesure mobile des 21 pages (`tests/perf/lighthouse.mjs`). |
+| Mailpit | 1.34.0 (`axllent/mailpit:v1.34.0`, local) | 1.34.0 | Boîte de test des e-mails de Directus en local. |
 | PostgreSQL | 18.7 (`postgres:18.7-alpine`) | 19.0 | La 19.0 vient de sortir : on attend une version corrective et la confirmation de compatibilité Directus. |
 
 ## Choix techniques
@@ -34,6 +36,13 @@ Versions relevées le 23 novembre 2026 (registre npm, Docker Hub, nodejs.org).
 - **Rôles** (`cms/scripts/roles.ts`) : Administrateur (Paul), Éditeur (Clara), Site (build, lecture seule, jeton statique écrit dans `site/.env`). 3 comptes.
 - **Lecture au build** (`site/src/lib/cms/contenu.ts`) : `M42_CONTENU=cms` (Directus, défaut si `DIRECTUS_URL` est défini) ou `local` (`src/data`). Seuls les contenus publiés sont lus ; `getStaticPaths` génère les conférences, les pages « Pour qui » et les satellites publiés.
 - **Contrôle d'équivalence** : `node scripts/comparer-dist.mjs <build A> <build B>` compare deux builds octet pour octet. Le build depuis Directus est identique au build depuis `src/data`.
+
+## Formulaires et e-mails (phase 4)
+
+- Envoi depuis le navigateur vers Directus (`/items/demandes_contact`, `/items/inscriptions_lettre`), rôle public limité à la création.
+- 3 flows sur 5 (`cms/scripts/flows.ts`) : contrôle bloquant (piège, délai, validation, nettoyage), e-mails (notification à Clara et Paul, confirmation de la lettre), webhook de confirmation (double opt-in).
+- Limite de débit Directus (`RATE_LIMITER_*`), e-mails par SMTP (`EMAIL_*`, Mailpit en local).
+- Variables publiques du site : `PUBLIC_DIRECTUS_URL`, `PUBLIC_FLOW_CONFIRMATION` (écrites dans `site/.env` par `npm run cms:flows`).
 
 ## Licence Directus
 

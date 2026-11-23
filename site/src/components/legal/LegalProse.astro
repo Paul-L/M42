@@ -36,7 +36,7 @@ const { label, toc } = Astro.props;
       <ol class="legal-toc-list">
         {toc.map((item, i) => (
           <li>
-            <a href={`#${item.id}`} class="legal-toc-link">
+            <a href={`#${item.id}`} class="legal-toc-link m42-cible">
               {`${i + 1}. ${item.label}`}
             </a>
           </li>

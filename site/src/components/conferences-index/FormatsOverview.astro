@@ -71,7 +71,9 @@ const { surTitre, titre, chapo, items, choix } = Astro.props;
                 {typeof l.format === 'string' ? (
                   l.format
                 ) : (
-                  <a href={l.format.href}>{l.format.label}</a>
+                  <a href={l.format.href} class="m42-cible">
+                    {l.format.label}
+                  </a>
                 )}
               </td>
             </tr>

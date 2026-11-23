@@ -57,6 +57,34 @@ services:
       CORS_ENABLED: 'true'
       CORS_ORIGIN: ${CORS_ORIGIN}
 
+      # Limite de débit par adresse IP (formulaires publics compris).
+      RATE_LIMITER_ENABLED: 'true'
+      RATE_LIMITER_STORE: memory
+      RATE_LIMITER_POINTS: ${RATE_LIMITER_POINTS:-600}
+      RATE_LIMITER_DURATION: ${RATE_LIMITER_DURATION:-60}
+
+      # E-mails (notifications des formulaires, confirmation de la lettre).
+      # En local : Mailpit (http://localhost:8025), rien ne part vraiment.
+      EMAIL_FROM: ${EMAIL_FROM:-bonjour@m42.guide}
+      EMAIL_TRANSPORT: smtp
+      EMAIL_SMTP_HOST: ${EMAIL_SMTP_HOST:-mailpit}
+      EMAIL_SMTP_PORT: ${EMAIL_SMTP_PORT:-1025}
+      EMAIL_SMTP_USER: ${EMAIL_SMTP_USER:-}
+      EMAIL_SMTP_PASSWORD: ${EMAIL_SMTP_PASSWORD:-}
+      EMAIL_SMTP_SECURE: ${EMAIL_SMTP_SECURE:-false}
+      EMAIL_SMTP_IGNORE_TLS: ${EMAIL_SMTP_IGNORE_TLS:-true}
+
+      # Adresse du site, lue par les flows (lien de confirmation de la lettre).
+      SITE_URL: ${SITE_URL:-http://localhost:4321}
+      FLOWS_ENV_ALLOW_LIST: SITE_URL
+
+  # Boîte de réception de test (développement local uniquement).
+  mailpit:
+    image: axllent/mailpit:v1.34.0
+    restart: unless-stopped
+    ports:
+      - '${MAILPIT_PORT:-8025}:8025'
+
 volumes:
   postgres_data:
   directus_uploads:

@@ -1,0 +1,114 @@
+---
+/**
+ * Confirmation de l'inscription à la lettre (double opt-in). Page hors maquette, non indexée :
+ * on y arrive par le lien de l'e-mail de confirmation (?id=…&jeton=…). L'îlot appelle le flow
+ * Directus « Lettre : confirmation » et affiche le résultat.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Section from '../../../components/Section.astro';
+import Container from '../../../components/Container.astro';
+import Eyebrow from '../../../components/Eyebrow.astro';
+import ArrowLink from '../../../components/ArrowLink.astro';
+import { routes } from '../../../data/routes';
+---
+
+<BaseLayout title="Confirmation de votre inscription | M42" noindex>
+  <Section labelledby="titre-confirmation">
+    <Container>
+      <div class="box" data-confirmation>
+        <Eyebrow>La lettre mensuelle</Eyebrow>
+        <h1 id="titre-confirmation" tabindex="-1" data-titre>
+          Confirmation en cours…
+        </h1>
+        <p class="lead" role="status" data-message>
+          Nous vérifions votre lien de confirmation.
+        </p>
+        <noscript>
+          <p class="lead">
+            Cette page a besoin de JavaScript pour confirmer votre adresse. Vous pouvez aussi nous
+            écrire à clara@m42.guide.
+          </p>
+        </noscript>
+        <p class="next" data-suite hidden>
+          <ArrowLink href={routes['Reperes.dc.html']}>Voir les repères</ArrowLink>
+        </p>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
+
+<style>
+  .box {
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    font-weight: 500;
+    letter-spacing: var(--tracking-h2);
+  }
+
+  .lead {
+    margin: 0;
+    font-size: var(--fs-lead);
+    line-height: var(--lh-body);
+    color: var(--fg-2);
+  }
+
+  .next {
+    margin: var(--s-2) 0 0;
+  }
+
+  .next[hidden] {
+    display: none;
+  }
+</style>
+
+<script>
+  import { frenchTypography } from '../../../lib/typo';
+
+  const CMS = import.meta.env.PUBLIC_DIRECTUS_URL as string | undefined;
+  const FLOW = import.meta.env.PUBLIC_FLOW_CONFIRMATION as string | undefined;
+
+  const titre = document.querySelector<HTMLElement>('[data-titre]');
+  const message = document.querySelector<HTMLElement>('[data-message]');
+  const suite = document.querySelector<HTMLElement>('[data-suite]');
+
+  function afficher(ok: boolean): void {
+    if (!titre || !message) return;
+    titre.textContent = frenchTypography(
+      ok ? 'Votre inscription est confirmée.' : "Nous n'avons pas pu confirmer votre adresse.",
+    );
+    message.textContent = frenchTypography(
+      ok
+        ? 'Merci. Vous recevrez les nouveaux repères, une fois par mois. Vous pourrez vous désinscrire en un clic.'
+        : "Nous n'avons pas pu confirmer votre adresse : le lien est peut-être incomplet. Réessayez depuis l'e-mail, ou écrivez-nous à clara@m42.guide.",
+    );
+    if (suite) suite.hidden = false;
+    titre.focus({ preventScroll: true });
+  }
+
+  async function confirmer(): Promise<void> {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const jeton = params.get('jeton');
+    if (!CMS || !FLOW || !id || !jeton) return afficher(false);
+    try {
+      const r = await fetch(`${CMS}/flows/trigger/${FLOW}?${new URLSearchParams({ id, jeton })}`, {
+        credentials: 'omit',
+      });
+      const json = (await r.json().catch(() => ({}))) as { confirme?: boolean };
+      afficher(r.ok && json.confirme === true);
+    } catch {
+      afficher(false);
+    }
+  }
+
+  void confirmer();
+</script>

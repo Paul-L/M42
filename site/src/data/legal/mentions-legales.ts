@@ -8,6 +8,9 @@ import type { LegalSection } from '../../components/legal/types';
 /** Pas de description : la maquette n'en prévoit pas pour cette page. */
 export const seo = {
   title: 'Mentions légales | M42',
+  /** Ajoutée en phase 4 (Lighthouse SEO) : la maquette n'en prévoit pas (DECISIONS.md, point 41). */
+  description:
+    'Mentions légales du site M42.guide : éditeur, hébergeur, propriété intellectuelle, crédits et données personnelles.',
 };
 
 export const breadcrumb: { label: string; href?: string }[] = [

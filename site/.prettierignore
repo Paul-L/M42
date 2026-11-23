@@ -5,3 +5,4 @@ package-lock.json
 tests/visual/sorties/
 test-results/
 playwright-report/
+tests/perf/rapports/

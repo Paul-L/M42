@@ -342,7 +342,8 @@ export const page: ArnaqueOuPasPage = {
       'Je souhaite aussi recevoir la lettre de M42.guide (une fois par mois, désinscription en un clic).',
     optional: 'Facultatif.',
     done: "C'est noté.",
-    doneNote: "[Maquette : aucune donnée n'a été envoyée.]",
+    doneNote:
+      "Pour recevoir la lettre, confirmez votre adresse : cliquez sur le lien de l'e-mail que nous venons de vous envoyer.",
     back: 'Revenir au formulaire',
     responsible: 'Responsable : [À COMPLÉTER : entité éditrice]. Détails et droits :',
     privacy: { label: 'Politique de confidentialité', href: routes['Confidentialite.dc.html'] },

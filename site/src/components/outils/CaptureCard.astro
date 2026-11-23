@@ -5,8 +5,9 @@
  * pour la lettre, bouton d'envoi et mention RGPD. Après envoi : confirmation à la place du
  * formulaire (« C'est noté. »), avec « Revenir au formulaire ». Slot « after » : bas du bloc.
  *
- * Maquette : rien n'est envoyé (sendSheet / sendKit). Phase 4 : <form method="post"> vers
- * Directus + page de confirmation ; voir envoyerCapture() dans l'îlot.
+ * Envoi vers Directus (`inscriptions_lettre`, demande « fiche » ou « kit ») : voir envoyerCapture()
+ * dans l'îlot. Clara et Paul sont prévenus par e-mail ; la fiche et le kit [À PRODUIRE] partent
+ * à la main en attendant.
  *
  * Props :
  * - id : ancre du bloc (« fiche », « kit ») ; préfixe des champs (`${id}-lettre`).
@@ -45,6 +46,7 @@ const {
   usage,
   texts,
 } = Astro.props;
+import { MESSAGE_ECHEC } from '../../lib/formulaires';
 ---
 
 <div id={id} class="card sat-anchor" data-capture={kind}>
@@ -76,7 +78,9 @@ const {
         {texts.done}
       </p>
       <p class="done-msg" data-done-msg></p>
-      <p class="done-note">{texts.doneNote}</p>
+      <p class="done-note" data-done-note hidden>
+        {texts.doneNote}
+      </p>
       <button type="button" class="txtbtn" data-back>
         {texts.back}
       </button>
@@ -97,6 +101,9 @@ const {
         <Button type="submit" variant={submitVariant} stretch>
           {submit}
         </Button>
+        <p class="send-error" role="alert" data-send-error hidden>
+          {MESSAGE_ECHEC}
+        </p>
         <p class="rgpd">
           {usage} {texts.responsible} <a href={texts.privacy.href}>{texts.privacy.label}</a>.
         </p>
@@ -263,28 +270,44 @@ const {
     color: var(--ink);
     text-decoration-color: var(--gold);
   }
+
+  .send-error {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--error);
+  }
+
+  .send-error[hidden] {
+    display: none;
+  }
 </style>
 
 <script>
   /*
    * Îlot des blocs de capture (sendSheet / sendKit de la maquette) : validation côté client,
    * messages d'erreur reliés par aria-describedby, focus sur le premier champ en erreur,
-   * confirmation à la place du formulaire, « Revenir au formulaire ». Rien n'est envoyé.
+   * confirmation à la place du formulaire, « Revenir au formulaire ». Envoi vers Directus.
    */
   import { frenchTypography } from '../../lib/typo';
+  import { champs, envoyer, etatEnvoi } from '../../lib/formulaires';
 
   type Control = HTMLInputElement | HTMLSelectElement;
   type Kind = 'fiche' | 'kit';
 
   /**
-   * Phase 4 : envoi vers Directus.
-   * À brancher : POST des champs (fiche : e-mail ; kit : nom, structure, type, e-mail) et de la
-   * case « lettre » (consentement séparé, jamais une condition), envoi de la fiche ou du kit,
-   * puis page de confirmation. Pour l'instant : rien n'est envoyé, la confirmation s'affiche
-   * comme dans la maquette.
+   * Envoi vers Directus (`inscriptions_lettre`) : la fiche ou le kit, et la lettre si la case est
+   * cochée (consentement séparé, jamais une condition ; double opt-in par e-mail).
    */
-  async function envoyerCapture(_kind: Kind, _data: FormData): Promise<void> {
-    // Phase 4 : envoi vers Directus
+  async function envoyerCapture(kind: Kind, data: FormData): Promise<void> {
+    const { type, lettre, ...reste } = champs(data);
+    await envoyer('inscriptions_lettre', {
+      ...reste,
+      ...(type ? { type_structure: type } : {}),
+      demande: kind,
+      consentement: lettre === 'on',
+      source: window.location.pathname,
+    });
   }
 
   /** Message de confirmation (sheetMsg / kitMsg de la maquette). */
@@ -325,6 +348,7 @@ const {
     const form = root.querySelector<HTMLFormElement>('[data-form]');
     const done = root.querySelector<HTMLElement>('[data-done]');
     const doneMsg = root.querySelector<HTMLElement>('[data-done-msg]');
+    const doneNote = root.querySelector<HTMLElement>('[data-done-note]');
     const back = root.querySelector<HTMLButtonElement>('[data-back]');
     const letter = root.querySelector<HTMLInputElement>('[data-letter]');
     if (!form || !done || !doneMsg || !back) return;
@@ -354,7 +378,15 @@ const {
         first.focus();
         return;
       }
-      await envoyerCapture(kind, new FormData(form));
+      etatEnvoi(form, 'envoi');
+      try {
+        await envoyerCapture(kind, new FormData(form));
+      } catch {
+        etatEnvoi(form, 'echec');
+        return;
+      }
+      etatEnvoi(form, 'ok');
+      if (doneNote) doneNote.hidden = !(letter?.checked ?? false);
       const mail = form.querySelector<HTMLInputElement>('input[type="email"]')?.value.trim() ?? '';
       doneMsg.textContent = frenchTypography(confirmation(kind, mail, letter?.checked ?? false));
       form.hidden = true;

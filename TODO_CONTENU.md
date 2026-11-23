@@ -17,6 +17,9 @@ et la liste automatique des marqueurs `[À …]` (régénérée par `node script
 10. **Storm-1516** : règle fixe sur scène (mécanisme, source officielle et attribution, puis s'arrêter là).
 11. **Titre « Arnaques 2026 »** : titre daté renouvelé chaque année, ou titre intemporel ?
 12. **Phrases dont le ton reste à revoir** : voir la fin de `kit/docs/05_relecture.md` (5 propositions).
+13. **Envoi des e-mails en production** : quel hébergeur de messagerie (SMTP, dans l'UE) et quelle adresse d'expéditeur (`bonjour@m42.guide` proposé) ?
+14. **Outil d'envoi de la lettre mensuelle** (hébergé dans l'UE) : il reprendra les adresses confirmées de Directus.
+15. **Fiche à imprimer et kit de diffusion** (outil « Arnaque ou pas ? ») : à produire ; en attendant, Clara et Paul les envoient à la main (ils sont prévenus par e-mail).
 
 <!-- BEGIN marqueurs (généré par site/scripts/marqueurs.mjs, ne pas éditer à la main) -->
 
@@ -232,6 +235,7 @@ et la liste automatique des marqueurs `[À …]` (régénérée par `node script
 - [ ] `site/src/components/contact/ContactForm.astro` : [À VALIDER]
 - [ ] `site/src/components/legal/LegalProse.astro` : [À DÉCIDER]
 - [ ] `site/src/components/legal/types.ts` : [À DÉCIDER]
+- [ ] `site/src/components/outils/CaptureCard.astro` : [À PRODUIRE]
 - [ ] `site/src/components/publics/PublicFormats.astro` : [À VALIDER : …]
 - [ ] `site/src/components/publics/TakeawayColumns.astro` : [À PRODUIRE]
 - [ ] `site/src/components/publics/draft-marker.css` : [À VALIDER : …]
@@ -374,6 +378,6 @@ et la liste automatique des marqueurs `[À …]` (régénérée par `node script
 - [ ] `site/src/pages/reperes/index.astro` : [À DÉCIDER]
 - [ ] `site/src/pages/reperes/index.astro` : [À CHOISIR]
 
-_134 marqueurs uniques dans la maquette, 152 dans le site._
+_134 marqueurs uniques dans la maquette, 153 dans le site._
 
 <!-- END marqueurs -->

@@ -2,8 +2,9 @@
 /**
  * Formulaire qualifiant + message de confirmation (maquette Contact.dc.html).
  * Préremplissage possible : /contact/?theme=arnaques&type=collectivite (canonique inchangée).
- * L'envoi réel (Directus, champ piège, délai minimal, limite de débit, flow e-mail,
- * redirection vers /contact/merci/) est prévu en phase 4 : voir envoyerDemande() dans l'îlot.
+ * Envoi vers Directus (src/lib/formulaires.ts) : champ piège, délai minimal, contrôle et
+ * nettoyage côté serveur (flow), notification par e-mail à Clara et Paul. Confirmation sur place,
+ * comme dans la maquette (pas de page « merci » : DECISIONS.md, point 39).
  */
 import Button from '../Button.astro';
 import ArrowLink from '../ArrowLink.astro';
@@ -13,6 +14,7 @@ import { page as lirePage } from '../../lib/cms/contenu';
 
 const { structureTypes, themes, formats, participants, budgets, rgpdNotice } =
   await lirePage('contact');
+import { MESSAGE_ECHEC } from '../../lib/formulaires';
 ---
 
 <div class="contact-form" data-contact-form>
@@ -128,6 +130,9 @@ const { structureTypes, themes, formats, participants, budgets, rgpdNotice } =
       <Button type="submit" stretch>
         Envoyer ma demande
       </Button>
+      <p class="send-error" role="alert" data-send-error hidden>
+        {MESSAGE_ECHEC}
+      </p>
       <p class="rgpd">
         <Fragment set:html={rgpdNotice.text} />{' '}
         <a href={rgpdNotice.link.href}>{rgpdNotice.link.label}</a>.
@@ -161,7 +166,6 @@ const { structureTypes, themes, formats, participants, budgets, rgpdNotice } =
       Clara ou Paul vous répond sous 48 h, à l'adresse e-mail indiquée. Pensez à vérifier vos
       courriers indésirables si vous ne voyez rien arriver.
     </p>
-    <p class="done-note">[Maquette : aucune donnée n'a été envoyée.]</p>
     <div class="done-actions">
       <Button variant="secondary" data-restart>
         Envoyer une autre demande
@@ -307,6 +311,17 @@ const { structureTypes, themes, formats, participants, budgets, rgpdNotice } =
     align-items: center;
     gap: var(--s-3) var(--s-6);
   }
+
+  .send-error {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--error);
+  }
+
+  .send-error[hidden] {
+    display: none;
+  }
 </style>
 
 <script>
@@ -315,6 +330,7 @@ const { structureTypes, themes, formats, participants, budgets, rgpdNotice } =
    * préremplissage depuis l'URL, validation côté client, messages d'erreur reliés
    * par aria-describedby, confirmation à la place du formulaire, « Envoyer une autre demande ».
    */
+  import { champs, envoyer, etatEnvoi } from '../../lib/formulaires';
 
   type Control = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
@@ -327,14 +343,9 @@ const { structureTypes, themes, formats, participants, budgets, rgpdNotice } =
   const doneTitle = root?.querySelector<HTMLElement>('[data-done-title]');
   const restart = root?.querySelector<HTMLButtonElement>('[data-restart]');
 
-  /**
-   * Phase 4 : envoi vers Directus.
-   * À brancher : POST des champs (dont le champ piège « site_web »), délai minimal depuis
-   * l'affichage, limite de débit côté serveur, flow e-mail, puis redirection vers /contact/merci/.
-   * Pour l'instant : rien n'est envoyé, la confirmation s'affiche comme dans la maquette.
-   */
-  async function envoyerDemande(_data: FormData): Promise<void> {
-    // Phase 4 : envoi vers Directus
+  /** Envoi vers Directus (collection `demandes_contact`), avec la page d'origine. */
+  async function envoyerDemande(data: FormData): Promise<void> {
+    await envoyer('demandes_contact', { ...champs(data), page: window.location.pathname });
   }
 
   function controls(f: HTMLFormElement): Control[] {
@@ -424,7 +435,14 @@ const { structureTypes, themes, formats, participants, budgets, rgpdNotice } =
         first.focus();
         return;
       }
-      await envoyerDemande(new FormData(form));
+      etatEnvoi(form, 'envoi');
+      try {
+        await envoyerDemande(new FormData(form));
+      } catch {
+        etatEnvoi(form, 'echec');
+        return;
+      }
+      etatEnvoi(form, 'ok');
       showConfirmation(form, done);
     });
 

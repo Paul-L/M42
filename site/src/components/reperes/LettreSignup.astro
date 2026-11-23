@@ -4,9 +4,10 @@
  * Champs propres à ce bloc (et non FormField) : fond papier (et non papier surélevé),
  * mention des champs obligatoires en 13 px, message d'erreur affiché par l'îlot.
  *
- * Maquette : rien n'est envoyé, la confirmation s'affiche à la place du formulaire.
- * Phase 4 : <form method="post"> vers l'outil d'envoi (double opt-in recommandé,
- * outil hébergé en Europe [À CHOISIR]) + page de confirmation. Voir inscrireLettre() dans l'îlot.
+ * Inscription enregistrée dans Directus (`inscriptions_lettre`), double opt-in : un e-mail de
+ * confirmation part, l'adresse n'est inscrite qu'après le clic (/lettre/confirmer/).
+ * Envoi de la lettre elle-même : outil hébergé en Europe [À CHOISIR], qui reprendra les adresses
+ * confirmées. Voir inscrireLettre() dans l'îlot.
  */
 import Container from '../Container.astro';
 import Eyebrow from '../Eyebrow.astro';
@@ -16,6 +17,7 @@ import { routes } from '../../data/routes';
 import { page as lirePage } from '../../lib/cms/contenu';
 
 const { lettre: l } = await lirePage('reperes');
+import { MESSAGE_ECHEC } from '../../lib/formulaires';
 ---
 
 <section id="lettre" aria-labelledby="lettre-t" class="lettre" data-lettre>
@@ -62,7 +64,10 @@ const { lettre: l } = await lirePage('reperes');
               C'est noté.
             </p>
             <p class="done-msg" data-done-msg></p>
-            <p class="done-note">[Maquette : aucune donnée n'a été envoyée.]</p>
+            <p class="done-note">
+              Pour finir, confirmez votre adresse : cliquez sur le lien de l'e-mail que nous venons
+              de vous envoyer.
+            </p>
             <button type="button" class="txtbtn" data-restart>
               Revenir au formulaire
             </button>
@@ -125,6 +130,9 @@ const { lettre: l } = await lirePage('reperes');
               <Button type="submit" stretch>
                 Recevoir les nouveaux repères
               </Button>
+              <p class="send-error" role="alert" data-send-error hidden>
+                {MESSAGE_ECHEC}
+              </p>
               <p class="rgpd">
                 {l.mention.texte} <a href={routes[l.mention.lien.page]}>{l.mention.lien.label}</a>.
               </p>
@@ -395,15 +403,27 @@ const { lettre: l } = await lirePage('reperes');
     color: var(--ink);
     text-decoration-color: var(--gold);
   }
+
+  .send-error {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--error);
+  }
+
+  .send-error[hidden] {
+    display: none;
+  }
 </style>
 
 <script>
   /*
    * Îlot de la lettre mensuelle (logique de la classe Component de la maquette) :
    * validation de l'e-mail, message d'erreur relié par aria-describedby, confirmation
-   * à la place du formulaire, « Revenir au formulaire ». Rien n'est envoyé.
+   * à la place du formulaire, « Revenir au formulaire ». Envoi vers Directus.
    */
   import { frenchTypography } from '../../lib/typo';
+  import { champs, envoyer, etatEnvoi } from '../../lib/formulaires';
 
   const root = document.querySelector<HTMLElement>('[data-lettre]');
   const form = root?.querySelector<HTMLFormElement>('[data-form]');
@@ -413,13 +433,14 @@ const { lettre: l } = await lirePage('reperes');
   const doneMsg = root?.querySelector<HTMLElement>('[data-done-msg]');
   const restart = root?.querySelector<HTMLButtonElement>('[data-restart]');
 
-  /**
-   * Phase 4 : inscription réelle (outil d'envoi hébergé en Europe, double opt-in,
-   * segment « Vous êtes » facultatif). Pour l'instant : rien n'est envoyé.
-   */
+  /** Inscription (double opt-in : l'adresse est confirmée par le lien reçu par e-mail). */
   async function inscrireLettre(data: FormData): Promise<void> {
-    // Phase 4 : envoi vers l'outil de lettre
-    void data;
+    await envoyer('inscriptions_lettre', {
+      ...champs(data),
+      demande: 'lettre',
+      consentement: true,
+      source: window.location.pathname,
+    });
   }
 
   const isValid = (el: HTMLInputElement): boolean => el.value.trim() !== '' && el.checkValidity();
@@ -451,7 +472,14 @@ const { lettre: l } = await lirePage('reperes');
         return;
       }
       setError(mail, false);
-      await inscrireLettre(new FormData(form));
+      etatEnvoi(form, 'envoi');
+      try {
+        await inscrireLettre(new FormData(form));
+      } catch {
+        etatEnvoi(form, 'echec');
+        return;
+      }
+      etatEnvoi(form, 'ok');
       const adresse = mail.value.trim();
       doneMsg.textContent = frenchTypography(
         'Vous recevrez les nouveaux repères' +

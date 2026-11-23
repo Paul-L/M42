@@ -20,10 +20,21 @@ export const CMS_URL =
 
 let jeton: string | undefined;
 
+/** fetch qui attend puis réessaie quand Directus applique sa limite de débit (429). */
+async function requete(url: string, init: RequestInit): Promise<Response> {
+  let r = await fetch(url, init);
+  for (let essai = 0; r.status === 429 && essai < 30; essai++) {
+    const attente = Number(r.headers.get('retry-after') ?? 5);
+    await new Promise((ok) => setTimeout(ok, (attente + 1) * 1000));
+    r = await fetch(url, init);
+  }
+  return r;
+}
+
 export async function connecter(): Promise<void> {
   const { ADMIN_EMAIL: email, ADMIN_PASSWORD: password } = process.env;
   if (!email || !password) throw new Error('ADMIN_EMAIL et ADMIN_PASSWORD manquants (cms/.env).');
-  const r = await fetch(`${CMS_URL}/auth/login`, {
+  const r = await requete(`${CMS_URL}/auth/login`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ email, password }),
@@ -48,7 +59,7 @@ export async function api<T = unknown>(
   corps?: unknown,
 ): Promise<T> {
   if (!jeton) await connecter();
-  const r = await fetch(`${CMS_URL}${chemin}`, {
+  const r = await requete(`${CMS_URL}${chemin}`, {
     method: methode,
     headers: {
       authorization: `Bearer ${jeton}`,

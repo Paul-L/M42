@@ -56,7 +56,7 @@
         "hidden": false,
         "icon": "mail",
         "item_duplication_fields": null,
-        "note": "Demandes reçues par le formulaire de contact (branché en phase 4).",
+        "note": "Demandes reçues par le formulaire de contact. Clara et Paul reçoivent un e-mail à chaque demande.",
         "preview_url": null,
         "singleton": false,
         "sort": null,
@@ -125,12 +125,12 @@
         "collapse": "open",
         "collection": "inscriptions_lettre",
         "color": null,
-        "display_template": "{{email}}",
+        "display_template": "{{email}} · {{demande}}",
         "group": null,
         "hidden": false,
         "icon": "forward_to_inbox",
         "item_duplication_fields": null,
-        "note": "Inscriptions à la lettre (Repères, test « Arnaque ou pas ? ») — branchées en phase 4.",
+        "note": "Inscriptions à la lettre et demandes de fiche ou de kit (Repères, test « Arnaque ou pas ? »). La lettre n’est envoyée qu’aux adresses confirmées (double opt-in).",
         "preview_url": null,
         "singleton": false,
         "sort": null,
@@ -141,7 +141,7 @@
             "language": "fr-FR",
             "plural": "Inscriptions",
             "singular": "Inscription",
-            "translation": "Inscriptions à la lettre"
+            "translation": "Inscriptions et demandes"
           }
         ],
         "unarchive_value": null,
@@ -4513,7 +4513,7 @@
         "group": null,
         "hidden": false,
         "interface": "boolean",
-        "note": null,
+        "note": "Case cochée par la personne (jamais une condition pour recevoir la fiche ou le kit).",
         "options": null,
         "readonly": false,
         "required": false,
@@ -4523,7 +4523,7 @@
         "translations": [
           {
             "language": "fr-FR",
-            "translation": "Consentement"
+            "translation": "Accepte la lettre"
           }
         ],
         "validation": null,
@@ -4681,6 +4681,359 @@
         "data_type": "uuid",
         "default_value": null,
         "max_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "is_nullable": true,
+        "is_unique": false,
+        "is_indexed": false,
+        "is_primary_key": false,
+        "is_generated": false,
+        "generation_expression": null,
+        "has_auto_increment": false,
+        "foreign_key_table": null,
+        "foreign_key_column": null
+      }
+    },
+    {
+      "collection": "inscriptions_lettre",
+      "field": "demande",
+      "type": "string",
+      "meta": {
+        "collection": "inscriptions_lettre",
+        "conditions": null,
+        "display": "labels",
+        "display_options": null,
+        "field": "demande",
+        "group": null,
+        "hidden": false,
+        "interface": "select-dropdown",
+        "note": null,
+        "options": {
+          "choices": [
+            {
+              "text": "Lettre mensuelle",
+              "value": "lettre"
+            },
+            {
+              "text": "Fiche à imprimer",
+              "value": "fiche"
+            },
+            {
+              "text": "Kit de diffusion",
+              "value": "kit"
+            }
+          ]
+        },
+        "readonly": false,
+        "required": false,
+        "searchable": true,
+        "sort": 9,
+        "special": null,
+        "translations": [
+          {
+            "language": "fr-FR",
+            "translation": "Demande"
+          }
+        ],
+        "validation": null,
+        "validation_message": null,
+        "width": "half"
+      },
+      "schema": {
+        "name": "demande",
+        "table": "inscriptions_lettre",
+        "data_type": "character varying",
+        "default_value": null,
+        "max_length": 255,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "is_nullable": true,
+        "is_unique": false,
+        "is_indexed": false,
+        "is_primary_key": false,
+        "is_generated": false,
+        "generation_expression": null,
+        "has_auto_increment": false,
+        "foreign_key_table": null,
+        "foreign_key_column": null
+      }
+    },
+    {
+      "collection": "inscriptions_lettre",
+      "field": "nom",
+      "type": "string",
+      "meta": {
+        "collection": "inscriptions_lettre",
+        "conditions": null,
+        "display": null,
+        "display_options": null,
+        "field": "nom",
+        "group": null,
+        "hidden": false,
+        "interface": "input",
+        "note": null,
+        "options": null,
+        "readonly": false,
+        "required": false,
+        "searchable": true,
+        "sort": 10,
+        "special": null,
+        "translations": [
+          {
+            "language": "fr-FR",
+            "translation": "Nom"
+          }
+        ],
+        "validation": null,
+        "validation_message": null,
+        "width": "half"
+      },
+      "schema": {
+        "name": "nom",
+        "table": "inscriptions_lettre",
+        "data_type": "character varying",
+        "default_value": null,
+        "max_length": 255,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "is_nullable": true,
+        "is_unique": false,
+        "is_indexed": false,
+        "is_primary_key": false,
+        "is_generated": false,
+        "generation_expression": null,
+        "has_auto_increment": false,
+        "foreign_key_table": null,
+        "foreign_key_column": null
+      }
+    },
+    {
+      "collection": "inscriptions_lettre",
+      "field": "structure",
+      "type": "string",
+      "meta": {
+        "collection": "inscriptions_lettre",
+        "conditions": null,
+        "display": null,
+        "display_options": null,
+        "field": "structure",
+        "group": null,
+        "hidden": false,
+        "interface": "input",
+        "note": null,
+        "options": null,
+        "readonly": false,
+        "required": false,
+        "searchable": true,
+        "sort": 11,
+        "special": null,
+        "translations": [
+          {
+            "language": "fr-FR",
+            "translation": "Structure"
+          }
+        ],
+        "validation": null,
+        "validation_message": null,
+        "width": "half"
+      },
+      "schema": {
+        "name": "structure",
+        "table": "inscriptions_lettre",
+        "data_type": "character varying",
+        "default_value": null,
+        "max_length": 255,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "is_nullable": true,
+        "is_unique": false,
+        "is_indexed": false,
+        "is_primary_key": false,
+        "is_generated": false,
+        "generation_expression": null,
+        "has_auto_increment": false,
+        "foreign_key_table": null,
+        "foreign_key_column": null
+      }
+    },
+    {
+      "collection": "inscriptions_lettre",
+      "field": "type_structure",
+      "type": "string",
+      "meta": {
+        "collection": "inscriptions_lettre",
+        "conditions": null,
+        "display": null,
+        "display_options": null,
+        "field": "type_structure",
+        "group": null,
+        "hidden": false,
+        "interface": "input",
+        "note": null,
+        "options": null,
+        "readonly": false,
+        "required": false,
+        "searchable": true,
+        "sort": 12,
+        "special": null,
+        "translations": [
+          {
+            "language": "fr-FR",
+            "translation": "Type de structure"
+          }
+        ],
+        "validation": null,
+        "validation_message": null,
+        "width": "half"
+      },
+      "schema": {
+        "name": "type_structure",
+        "table": "inscriptions_lettre",
+        "data_type": "character varying",
+        "default_value": null,
+        "max_length": 255,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "is_nullable": true,
+        "is_unique": false,
+        "is_indexed": false,
+        "is_primary_key": false,
+        "is_generated": false,
+        "generation_expression": null,
+        "has_auto_increment": false,
+        "foreign_key_table": null,
+        "foreign_key_column": null
+      }
+    },
+    {
+      "collection": "inscriptions_lettre",
+      "field": "confirme",
+      "type": "boolean",
+      "meta": {
+        "collection": "inscriptions_lettre",
+        "conditions": null,
+        "display": null,
+        "display_options": null,
+        "field": "confirme",
+        "group": null,
+        "hidden": false,
+        "interface": "boolean",
+        "note": "Cochée quand la personne a cliqué sur le lien de confirmation reçu par e-mail.",
+        "options": null,
+        "readonly": true,
+        "required": false,
+        "searchable": true,
+        "sort": 13,
+        "special": null,
+        "translations": [
+          {
+            "language": "fr-FR",
+            "translation": "Adresse confirmée"
+          }
+        ],
+        "validation": null,
+        "validation_message": null,
+        "width": "half"
+      },
+      "schema": {
+        "name": "confirme",
+        "table": "inscriptions_lettre",
+        "data_type": "boolean",
+        "default_value": false,
+        "max_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "is_nullable": true,
+        "is_unique": false,
+        "is_indexed": false,
+        "is_primary_key": false,
+        "is_generated": false,
+        "generation_expression": null,
+        "has_auto_increment": false,
+        "foreign_key_table": null,
+        "foreign_key_column": null
+      }
+    },
+    {
+      "collection": "inscriptions_lettre",
+      "field": "date_confirmation",
+      "type": "timestamp",
+      "meta": {
+        "collection": "inscriptions_lettre",
+        "conditions": null,
+        "display": null,
+        "display_options": null,
+        "field": "date_confirmation",
+        "group": null,
+        "hidden": false,
+        "interface": "datetime",
+        "note": null,
+        "options": null,
+        "readonly": true,
+        "required": false,
+        "searchable": true,
+        "sort": 14,
+        "special": null,
+        "translations": [
+          {
+            "language": "fr-FR",
+            "translation": "Confirmée le"
+          }
+        ],
+        "validation": null,
+        "validation_message": null,
+        "width": "half"
+      },
+      "schema": {
+        "name": "date_confirmation",
+        "table": "inscriptions_lettre",
+        "data_type": "timestamp with time zone",
+        "default_value": null,
+        "max_length": null,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "is_nullable": true,
+        "is_unique": false,
+        "is_indexed": false,
+        "is_primary_key": false,
+        "is_generated": false,
+        "generation_expression": null,
+        "has_auto_increment": false,
+        "foreign_key_table": null,
+        "foreign_key_column": null
+      }
+    },
+    {
+      "collection": "inscriptions_lettre",
+      "field": "jeton",
+      "type": "string",
+      "meta": {
+        "collection": "inscriptions_lettre",
+        "conditions": null,
+        "display": null,
+        "display_options": null,
+        "field": "jeton",
+        "group": null,
+        "hidden": true,
+        "interface": "input",
+        "note": null,
+        "options": null,
+        "readonly": true,
+        "required": false,
+        "searchable": true,
+        "sort": 15,
+        "special": null,
+        "translations": null,
+        "validation": null,
+        "validation_message": null,
+        "width": "full"
+      },
+      "schema": {
+        "name": "jeton",
+        "table": "inscriptions_lettre",
+        "data_type": "character varying",
+        "default_value": null,
+        "max_length": 255,
         "numeric_precision": null,
         "numeric_scale": null,
         "is_nullable": true,

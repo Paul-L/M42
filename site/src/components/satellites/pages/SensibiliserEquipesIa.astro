@@ -44,7 +44,7 @@ const dateLabel = dateModified
 const steps = sections.filter((s) => s.kind === 'step');
 ---
 
-<BaseLayout title={seo.title} description={seo.description} jsonLd={jsonLd}>
+<BaseLayout title={seo.title} description={seo.description} jsonLd={jsonLd} ogType="article">
   <SatHero
     crumbs={crumbs}
     eyebrow={hero.eyebrow}

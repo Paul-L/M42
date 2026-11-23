@@ -575,7 +575,7 @@ const COLLECTIONS: DefCollection[] = [
     collection: 'demandes_contact',
     meta: {
       icon: 'mail',
-      note: 'Demandes reçues par le formulaire de contact (branché en phase 4).',
+      note: 'Demandes reçues par le formulaire de contact. Clara et Paul reçoivent un e-mail à chaque demande.',
       display_template: '{{nom}} · {{structure}}',
       sort_field: null,
       translations: [
@@ -614,13 +614,13 @@ const COLLECTIONS: DefCollection[] = [
     collection: 'inscriptions_lettre',
     meta: {
       icon: 'forward_to_inbox',
-      note: 'Inscriptions à la lettre (Repères, test « Arnaque ou pas ? ») — branchées en phase 4.',
-      display_template: '{{email}}',
+      note: 'Inscriptions à la lettre et demandes de fiche ou de kit (Repères, test « Arnaque ou pas ? »). La lettre n’est envoyée qu’aux adresses confirmées (double opt-in).',
+      display_template: '{{email}} · {{demande}}',
       sort_field: null,
       translations: [
         {
           language: 'fr-FR',
-          translation: 'Inscriptions à la lettre',
+          translation: 'Inscriptions et demandes',
           singular: 'Inscription',
           plural: 'Inscriptions',
         },
@@ -628,8 +628,16 @@ const COLLECTIONS: DefCollection[] = [
     },
     fields: [
       id,
+      menu('demande', 'Demande', [
+        ['lettre', 'Lettre mensuelle'],
+        ['fiche', 'Fiche à imprimer'],
+        ['kit', 'Kit de diffusion'],
+      ]),
       chaine('email', 'E-mail'),
       chaine('profil', 'Profil'),
+      chaine('nom', 'Nom'),
+      chaine('structure', 'Structure'),
+      chaine('type_structure', 'Type de structure'),
       chaine('source', 'Page d’origine'),
       {
         field: 'consentement',
@@ -637,8 +645,38 @@ const COLLECTIONS: DefCollection[] = [
         meta: {
           interface: 'boolean',
           width: 'half',
-          translations: fr('Consentement'),
+          translations: fr('Accepte la lettre'),
+          note: 'Case cochée par la personne (jamais une condition pour recevoir la fiche ou le kit).',
         },
+        schema: { default_value: false },
+      },
+      {
+        field: 'confirme',
+        type: 'boolean',
+        meta: {
+          interface: 'boolean',
+          width: 'half',
+          readonly: true,
+          translations: fr('Adresse confirmée'),
+          note: 'Cochée quand la personne a cliqué sur le lien de confirmation reçu par e-mail.',
+        },
+        schema: { default_value: false },
+      },
+      {
+        field: 'date_confirmation',
+        type: 'timestamp',
+        meta: {
+          interface: 'datetime',
+          readonly: true,
+          width: 'half',
+          translations: fr('Confirmée le'),
+        },
+        schema: {},
+      },
+      {
+        field: 'jeton',
+        type: 'string',
+        meta: { interface: 'input', hidden: true, readonly: true },
         schema: {},
       },
       ...horodatage,

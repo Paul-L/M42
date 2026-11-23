@@ -8,6 +8,9 @@ import '@fontsource/cormorant/600.css';
 import '@fontsource/cormorant/500-italic.css';
 import '@fontsource-variable/inter/wght.css';
 import '../styles/global.css';
+// Polices présentes sur toutes les pages (texte, titres) : préchargées.
+import interUrl from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import cormorantUrl from '@fontsource/cormorant/files/cormorant-latin-600-normal.woff2?url';
 
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -27,6 +30,8 @@ interface Props {
   footerCurrent?: boolean;
   /** Données structurées (schema.org), sérialisées en JSON-LD. */
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  /** Type Open Graph (défaut « website » ; « article » pour un guide). */
+  ogType?: 'website' | 'article';
 }
 
 const {
@@ -37,8 +42,14 @@ const {
   noindex = false,
   jsonLd,
   footerCurrent = false,
+  ogType = 'website',
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+// Préproduction (M42_ENV=preprod) : aucune page indexable (en plus de l'en-tête X-Robots-Tag
+// et du mot de passe posés par le serveur, phase 5).
+const preprod = (import.meta.env.M42_ENV ?? process.env.M42_ENV) === 'preprod';
+const indexable = !noindex && !preprod;
+const ogImage = new URL('/og-m42.png', Astro.site);
 ---
 
 <!doctype html>
@@ -48,11 +59,24 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
-    {noindex ? (
-      <meta name="robots" content="noindex, nofollow" />
-    ) : (
+    {indexable ? (
       <link rel="canonical" href={canonical} />
+    ) : (
+      <meta name="robots" content="noindex, nofollow" />
     )}
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="M42" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="M42.guide : se repérer dans l'IA." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preload" href={interUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={cormorantUrl} as="font" type="font/woff2" crossorigin />
     <meta name="theme-color" content="#F2EEE6" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />

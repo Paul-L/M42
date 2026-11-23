@@ -165,3 +165,22 @@
     hyphens: auto;
   }
 }
+
+/*
+ * Cible tactile d'au moins 44 px de haut sur mobile, sans changer la mise en page :
+ * zone cliquable agrandie par un pseudo-élément transparent (DECISIONS.md, point 40).
+ */
+@media (max-width: 63.99em) {
+  .m42-cible {
+    position: relative;
+  }
+
+  .m42-cible::before {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto;
+    min-width: 44px;
+    height: 44px;
+    transform: translateY(-50%);
+  }
+}
