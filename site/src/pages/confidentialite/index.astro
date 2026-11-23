@@ -3,18 +3,25 @@
  * Politique de confidentialité — kit/maquette/Confidentialite.dc.html
  * Aucune logique interactive dans la maquette (seul l'interrupteur d'animations de l'éditeur,
  * sans effet ici : la page n'a pas d'apparition au défilement).
+ * Textes : src/data/legal/confidentialite.ts. La page ne garde que la structure.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import LegalProse from '../../components/legal/LegalProse.astro';
-import type { TocItem } from '../../components/legal/LegalProse.astro';
-
-const title = 'Politique de confidentialité | M42';
-const description =
-  'Comment M42 traite les données transmises via le formulaire de contact : finalité, durée de conservation, destinataires et vos droits.';
+import LegalBlocks from '../../components/legal/LegalBlocks.astro';
+import {
+  breadcrumb,
+  enBref,
+  intro,
+  proseLabel,
+  sections,
+  seo,
+} from '../../data/legal/confidentialite';
 
 const pageUrl = new URL('/confidentialite/', Astro.site).href;
 const homeUrl = new URL('/', Astro.site).href;
+
+const toc = sections.map(({ id, title }) => ({ id, label: title }));
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -23,8 +30,8 @@ const jsonLd = {
       '@type': 'WebPage',
       '@id': `${pageUrl}#page`,
       url: pageUrl,
-      name: title,
-      description,
+      name: seo.title,
+      description: seo.description,
       isPartOf: { '@id': `${homeUrl}#site` },
       breadcrumb: { '@id': `${pageUrl}#ariane` },
       inLanguage: 'fr-FR',
@@ -32,109 +39,34 @@ const jsonLd = {
     {
       '@type': 'BreadcrumbList',
       '@id': `${pageUrl}#ariane`,
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Accueil', item: homeUrl },
-        { '@type': 'ListItem', position: 2, name: 'Confidentialité' },
-      ],
+      itemListElement: breadcrumb.map((crumb, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: crumb.label,
+        ...(crumb.href ? { item: new URL(crumb.href, Astro.site).href } : {}),
+      })),
     },
   ],
 };
-
-const enBref = [
-  'Nous recueillons seulement ce qui sert à répondre à votre demande.',
-  "Vos données sont lues par Clara Peron et Paul Loustaunau, et par personne d'autre.",
-  'Elles ne sont jamais vendues, louées ni cédées.',
-  "Ce site n'utilise aucun cookie publicitaire ni traceur soumis à consentement [À DÉCIDER, voir section 10].",
-  'Vous pouvez à tout moment accéder à vos données, les corriger ou les faire supprimer.',
-];
-
-const toc: TocItem[] = [
-  { id: 'responsable', label: 'Responsable du traitement' },
-  { id: 'donnees', label: 'Données recueillies' },
-  { id: 'finalites', label: 'Finalités et bases légales' },
-  { id: 'durees', label: 'Durées de conservation' },
-  { id: 'destinataires', label: 'Destinataires' },
-  { id: 'stockage', label: 'Stockage et sécurité' },
-  { id: 'droits', label: 'Vos droits' },
-  { id: 'cnil', label: 'Réclamation auprès de la CNIL' },
-  { id: 'lettre', label: "Lettre d'information" },
-  { id: 'cookies', label: 'Cookies et traceurs' },
-  { id: 'modifications', label: 'Modifications' },
-];
-
-const finalites = [
-  [
-    'Répondre à votre demande, préparer et vous envoyer un devis',
-    'Mesures précontractuelles prises à votre demande (article 6.1.b)',
-  ],
-  [
-    "Organiser et réaliser l'intervention, puis la facturer",
-    'Exécution du contrat (article 6.1.b) et obligations comptables (article 6.1.c)',
-  ],
-  [
-    "Vous recontacter au sujet d'une intervention passée ou à venir",
-    'Intérêt légitime (article 6.1.f) ; vous pouvez vous y opposer à tout moment',
-  ],
-  [
-    "Vous envoyer notre lettre d'information, si elle existe",
-    'Votre consentement (article 6.1.a), retirable à tout moment',
-  ],
-  [
-    'Assurer la sécurité du site (journaux techniques, anti-spam)',
-    'Intérêt légitime (article 6.1.f)',
-  ],
-];
-
-const durees = [
-  ['Demande restée sans suite', '3 ans à compter de notre dernier échange, puis suppression'],
-  [
-    'Client (intervention réalisée)',
-    'Pendant la relation, puis 3 ans après la dernière intervention. Factures et pièces comptables : 10 ans (obligation légale, Code de commerce, article L. 123-22)',
-  ],
-  [
-    "Lettre d'information",
-    "Jusqu'à votre désinscription, et au plus 3 ans sans aucune ouverture [À VALIDER]",
-  ],
-  ['Journaux techniques du serveur', '6 mois [À VALIDER]'],
-  [
-    "Mesure d'audience, si elle est mise en place",
-    '25 mois au plus pour les données, 13 mois au plus pour les traceurs',
-  ],
-];
-
-const droits = [
-  'accéder à vos données et en obtenir une copie ;',
-  'les faire rectifier ou compléter ;',
-  'les faire effacer ;',
-  'demander la limitation de leur traitement ;',
-  'vous opposer à leur traitement fondé sur notre intérêt légitime ;',
-  "retirer votre consentement, par exemple à la lettre d'information ;",
-  'recevoir les données que vous nous avez fournies dans un format lisible (portabilité) ;',
-  'définir des directives sur le sort de vos données après votre décès.',
-];
 ---
 
-<BaseLayout footerCurrent title={title} description={description} jsonLd={jsonLd}>
+<BaseLayout footerCurrent title={seo.title} description={seo.description} jsonLd={jsonLd}>
   <!-- En-tête de page -->
   <section aria-labelledby="titre-conf">
     <div class="intro">
-      <Breadcrumb items={[{ label: 'Accueil', href: '/' }, { label: 'Confidentialité' }]} />
+      <Breadcrumb items={breadcrumb} />
       <h1 id="titre-conf" class="h1">
-        <span class="h1-eyebrow">Vos données personnelles</span>
-        <span class="h1-title">Politique de confidentialité</span>
+        <span class="h1-eyebrow">{intro.over}</span>
+        <span class="h1-title">{intro.title}</span>
       </h1>
-      <p class="lead">
-        Quelles données nous recueillons sur m42.guide, pourquoi, combien de temps, et comment
-        exercer vos droits. Conformément au règlement général sur la protection des données (RGPD)
-        et à la loi Informatique et Libertés.
-      </p>
-      <p class="updated">Dernière mise à jour : [À COMPLÉTER : date de mise en ligne]</p>
+      <p class="lead" set:html={intro.lead} />
+      <p class="updated">{intro.updated}</p>
 
       <!-- En bref -->
       <div class="brief">
-        <h2 class="brief-title">En bref</h2>
+        <h2 class="brief-title">{enBref.title}</h2>
         <ul class="brief-list">
-          {enBref.map((item) => (
+          {enBref.items.map((item) => (
             <li>
               <svg
                 width="14"
@@ -160,294 +92,18 @@ const droits = [
   </section>
 
   <!-- Corps : sommaire + sections -->
-  <LegalProse label="Contenu de la politique de confidentialité" toc={toc}>
-    <section id="responsable" aria-labelledby="t-resp" class="legal-section">
-      <h2 id="t-resp" class="legal-h2">
-        <span aria-hidden="true" class="legal-num">
-          1
-        </span>
-        Responsable du traitement
-      </h2>
-      <dl class="legal-dl legal-dl--fixed">
-        <div class="legal-row">
-          <dt>Responsable</dt>
-          <dd>
-            [À COMPLÉTER : même entité que l'éditeur désigné dans les{' '}
-            <a href="/mentions-legales/" class="legal-a">
-              mentions légales
-            </a>{' '}
-            : dénomination, adresse]
-          </dd>
-        </div>
-        <div class="legal-row">
-          <dt>Contact pour vos données</dt>
-          <dd>
-            [À DÉCIDER : adresse dédiée en @m42.guide] · à défaut :{' '}
-            <a href="mailto:clara@m42.guide" class="legal-a">
-              clara@m42.guide
-            </a>{' '}
-            ou{' '}
-            <a href="mailto:paul@m42.guide" class="legal-a">
-              paul@m42.guide
-            </a>
-          </dd>
-        </div>
-        <div class="legal-row">
-          <dt>Délégué à la protection des données</dt>
-          <dd>
-            Aucun délégué n'a été désigné, cette désignation n'étant pas obligatoire pour notre
-            activité [À VALIDER].
-          </dd>
-        </div>
-      </dl>
-    </section>
-
-    <section id="donnees" aria-labelledby="t-donnees" class="legal-section">
-      <h2 id="t-donnees" class="legal-h2">
-        <span aria-hidden="true" class="legal-num">
-          2
-        </span>
-        Données recueillies
-      </h2>
-      <h3 class="legal-h3">Par le formulaire de contact</h3>
-      <p class="legal-p">
-        Obligatoires : nom et prénom, structure, adresse e-mail, type de structure. Utiles pour
-        préparer notre réponse : thème, format, date ou période, ville, nombre de participants.
-        Facultatives : téléphone, budget indicatif, message libre.
-      </p>
-      <p class="legal-p">
-        Merci de ne pas indiquer dans le message d'informations sensibles (santé, opinions,
-        situation personnelle) : elles ne nous sont pas utiles.
-      </p>
-      <h3 class="legal-h3 legal-h3--spaced">Lors de votre visite</h3>
-      <p class="legal-p">
-        Comme tout serveur web, le nôtre enregistre des journaux techniques (adresse IP, date et
-        heure, page demandée, navigateur) pour assurer la sécurité et le bon fonctionnement du site.
-        Nous ne les utilisons pas pour vous identifier ni pour vous suivre.
-      </p>
-    </section>
-
-    <section id="finalites" aria-labelledby="t-finalites" class="legal-section">
-      <h2 id="t-finalites" class="legal-h2">
-        <span aria-hidden="true" class="legal-num">
-          3
-        </span>
-        Finalités et bases légales
-      </h2>
-      <p class="legal-p">
-        Chaque usage de vos données repose sur une base légale prévue par l'article 6 du RGPD.
-      </p>
-      <dl class="legal-dl">
-        {finalites.map(([term, def]) => (
-          <div class="legal-row">
-            <dt>{term}</dt>
-            <dd>{def}</dd>
-          </div>
-        ))}
-      </dl>
-      <p class="legal-p">
-        Nous ne faisons aucun profilage et aucune décision automatisée à partir de vos données.
-      </p>
-    </section>
-
-    <section id="durees" aria-labelledby="t-durees" class="legal-section">
-      <h2 id="t-durees" class="legal-h2">
-        <span aria-hidden="true" class="legal-num">
-          4
-        </span>
-        Durées de conservation
-      </h2>
-      <p class="legal-note">
-        Durées proposées, conformes aux recommandations de la CNIL [À VALIDER].
-      </p>
-      <dl class="legal-dl">
-        {durees.map(([term, def]) => (
-          <div class="legal-row">
-            <dt>{term}</dt>
-            <dd>{def}</dd>
-          </div>
-        ))}
-      </dl>
-    </section>
-
-    <section id="destinataires" aria-labelledby="t-dest" class="legal-section">
-      <h2 id="t-dest" class="legal-h2">
-        <span aria-hidden="true" class="legal-num">
-          5
-        </span>
-        Destinataires
-      </h2>
-      <p class="legal-p">
-        Vos données sont lues uniquement par Clara Peron et Paul Loustaunau. Elles ne sont jamais
-        vendues, louées ni cédées à des tiers, et ne servent à aucune publicité.
-      </p>
-      <p class="legal-p">
-        Nos prestataires techniques y ont accès dans la stricte limite de leur mission, en qualité
-        de sous-traitants liés par contrat :
-      </p>
-      <ul class="legal-ul">
-        <li>hébergement du site : [À COMPLÉTER : hébergeur, voir les mentions légales] ;</li>
-        <li>messagerie électronique des adresses @m42.guide : [À COMPLÉTER : fournisseur] ;</li>
-        <li>envoi de la lettre d'information, si elle existe : [À DÉCIDER : outil].</li>
-      </ul>
-    </section>
-
-    <section id="stockage" aria-labelledby="t-stock" class="legal-section">
-      <h2 id="t-stock" class="legal-h2">
-        <span aria-hidden="true" class="legal-num">
-          6
-        </span>
-        Stockage et sécurité
-      </h2>
-      <p class="legal-p">
-        Vos données sont stockées dans l'Union européenne [À VALIDER selon les prestataires
-        retenus]. Aucun transfert hors de l'Union n'est prévu. Si un prestataire devait en effectuer
-        un, il serait encadré par les garanties prévues par le RGPD, et cette page serait mise à
-        jour.
-      </p>
-      <p class="legal-p">
-        Le site est servi en HTTPS. L'accès aux demandes reçues est réservé à Clara Peron et Paul
-        Loustaunau. Le formulaire est protégé contre les envois automatiques sans outil tiers de
-        type reCAPTCHA.
-      </p>
-    </section>
-
-    <section id="droits" aria-labelledby="t-droits" class="legal-section">
-      <h2 id="t-droits" class="legal-h2">
-        <span aria-hidden="true" class="legal-num">
-          7
-        </span>
-        Vos droits
-      </h2>
-      <p class="legal-p">Vous pouvez à tout moment :</p>
-      <ul class="legal-ul">
-        {droits.map((item) => (
-          <li>{item}</li>
-        ))}
-      </ul>
-      <p class="legal-p">
-        Pour exercer ces droits, écrivez à [À DÉCIDER : adresse dédiée] ou à{' '}
-        <a href="mailto:clara@m42.guide" class="legal-a">
-          clara@m42.guide
-        </a>
-        . Nous répondons dans un délai d'un mois, prolongeable de deux mois si la demande est
-        complexe ; nous vous prévenons alors. Une pièce d'identité ne vous sera demandée qu'en cas
-        de doute raisonnable sur votre identité.
-      </p>
-    </section>
-
-    <section id="cnil" aria-labelledby="t-cnil" class="legal-section">
-      <h2 id="t-cnil" class="legal-h2">
-        <span aria-hidden="true" class="legal-num">
-          8
-        </span>
-        Réclamation auprès de la CNIL
-      </h2>
-      <p class="legal-p">
-        Si vous estimez, après nous avoir contactés, que vos droits ne sont pas respectés, vous
-        pouvez adresser une réclamation à la Commission nationale de l'informatique et des libertés
-        (CNIL) :
-      </p>
-      <p class="cnil-address">
-        CNIL, 3 place de Fontenoy, TSA 80715, 75334 Paris Cedex 07
-        <br />
-        <a href="https://www.cnil.fr/fr/plaintes" class="legal-ext">
-          Déposer une plainte en ligne sur cnil.fr{' '}
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <path d="M14 4h6v6"></path>
-            <path d="M20 4l-9 9"></path>
-            <path d="M18 14v6H4V6h6"></path>
-          </svg>
-        </a>
-      </p>
-    </section>
-
-    <section id="lettre" aria-labelledby="t-lettre" class="legal-section">
-      <h2 id="t-lettre" class="legal-h2">
-        <span aria-hidden="true" class="legal-num">
-          9
-        </span>
-        Lettre d'information
-      </h2>
-      <aside aria-label="Point à décider : lettre d'information" class="legal-aside">
-        <p class="legal-aside-title">[À DÉCIDER] Lancer une lettre d'information ?</p>
-        <p class="legal-p">
-          Si oui, garder ce texte et préciser l'outil d'envoi (section 5). Sinon, supprimer cette
-          section et les mentions de la lettre dans les sections 3 et 4.
-        </p>
-      </aside>
-      <p class="legal-p">
-        L'inscription se fait uniquement avec votre accord explicite, par une case à cocher non
-        précochée, et elle est confirmée par un e-mail. Chaque envoi comporte un lien de
-        désinscription en un clic. Nous ne recueillons que votre adresse e-mail et, si vous le
-        souhaitez, votre prénom.
-      </p>
-    </section>
-
-    <section id="cookies" aria-labelledby="t-cookies" class="legal-section">
-      <h2 id="t-cookies" class="legal-h2">
-        <span aria-hidden="true" class="legal-num">
-          10
-        </span>
-        Cookies et traceurs
-      </h2>
-      <p class="legal-p">
-        Ce site n'utilise aucun cookie publicitaire, aucun pixel de réseau social et aucun traceur
-        soumis à votre consentement. C'est pourquoi aucun bandeau ne vous demande d'accepter des
-        cookies. Seuls peuvent être utilisés des cookies strictement nécessaires au fonctionnement
-        du site, qui n'exigent pas de consentement.
-      </p>
-      <p class="legal-p">
-        Les polices de caractères sont hébergées sur notre propre serveur : votre visite ne transmet
-        aucune donnée à un service de polices tiers [À VALIDER à l'intégration].
-      </p>
-      <aside aria-label="Point à décider : mesure d'audience et vidéo" class="legal-aside">
-        <p class="legal-aside-title">[À DÉCIDER] Mesure d'audience et vidéo</p>
-        <p class="legal-p">
-          <strong>Choix recommandé : aucun cookie non essentiel.</strong> Le texte ci-dessus reste
-          alors valable tel quel.
-        </p>
-        <p class="legal-p">
-          Si une mesure d'audience est retenue, la configurer pour être exemptée de consentement
-          selon les conditions de la CNIL (par exemple un outil auto-hébergé, données anonymisées,
-          sans recoupement), puis décrire ici l'outil, les données et la durée (section 4). Tout
-          autre outil impose un bandeau de consentement.
-        </p>
-        <p class="legal-p">
-          Si la vidéo de présentation est hébergée sur une plateforme tierce, ne la charger qu'au
-          clic, en mode « confidentialité renforcée », et indiquer ici que la plateforme peut alors
-          déposer ses propres traceurs.
-        </p>
-      </aside>
-    </section>
-
-    <section id="modifications" aria-labelledby="t-modif" class="legal-section">
-      <h2 id="t-modif" class="legal-h2">
-        <span aria-hidden="true" class="legal-num">
-          11
-        </span>
-        Modifications
-      </h2>
-      <p class="legal-p">
-        Nous mettons cette page à jour si nos pratiques changent. La date de dernière mise à jour
-        figure en haut de page. Une question ?{' '}
-        <a href="/contact/" class="legal-a">
-          Écrivez-nous
-        </a>
-        .
-      </p>
-    </section>
+  <LegalProse label={proseLabel} toc={toc}>
+    {sections.map((section, i) => (
+      <section id={section.id} aria-labelledby={section.headingId} class="legal-section">
+        <h2 id={section.headingId} class="legal-h2">
+          <span aria-hidden="true" class="legal-num">
+            {i + 1}
+          </span>
+          <Fragment set:html={section.title} />
+        </h2>
+        <LegalBlocks blocks={section.blocks} />
+      </section>
+    ))}
   </LegalProse>
 </BaseLayout>
 

@@ -4,56 +4,24 @@
  * SEO : title « Mentions légales | M42 », pas de description, canonical /mentions-legales/.
  * JSON-LD : WebPage + BreadcrumbList uniquement, aucune dénomination sociale
  * tant que l'entité éditrice n'est pas tranchée (05, décision n° 6).
- * Contenu à faire relire par un professionnel du droit avant la mise en ligne.
+ * Textes : src/data/legal/mentions-legales.ts. La page ne garde que la structure.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import LegalProse, { type TocItem } from '../../components/legal/LegalProse.astro';
+import LegalProse from '../../components/legal/LegalProse.astro';
+import LegalBlocks from '../../components/legal/LegalBlocks.astro';
+import {
+  breadcrumb,
+  decide,
+  intro,
+  proseLabel,
+  sections,
+  seo,
+} from '../../data/legal/mentions-legales';
 
 const url = 'https://m42.guide/mentions-legales/';
 
-const toc: TocItem[] = [
-  { id: 'editeur', label: 'Éditeur du site' },
-  { id: 'directeur', label: 'Directeur de la publication' },
-  { id: 'hebergeur', label: 'Hébergeur' },
-  { id: 'propriete', label: 'Propriété intellectuelle' },
-  { id: 'credits', label: 'Crédits' },
-  { id: 'donnees', label: 'Données personnelles' },
-  { id: 'responsabilite', label: 'Liens et responsabilité' },
-  { id: 'droit', label: 'Droit applicable' },
-];
-
-const editeur: [string, string][] = [
-  ['Dénomination sociale', '[À COMPLÉTER]'],
-  ['Forme juridique', '[À COMPLÉTER : SAS, SARL, entreprise individuelle…]'],
-  ['Capital social', '[À COMPLÉTER : montant]'],
-  ['Siège social', '[À COMPLÉTER : adresse complète]'],
-  ['Immatriculation', 'RCS [À COMPLÉTER : ville] n° [À COMPLÉTER] · SIREN [À COMPLÉTER]'],
-  ['TVA intracommunautaire', '[À COMPLÉTER]'],
-  ['Nom commercial', 'M42 [À VALIDER : dépôt de marque éventuel]'],
-];
-
-const hebergeur: [string, string][] = [
-  ['Hébergeur', "[À COMPLÉTER : dénomination et forme juridique de l'hébergeur, OVH ou autre]"],
-  ['Adresse', "[À COMPLÉTER : adresse du siège de l'hébergeur]"],
-  ['Téléphone', '[À COMPLÉTER]'],
-  [
-    "Lieu d'hébergement",
-    "[À COMPLÉTER : pays du centre de données, de préférence dans l'Union européenne]",
-  ],
-];
-
-const credits: [string, string][] = [
-  ['Conception et rédaction', 'Clara Peron et Paul Loustaunau'],
-  ['Photographies', '[À COMPLÉTER : nom du photographe]'],
-  ['Vidéo', '[À COMPLÉTER : réalisation]'],
-  ['Design et développement', '[À COMPLÉTER]'],
-  [
-    'Polices de caractères',
-    'Cormorant (Christian Thalmann) et Inter (Rasmus Andersson), sous licence SIL Open Font License 1.1',
-  ],
-  ['Icônes', '[À VALIDER : dessinées pour le site, ou bibliothèque Lucide sous licence ISC]'],
-];
+const toc = sections.map(({ id, title }) => ({ id, label: title }));
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -62,7 +30,7 @@ const jsonLd = {
       '@type': 'WebPage',
       '@id': `${url}#page`,
       url,
-      name: 'Mentions légales | M42',
+      name: seo.title,
       isPartOf: { '@id': 'https://m42.guide/#site' },
       breadcrumb: { '@id': `${url}#ariane` },
       inLanguage: 'fr-FR',
@@ -70,212 +38,53 @@ const jsonLd = {
     {
       '@type': 'BreadcrumbList',
       '@id': `${url}#ariane`,
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Accueil', item: 'https://m42.guide/' },
-        { '@type': 'ListItem', position: 2, name: 'Mentions légales' },
-      ],
+      itemListElement: breadcrumb.map((crumb, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: crumb.label,
+        ...(crumb.href ? { item: new URL(crumb.href, url).href } : {}),
+      })),
     },
   ],
 };
 ---
 
-<BaseLayout footerCurrent title="Mentions légales | M42" jsonLd={jsonLd}>
+<BaseLayout footerCurrent title={seo.title} jsonLd={jsonLd}>
   <!-- En-tête de page -->
   <section aria-labelledby="titre-ml">
     <div class="intro">
-      <Breadcrumb items={[{ label: 'Accueil', href: '/' }, { label: 'Mentions légales' }]} />
+      <Breadcrumb items={breadcrumb} />
       <h1 id="titre-ml" class="h1">
-        <span class="h1-over">Informations légales</span>
-        <span class="h1-title">Mentions légales</span>
+        <span class="h1-over">{intro.over}</span>
+        <span class="h1-title">{intro.title}</span>
       </h1>
-      <p class="lead">
-        Qui édite ce site, qui l'héberge, et ce que vous pouvez faire de son contenu.
-      </p>
-      <p class="updated">Dernière mise à jour : [À COMPLÉTER : date de mise en ligne]</p>
+      <p class="lead" set:html={intro.lead} />
+      <p class="updated">{intro.updated}</p>
 
       {/* ENCADRÉ À DÉCIDER : entité éditrice. Ne nommer AUCUNE société ici tant que la décision n'est pas prise. */}
       <aside aria-labelledby="titre-decider" class="decide">
-        <p class="decide-over">[À DÉCIDER] avant la mise en ligne</p>
-        <h2 id="titre-decider" class="decide-title">
-          La loi impose de nommer l'entité qui édite ce site
-        </h2>
-        <p class="decide-text">
-          La loi pour la confiance dans l'économie numérique (LCEN, article 6) impose d'identifier
-          clairement l'éditeur d'un site professionnel. Si une société édite le site ou facture les
-          interventions qui y sont présentées, sa dénomination sociale, sa forme juridique, son
-          capital, son siège, son immatriculation et son numéro de TVA doivent figurer ci-dessous,
-          en clair. Si le site est édité par des entrepreneurs individuels, ce sont leurs nom,
-          prénom, adresse et numéro SIREN [À VALIDER].
-        </p>
-        <p class="decide-text">
-          Cette section ne peut pas rester vide : l'absence de ces mentions expose l'éditeur à des
-          sanctions pénales. L'entité choisie peut rester absente du reste du site. Faire relire
-          cette page par un professionnel du droit.
-        </p>
+        <p class="decide-over">{decide.over}</p>
+        <h2 id="titre-decider" class="decide-title" set:html={decide.title} />
+        {decide.paragraphs.map((p) => (
+          <p class="decide-text" set:html={p} />
+        ))}
       </aside>
     </div>
   </section>
 
   <!-- Corps : sommaire + sections -->
-  <LegalProse label="Contenu des mentions légales" toc={toc}>
-    <section id="editeur" class="legal-section" aria-labelledby="t-editeur">
-      <h2 class="legal-h2" id="t-editeur">
-        <span class="legal-num" aria-hidden="true">
-          1
-        </span>
-        Éditeur du site
-      </h2>
-      <p class="legal-p">Le site m42.guide est édité par :</p>
-      <dl class="legal-dl legal-dl--fixed">
-        {editeur.map(([dt, dd]) => (
-          <div class="legal-row">
-            <dt>{dt}</dt>
-            <dd>{dd}</dd>
-          </div>
-        ))}
-        <div class="legal-row">
-          <dt>Contact</dt>
-          <dd>
-            <a class="legal-a" href="mailto:clara@m42.guide">
-              clara@m42.guide
-            </a>{' '}
-            ·{' '}
-            <a class="legal-a" href="mailto:paul@m42.guide">
-              paul@m42.guide
-            </a>{' '}
-            · [À COMPLÉTER : téléphone]
-          </dd>
-        </div>
-        <div class="legal-row">
-          <dt>Médiation de la consommation</dt>
-          <dd>
-            [À VALIDER : mention obligatoire seulement si des prestations sont vendues à des
-            particuliers]
-          </dd>
-        </div>
-      </dl>
-    </section>
-
-    <section id="directeur" class="legal-section" aria-labelledby="t-directeur">
-      <h2 class="legal-h2" id="t-directeur">
-        <span class="legal-num" aria-hidden="true">
-          2
-        </span>
-        Directeur de la publication
-      </h2>
-      <p class="legal-p">
-        [À COMPLÉTER : prénom, nom et qualité]. Pour une société, le directeur de la publication est
-        en principe son représentant légal.
-      </p>
-    </section>
-
-    <section id="hebergeur" class="legal-section" aria-labelledby="t-hebergeur">
-      <h2 class="legal-h2" id="t-hebergeur">
-        <span class="legal-num" aria-hidden="true">
-          3
-        </span>
-        Hébergeur
-      </h2>
-      <dl class="legal-dl legal-dl--fixed">
-        {hebergeur.map(([dt, dd]) => (
-          <div class="legal-row">
-            <dt>{dt}</dt>
-            <dd>{dd}</dd>
-          </div>
-        ))}
-      </dl>
-    </section>
-
-    <section id="propriete" class="legal-section" aria-labelledby="t-propriete">
-      <h2 class="legal-h2" id="t-propriete">
-        <span class="legal-num" aria-hidden="true">
-          4
-        </span>
-        Propriété intellectuelle
-      </h2>
-      <p class="legal-p">
-        L'ensemble du site est protégé par le droit d'auteur et, le cas échéant, par le droit des
-        marques : textes, nom et symbole M42, mise en page, photographies et vidéos. Sauf mention
-        contraire, ces éléments appartiennent à l'éditeur ou à leurs auteurs. Toute reproduction,
-        représentation ou adaptation, totale ou partielle, sans autorisation écrite préalable est
-        interdite (Code de la propriété intellectuelle, article L. 122-4).
-      </p>
-      <p class="legal-p">
-        Exception : les éléments de l'
-        <a class="legal-a" href="/organisateurs/">
-          espace organisateurs
-        </a>{' '}
-        (biographies, photos, logos, texte d'annonce, fiche technique) peuvent être reproduits
-        librement pour annoncer ou présenter une intervention de M42, sans modification et avec le
-        crédit photo indiqué.
-      </p>
-      <p class="legal-p">
-        Les chiffres et études cités sur le site restent la propriété de leurs auteurs. Ils sont
-        toujours accompagnés de leur source.
-      </p>
-    </section>
-
-    <section id="credits" class="legal-section" aria-labelledby="t-credits">
-      <h2 class="legal-h2" id="t-credits">
-        <span class="legal-num" aria-hidden="true">
-          5
-        </span>
-        Crédits
-      </h2>
-      <dl class="legal-dl legal-dl--fixed">
-        {credits.map(([dt, dd]) => (
-          <div class="legal-row">
-            <dt>{dt}</dt>
-            <dd>{dd}</dd>
-          </div>
-        ))}
-      </dl>
-    </section>
-
-    <section id="donnees" class="legal-section" aria-labelledby="t-donnees">
-      <h2 class="legal-h2" id="t-donnees">
-        <span class="legal-num" aria-hidden="true">
-          6
-        </span>
-        Données personnelles
-      </h2>
-      <p class="legal-p">
-        Le traitement des informations que vous nous transmettez par le formulaire de contact, et
-        vos droits sur ces données, sont décrits dans notre{' '}
-        <a class="legal-a" href="/confidentialite/">
-          politique de confidentialité
-        </a>
-        .
-      </p>
-    </section>
-
-    <section id="responsabilite" class="legal-section" aria-labelledby="t-resp">
-      <h2 class="legal-h2" id="t-resp">
-        <span class="legal-num" aria-hidden="true">
-          7
-        </span>
-        Liens et responsabilité
-      </h2>
-      <p class="legal-p">
-        Le site renvoie vers des sources officielles (par exemple Cybermalveillance.gouv.fr, l'Arcep
-        ou la CNIL). L'éditeur n'a aucun contrôle sur ces sites et n'est pas responsable de leur
-        contenu.
-      </p>
-      <p class="legal-p">
-        Les informations publiées sont vérifiées et datées. Elles peuvent toutefois évoluer : si
-        vous repérez une erreur, écrivez-nous, nous la corrigerons.
-      </p>
-    </section>
-
-    <section id="droit" class="legal-section" aria-labelledby="t-droit">
-      <h2 class="legal-h2" id="t-droit">
-        <span class="legal-num" aria-hidden="true">
-          8
-        </span>
-        Droit applicable
-      </h2>
-      <p class="legal-p">Les présentes mentions légales sont régies par le droit français.</p>
-    </section>
+  <LegalProse label={proseLabel} toc={toc}>
+    {sections.map((section, i) => (
+      <section id={section.id} class="legal-section" aria-labelledby={section.headingId}>
+        <h2 class="legal-h2" id={section.headingId}>
+          <span class="legal-num" aria-hidden="true">
+            {i + 1}
+          </span>
+          <Fragment set:html={section.title} />
+        </h2>
+        <LegalBlocks blocks={section.blocks} />
+      </section>
+    ))}
   </LegalProse>
 </BaseLayout>
 
